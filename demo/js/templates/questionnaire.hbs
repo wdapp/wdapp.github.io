@@ -1,0 +1,61 @@
+<div class="question-survey" id="questionnaire" questionnaireId="{{id}}">
+    <div class="survey-lay">
+        <div class="title">问卷调查
+            {{#unless forcibly}}
+            <div class="vote-close" id="closeQuestionnaire"></div>
+            {{/unless}}
+        </div>
+        <div class="box">
+            <div class="content">
+                <h3>{{title}}</h3>
+                {{#each subjects}}
+                    <div class="section" name="subject" subjectId="{{id}}" type="{{type}}">
+                        <p class="row">
+                            <span class="kind">{{subjectIndex}}、{{typeDesc}}</span>
+                            <span>{{content}}</span>
+                        </p>
+                        <!--单选-->
+                        {{#if isSingleSubject}}
+                            {{#each options}}
+                                <label>
+                                <span class="cell">
+                                    <input type="radio" name="{{../id}}" value="{{id}}"/>
+                                    {{indexDesc}}:
+                                </span>
+                                    <span class="option">
+                                        {{content}}
+                                    </span>
+                                </label>
+                            {{/each}}
+                        {{/if}}
+
+                        <!--多选-->
+                        {{#if isMultipleSubject}}
+                            {{#each options}}
+                                <label>
+                                <span class="cell">
+                                    <input type="checkbox" name="{{../id}}" value="{{id}}">
+                                    {{indexDesc}}:
+                                </span>
+                                    <span class="option">{{content}}</span>
+                                </label>
+                            {{/each}}
+                        {{/if}}
+
+                        <!--问答-->
+                        {{#if isQASubject}}
+                            <textarea class="text" name="qASubject"></textarea>
+                        {{/if}}
+                    </div>
+                {{/each}}
+                <div class="submit">
+                    <div id="questionnaireSuccess" class="tip success hide">提交成功</div>
+                    <div id="questionnaireFail" class="tip fail hide">提交失败</div>
+                    <input type="button" value="提交" id="submitQuestionnaire">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="maskbg"></div>
+</div>
+

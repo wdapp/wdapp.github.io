@@ -1,0 +1,160 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{font-family: Arial; font-size: 14px;}
+.title{text-align: center; background: #F1F1F1; font-size: 20px; margin-top: 100px;}
+.rbox{text-align: center;height: 401px;}
+.lbox h3,.rbox h3{font-size: 16px;}
+.border-left{padding-left: 3px; color: #FF6633; border-left: 4px solid #FF6633; line-height: 15px;}
+.lbox{height: 401px; overflow: auto;}
+.rtop{border-bottom: 1px solid #DDD; margin-bottom: 10px;}
+
+.rtop a:before {
+    content: "";
+    display: inline-block;
+    background: url("/img/win-pc-beta-icon1.png") no-repeat;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 14px;
+
+}
+
+.rtop a {
+    background: #ff7f33;
+    border-radius: 4px;
+    width: 190px;
+    height: 60px;
+    display: block;
+    margin: 0 auto 60px;
+    line-height: 60px;
+    text-align: center;
+    font-family: MicrosoftYaHei;
+    font-size: 18px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 100;
+}
+
+.rtop a:hover {
+    background: #ff7624;
+}
+.tips{margin-top: 110px; color: #999; font-size: 16px;margin-left:10px;}
+.tips a{color: #fd7345;}
+.btn-primary{width: 142px;}
+.mt2{margin-top: 30px;}
+.mt3{margin-top: 10px;}
+
+.rel{position: relative;}
+.rel h3{margin-bottom: 0;}
+.mt{margin-top: 150px;}
+.btn-start{
+    background:url(/img/btn-start.png) no-repeat;
+    box-shadow:0px 4px 0px 0px #dddddd, inset 0px 1px 1px 0px rgba(255,255,255,0.60), inset 0px -4px 0px 0px rgba(213,62,10,0.50);
+    border-radius:100px;
+    width:140px;
+    height:60px;
+    display: inline-block;
+    font-size: 18px;
+    color: #FFF;
+    line-height: 58px;
+    text-align: left;
+    padding-left: 50px;
+}
+.btn-start:hover{
+    background:url(/img/btn-start-hover.png) no-repeat;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.btn-start:focus{color: #FFF; text-decoration: none;}
+/* .btn-down{
+    display: inline-block;
+    width: 38px;
+    height: 42px;
+    background: url("/img/btn-down.png") no-repeat;
+    position: absolute;
+    top: 14px;
+    right: 54px;
+} */
+.cent {
+    margin: 0px auto;
+    width: 315px;
+    margin-top:25px;
+}
+
+.cent .a1:before {
+    content: "";
+    display: inline-block;
+    background: url("/img/win-pc-beta-icon2.png") no-repeat;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 18px;
+}
+
+.cent .a1 {
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    width: 170px;
+    height: 50px;
+    display: block;
+    float: left;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #ff7f33;
+}
+
+.cent .a1:hover {
+    border: 1px solid #ff7f33;
+}
+
+.cent .a2 {
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #ff7f33;
+    line-height: 16px;
+    text-decoration: none;
+    line-height: 70px;
+    margin-left: 19px;
+    float:left;
+}
+
+.cent .a2:hover {
+    text-decoration: underline;
+}
+
+.btn-down{
+    display: inline-block;
+    width: 38px;
+    height: 42px;
+    background: url("/img/btn-down.png") no-repeat;
+    position: absolute;
+    top: 84px;
+    right: 184px;
+}
+.btn-down:hover{background: url("/img/btn-down-hover.png") no-repeat;}
+.icon-pc{
+    background: url("/img/icon-pc.png") no-repeat;
+    width: 54px;
+    height: 48px;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 44px;
+}
+.color-666{color: #666;}
+.color-gray{color: #828282;}
+.well{
+    border-radius: 2px;
+}
+.lbox p{
+    font-size: 16px;
+    line-height: 150%;
+}
+
+footer{text-align: center;}
+.mobile{display: none;}
