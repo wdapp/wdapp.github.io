@@ -2036,6 +2036,23 @@
         }
     };
 
+    //事件兼容处理
+    var Event = {};
+    Event.addEvents = function (target, eventType, handle) {
+        if (document.addEventListener) {
+            Event.addEvents = function (target, eventType, handle) {
+                target.addEventListener(eventType, handle, false);
+            };
+        } else {
+            Event.addEvents = function (target, eventType, handle) {
+                target.attachEvent('on' + eventType, function () {
+                    handle.call(target, arguments);
+                });
+            };
+        }
+        ;
+        Event.addEvents(target, eventType, handle);
+    };
 
     var MobileLive = {
 
@@ -2069,6 +2086,25 @@
                         if (typeof DWLive.onLiveStarting === 'function') {
                             DWLive.onLiveStarting();
                         }
+
+                        //ios解禁播放失败处理
+                        var vd = $('#livePlayer>video')[0];
+                        var index = 0;
+                        var handle = function () {
+                            if (index >= 3) {
+                                vd.removeEventListener('error', handle);
+                                return;
+                            }
+                            vd.removeEventListener('error', handle);
+                            setTimeout(function () {
+                                index++;
+                                vd.src = vd.src;
+                                Event.addEvents(vd, 'error', handle, false);
+                            }, 1000);
+                        };
+
+                        Event.addEvents(vd, 'error', handle, false);
+
                     } else {
                         if (DWLive.isBan) {
                             $('#livePlayer').css({
@@ -2093,7 +2129,6 @@
             DWLive.onKickOut = function () {
                 $('#' + LivePlayer.id).html('');
             };
-
         },
 
         ban: function () {
@@ -2107,16 +2142,13 @@
         },
 
         unban: function () {
-            var self = this;
-            setTimeout(function () {
-                $('#livePlayer').css({
-                    'text-align': '',
-                    'color': '',
-                    'font-size': '',
-                    'line-height': ''
-                });
-                self.init();
-            }, 5000);
+            $('#livePlayer').css({
+                'text-align': '',
+                'color': '',
+                'font-size': '',
+                'line-height': ''
+            });
+            this.init();
         },
 
         end: function () {
