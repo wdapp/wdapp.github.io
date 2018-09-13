@@ -1071,7 +1071,7 @@ a.close-check {
     float: left;
     cursor: pointer;
     margin-top: -3px;
-    margin-left: -11px;
+    /*margin-left: -11px;*/
     /*position: relative;*/
 }
 

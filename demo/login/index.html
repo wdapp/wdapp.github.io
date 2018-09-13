@@ -2,16 +2,24 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>CCSDK测试登录界面</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
     <script type="text/javascript" src="images/login.js"></script>
     <link href="css/login2.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 <h1>CCSDK测试登录界面<sup>V2018</sup></h1>
 
-<div class="login" style="margin-top:50px;">
+<div class="login" style="margin-top:50px;padding: 25px;border-radius: 25px">
 
     <div class="header">
         <div class="switch" id="switch">
@@ -59,6 +67,15 @@
                         <div class="inputOuter2">
 
                             <input id="live-viewertoken" type="text" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="live-fastmode" type="checkbox" name="qq"  class="inputstyle2"/>
                         </div>
 
                     </li>
@@ -131,6 +148,15 @@
                     </li>
 
                     <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-fastmode" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
                         <div class="inputArea">
                             <input type="button" style="margin-top:10px;margin-left:85px;" class="button_blue"
                                    value="登录"/>
@@ -178,7 +204,22 @@
                         </div>
 
                     </li>
+                    <li>
+                        <label for="qq" class="input-tips2">viewertoken：</label>
+                        <div class="inputOuter2">
 
+                            <input id="mobile-viewertoken" type="text" id="qq" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="mobile-fastmode" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
                     <li>
                         <div class="inputArea">
                             <input type="button" style="margin-top:10px;margin-left:85px;" class="button_blue"
@@ -247,6 +288,15 @@
                     </li>
 
                     <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-mobile-fastmode" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
                         <div class="inputArea">
                             <input type="button" id="reg" style="margin-top:10px;margin-left:85px;" class="button_blue"
                                    value="登录"/>
@@ -281,8 +331,9 @@
                     obj.roomid = $('#live-roomid').val();
                     obj.viewername = $('#live-viewername').val();
                     obj.viewertoken = $('#live-viewertoken').val();
+                    obj.fastmode = $('#live-fastmode')[0].checked;
                     setValue(obj);
-                    location.href = '../index.html';
+                    location.href = '../live.html';
                     break;
                 case '1':
                     var obj = {};
@@ -291,6 +342,7 @@
                     obj.recordId = $('#playback-recordId').val();
                     obj.viewername = $('#playback-viewername').val();
                     obj.viewertoken = $('#playback-viewertoken').val();
+                    obj.fastmode = $('#playback-fastmode')[0].checked;
                     setValue(obj);
                     location.href = '../playback.html';
                     break;
@@ -299,6 +351,8 @@
                     obj.userid = $('#mobile-userid').val();
                     obj.roomid = $('#mobile-roomid').val();
                     obj.viewername = $('#mobile-viewername').val();
+                    obj.viewertoken = $('#mobile-viewertoken').val();
+                    obj.fastmode = $('#mobile-fastmode')[0].checked;
                     setValue(obj);
                     location.href = '../mobile.html';
                     break;
@@ -309,6 +363,7 @@
                     obj.recordId = $('#playback-mobile-recordId').val();
                     obj.viewername = $('#playback-mobile-viewername').val();
                     obj.viewertoken = $('#playback-mobile-viewertoken').val();
+                    obj.fastmode = $('#playback-mobile-fastmode')[0].checked;
                     setValue(obj);
                     location.href = '../playback-mobile.html';
                     break;
@@ -328,6 +383,7 @@
         localStorage.recordId = obj.recordId;
         localStorage.viewername = obj.viewername;
         localStorage.viewertoken = obj.viewertoken;
+        localStorage.fastmode = obj.fastmode;
     }
 
     function clear(){
@@ -342,6 +398,7 @@
         localStorage.recordId = '';
         localStorage.viewername = '';
         localStorage.viewertoken = '';
+        localStorage.fastmode = '';
     }
 
 </script>

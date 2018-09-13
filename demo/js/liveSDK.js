@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.4.5 2018/08/21
+ * v2.5.1 2018/09/12
  */
 (function () {
 
@@ -24,6 +24,62 @@
         return hasFlash;
     }
 
+    var DWDpc = {
+        dpc: {},
+        fastMode: false,
+        init: function () {
+            this.dpc = new Dpc();
+        },
+        appendDrawPanel: function () {
+            var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>';
+            if (MobileLive.isMobile() == 'isMobile') {
+                dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>';
+            }
+            $('#drawPanel').parent().append(dp);
+            $('div#drawPanel').remove();
+
+            if (typeof window.on_cc_live_db_flip === 'function') {
+                window.on_cc_live_db_flip();
+            }
+        },
+        pageChange: function (pc) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.pageChange(pc);
+        },
+        animationChange: function (ac) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.animationChange(ac);
+        },
+        history: function (h) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.history(h);
+        },
+        draw: function (d) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.draw(d);
+        },
+        clear: function () {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.clear();
+        },
+        reload: function () {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.reload();
+        }
+    };
+
     var DWLive = {
         init: function (option) {
             if (typeof option == 'undefined') {
@@ -37,14 +93,34 @@
             this.viewercustomua = $.trim(option.viewercustomua);
             this.language = $.trim(option.language);
             this.viewercustominfo = $.trim(option.viewercustominfo);
+            this.ua = $.trim(option.ua);
+            this.viewerid = $.trim(option.viewerid);
+            this.upid = $.trim(option.upid);
+            if (typeof option.fastMode == 'string') {
+                if (option.fastMode === 'false') {
+                    this.fastMode = false;
+                } else {
+                    this.fastMode = true;
+                }
+            } else if (typeof option.fastMode == 'boolean') {
+                this.fastMode = option.fastMode;
+            } else {
+                this.fastMode = false;
+            }
+            DWDpc.fastMode = this.fastMode;
 
             var _this = this;
             var scripts = [
-                '//static.csslcloud.net/js/socket.io.js'
+                '//static.csslcloud.net/js/socket.io.js',
+                '//static.csslcloud.net/js/report.js'
             ];
+
             if (MobileLive.isMobile() == 'isMobile') {
                 if ($('#drawPanel').length > 0) {
-                    scripts.push('//static.csslcloud.net/js/module/drawingBoard-2.0.0.js');
+                    //启动极速动画模式
+                    if (!DWDpc.fastMode) {
+                        scripts.push('//static.csslcloud.net/js/module/drawingBoard-2.0.0.js');
+                    }
                 }
             } else {
                 if (!isSupportFlash()) {
@@ -82,21 +158,24 @@
                     '//static.csslcloud.net/js/json3.min.js'
                 );
             }
-            this.loadScript(scripts, function () {
-                _this.login();
-                _this.history = new History();
+            _this.loadScript(scripts, function () {
+                _this.login(fn);
+
+                function fn() {
+                    _this.history = new History();
+                }
+
                 if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard) {
-                    var dp = '<canvas id="drawPanel" width="1200" height="1200"></canvas>'
-                        + '<iframe id="dpa" src="" frameborder="0"></iframe>';
+                    var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
+                        + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>';
                     $('#drawPanel').parent().append(dp);
                     $('div#drawPanel').remove();
                     $.DrawingBoard.config();
                 }
             });
-
         },
 
-        login: function () {
+        login: function (fn) {
             $.ajax({
                 url: '//view.csslcloud.net/api/room/login',
                 type: 'GET',
@@ -138,9 +217,19 @@
                     DWLive.viewerid = data.datas.viewer.id;
                     DWLive.viewername = data.datas.viewer.name;
                     DWLive.isBan = data.datas.room.isBan;//禁播
+                    DWLive.liveid = data.datas.liveId;
+                    DWLive.upid = data.datas.upId;
                     DWLive.multiQuality = data.datas.room.multiQuality;
                     DWLive.documentDisplayMode = data.datas.room.documentDisplayMode;
                     DWLive.liveCountdown = data.datas.room.liveCountdown;
+
+                    //初始化极速动画对象
+                    if (DWDpc.fastMode) {
+                        $('#documentDisplayMode').val(DWLive.documentDisplayMode);
+                        DWDpc.appendDrawPanel();
+                        DWDpc.init();
+                    }
+                    fn();
 
                     var delay = data.datas.room.delayTime,
                         foreignPublish = data.datas.room.foreignPublish;
@@ -154,7 +243,7 @@
                     LivePlayer.dvr = data.datas.room.dvr;
                     LivePlayer.barrageData = data.datas.room.barrage;
                     LivePlayer.warmVideoId = data.datas.room.encryptWarmVideoId;
-
+                    LivePlayer.viewerid = data.datas.viewer.id;
                     var playerBackgroundImageUri = data.datas.room.playerBackgroundImageUri;
                     if (!playerBackgroundImageUri) {
                         playerBackgroundImageUri = '';
@@ -197,6 +286,11 @@
 
                     if (typeof DWLive.onLoginSuccess === 'function') {
                         DWLive.onLoginSuccess();
+                    }
+
+                    var time = data.datas.live;
+                    if (typeof DWLive.onLiveTime === 'function') {
+                        DWLive.onLiveTime(time);
                     }
 
                     Pusher.init();
@@ -529,7 +623,15 @@
         }
 
     };
-
+    var options = {
+        init: function () {
+            this['userId'] = DWLive.userid,
+                this['roomId'] = DWLive.roomid,
+                this['liveId'] = DWLive.liveid,
+                this['viewerId'] = DWLive.viewerid,
+                this['upId'] = DWLive.upid;
+        }
+    };
     // Pusher
     var Pusher = {
         options: {
@@ -632,6 +734,7 @@
                 if (DrawPanel && DrawPanel.clear) {
                     DrawPanel.clear();
                 }
+                DWDpc.clear();
                 if (typeof DWLive.onLiveEnd === 'function') {
                     DWLive.onLiveEnd(j);
                 }
@@ -818,6 +921,17 @@
 
                 if (typeof DWLive.onQuestionnairePublishStop === 'function') {
                     DWLive.onQuestionnairePublishStop(data);
+                }
+            });
+
+            /**
+             * 发布问卷统计
+             * */
+            this.socket.on('questionnaire_publish_statis', function (data) {
+                data = toJson(data);
+
+                if (typeof DWLive.on_cc_live_questionnaire_publish_statis === 'function') {
+                    DWLive.on_cc_live_questionnaire_publish_statis(data);
                 }
             });
 
@@ -1361,7 +1475,10 @@
                 'countDownTime': DWLive.liveCountdown,
                 'openMultiQuality': DWLive.multiQuality,
                 'language': DWLive.language || '',
-                'type': 'liveplayer'
+                'type': 'liveplayer',
+                'upid': DWLive.upid,
+                'viewerid': this.viewerid,
+                'ua': 1
             };
 
             var buffer = this.delay;
@@ -1547,6 +1664,10 @@
             return;
         }
 
+        if (DWDpc.fastMode) {
+            return;
+        }
+
         if (draws.length) {
             DrawPanel.draws(draws);
             draws = [];
@@ -1574,6 +1695,7 @@
             pageChanges = [];
         }
     }
+
 
     // DrawPanel
     var DrawPanel = {
@@ -1605,8 +1727,10 @@
             var attributes = {};
 
             if (!MobileLive.isIPad() && !MobileLive.isIPhone() && !MobileLive.isAndroid() && !MobileLive.isWindowsPhone()) {
-
-                swfobject.embedSWF(this.swfUrl, this.id, this.getWidth(), this.getHeight(), '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
+                //开启极速动画模式
+                if (!DWDpc.fastMode) {
+                    swfobject.embedSWF(this.swfUrl, this.id, this.getWidth(), this.getHeight(), '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
+                }
 
             }
         },
@@ -1680,6 +1804,7 @@
             }
 
             swf.filp(JSON.stringify(jj), this.displayMode);
+
         },
 
         // 动画
@@ -1826,6 +1951,9 @@
                     $.DrawingBoard.history(meta);
                 }
 
+                //极速动画获取历史信息
+                DWDpc.history(meta);
+
                 var chatLogs = meta.chatLog;
                 if (chatLogs && chatLogs.length) {
                     var cls = [];
@@ -1850,44 +1978,46 @@
                     }
                 }
 
-                var pageChange = meta.pageChange;
-                if (pageChange && pageChange.length) {
-                    pageChange.sort(function (p1, p2) {
-                        return parseInt(p1.time) - parseInt(p2.time);
-                    });
-                    var lastPage = pageChange.pop();
-                    pageChanges.push(JSON.stringify({
-                        'fileName': lastPage.docName,
-                        'totalPage': lastPage.docTotalPage,
-                        'docid': lastPage.encryptDocId,
-                        'url': lastPage.url,
-                        'page': lastPage.pageNum,
-                        'time': lastPage.time,
-                        'useSDK': lastPage.useSDK
-                    }));
-                }
+                if (!DWDpc.fastMode) {
+                    var pageChange = meta.pageChange;
+                    if (pageChange && pageChange.length) {
+                        pageChange.sort(function (p1, p2) {
+                            return parseInt(p1.time) - parseInt(p2.time);
+                        });
+                        var lastPage = pageChange.pop();
+                        pageChanges.push(JSON.stringify({
+                            'fileName': lastPage.docName,
+                            'totalPage': lastPage.docTotalPage,
+                            'docid': lastPage.encryptDocId,
+                            'url': lastPage.url,
+                            'page': lastPage.pageNum,
+                            'time': lastPage.time,
+                            'useSDK': lastPage.useSDK
+                        }));
+                    }
 
-                var animation = meta.animation;
-                if (animation && animation.length) {
-                    animation.sort(function (p1, p2) {
-                        return parseInt(p1.time) - parseInt(p2.time);
-                    });
-                    var lastAnimation = animation.pop();
-                    animations.push(JSON.stringify({
-                        'fileName': lastAnimation.docName,
-                        'totalPage': lastAnimation.docTotalPage,
-                        'docid': lastAnimation.encryptDocId,
-                        'url': lastAnimation.url,
-                        'page': lastAnimation.pageNum,
-                        'time': lastAnimation.time,
-                        'step': lastAnimation.step
-                    }));
-                }
+                    var animation = meta.animation;
+                    if (animation && animation.length) {
+                        animation.sort(function (p1, p2) {
+                            return parseInt(p1.time) - parseInt(p2.time);
+                        });
+                        var lastAnimation = animation.pop();
+                        animations.push(JSON.stringify({
+                            'fileName': lastAnimation.docName,
+                            'totalPage': lastAnimation.docTotalPage,
+                            'docid': lastAnimation.encryptDocId,
+                            'url': lastAnimation.url,
+                            'page': lastAnimation.pageNum,
+                            'time': lastAnimation.time,
+                            'step': lastAnimation.step
+                        }));
+                    }
 
-                var draw = meta.draw;
-                if (draw && draw.length) {
-                    for (var i = 0; i < draw.length; i++) {
-                        draws.push(draw[i].data);
+                    var draw = meta.draw;
+                    if (draw && draw.length) {
+                        for (var i = 0; i < draw.length; i++) {
+                            draws.push(draw[i].data);
+                        }
                     }
                 }
 
@@ -1923,25 +2053,34 @@
     // 画图事件
     window.on_cc_live_dw_draw = function (data) {
         setTimeout(function () {
+            DWDpc.draw(data);
+        }, getDeltaTime());
+        setTimeout(function () {
             var j = toJson(data);
             DrawPanel.draw(JSON.stringify(j.value.data));
         }, getDeltaTime());
         if (MobileLive.isMobile() == 'isMobile') {
             setTimeout(function () {
-                $.DrawingBoard.db(data);
+                $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
         }
     };
 
     // 翻页事件
     window.on_cc_live_dw_page_change = function (data) {
+        //极速动画
+        setTimeout(function () {
+            DWDpc.pageChange(data);
+        }, getDeltaTime());
+        //flash
         setTimeout(function () {
             var j = toJson(data);
             DrawPanel.filp(JSON.stringify(j.value));
         }, getDeltaTime());
+        //canvas
         if (MobileLive.isMobile() == 'isMobile') {
             setTimeout(function () {
-                $.DrawingBoard.db(data);
+                $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
         }
     };
@@ -1949,12 +2088,15 @@
     // 动画翻页事件
     window.on_cc_live_dw_animation_change = function (data) {
         setTimeout(function () {
+            DWDpc.animationChange(data);
+        }, getDeltaTime());
+        setTimeout(function () {
             var j = toJson(data);
             DrawPanel.animationFilp(JSON.stringify(j.value));
         }, getDeltaTime());
         if (MobileLive.isMobile() == 'isMobile') {
             setTimeout(function () {
-                $.DrawingBoard.db(data);
+                $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
         }
     };
@@ -2077,6 +2219,8 @@
                         _this.audioM3u8 = data.live.audioM3u8 || [];
                         _this.audioSecureHosts = data.live.audioSecureHosts || [];
                         _this.isHttps = window.location.protocol === 'https:';
+                        options.init();
+                        options.liveId = data.live.liveId;
                         if (_this.isHttps && _this.secureHosts && _this.secureHosts.length) {
                             _this.m3u8 = _this.secureHosts;
                         }
@@ -2125,10 +2269,11 @@
         appendVideo: function (s) {
             var v = '<video webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
             $('#' + LivePlayer.id).html(v);
-
+            var video = document.getElementById('live_player');
             DWLive.onKickOut = function () {
                 $('#' + LivePlayer.id).html('');
             };
+            this.report = new ReportLog(options, 1, 11, video, true);
         },
 
         ban: function () {
@@ -2153,6 +2298,7 @@
 
         end: function () {
             $('#' + LivePlayer.id).html('');
+            this.report.stopTimer();
         },
 
         appendDoc: function (s) {

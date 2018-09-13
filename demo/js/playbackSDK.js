@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.3.5 2018/08/21
+ * v2.4.0 2018/09/10
  */
 !(function ($, window, document) {
 
@@ -15,7 +15,11 @@
             'userid': opts.userId,
             'videoid': opts.videoId,
             'recordid': opts.recordId,
-            'isShowBar': opts.isShowBar
+            'isShowBar': opts.isShowBar,
+            'upid': opts.upId ,
+            'viewerid': opts.viewerId ,
+            'roomid': opts.roomId,
+            'ua':'1'
         };
         var params = {
             allowFullscreen: 'true',
@@ -26,6 +30,9 @@
         this.flashPlayerInit = function () {
             swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, '10.0.0',
                 '/flash/expressInstall.swf', flashvars, params);
+			      if(MobileLive.isMobile()!='isMobile'){
+                var report = new ReportLog(opts, 0, 1, null, false);
+            }
         };
 
         if (!DW.isH5play) {
@@ -37,7 +44,7 @@
         };
 
         this.playbackRate = function (t) {
-            if (!DW.isH5play || MobileLive.isMobile() !== 'isMobile') {
+            if (!DW.isH5play && MobileLive.isMobile() !== 'isMobile') {
                 return;
             }
             var t = parseFloat(t);
@@ -236,8 +243,11 @@
             wmode: 'transparent'
         };
         var attributes = {};
-        swfobject.embedSWF(swfUrl, opts.drawPanel.id, opts.drawPanel.width, opts.drawPanel.height,
-            '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
+
+        if (!DWDpc.fastMode) {
+            swfobject.embedSWF(swfUrl, opts.drawPanel.id, opts.drawPanel.width, opts.drawPanel.height,
+                '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
+        }
 
         this.getFlash = function () {
             if (!this.isReady) {
@@ -248,16 +258,18 @@
         };
 
         this.clear = function () {
+            DWDpc.clear();
             var swf = this.getFlash();
             if (!swf) {
                 return;
             }
-            // clear == _streamEnd
             swf.clear();
         };
 
         // 画图
         this.draw = function (j) {
+            DWDpc.draw(j);
+
             var swf = this.getFlash();
             if (!swf) {
                 return;
@@ -282,6 +294,8 @@
 
         // 翻页
         this.filp = function (j) {
+            DWDpc.pageChange(j);
+
             var swf = this.getFlash();
             if (!swf) {
                 return;
@@ -303,6 +317,8 @@
 
         // 动画
         this.animation = function (j) {
+            DWDpc.animationChange(j);
+
             var swf = this.getFlash();
             if (!swf) {
                 return;
@@ -333,14 +349,18 @@
                             var pc = callback.pageChanges[pidex];
                             var a = callback.animations[callback.animationIndex + 1];
                             if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
-                                this.animation(JSON.stringify({
-                                    'fileName': a.docName,
-                                    'totalPage': a.docTotalPage,
-                                    'docid': a.encryptDocId,
-                                    'url': a.url,
-                                    'page': a.pageNum,
-                                    'step': a.step
-                                }));
+                                if (DWDpc.fastMode) {
+                                    this.animation(a);
+                                } else {
+                                    this.animation(JSON.stringify({
+                                        'fileName': a.docName,
+                                        'totalPage': a.docTotalPage,
+                                        'docid': a.encryptDocId,
+                                        'url': a.url,
+                                        'page': a.pageNum,
+                                        'step': a.step
+                                    }));
+                                }
                                 callback.animationIndex = callback.animationIndex + 1;
                             }
                         }
@@ -358,14 +378,19 @@
                                 window.on_cc_callback_page_change(pc);
                             }
 
-                            this.filp(JSON.stringify({
-                                'fileName': pc.docName,
-                                'totalPage': pc.docTotalPage,
-                                'docid': pc.encryptDocId,
-                                'url': pc.url,
-                                'page': pc.pageNum,
-                                'useSDK': pc.useSDK
-                            }));
+                            if (DWDpc.fastMode) {
+                                this.filp(pc);
+                            } else {
+                                this.filp(JSON.stringify({
+                                    'fileName': pc.docName,
+                                    'totalPage': pc.docTotalPage,
+                                    'docid': pc.encryptDocId,
+                                    'url': pc.url,
+                                    'page': pc.pageNum,
+                                    'useSDK': pc.useSDK
+                                }));
+                            }
+
                             callback.pageChangeIndex = callback.pageChangeIndex + 1;
 
                             //翻页信息回掉
@@ -393,14 +418,18 @@
                             var pc = callback.pageChanges[pidex];
                             var a = callback.animations[callback.animationIndex + 1];
                             if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
-                                this.animation(JSON.stringify({
-                                    'fileName': a.docName,
-                                    'totalPage': a.docTotalPage,
-                                    'docid': a.encryptDocId,
-                                    'url': a.url,
-                                    'page': a.pageNum,
-                                    'step': a.step
-                                }));
+                                if (DWDpc.fastMode) {
+                                    this.animation(a);
+                                } else {
+                                    this.animation(JSON.stringify({
+                                        'fileName': a.docName,
+                                        'totalPage': a.docTotalPage,
+                                        'docid': a.encryptDocId,
+                                        'url': a.url,
+                                        'page': a.pageNum,
+                                        'step': a.step
+                                    }));
+                                }
                                 callback.animationIndex = callback.animationIndex + 1;
                             }
                         }
@@ -416,14 +445,15 @@
                     if (callback.drawIndex < callback.draws.length) {
                         var dc = callback.draws[callback.drawIndex + 1];
                         while (ft >= dc.time) {
-                            this.draw(dc.data);
+                            if (DWDpc.fastMode) {
+                                this.draw(dc);
+                            } else {
+                                this.draw(dc.data);
+                            }
+
                             callback.drawIndex = callback.drawIndex + 1;
                             dc = callback.draws[callback.drawIndex + 1];
                         }
-                        //if (ft >= dc.time) {
-                        //    this.draw(dc.data);
-                        //    callback.drawIndex = callback.drawIndex + 1;
-                        //}
                     }
                 }
             } catch (e) {
@@ -479,6 +509,7 @@
             roomid: opts.roomId,
             userid: opts.userId,
             liveid: opts.liveId,
+			upid: opts.upId,
             recordid: opts.recordId,
             viewertoken: opts.viewertoken,
             viewername: opts.viewername,
@@ -630,10 +661,20 @@
             }
 
             if (sub.requestLoginData) {
+
+                if (DWDpc.fastMode) {
+                    $('#documentDisplayMode').val(data.datas.room.documentDisplayMode);
+                    DWDpc.appendDrawPanel();
+                    DWDpc.init();
+                }
+
                 opts.chat = {
                     host: data.datas.pusherNode.primary
                 };
                 opts.viewer.sessionId = data.datas.sessionId;
+                opts.liveId = data.datas.encryptLiveId;
+				opts.upId = data.datas.upId;
+				opts.viewerId=data.datas.viewer.id;
                 callback.socket = new Socket(opts);
 
                 if (typeof window.on_cc_callback_player === 'function') {
@@ -972,7 +1013,8 @@
         videoId: $('#videoId').val(),
         adapt: false,
         isShowBar: 0,
-
+		    viewerId: $('#viewerId').val(),
+        upId: $('#upId').val(),
         // 观看者用户信息
         viewer: {
             id: $('#viewerId').val(),
@@ -996,34 +1038,110 @@
         }
     };
 
+    //极速文档模式
+    var DWDpc = {
+        dpc: {},
+        fastMode: false,
+        init: function () {
+            this.dpc = new Dpc();
+        },
+        appendDrawPanel: function () {
+            var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>';
+            if (MobileLive.isMobile() == 'isMobile') {
+                dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>';
+            }
+            $('#playbackPanel').parent().append(dp);
+            $('div#playbackPanel').remove();
+
+            if (typeof window.on_cc_live_db_flip === 'function') {
+                window.on_cc_live_db_flip();
+            }
+        },
+        pageChange: function (pc) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.pageChange(pc);
+        },
+        animationChange: function (ac) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.animationChange(ac);
+        },
+        history: function (h) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.history(h);
+        },
+        draw: function (d) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.draw(d);
+        },
+        clear: function () {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.clear();
+        }
+    };
+
     function init(opts) {
+		    options.viewerId = opts.viewerid;
         options = $.extend(options, opts);
         callback = new Callback(options);
     }
 
     var DW = {
         isH5play: false,
+        fastMode: false,
+        setFastMode: function (opts) {
+            if (typeof opts.fastMode == 'string') {
+                if (opts.fastMode === 'false') {
+                    this.fastMode = false;
+                } else {
+                    this.fastMode = true;
+                }
+            } else if (typeof opts.fastMode == 'boolean') {
+                this.fastMode = opts.fastMode;
+            } else {
+                this.fastMode = false;
+            }
+        },
         // 初始化DW对象
         config: function (opts) {
             if (checkVideo()) {
                 this.isH5play = opts.isH5play;
             }
-            this.loadScript([
+
+            this.setFastMode(opts);
+            DWDpc.fastMode = this.fastMode;
+
+            var scriptArray = [
                 '//static.csslcloud.net/js/socket.io.js',
                 '//static.csslcloud.net/js/swfobject.js',
                 '//static.csslcloud.net/js/json3.min.js',
                 '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
-                '//static.csslcloud.net/js/module/drawingBoardPlayback.js'
-            ], function () {
+                '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
+                '//static.csslcloud.net/js/report.js'
+            ];
+            if(DWDpc.fastMode){
+                scriptArray.splice(3,2);
+            }
+
+            this.loadScript(scriptArray, function () {
                 init(opts);
-                if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard) {
+                if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard && !DWDpc.fastMode) {
                     DW.appendDrawPanel();
                 }
             });
         },
         appendDrawPanel: function () {
-            var dp = '<canvas id="drawPanel" width="1200" height="1200"></canvas>'
-                + '<iframe id="dpa" src="" frameborder="0"></iframe>';
+            var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
+                + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>';
             $('#playbackPanel').parent().append(dp);
             $('div#playbackPanel').remove();
         },
@@ -1361,6 +1479,12 @@
         callback.drawIndex = -1;
         callback.animationIndex = -1;
 
+        var meta = {
+            pageChange: [],
+            animation: [],
+            draw: []
+        };
+
         if (callback.pageChanges && callback.pageChanges.length > 0) {
             for (var i = 0; i < callback.pageChanges.length; i++) {
                 var pc = callback.pageChanges[i];
@@ -1382,6 +1506,8 @@
                     'page': pc.pageNum,
                     'useSDK': pc.useSDK
                 }));
+
+                meta.pageChange.push(pc);
             }
         }
 
@@ -1408,6 +1534,9 @@
                             'page': a.pageNum,
                             'step': a.step
                         }));
+
+                        meta.animation.push(a);
+
                     }
                 }
             }
@@ -1428,10 +1557,13 @@
                 for (var i = 0; i < ds.length; i++) {
                     var dc = ds[i];
                     dcdatas.push(dc.data);
+                    meta.draw.push(dc);
                 }
                 callback.drawPanel.draws(dcdatas);
             }
         }
+
+        DWDpc.history(meta);
 
         callback.drawPanel.intervalNum = setInterval(function () {
             callback.drawPanel.interval();
@@ -1518,13 +1650,20 @@
         appendVideo: function (s, opts) {
             var _this = this;
 
-            var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
+            var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
             $('#' + playbackPlayer.id).html(v);
             var video = document.getElementById('playbackVideo');
             if (opts.isShowBar) {
                 video.removeAttribute('controls');
             }
 
+            var isMobie = 0;
+            var ua = 1;
+            if (MobileLive.isMobile() == 'isMobile') {
+                isMobie = 1;
+                ua = 11;
+            }
+            var report = new ReportLog(opts , isMobie , ua , video , false);
             if (!this.isAndroid()) {
                 this.pauseState = true;
             }

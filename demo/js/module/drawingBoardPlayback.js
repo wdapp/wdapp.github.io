@@ -13,7 +13,7 @@
     var Utils = {
         // 如果参数为string，转换为json
         toJson: function (j) {
-            if (typeof j === "string") {
+            if (typeof j === 'string') {
                 j = JSON.parse(j);
             }
             return j;
@@ -71,7 +71,7 @@
                 draw: this.getNextDraws(time),
                 pageChange: this.getNextPageChanges(time),
                 animation: this.getNextAnimations(time)
-            }
+            };
         };
 
         this.getNextPageChanges = function (time) {
@@ -167,7 +167,7 @@
             return currentTime;
         };
 
-        $(this.getPlayer()).bind("timeupdate", function () {
+        $(this.getPlayer()).bind('timeupdate', function () {
             if (callback.isSeeking) {
                 return;
             }
@@ -186,8 +186,8 @@
             var nextDraws = callback.getNextDraws(currentTime);
             $.each(nextDraws, function (index, draw) {
                 $.DrawingBoard.db({
-                    "action": "draw",
-                    "value": {
+                    'action': 'draw',
+                    'value': {
                         data: Utils.toJson(draw.data)
                     }
                 });
@@ -196,16 +196,16 @@
             var nextPageChanges = callback.getNextPageChanges(currentTime);
             $.each(nextPageChanges, function (index, pageChange) {
                 $.DrawingBoard.db({
-                    "action": "page_change",
-                    "value": {
-                        "docid": pageChange.encryptDocId,
-                        "fileName": pageChange.docName,
-                        "totalPage": pageChange.docTotalPage,
-                        "url": pageChange.url,
-                        "page": pageChange.pageNum,
-                        "useSDK": pageChange.useSDK,
-                        "width": pageChange.width,
-                        "height": pageChange.height
+                    'action': 'page_change',
+                    'value': {
+                        'docid': pageChange.encryptDocId,
+                        'fileName': pageChange.docName,
+                        'totalPage': pageChange.docTotalPage,
+                        'url': pageChange.url,
+                        'page': pageChange.pageNum,
+                        'useSDK': pageChange.useSDK,
+                        'width': pageChange.width,
+                        'height': pageChange.height
                     }
                 });
             });
@@ -213,28 +213,28 @@
             var nextAnimations = callback.getNextAnimations(currentTime);
             $.each(nextAnimations, function (index, animation) {
                 $.DrawingBoard.db({
-                    "action": "animation_change",
-                    "value": {
+                    'action': 'animation_change',
+                    'value': {
                         docid: animation.docId,
                         page: animation.pageNum,
                         step: animation.step
                     }
-                })
+                });
             });
 
             callback.isTimeUpdate = false;
         });
 
-        $(this.getPlayer()).bind("seeking", function () {
+        $(this.getPlayer()).bind('seeking', function () {
             $.DrawingBoard.clearTimer();
             callback.isSeeking = true;
         });
 
-        $(this.getPlayer()).bind("ended", function () {
+        $(this.getPlayer()).bind('ended', function () {
             $.DrawingBoard.clearTimer();
         });
 
-        $(this.getPlayer()).bind("seeked", function () {
+        $(this.getPlayer()).bind('seeked', function () {
             $.DrawingBoard.clearAll();
 
             var currentTime = callback.getCurrentTime();

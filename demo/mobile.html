@@ -11,6 +11,9 @@
         #livePlayer {
             height: 100%;
         }
+        .imgbox-scroll{
+            overflow-y: scroll;
+        }
     </style>
 </head>
 <body>
@@ -49,7 +52,7 @@
             </ul>
         </div>
         <div class="slider-container">
-            <div class="container imgbox">
+            <div class="container imgbox imgbox-scroll" id="imgbox">
                 <div class="slider-bd allow-roll" id="ppts">
                     <div class="nodoc" id="noppt">
                         <p>暂无文档</p>
@@ -57,6 +60,7 @@
 
                     <!-- 直播文档模块 -->
                     <div id="drawPanel"></div>
+                    <!--<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0"></iframe>-->
 
                 </div>
             </div>
@@ -163,22 +167,45 @@
     </div>
 </div>
 <input id="barrage" type="hidden" value="0"/>
+<input type="hidden" value="2" id="documentDisplayMode">
 <script src="js/jquery-1.9.0.min.js?v=20160706151521566"></script>
 <script src="js/handlebars.js"></script>
 <script src="js/touchSlide.js?v=20160706151521566"></script>
 <script src="js/jquery.panzoom.min.js?v=20160706151521566"></script>
 <script src="js/main.js?v=20160706151521566"></script>
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201808211447"></script>
+<script src="//image.csslcloud.net/js/dpc.js"></script>
+<script src="js/liveSDK.js?v=201809111416"></script>
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
 
     $(function () {
+//        DWLive.init({
+//            userid: localStorage.userid,
+//            roomid: localStorage.roomid,
+//            viewername: localStorage.viewername,
+//            viewertoken: localStorage.viewertoken,
+//            fastMode: localStorage.fastmode
+//        });
         DWLive.init({
-            userid: localStorage.userid,
-            roomid: localStorage.roomid,
-            viewername: localStorage.viewername
+            userid: 'B27039502337407C',
+            roomid: '3115C441D8B66A719C33DC5901307461',
+//            userid: 'C783F0F7CB77E1F3',
+//            roomid: '907DE174D77ED2C39C33DC5901307461',
+            viewername: 'haname',
+            viewertoken: '123',
+            fastMode: false
         });
+
+        DWLive.onLiveTime = function (e) {
+            console.log('onLiveTime', e);
+        };
+
+        document.addEventListener('WeixinJSBridgeReady', function () {
+            setTimeout(function () {
+                document.getElementsByTagName('video')[0].play();
+            }, 1000);
+        }, false);
 
         $('.embtn').bind('touchend', function (e) {
             if ($('#embox').length > 0) {

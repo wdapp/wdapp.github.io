@@ -228,26 +228,35 @@
     </div>
     <div class="maskbg"></div>
 </div>
+<input type="hidden" value="1" id="documentDisplayMode">
 <script src="js/jquery-1.9.0.min.js"></script>
 <script src="js/handlebars.js"></script>
 <script src="js/base.js"></script>
 <script src="js/common.js"></script>
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201808211447"></script>
+<script src="//image.csslcloud.net/js/dpc.js"></script>
+<script src="js/liveSDK.js?v=201809111416"></script>
 <script src="js/ui.js"></script>
 <script src="js/live.js"></script>
 <script src="js/cc.questionnaire.js"></script>
-
 <script type="text/javascript">
+    https://view.csslcloud.net/api/view/lecturer?roomid=907DE174D77ED2C39C33DC5901307461&userid=C783F0F7CB77E1F3
     // 直播SDK参数配置
     DWLive.init({
-        userid: localStorage.userid,
-        roomid: localStorage.roomid,
-        viewername: localStorage.viewername,
-        viewertoken: localStorage.viewertoken,
-        viewercustomua: 'android',
+        userid: 'B27039502337407C',
+        roomid: '3115C441D8B66A719C33DC5901307461',
+//        userid: 'C783F0F7CB77E1F3',
+//        roomid: '907DE174D77ED2C39C33DC5901307461',
+        viewername: 'haname',
+        viewertoken: '123',
+        viewercustomua: 'web',
         language: 'en',
-        viewercustominfo: ''
+        viewercustominfo: '',
+        fastMode: false
     });
+
+    DWLive.onLiveTime = function (e) {
+        console.log('onLiveTime', e);
+    };
 
     var marquee;
     DWLive.getMarquee = function (data) {

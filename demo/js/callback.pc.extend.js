@@ -314,7 +314,7 @@ scale.prototype = {
                 var thisX = (e || b.event).clientX;
                 var to = m.min(max, m.max(0, l + (thisX - x)));
                 f.btn.style.left = to + 'px';
-                f.pro.style.width = to * 100 / max + '%';
+                f.pro.style.width = parseInt(to * 100 / max) + '%';
                 var e = {percent: to * 100 / max};
                 f.e = e;
                 f.mousemove(f.e);
@@ -392,6 +392,7 @@ function playTimerCallback() {
     var progress = $.DW.getPlayerTime() / $.DW.getDuration();
     var buffer = $.DW.getBuffer() / $.DW.getDuration();
     $('#progress').css('width', progress * 100 + '%');
+
     $('#buffer').css('width', buffer * 100 + '%');
     $('#dot').css('left', progress * 869 + 'px');
     $('.time span').eq(0).html(sec_to_time(parseInt($.DW.getPlayerTime())));

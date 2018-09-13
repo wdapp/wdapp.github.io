@@ -1,11 +1,9 @@
-<div class="question-survey" id="questionnaire" questionnaireId="{{id}}">
+<div style="background-color: rgba(95, 95, 95, 0.5);" class="question-survey" submitedAction="{{submitedAction}}" id="questionnaire" questionnaireId="{{id}}">
     <div class="survey-lay">
-        <div class="title">问卷调查
-            {{#unless forcibly}}
-            <div class="vote-close" id="closeQuestionnaire"></div>
-            {{/unless}}
+        <div class="title">{{questionnaireTip}}
+            <div style="{{#if forcibly}}display: none;{{/if}}" class="vote-close" id="closeQuestionnaire"></div>
         </div>
-        <div class="box">
+        <div class="box allow-roll">
             <div class="content">
                 <h3>{{title}}</h3>
                 {{#each subjects}}
@@ -17,45 +15,81 @@
                         <!--单选-->
                         {{#if isSingleSubject}}
                             {{#each options}}
-                                <label>
-                                <span class="cell">
-                                    <input type="radio" name="{{../id}}" value="{{id}}"/>
-                                    {{indexDesc}}:
+                                <label correct="{{correct}}">
+                                    <span class="cell">
+                                {{#unless @root.isShowStatisResult}}
+                                    {{#if correct}}
+                                        <span name="correctSubjectOption" style="display:none; margin-left: -32px;">正确</span>
+                                    {{/if}}
+                                    <input type="radio" correct="{{correct}}" name="{{../../id}}" value="{{id}}"/>
+                                {{/unless}}
+
+                                        {{indexDesc}}:
                                 </span>
                                     <span class="option">
                                         {{content}}
                                     </span>
                                 </label>
+
+                                {{#if @root.isShowStatisResult}}
+                                    <div class="vote-bar" style="width: 70%; margin-left: 25px;">
+                                        <div class="vote-in" style="width: {{selectedCountProgress}}; {{#if correct}}background-color:#4DB131;{{/if}}"></div>
+                                    </div>
+                                    <span class="color1">{{selectedCount}}人</span>
+                                    <span>({{selectedCountScale}}%)</span>
+                                {{/if}}
+
                             {{/each}}
                         {{/if}}
 
                         <!--多选-->
                         {{#if isMultipleSubject}}
                             {{#each options}}
-                                <label>
+                                <label correct="{{correct}}">
                                 <span class="cell">
-                                    <input type="checkbox" name="{{../id}}" value="{{id}}">
+                                {{#unless @root.isShowStatisResult}}
+                                    {{#if correct}}
+                                        <span name="correctSubjectOption" style="display:none; margin-left: -32px;">正确</span>
+                                    {{/if}}
+
+                                    <input type="checkbox" correct="{{correct}}" name="{{../../id}}" value="{{id}}">
+                                {{/unless}}
+
                                     {{indexDesc}}:
                                 </span>
                                     <span class="option">{{content}}</span>
                                 </label>
+
+                                {{#if @root.isShowStatisResult}}
+                                    <div class="vote-bar" style="width: 70%; margin-left: 25px;">
+                                        <div class="vote-in" style="width: {{selectedCountProgress}}; {{#if correct}}background-color:#4DB131;{{/if}}"></div>
+                                    </div>
+                                    <span class="color1">{{selectedCount}}人</span>
+                                    <span>({{selectedCountScale}}%)</span>
+                                {{/if}}
+
                             {{/each}}
                         {{/if}}
 
                         <!--问答-->
+                        {{#unless @root.isShowStatisResult}}
                         {{#if isQASubject}}
                             <textarea class="text" name="qASubject"></textarea>
                         {{/if}}
+                        {{/unless}}
                     </div>
                 {{/each}}
                 <div class="submit">
-                    <div id="questionnaireSuccess" class="tip success hide">提交成功</div>
-                    <div id="questionnaireFail" class="tip fail hide">提交失败</div>
-                    <input type="button" value="提交" id="submitQuestionnaire">
+                    <div id="questionnaireSuccess" class="tip success hide">{{successTip}}</div>
+                    <div id="questionnaireFail" class="tip fail hide">{{failTip}}</div>
+                    <div id="questionnaireMsg" class="tip hide"></div>
+                    {{#unless @root.isShowStatisResult}}
+                    <input type="button" value="{{tipSubmit}}" id="submitQuestionnaire">
+                    {{/unless}}
+                    <input type="button" style="{{#unless @root.isShowStatisResult}}display: none;{{/unless}} color: white; background-color: red;" value="关闭" id="close2Questionnaire">
                 </div>
             </div>
         </div>
     </div>
-    <div class="maskbg"></div>
 </div>
 

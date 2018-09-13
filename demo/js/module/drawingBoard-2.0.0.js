@@ -21,7 +21,7 @@
 
         // 如果参数为string，转换为json
         toJson: function (j) {
-            if (typeof j === "string") {
+            if (typeof j === 'string') {
                 j = JSON.parse(j);
             }
             return j;
@@ -110,7 +110,7 @@
                 height: data.height,
 
                 getDraws: function () {
-                    return c.draws[this.key] || []
+                    return c.draws[this.key] || [];
                 },
 
                 clearAllDraws: function () {
@@ -125,7 +125,7 @@
                 },
 
                 getAnimations: function () {
-                    return c.animations[this.key] || []
+                    return c.animations[this.key] || [];
                 },
 
                 isNeedResize: function () {
@@ -347,7 +347,7 @@
          * 动画页面加载成功回调
          * */
         setTimeout(function () {
-            $(drawingBoard.getDBA()).on("load", function () {
+            $(drawingBoard.getDBA()).on('load', function () {
                 var $t = $(this);
                 if (!$t.attr('src')) {
                     return;
@@ -405,7 +405,7 @@
                 }
 
                 context.globalAlpha = 1;
-                context.fillStyle = "#FFFFFF";
+                context.fillStyle = '#FFFFFF';
 
                 context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -551,7 +551,7 @@
             // 白板
             if (currentPageChange.isWhiteBorad) {
                 context.globalAlpha = 1;
-                context.fillStyle = "#FFFFFF";
+                context.fillStyle = '#FFFFFF';
 
                 context.fillRect(0, 0, canvas.width, canvas.height);
             } else {
@@ -659,7 +659,7 @@
 
             context.strokeStyle = Utils.getHexRGB(data.color);
             context.lineWidth = data.thickness * canvas.width / data.width;
-            context.lineJoin = "round";
+            context.lineJoin = 'round';
 
             // 起点
             context.moveTo(x0, y0);
@@ -690,17 +690,17 @@
 
             context.strokeStyle = Utils.getHexRGB(data.color);
             context.lineWidth = data.thickness * canvas.width / data.width;
-            context.lineJoin = "round";
+            context.lineJoin = 'round';
 
             // 起点
             context.moveTo(x0, y0);
 
             for (var i = 0; i < data.draw.length; i++) {
-                var t = time / (data.draw.length -1);
+                var t = time / (data.draw.length - 1);
                 var xn = data.draw[i].x * canvas.width;
                 var yn = data.draw[i].y * canvas.height;
-                (function(i, xn, yn) {
-                    window.DRAWANIMTION = setTimeout(function() {
+                (function (i, xn, yn) {
+                    window.DRAWANIMTION = setTimeout(function () {
                         context.lineTo(xn, yn);
                         context.stroke();
                         if (i === data.draw.length - 1) {
@@ -733,7 +733,7 @@
             context.beginPath();
             context.strokeStyle = Utils.getHexRGB(data.color);
             context.lineWidth = data.thickness * canvas.width / data.width;
-            context.lineJoin = "round";
+            context.lineJoin = 'round';
 
             context.strokeRect(x, y, w, h);
             context.stroke();
@@ -752,7 +752,7 @@
             context.beginPath();
             context.strokeStyle = Utils.getHexRGB(data.color);
             context.lineWidth = data.thickness * canvas.width / data.width;
-            context.lineJoin = "round";
+            context.lineJoin = 'round';
 
             context.arc(x, y, r, 0, Math.PI * 2, true);
 
@@ -786,7 +786,7 @@
 
             var txts = txt.split('\n');
             $.each(txts, function (index, text) {
-                var lineHeight = context.measureText("M").width * 1.5;
+                var lineHeight = context.measureText('M').width * 1.5;
                 context.fillText(text, x, y + lineHeight * index);
             });
         },
@@ -853,7 +853,7 @@
                         var context = canvas.getContext('2d');
 
                         context.globalAlpha = 1;
-                        context.fillStyle = "#FFFFFF";
+                        context.fillStyle = '#FFFFFF';
 
                         context.fillRect(0, 0, canvas.width, canvas.height);
                     }
@@ -1055,14 +1055,14 @@
                 if (pc) {
                     currentpctime = pc.time;
                     drawingBoard.flip({
-                        "docid": pc.docId,
-                        "fileName": pc.docName,
-                        "height": pc.height,
-                        "page": pc.pageNum,
-                        "totalPage": pc.docTotalPage,
-                        "url": pc.url,
-                        "useSDK": pc.useSDK,
-                        "width": pc.width
+                        'docid': pc.docId,
+                        'fileName': pc.docName,
+                        'height': pc.height,
+                        'page': pc.pageNum,
+                        'totalPage': pc.docTotalPage,
+                        'url': pc.url,
+                        'useSDK': pc.useSDK,
+                        'width': pc.width
                     });
                 }
 

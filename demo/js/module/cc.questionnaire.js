@@ -16,7 +16,7 @@ $(function () {
     }
 
     // 提交问卷
-    $(document).on("click", '#submitQuestionnaire', function (e) {
+    $(document).on('click', '#submitQuestionnaire', function (e) {
         $('#submitQuestionnaire').attr('disabled', true);
 
         var questionnaireId = $('#questionnaire').attr('questionnaireId');
@@ -80,8 +80,8 @@ $(function () {
 
         $.ajax({
             url: '//eva.csslcloud.net/api/questionnaire/submit',
-            type: "GET",
-            dataType: "jsonp",
+            type: 'GET',
+            dataType: 'jsonp',
             timeout: 5000,
             data: params,
             xhrFields: {
@@ -97,7 +97,7 @@ $(function () {
                         showQuestionnaireAnswer();
                     } else {
                         setTimeout(function () {
-                            $("#questionnaire").hide("slow", function () {
+                            $('#questionnaire').hide('slow', function () {
                                 if (window.DOCMAIN) {
                                     $('.video-box').css({'width': '100%', 'height': $('#topHalf').height()});
                                     if ($('.vote').is(':visible') || $('.mask').is(':visible')) {
@@ -128,7 +128,7 @@ $(function () {
     });
 
     // 关闭问卷
-    $(document).on("click", '#closeQuestionnaire', function (e) {
+    $(document).on('click', '#closeQuestionnaire', function (e) {
         $('#questionnaire').remove();
         if (window.DOCMAIN) {
             $('.video-box').css({'width': '100%', 'height': $('#topHalf').height()});
@@ -139,7 +139,7 @@ $(function () {
     });
 
     // 关闭问卷
-    $(document).on("click", '#close2Questionnaire', function (e) {
+    $(document).on('click', '#close2Questionnaire', function (e) {
         $('#questionnaire').remove();
         $('.video-box').css({'width': '100%', 'height': '100%'});
     });
@@ -224,8 +224,8 @@ function on_cc_live_questionnaire_publish(data) {
 
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/info',
-        type: "GET",
-        dataType: "jsonp",
+        type: 'GET',
+        dataType: 'jsonp',
         data: {
             questionnaireid: data.questionnaireId
         },
@@ -299,7 +299,7 @@ Handlebars.getTemplate = function (name) {
                 }
                 Handlebars.templates[name] = Handlebars.compile(data);
             },
-            dataType: "text",
+            dataType: 'text',
             async: false,
             cache: true
         });
@@ -327,8 +327,8 @@ function on_cc_live_questionnaire_publish_statis(data) {
 
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/statis/info',
-        type: "GET",
-        dataType: "jsonp",
+        type: 'GET',
+        dataType: 'jsonp',
         data: {
             questionnaireid: data.questionnaireId
         },

@@ -14,6 +14,10 @@
         video::-webkit-media-controls-fullscreen-button {
             display: none;
         }
+
+        .imgbox-scroll{
+            overflow-y: scroll;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +47,7 @@
             </ul>
         </div>
         <div class="slider-container">
-            <div class="container imgbox">
+            <div class="container imgbox imgbox-scroll" id="imgbox">
                 <div class="slider-bd allow-roll" id="ppts">
 
                     <!-- 回放文档模块 -->
@@ -57,40 +61,35 @@
                     </ul>
                 </div>
             </div>
-            <div class="container chatBox" id="#qst1">
-                <div class="slider-bd allow-roll" id="#qst2">
+            <div class="container chatBox" id="qst1">
+                <div class="slider-bd allow-roll" id="qst2">
                     <ul class="qalist" id="questionInfo"></ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<input type="hidden" value="2" id="documentDisplayMode">
 <script src="js/jquery-1.9.0.min.js"></script>
 <script src="js/touchSlide.js"></script>
 <script src="js/main.js"></script>
 <script src="js/jquery.panzoom.min.js"></script>
-<script src="//view.csslcloud.net/js/playbackSDK.js?v=201808211447"></script>
+<script src="//image.csslcloud.net/js/dpc.js"></script>
+<script src="js/playbackSDK.js?v=201809111416"></script>
 <script type="text/javascript">
     var width = $('#qst1').width();
-    $('#qst2').css({width:width});
+    $('#qst2').css({width: width});
 
-        // $.DW.config({
-        //     userId: localStorage.userId,
-        //     roomId: localStorage.roomId,
-        //     recordId: localStorage.recordId,
-        //     viewername: localStorage.viewername,
-        //     viewertoken: localStorage.viewertoken
-        // });
-        
-        $.DW.config({
-            userId: 'B27039502337407C',
-            roomId: '3115C441D8B66A719C33DC5901307461',
-            recordId: '11B0354A6F8F13A0',
-            viewername: 'web',
-            viewertoken: ''
-        });
+    $.DW.config({
+        userId: 'C783F0F7CB77E1F3',
+        roomId: '907DE174D77ED2C39C33DC5901307461',
+        recordId: 'E4365ADD9148561F',
+        viewername: 'safddsa',
+        viewertoken: '123',
+        fastMode: false
+    });
 
-        // 接收聊天信息
+    // 接收聊天信息
     //    function on_cc_live_chat_msg(data) {
     //        console.log(data);
     //        var msg = data.msg;
@@ -100,6 +99,12 @@
     //                $('<span>').html(msgStr).addClass("tmsg")));
     //        $('#chat_container').append(liEl);
     //    }
+
+    document.addEventListener('WeixinJSBridgeReady', function () {
+        setTimeout(function () {
+            document.getElementsByTagName('video')[0].play();
+        }, 1000);
+    }, false);
 
     // 同步接收聊天信息
     function on_cc_live_chat_msg_sync(datas) {
@@ -222,6 +227,7 @@
 
         $('#questionInfo').scrollTop($('#questionInfo').height());
     }
+
 </script>
 </body>
 </html>

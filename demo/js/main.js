@@ -1,8 +1,8 @@
 var livePlayer = {
-    "winHeight": "" ,
-    "winWidth": "" ,
-    "isUserFullScreen": false ,
-    "isDocFullScreen": false ,
+    'winHeight': '',
+    'winWidth': '',
+    'isUserFullScreen': false,
+    'isDocFullScreen': false,
 
     init: function () {
         this.winHeight = $(window).height();
@@ -13,12 +13,12 @@ var livePlayer = {
         $('.infobox').width($(window).width() - 30);
 
         if (this.isPortrait()) {
-            $(".docfullbtn2").show();
+            $('.docfullbtn2').show();
 
             if (this.isDocFullScreen) {
                 $('#ppts').css({
-                    'height': this.winHeight ,
-                    'width': this.winWidth ,
+                    'height': this.winHeight,
+                    'width': this.winWidth,
                     'padding-top': ''
                 });
                 $('#drawPanel,#dpa').css({
@@ -33,12 +33,12 @@ var livePlayer = {
                 this.fullscreen();
             }
 
-            $(".docfullbtn2").hide();
+            $('.docfullbtn2').hide();
             if (this.isDocFullScreen) {
                 $('#ppts').css({
-                    'height': this.winHeight ,
-                    'width': this.winWidth ,
-                    'text-align': 'center' ,
+                    'height': this.winHeight,
+                    'width': this.winWidth,
+                    'text-align': 'center',
                     'padding-top': 40
                 });
                 $('#drawPanel,#dpa').css({
@@ -46,14 +46,14 @@ var livePlayer = {
                 });
             }
         }
-    } ,
+    },
 
     playerSize: function () {
-        $("#webPlayer").css({
-            "width": "100%" ,
-            "height": "100%"
+        $('#webPlayer').css({
+            'width': '100%',
+            'height': '100%'
         });
-    } ,
+    },
 
     topHalfHeight: function () {
         var h;
@@ -62,132 +62,147 @@ var livePlayer = {
         } else {
             h = this.winWidth * 9 / 16;
         }
-        $("#topHalf").height(h);
+        $('#topHalf').height(h);
         return h;
-    } ,
+    },
 
     chatQaFold: function (hasAnimate) {
         var that = this;
-        var bottomHalf = $("#bottomHalf");
+        var bottomHalf = $('#bottomHalf');
         var headerHeight = 5;
-        if ($(".toolbar").hasClass('toolbar-show')) {
+        if ($('.toolbar').hasClass('toolbar-show')) {
             headerHeight = 2 * headerHeight;
         }
         var animateTime = hasAnimate ? 200 : 0;
-        bottomHalf.find(".slider-bd").each(function () {
+        bottomHalf.find('.slider-bd').each(function () {
             var self = $(this);
-            var topBtmHeight = (self.siblings(".slider-ft").length == 1) ? 75 : 35;
+            var topBtmHeight = (self.siblings('.slider-ft').length == 1) ? 75 : 35;
             self.css({
-                "height": that.winHeight - that.topHalfHeight() - topBtmHeight - headerHeight ,
-                "transition-duration": animateTime + 'ms' ,
-                "-webkit-transition-duration": animateTime + 'ms' ,
-                "-moz-transition-duration": animateTime + 'ms'
+                'height': that.winHeight - that.topHalfHeight() - topBtmHeight - headerHeight,
+                'transition-duration': animateTime + 'ms',
+                '-webkit-transition-duration': animateTime + 'ms',
+                '-moz-transition-duration': animateTime + 'ms'
             });
         });
         setTimeout(function () {
-            bottomHalf.removeClass("section-bottom-unfold");
-        } , animateTime);
+            bottomHalf.removeClass('section-bottom-unfold');
+        }, animateTime);
         $('#foldBtn').removeClass('icon-cam-off');
-    } ,
+    },
 
     fullscreen: function () {
-        $("#topHalf").css({
-            "height": this.winHeight - 0 ,
-            "z-index": "99"
+        $('#topHalf').css({
+            'height': this.winHeight - 0,
+            'z-index': '99'
         });
-    } ,
+    },
 
     exitFullscreen: function () {
-        $("#topHalf").css({
-            "height": this.topHalfHeight() ,
-            "z-index": "1"
+        $('#topHalf').css({
+            'height': this.topHalfHeight(),
+            'z-index': '1'
         });
-    } ,
+    },
 
     isiPhone: function () {
         return /iphone/i.test(navigator.userAgent);
-    } ,
+    },
     isiPad: function () {
         return /iPad/i.test(navigator.userAgent);
-    } ,
+    },
     isUcOrQqBrowser: function () {
         return /ucbrowser/i.test(navigator.userAgent) || /mqqbrowser/i.test(navigator.userAgent);
-    } ,
+    },
     isPortrait: function () {
         return window.isPortrait;
     }
 };
 var opts = {
-    'roomId': $("#roomId").val() ,
-    'userId': $("#userId").val() ,
-    'viewerId': $("#viewerId").val() ,
-    'recordId': $('#recordId').val() ,
-    'upId': $("#upId").val()
+    'roomId': $('#roomId').val(),
+    'userId': $('#userId').val(),
+    'viewerId': $('#viewerId').val(),
+    'recordId': $('#recordId').val(),
+    'upId': $('#upId').val()
 };
 $(function () {
     livePlayer.init();
     livePlayer.chatQaFold(false);
     // var report = new ReportLog(opts , 1 , 10 , $('#live_video')[0] , false);
     TouchSlide({
-        slideCell: "#bottomHalf" ,
-        titCell: ".tabs li" ,
-        mainCell: ".slider-container" ,
-        defaultIndex: window.tabDefaultIndex
+        slideCell: '#bottomHalf',
+        titCell: '.tabs li',
+        mainCell: '.slider-container',
+        defaultIndex: window.tabDefaultIndex,
+        startFun: function (i, c) {
+            $('#qaV').blur();
+            $('#chat_input').blur();
+        }
     });
 
-    if ($("#noppt").is(":visible")) {
-        $(".docfullbtn").hide();
+    $('#chat_input').focus(function () {
+        $('#qaV').attr('tabIndex', '-1');
+        $(this).attr('tabIndex', '1');
+    });
+
+    $('#qaV').focus(function () {
+        $('#chat_input').attr('tabIndex', '-1');
+        $(this).attr('tabIndex', '1');
+    });
+
+
+    if ($('#noppt').is(':visible')) {
+        $('.docfullbtn').hide();
     }
 
     // 文档全屏
-    $('.docfullbtn').bind('touchend' , function (e) {
+    $('.docfullbtn').bind('touchend', function (e) {
         e.stopPropagation();
 
         $('.gboxw').hide();
         $(this).hide();
-        $('.video-box').css({'width': 1 , 'height': 1});
+        $('.video-box').css({'width': 1, 'height': 1});
         $('.mask, .docfullbtn2').show();
-        $('.section-bottom').css('z-index' , 100);
+        $('.section-bottom').css('z-index', 100);
         $('#ppts').css({
-            'background': '#000' ,
-            'height': $(window).height() ,
+            'background': '#000',
+            'height': $(window).height(),
             'width': $('#ppts').width()
         });
         livePlayer.isDocFullScreen = true;
     });
 
     // 取消文档全屏
-    $('.docfullbtn2').bind('touchend' , function (e) {
+    $('.docfullbtn2').bind('touchend', function (e) {
         e.stopPropagation();
-        $('.video-box').css({'width': '100%' , 'height': '100%'});
+        $('.video-box').css({'width': '100%', 'height': '100%'});
 
         $('.gboxw, .docfullbtn').show();
         $('.mask').hide();
         $(this).hide();
-        $('.section-bottom').css('z-index' , 9);
+        $('.section-bottom').css('z-index', 9);
 
         livePlayer.isDocFullScreen = false;
         if (livePlayer.isPortrait()) {
             livePlayer.exitFullscreen();
         }
         $('#ppts').css({
-            'display': 'block' ,
-            'background': '#f7f7f7' ,
-            'padding-top': 0 ,
+            'display': 'block',
+            'background': '#f7f7f7',
+            'padding-top': 0,
             'height': livePlayer.winHeight - 40 - $('#topHalf').height()
         });
 
     });
 
-    $('.mask').bind('touchend' , function () {
+    $('.mask').bind('touchend', function () {
         if (livePlayer.isPortrait()) {
-            $(".docfullbtn2").toggle(300);
+            $('.docfullbtn2').toggle(300);
         }
     });
 
-    $('#ppts').bind('touchend' , function () {
-        if ($("#noppt").is(":hidden")) {
-            $(".docfullbtn").toggle(300);
+    $('#ppts').bind('touchend', function () {
+        if ($('#noppt').is(':hidden')) {
+            $('.docfullbtn').toggle(300);
         }
     });
 
@@ -196,8 +211,8 @@ $(function () {
 function bodyRollEvent() {
     setTimeout(function () {
         livePlayer.init();
-    } , 500);
-    $(document).bind('touchmove' , function (e) {
+    }, 500);
+    $(document).bind('touchmove', function (e) {
         e.preventDefault();
     });
 }
@@ -207,7 +222,7 @@ $(function () {
 
     bodyRollEvent();
 
-    $('body').on('touchstart' , selScrollable , function (e) {
+    $('body').on('touchstart', selScrollable, function (e) {
         if (e.currentTarget.scrollTop === 0) {
             e.currentTarget.scrollTop = 1;
         } else if (e.currentTarget.scrollHeight === e.currentTarget.scrollTop + e.currentTarget.offsetHeight) {
@@ -215,52 +230,52 @@ $(function () {
         }
     });
 
-    $('body').on('touchmove' , selScrollable , function (e) {
+    $('body').on('touchmove', selScrollable, function (e) {
         if ($(this)[0].scrollHeight > $(this).innerHeight()) {
             e.stopPropagation();
         }
     });
 
-    $('.video-box').on('touchmove' , function (e) {
+    $('.video-box').on('touchmove', function (e) {
         e.stopPropagation();
     });
 
-    $(document).on('touchmove' , '.question-survey, .mask' , function (e) {
+    $(document).on('touchmove', '.question-survey, .mask', function (e) {
         e.stopPropagation();
     });
 
-    $('#chat_container').width($(window).width()).css('overflow' , 'hidden');
+    $('#chat_container').width($(window).width()).css('overflow', 'hidden');
 });
 
 var menu = false;
-$(".menu").bind('touchend' , function (e) {
+$('.menu').bind('touchend', function (e) {
     e.stopPropagation();
     menu = !menu;
     if (menu) {
-        $(".menuwrap").show();
+        $('.menuwrap').show();
         $(this).addClass('active');
-        $(".menubox").animate({right: 0} , 100);
+        $('.menubox').animate({right: 0}, 100);
     } else {
         $(this).removeClass('active');
-        $(".menuwrap").hide();
-        $(".menubox").animate({right: '-140px'} , 100);
+        $('.menuwrap').hide();
+        $('.menubox').animate({right: '-140px'}, 100);
     }
 });
 
-$('.menubox').bind('touchend' , function (e) {
+$('.menubox').bind('touchend', function (e) {
     e.stopPropagation();
 });
 
-$(document).bind('touchend' , function () {
-    $(".menu").removeClass('active');
-    $(".menuwrap").hide();
-    $(".menubox").animate({right: '-140px'} , 100);
+$(document).bind('touchend', function () {
+    $('.menu').removeClass('active');
+    $('.menuwrap').hide();
+    $('.menubox').animate({right: '-140px'}, 100);
     menu = false;
 });
 
 // 当前为竖屏
-window.isPortrait = !!window.matchMedia("(orientation: portrait)").matches;
-window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize" , function () {
+window.isPortrait = !!window.matchMedia('(orientation: portrait)').matches;
+window.addEventListener('onorientationchange' in window ? 'orientationchange' : 'resize', function () {
     if (window.orientation === 180 || window.orientation === 0) {
         window.isPortrait = true;
     }
@@ -273,11 +288,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         if (livePlayer.isDocFullScreen) {
             // 文档全屏，由横屏切换到竖屏
             if (window.isPortrait && $.DrawingBoard) {
-                $.DrawingBoard.resizePresentation($('#drawPanel').width() , $('#drawPanel').height());
+                $.DrawingBoard.resizePresentation($('#drawPanel').width(), $('#drawPanel').height());
             }
-            $('#dpa').css('height' , $('#drawPanel').height());
+            $('#dpa').css('height', $('#drawPanel').height());
         }
-    } , 300);
+    }, 300);
 
     $(window).scrollTop(0);
-} , false);
+}, false);

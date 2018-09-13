@@ -60,7 +60,7 @@ input[type=checkbox] { -webkit-border-radius:2px; -moz-border-radius:2px; border
 .tabs.onetab li{text-align:left; padding-left:10px;}
 .tabs.onetab li a{ line-height:35px;}
 .section-bottom .tempWrap { z-index:1; background-color:#fff; }
-.slider-bd { overflow:auto; background-color:#f7f7f7; transition: height linear; -moz-transition: height linear; -webkit-transition: height linear;}
+.slider-bd { overflow-y:scroll; background-color:#f7f7f7; transition: height linear; -moz-transition: height linear; -webkit-transition: height linear;}
 .slider-ft{ position:relative; height:30px; background-color:#f7f7f8; padding:4px 10px 5px; border-top:1px solid #d2d2d2; }
 .msg-list li { line-height:22px; padding:12px 15px;}
 .msg-info { color:#5B5B5B; }
@@ -173,7 +173,7 @@ input[type=checkbox] { -webkit-border-radius:2px; -moz-border-radius:2px; border
 
 #ppts{position: relative;}
 #ppts img{z-index: 1;}
-#drawPanel,#dpa{position: absolute;z-index: 2; top: 0; left: 0; width: 100%;}
+#drawPanel,#dpa{width: 100%;}
 #dpa{z-index: 1;}
 .message .admin{color: #F17F1B;}
 

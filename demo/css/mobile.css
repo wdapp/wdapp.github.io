@@ -165,7 +165,7 @@ a,button,input,li{-webkit-tap-highlight-color:rgba(255,0,0,0);}
 
 #ppts{position: relative; vertical-align: middle;}
 #ppts img{position: static; z-index: 1;}
-#drawPanel,#dpa{position: absolute;z-index: 2; top: 0; left: 0; width: 100%;}
+#drawPanel,#dpa{width: 100%;}
 #dpa{z-index: 1;}
 .message .admin{color: #666;}
 .message .admin i{
