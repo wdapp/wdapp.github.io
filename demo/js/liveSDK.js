@@ -250,7 +250,7 @@
                     }else{
                         var isHttps = window.location.protocol === 'https:';
                         if (isHttps && playerBackgroundImageUri.slice(0,5)!=='https') {
-                            playerBackgroundImageUri = u.replace(/http:/g, 'https:');
+                            playerBackgroundImageUri = playerBackgroundImageUri.replace(/http:/g, 'https:');
                         }
                     }
                     LivePlayer.backgroundImageUri = playerBackgroundImageUri;
