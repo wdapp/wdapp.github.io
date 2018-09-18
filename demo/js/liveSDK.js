@@ -247,9 +247,9 @@
                     var playerBackgroundImageUri = data.datas.room.playerBackgroundImageUri;
                     if (!playerBackgroundImageUri) {
                         playerBackgroundImageUri = '';
-                    }else{
+                    } else {
                         var isHttps = window.location.protocol === 'https:';
-                        if (isHttps && playerBackgroundImageUri.slice(0,5)!=='https') {
+                        if (isHttps && playerBackgroundImageUri.slice(0, 5) !== 'https') {
                             playerBackgroundImageUri = playerBackgroundImageUri.replace(/http:/g, 'https:');
                         }
                     }
@@ -1503,6 +1503,9 @@
         },
 
         getFlash: function () {
+            if (!swfobject) {
+                return;
+            }
             return swfobject.getObjectById(this.id);
         },
 
@@ -1809,10 +1812,10 @@
             // }
 
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps && u.slice(0,5)!=='https') {
+            if (isHttps && u.slice(0, 5) !== 'https') {
                 jj.url = u.replace(/http:/g, 'https:');
             }
-            console.log('https===>1',jj.url);
+            console.log('https===>1', jj.url);
 
             swf.filp(JSON.stringify(jj), this.displayMode);
 
@@ -2318,10 +2321,10 @@
             //     s = s.replace(/http:/g, 'https:');
             // }
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps && s.slice(0,5)!=='https') {
+            if (isHttps && s.slice(0, 5) !== 'https') {
                 s = s.replace(/http:/g, 'https:');
             }
-            console.log('https===>2',s);
+            console.log('https===>2', s);
 
             var img = '<img src="' + s + '" />';
             $('#' + DrawPanel.id).html(img);
