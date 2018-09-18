@@ -1810,7 +1810,7 @@
             // if (isHttps) {
             //     jj.url = u.replace(/http:/g, 'https:');
             // }
-
+            var u = 'https://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/CDD6277B1F24D91E9C33DC5901307461/3.jpg'
             var isHttps = window.location.protocol === 'https:';
             if (isHttps && u.slice(0, 5) !== 'https') {
                 jj.url = u.replace(/http:/g, 'https:');
