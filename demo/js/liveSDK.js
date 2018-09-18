@@ -249,7 +249,7 @@
                         playerBackgroundImageUri = '';
                     } else {
                         var isHttps = window.location.protocol === 'https:';
-                        if (isHttps && playerBackgroundImageUri.slice(0, 5) !== 'https') {
+                        if (isHttps) {
                             playerBackgroundImageUri = playerBackgroundImageUri.replace(/http:/g, 'https:');
                         }
                     }
@@ -1503,9 +1503,6 @@
         },
 
         getFlash: function () {
-            if (!swfobject) {
-                return;
-            }
             return swfobject.getObjectById(this.id);
         },
 
@@ -1806,16 +1803,10 @@
 
             var jj = JSON.parse(j);
             var u = jj.url;
-            // var isHttps = window.location.protocol === 'https:';
-            // if (isHttps) {
-            //     jj.url = u.replace(/http:/g, 'https:');
-            // }
-            var u = 'https://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/CDD6277B1F24D91E9C33DC5901307461/3.jpg'
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps && u.slice(0, 5) !== 'https') {
+            if (isHttps) {
                 jj.url = u.replace(/http:/g, 'https:');
             }
-            console.log('https===>1', jj.url);
 
             swf.filp(JSON.stringify(jj), this.displayMode);
 
@@ -2316,15 +2307,10 @@
         },
 
         appendDoc: function (s) {
-            // var isHttps = window.location.protocol === 'https:';
-            // if (isHttps) {
-            //     s = s.replace(/http:/g, 'https:');
-            // }
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps && s.slice(0, 5) !== 'https') {
+            if (isHttps) {
                 s = s.replace(/http:/g, 'https:');
             }
-            console.log('https===>2', s);
 
             var img = '<img src="' + s + '" />';
             $('#' + DrawPanel.id).html(img);

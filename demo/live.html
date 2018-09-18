@@ -234,21 +234,22 @@
 <script src="js/base.js"></script>
 <script src="js/common.js"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="js/liveSDK.js?v=201809111416"></script>
+<script src="//view.csslcloud.net/js/liveSDK.js?v=201809111416"></script>
 <script src="js/ui.js"></script>
 <script src="js/live.js"></script>
 <script src="js/cc.questionnaire.js"></script>
+
 <script type="text/javascript">
     // 直播SDK参数配置
     DWLive.init({
-        userid: 'B27039502337407C',
-        roomid: '3115C441D8B66A719C33DC5901307461',
-        viewername: 'haname',
-        viewertoken: '123',
+        userid: localStorage.userid,
+        roomid: localStorage.roomid,
+        viewername: localStorage.viewername,
+        viewertoken: localStorage.viewertoken,
         viewercustomua: 'web',
         language: 'en',
         viewercustominfo: '',
-        fastMode: false
+        fastMode: localStorage.fastmode
     });
 
     DWLive.onLiveTime = function (e) {
