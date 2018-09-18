@@ -75,31 +75,18 @@
 <script src="js/main.js"></script>
 <script src="js/jquery.panzoom.min.js"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="//view.csslcloud.net/js/playbackSDK.js?v=201809111416"></script>
+<script src="js/playbackSDK.js?v=201809111416"></script>
 <script type="text/javascript">
     var width = $('#qst1').width();
     $('#qst2').css({width: width});
-
     $.DW.config({
-        userId: localStorage.userId,
-        roomId: localStorage.roomId,
-        recordId: localStorage.recordId,
-        viewername: localStorage.viewername,
-        viewertoken: localStorage.viewertoken,
-        fastMode: localStorage.fastmode
+        userId: 'B27039502337407C',
+        roomId: '3115C441D8B66A719C33DC5901307461',
+        recordId: '5BE52E119F256394',
+        viewername: 'safddsa',
+        viewertoken: '123',
+        fastMode: false
     });
-
-    // 接收聊天信息
-    //    function on_cc_live_chat_msg(data) {
-    //        console.log(data);
-    //        var msg = data.msg;
-    //        var name = data.username, msgStr = showEm(msg);
-    //        var liEl = $('<li>');
-    //        liEl.append($('<p>').text(name + "：").append(
-    //                $('<span>').html(msgStr).addClass("tmsg")));
-    //        $('#chat_container').append(liEl);
-    //    }
-
     document.addEventListener('WeixinJSBridgeReady', function () {
         setTimeout(function () {
             document.getElementsByTagName('video')[0].play();
