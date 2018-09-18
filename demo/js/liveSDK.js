@@ -1803,10 +1803,16 @@
 
             var jj = JSON.parse(j);
             var u = jj.url;
+            // var isHttps = window.location.protocol === 'https:';
+            // if (isHttps) {
+            //     jj.url = u.replace(/http:/g, 'https:');
+            // }
+
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps) {
+            if (isHttps && u.slice(0,5)!=='https') {
                 jj.url = u.replace(/http:/g, 'https:');
             }
+            console.log('https===>1',jj.url);
 
             swf.filp(JSON.stringify(jj), this.displayMode);
 
@@ -2307,10 +2313,15 @@
         },
 
         appendDoc: function (s) {
+            // var isHttps = window.location.protocol === 'https:';
+            // if (isHttps) {
+            //     s = s.replace(/http:/g, 'https:');
+            // }
             var isHttps = window.location.protocol === 'https:';
-            if (isHttps) {
+            if (isHttps && s.slice(0,5)!=='https') {
                 s = s.replace(/http:/g, 'https:');
             }
+            console.log('https===>2',s);
 
             var img = '<img src="' + s + '" />';
             $('#' + DrawPanel.id).html(img);
