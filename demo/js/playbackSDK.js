@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.4.0 2018/09/10
+ * v2.4.1 2018/09/18
  */
 !(function ($, window, document) {
 
@@ -16,10 +16,10 @@
             'videoid': opts.videoId,
             'recordid': opts.recordId,
             'isShowBar': opts.isShowBar,
-            'upid': opts.upId ,
-            'viewerid': opts.viewerId ,
+            'upid': opts.upId,
+            'viewerid': opts.viewerId,
             'roomid': opts.roomId,
-            'ua':'1'
+            'ua': '1'
         };
         var params = {
             allowFullscreen: 'true',
@@ -30,7 +30,7 @@
         this.flashPlayerInit = function () {
             swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, '10.0.0',
                 '/flash/expressInstall.swf', flashvars, params);
-			      if(MobileLive.isMobile()!='isMobile'){
+            if (MobileLive.isMobile() != 'isMobile') {
                 var report = new ReportLog(opts, 0, 1, null, false);
             }
         };
@@ -509,7 +509,7 @@
             roomid: opts.roomId,
             userid: opts.userId,
             liveid: opts.liveId,
-			upid: opts.upId,
+            upid: opts.upId,
             recordid: opts.recordId,
             viewertoken: opts.viewertoken,
             viewername: opts.viewername,
@@ -673,8 +673,8 @@
                 };
                 opts.viewer.sessionId = data.datas.sessionId;
                 opts.liveId = data.datas.encryptLiveId;
-				opts.upId = data.datas.upId;
-				opts.viewerId=data.datas.viewer.id;
+                opts.upId = data.datas.upId;
+                opts.viewerId = data.datas.viewer.id;
                 callback.socket = new Socket(opts);
 
                 if (typeof window.on_cc_callback_player === 'function') {
@@ -701,7 +701,7 @@
                     var imgUrl = pages[i].url;
                     var isHttps = window.location.protocol === 'https:';
                     if (imgUrl.indexOf('//') > 0 && isHttps) {
-                        imgUrl = imgUrl.replace('http', 'https');
+                        imgUrl = imgUrl.replace('http:', 'https:');
                         pages[i].url = imgUrl;
                     }
                 }
@@ -1013,7 +1013,7 @@
         videoId: $('#videoId').val(),
         adapt: false,
         isShowBar: 0,
-		    viewerId: $('#viewerId').val(),
+        viewerId: $('#viewerId').val(),
         upId: $('#upId').val(),
         // 观看者用户信息
         viewer: {
@@ -1090,7 +1090,7 @@
     };
 
     function init(opts) {
-		    options.viewerId = opts.viewerid;
+        options.viewerId = opts.viewerid;
         options = $.extend(options, opts);
         callback = new Callback(options);
     }
@@ -1128,8 +1128,8 @@
                 '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
                 '//static.csslcloud.net/js/report.js'
             ];
-            if(DWDpc.fastMode){
-                scriptArray.splice(3,2);
+            if (DWDpc.fastMode) {
+                scriptArray.splice(3, 2);
             }
 
             this.loadScript(scriptArray, function () {
@@ -1663,7 +1663,7 @@
                 isMobie = 1;
                 ua = 11;
             }
-            var report = new ReportLog(opts , isMobie , ua , video , false);
+            var report = new ReportLog(opts, isMobie, ua, video, false);
             if (!this.isAndroid()) {
                 this.pauseState = true;
             }

@@ -3,14 +3,15 @@
  *
  *  Created by shanglt on 2017/3/27.
  */
-var Lr={questionnaireTip: '问卷调查',
+var Lr = {
+    questionnaireTip: '问卷调查',
     questionnaireTypeSingle: '单选',
     questionnaireTypeMultiple: '多选',
     questionnaireTypeQA: '问答',
     successTip: '操作成功',
     failTip: '操作失败',
     tipSubmit: '提交'
-}
+};
 $(function () {
 
 
@@ -103,7 +104,7 @@ $(function () {
                     var submitedAction = $('#questionnaire').attr('submitedAction');
                     if (submitedAction == 1) {
                         showQuestionnaireAnswer();
-                    }else{
+                    } else {
                         setTimeout(function () {
                             $('#questionnaire').hide('slow', function () {
                                 $('.video-box').css({'width': '100%', 'height': '100%'});
@@ -204,6 +205,7 @@ function showQuestionnaireAnswer() {
     //$('#questionnaireMsg').text(questionnaireMsg).show();
     $('#questionnaireSuccess').hide();
 }
+
 DWLive.onQuestionnairePublish = function (data) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
@@ -270,15 +272,15 @@ DWLive.onQuestionnairePublish = function (data) {
     });
 };
 // 显示统计信息
-DWLive.on_cc_live_questionnaire_publish_statis=function(data) {
+DWLive.on_cc_live_questionnaire_publish_statis = function (data) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
     $('.video-box').css({'width': '100%', 'height': '100%'});
 
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/statis/info',
-        type: "GET",
-        dataType: "jsonp",
+        type: 'GET',
+        dataType: 'jsonp',
         data: {
             questionnaireid: data.questionnaireId
         },
@@ -352,7 +354,7 @@ DWLive.on_cc_live_questionnaire_publish_statis=function(data) {
             $('.video-box').css({'width': 1, 'height': 1});
         }
     });
-}
+};
 Handlebars.getTemplate = function (name) {
     if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
         $.ajax({

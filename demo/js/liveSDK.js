@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.5.1 2018/09/12
+ * v2.5.2 2018/09/18
  */
 (function () {
 
@@ -2272,9 +2272,9 @@
         },
 
         appendVideo: function (s) {
-            var v = '<video webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
+            var v = '<video id="player_live" webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
             $('#' + LivePlayer.id).html(v);
-            var video = document.getElementById('live_player');
+            var video = document.getElementById('player_live');
             DWLive.onKickOut = function () {
                 $('#' + LivePlayer.id).html('');
             };
