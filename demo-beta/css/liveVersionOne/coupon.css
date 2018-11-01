@@ -1,0 +1,250 @@
+/*S 优惠券抢光 banner*/
+.couponBanner {
+  width: 1000px;
+  height: 333px;
+  margin: 20px auto 0px;
+  background: url(../../images/couponBanner.jpg);
+  position: relative;
+  font-family: Microsoft Yahei;
+}
+.couponBanner .cDay {
+  padding: 140px 50px 0 0;
+  font-size: 42px;
+  color: #fff100;
+  text-align: center;
+  font-weight: bold;
+}
+.couponBanner .cDay .f {
+  font-size: 58px;
+}
+.couponBanner .cTime {
+  position: absolute;
+  top: 217px;
+  left: 240px;
+  color: #fff;
+  font-size: 24px;
+}
+.couponBanner .cTime .f {
+  font-size: 32px;
+  font-weight: bold;
+}
+.couponBanner .cCou {
+  position: absolute;
+  bottom: 15px;
+  left: 370px;
+  color: #fff;
+  font-size: 14px;
+}
+/*E 优惠券抢光 banner*/
+/*S 优惠券抢光 课程推荐*/
+.couponList {
+  width: 1000px;
+  margin: 20px auto 0px;
+  font-family: Microsoft Yahei;
+}
+.couponList h3 {
+  font-size: 20px;
+  line-height: 42px;
+  background: #f5f5f5;
+  border: 1px solid #dfdfdf;
+  padding: 0 20px;
+  font-weight: normal;
+}
+.couponList h3 .c {
+  float: right;
+  color: #fa6a00;
+}
+.couponList ul {
+  margin: 0px;
+  padding: 0px;
+}
+.couponList ul li {
+  margin: 20px 0 0 0;
+  height: 140px;
+  list-style: none;
+  padding: 0 0 20px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #dfdfdf;
+  position: relative;
+}
+.couponList ul li .pic {
+  float: left;
+}
+.couponList ul li .pic a:hover {
+  opacity: 0.8;
+}
+.couponList ul li .pic img {
+  width: 235px;
+  height: 140px;
+  margin-right: 20px;
+}
+.couponList ul li h4 {
+  font-size: 16px;
+  line-height: 36px;
+  margin: 0;
+  padding: 0;
+}
+.couponList ul li h4 a {
+  color: #444;
+  text-decoration: none;
+}
+.couponList ul li h4 a:hover {
+  text-decoration: underline;
+}
+.couponList ul li .con {
+  line-height: 24px;
+  font-size: 14px;
+  width: 680px;
+}
+.couponList ul li .liInfo {
+  position: absolute;
+  right: 0px;
+  top: 18px;
+  text-align: right;
+}
+.couponList ul li .liInfo .o {
+  font-size: 16px;
+  color: #999;
+  display: block;
+  text-decoration: line-through;
+}
+.couponList ul li .liInfo .x {
+  font-size: 18px;
+  display: block;
+  padding-bottom: 10px;
+}
+.couponList ul li .liInfo .x .b {
+  font-size: 28px;
+  font-weight: bold;
+}
+.couponList ul li .liInfo a {
+  padding: 8px 35px;
+  font-size: 16px;
+  color: #fff;
+  background: #fa6a00;
+  border-radius: 3px;
+  text-decoration: none;
+}
+.couponList ul li .liInfo a:hover {
+  opacity: 0.8;
+}
+/*E 优惠券抢光 课程推荐*/
+/*S 领取优惠券*/
+.banCouponE {
+  width: 664px;
+  height: 128px;
+  background: url(../../images/banCouponBg.png) no-repeat;
+  font-family: Microsoft Yahei;
+}
+.banCouponE .part1 {
+  float: left;
+  padding: 20px 0 0 15px;
+  width: 320px;
+  color: #fff;
+}
+.banCouponE .part1 h4 {
+  padding: 0px 0 10px;
+  margin: 0px;
+  font-size: 16px;
+}
+.banCouponE .part1 div {
+  font-size: 12px;
+  line-height: 18px;
+}
+.banCouponE .part2 {
+  float: left;
+  width: 190px;
+  text-align: right;
+  color: #fff;
+  padding-top: 15px;
+}
+.banCouponE .part2 .a {
+  font-size: 70px;
+  display: block;
+  font-weight: bold;
+}
+.banCouponE .part2 .c {
+  font-size: 12px;
+}
+.banCouponE .part2 .c .b {
+  font-size: 18px;
+  font-weight: bold;
+  font-style: normal;
+}
+.banCouponE .part3 {
+  font-size: 40px;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 25px 0 0;
+  float: right;
+}
+/*E 领取优惠券*/
+/*S 直播间优惠券*/
+.liveCouponB {
+  width: 405px;
+  height: 338px;
+  background: url(../../images/liveCouponBg.png) no-repeat;
+  text-align: center;
+  font-family: Microsoft Yahei;
+  position: absolute;
+  right: 270px;
+  bottom: 70px;
+  z-index: 999;
+}
+.liveCouponB .liveCl {
+  float: right;
+  margin-top: 80px;
+  text-indent: -9999px;
+  width: 30px;
+  height: 30px;
+}
+.liveCouponB .tit {
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 120px;
+  color: #e60012;
+  line-height: 28px;
+}
+.liveCouponB .tim {
+  font-size: 18px;
+  padding-top: 18px;
+  line-height: 20px;
+}
+.liveCouponB .tim span {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.liveCouponB .pri {
+  font-size: 40px;
+  color: #e60012;
+  padding-top: 15px;
+  font-weight: bold;
+}
+.liveCouponB .liBtn {
+  display: inline-block;
+  padding: 0 15px;
+  border-radius: 10px;
+  background: #ff6427;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 36px;
+  margin-top: 10px;
+}
+.liveCouponB .liBtn:hover {
+  opacity: 0.8;
+}
+.liveCouponS {
+  width: 135px;
+  height: 67px;
+  background: url(../../images/liveCouponS.png) no-repeat;
+  display: block;
+  position: absolute;
+  right: 270px;
+  bottom: 70px;
+  z-index: 999;
+  text-indent: -999px;
+  display: none;
+}
+/*E 直播间优惠券*/
