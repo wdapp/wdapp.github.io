@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.5.2 2018/09/18
+ * v2.6.0 2018/10/15
  */
 (function () {
 
@@ -25,6 +25,7 @@
     }
 
     var DWDpc = {
+        DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
         dpc: {},
         fastMode: false,
         init: function () {
@@ -77,10 +78,29 @@
                 return;
             }
             this.dpc.reload();
+        },
+        setDocMode: function (t) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.setFreeDocMode(t);
+        },
+        getDocs: function (callback) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.getDocs(DWLive.roomid, DWLive.userid, callback);
+        },
+        changePageTo: function (dId, pI) {
+            if (!this.fastMode) {
+                return;
+            }
+            this.dpc.changePageTo(dId, pI);
         }
     };
 
     var DWLive = {
+        DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
         init: function (option) {
             if (typeof option == 'undefined') {
                 option = {};
@@ -606,7 +626,64 @@
         showMarqueeDoc: function (m) {
             DrawPanel.showMarquee(m);
         },
+        setDocMode: function (t) {
+            if (!DWDpc.fastMode) {
+                return;
+            }
+            DWDpc.setDocMode(t);
+        },
+        getDocs: function (callback) {
+            if (!DWDpc.fastMode) {
+                return;
+            }
+            DWDpc.getDocs(callback);
+        },
+        changePageTo: function (dId, pI) {
+            if (!DWDpc.fastMode) {
+                return;
+            }
+            DWDpc.changePageTo(dId, pI);
+        },
+        // 用户问卷功能提交接口（data -> {"subjectsAnswer":[{"subjectId":"D4D648931609E9B9","selectedOptionId":"306B84236FBD561E"},{"subjectId":"3FFFF7EC39BC96CC","selectedOptionIds":"C5E59BBB4FBD975C,BE571C8FC644B1E1"},{"subjectId":"3CFA9D81528D476B","answerContent":"asdasdasd"}],questionnaireId:'0EDEEC4D0321974B'};
+        // callBack->回调返回所有数据）
+        submitQuestionnaire: function (_data, callBack) {
+            if (!_data) {
+                return;
+            }
+            var params = {
+                questionnaireid: _data.questionnaireId,
+                answers: JSON.stringify({subjectsAnswer:_data.subjectsAnswer})
+            }
+            $.ajax({
+                url: '//eva.csslcloud.net/api/questionnaire/submit',
+                type: "GET",
+                dataType: "jsonp",
+                timeout: 5000,
+                data: params,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    if (callBack) {
+                        callBack(data);
+                    } else {
+                        if (console.log) {
+                            console.log('no callback');
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (callBack) {
+                        callBack({
+                            errorCode: 1,
+                            msg: 'request was aborted', result: error
+                        });
+                    }
+                }
 
+            });
+
+        },
         getPublishingQuestionnaire: function () {
             $.ajax({
                 url: '//eva.csslcloud.net/api/questionnaire/info',
@@ -622,6 +699,19 @@
 
                     if (typeof DWLive.onQuestionnairePublish === 'function') {
                         DWLive.onQuestionnairePublish(data);
+                    } else {
+                        if (console.log) {
+                            console.log('onQuestionnairePublish is undefined');
+                        }
+                    }
+                },
+                error: function (e) {
+                    if (typeof DWLive.onQuestionnairePublish === 'function') {
+                        DWLive.onQuestionnairePublish({errorCode: 1, msg: 'request error', result: e});
+                    } else {
+                        if (console.log) {
+                            console.log('onQuestionnairePublish is undefined');
+                        }
                     }
                 }
             });
@@ -631,10 +721,10 @@
     var options = {
         init: function () {
             this['userId'] = DWLive.userid,
-                this['roomId'] = DWLive.roomid,
-                this['liveId'] = DWLive.liveid,
-                this['viewerId'] = DWLive.viewerid,
-                this['upId'] = DWLive.upid;
+            this['roomId'] = DWLive.roomid,
+            this['liveId'] = DWLive.liveid,
+            this['viewerId'] = DWLive.viewerid,
+            this['upId'] = DWLive.upid;
         }
     };
     // Pusher
@@ -935,8 +1025,8 @@
             this.socket.on('questionnaire_publish_statis', function (data) {
                 data = toJson(data);
 
-                if (typeof DWLive.on_cc_live_questionnaire_publish_statis === 'function') {
-                    DWLive.on_cc_live_questionnaire_publish_statis(data);
+                if (typeof DWLive.onQuestionnairePublishStatis === 'function') {
+                    DWLive.onQuestionnairePublishStatis(data);
                 }
             });
 

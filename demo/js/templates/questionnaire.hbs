@@ -73,9 +73,9 @@
 
                         <!--问答-->
                         {{#unless @root.isShowStatisResult}}
-                            {{#if isQASubject}}
-                                <textarea class="text" name="qASubject"></textarea>
-                            {{/if}}
+                        {{#if isQASubject}}
+                            <textarea class="text" name="qASubject"></textarea>
+                        {{/if}}
                         {{/unless}}
                     </div>
                 {{/each}}
@@ -84,7 +84,7 @@
                     <div id="questionnaireFail" class="tip fail hide">{{failTip}}</div>
                     <div id="questionnaireMsg" class="tip hide"></div>
                     {{#unless @root.isShowStatisResult}}
-                        <input type="button" value="{{tipSubmit}}" id="submitQuestionnaire">
+                    <input type="button" value="{{tipSubmit}}" id="submitQuestionnaire">
                     {{/unless}}
                     <input type="button" style="{{#unless @root.isShowStatisResult}}display: none;{{/unless}} color: white; background-color: red;" value="关闭" id="close2Questionnaire">
                 </div>

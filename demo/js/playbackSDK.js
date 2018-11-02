@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.4.1 2018/09/18
+ * v2.4.2 2018/10/09
  */
 !(function ($, window, document) {
 
@@ -529,9 +529,9 @@
         substepRequest({
             url: '//view.csslcloud.net/api/room/replay/login',
             data: param,
-            fn: window.window.on_cc_login_error,
+            fn: window.on_cc_login_error,
             done: function (data) {
-                if (!checkout(data)) {
+                if (!checkout(data, window.on_cc_login_error)) {
                     return false;
                 }
                 concatMeta(sub.globalData, data);
@@ -550,7 +550,7 @@
                     data: param,
                     fn: window.on_cc_request_draw_error,
                     done: function (data) {
-                        if (!checkout(data)) {
+                        if (!checkout(data, window.on_cc_request_draw_error)) {
                             return false;
                         }
                         concatMeta(sub.globalData, data);
@@ -569,7 +569,7 @@
                     data: param,
                     fn: window.on_cc_request_chatqa_error,
                     done: function (data) {
-                        if (!checkout(data)) {
+                        if (!checkout(data, window.on_cc_request_chatqa_error)) {
                             return false;
                         }
                         concatMeta(sub.globalData, data);
@@ -588,7 +588,7 @@
                     data: param,
                     fn: window.on_cc_request_info_error,
                     done: function (data) {
-                        if (!checkout(data)) {
+                        if (!checkout(data, window.on_cc_request_info_error)) {
                             return false;
                         }
                         concatMeta(sub.globalData, data);
@@ -605,14 +605,18 @@
         });
 
 
-        var checkout = function (data) {
+        var checkout = function (data, fn) {
             if (!data.success) {
+                if (typeof fn === 'function') {
+                    fn(data);
+                }
                 return false;
             }
 
             if (!data.datas) {
                 return false;
             }
+
             return true;
         };
 
@@ -648,17 +652,6 @@
         function success(sub) {
 
             var data = sub.globalData;
-
-            if (!data.success) {
-                if (typeof window.on_cc_login_error === 'function') {
-                    window.on_cc_login_error(data);
-                }
-                return;
-            }
-
-            if (!data.datas) {
-                return;
-            }
 
             if (sub.requestLoginData) {
 

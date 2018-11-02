@@ -82,58 +82,45 @@ $(function () {
         }
 
         var params = {
-            questionnaireid: questionnaireId,
-            answers: JSON.stringify({
-                subjectsAnswer: subjectsAnswer
-            })
+            questionnaireId: questionnaireId,
+            subjectsAnswer: subjectsAnswer
         };
+        function getDatainfo(data) {
+            if (data.success) {
+                // 答卷成功
+                successTip(Lr.successTip);
 
-        $.ajax({
-            url: '//eva.csslcloud.net/api/questionnaire/submit',
-            type: 'GET',
-            dataType: 'jsonp',
-            timeout: 5000,
-            data: params,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (data) {
-                if (data.success) {
-                    // 答卷成功
-                    successTip('答卷提交成功');
-                    var submitedAction = $('#questionnaire').attr('submitedAction');
-                    if (submitedAction == 1) {
-                        showQuestionnaireAnswer();
-                    } else {
-                        setTimeout(function () {
-                            $('#questionnaire').hide('slow', function () {
-                                $('.video-box').css({'width': '100%', 'height': '100%'});
-                                $(this).remove();
-                            });
-                        }, 1500);
-                        return;
-                    }
-
-                }
-
-                if (data.errorCode == 400) {
-                    confirmAndCloseQuestionnaire(questionnaireId);
+                var submitedAction = $('#questionnaire').attr('submitedAction');
+                if (submitedAction == 1) {
+                    showQuestionnaireAnswer();
                 } else {
-                    errorTip(data.msg);
+                    setTimeout(function () {
+                        $('#questionnaire').hide('slow', function () {
+                            if (window.DOCMAIN) {
+                                $('.video-box').css({'width': '100%', 'height': $('#topHalf').height()});
+                                if ($('.vote').is(':visible') || $('.mask').is(':visible')) {
+                                    $('.video-box').css({'width': 1, 'height': 1});
+                                }
+                            }
+                            $(this).remove();
+                        });
+                    }, 1500);
                 }
-                $('#submitQuestionnaire').attr('disabled', false);
-            },
-            error: function (xhr, status, error) {
-                if (questionnaireId === $('#questionnaire').attr('questionnaireId')) {
-                    errorTip('网络异常，提交失败，请重试');
-                    $('#submitQuestionnaire').attr('disabled', false);
-                }
+                return;
             }
-        });
+
+            if (data.errorCode == 400) {
+                confirmAndCloseQuestionnaire(questionnaireId);
+            } else {
+                errorTip(data.msg);
+            }
+            $('#submitQuestionnaire').attr('disabled', false);
+        }
+        DWLive.submitQuestionnaire(params,getDatainfo)
     });
 
     // 关闭问卷
-    $(document).on('click', '#closeQuestionnaire', function (e) {
+    $(document).on('click', '#closeQuestionnaire,#close2Questionnaire', function (e) {
         $('#questionnaire').remove();
         $('.video-box').css({'width': '100%', 'height': '100%'});
     });
@@ -272,7 +259,7 @@ DWLive.onQuestionnairePublish = function (data) {
     });
 };
 // 显示统计信息
-DWLive.on_cc_live_questionnaire_publish_statis = function (data) {
+DWLive.onQuestionnairePublishStatis = function (data) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
     $('.video-box').css({'width': '100%', 'height': '100%'});
