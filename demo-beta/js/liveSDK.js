@@ -366,7 +366,6 @@
         },
 
         logout: function () {
-            console.log('推出。。。')
             $.ajax({
                 url: '//view.csslcloud.net/api/live/logout',
                 type: 'GET',
