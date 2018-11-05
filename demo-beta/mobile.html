@@ -174,18 +174,25 @@
 <script src="js/jquery.panzoom.min.js?v=20160706151521566"></script>
 <script src="js/main.js?v=20160706151521566"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201809181356"></script>
+<script src="js/liveSDK.js?v=201809111416"></script>
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
 
     $(function () {
+//        DWLive.init({
+//            userid: localStorage.userid,
+//            roomid: localStorage.roomid,
+//            viewername: localStorage.viewername,
+//            viewertoken: localStorage.viewertoken,
+//            fastMode: localStorage.fastmode
+//        });
         DWLive.init({
-            userid: localStorage.userid,
-            roomid: localStorage.roomid,
-            viewername: localStorage.viewername,
-            viewertoken: localStorage.viewertoken,
-            fastMode: localStorage.fastmode
+            userid: 'B27039502337407C',
+            roomid: '3115C441D8B66A719C33DC5901307461',
+            viewername: 'haname',
+            viewertoken: '123',
+            fastMode: false
         });
 
         DWLive.onLiveTime = function (e) {

@@ -652,12 +652,12 @@
             }
             var params = {
                 questionnaireid: _data.questionnaireId,
-                answers: JSON.stringify({subjectsAnswer:_data.subjectsAnswer})
-            }
+                answers: JSON.stringify({subjectsAnswer: _data.subjectsAnswer})
+            };
             $.ajax({
                 url: '//eva.csslcloud.net/api/questionnaire/submit',
-                type: "GET",
-                dataType: "jsonp",
+                type: 'GET',
+                dataType: 'jsonp',
                 timeout: 5000,
                 data: params,
                 xhrFields: {
@@ -721,10 +721,10 @@
     var options = {
         init: function () {
             this['userId'] = DWLive.userid,
-            this['roomId'] = DWLive.roomid,
-            this['liveId'] = DWLive.liveid,
-            this['viewerId'] = DWLive.viewerid,
-            this['upId'] = DWLive.upid;
+                this['roomId'] = DWLive.roomid,
+                this['liveId'] = DWLive.liveid,
+                this['viewerId'] = DWLive.viewerid,
+                this['upId'] = DWLive.upid;
         }
     };
     // Pusher
@@ -836,6 +836,7 @@
             });
 
             this.socket.on('kick_out', function (j) {
+                console.log(j);
                 Pusher.socket.disconnect();
 
                 if (typeof DWLive.onKickOut === 'function') {
@@ -1051,6 +1052,14 @@
             this.socket.on('unban_chat', function (data) {
                 if (typeof DWLive.onUnBanChat === 'function') {
                     DWLive.onUnBanChat(toJson(data));
+                }
+            });
+            /**
+             * 获取当前播放（数据源）场景（0：无意义(默认)，10、11:（开启/关闭）摄像头，20：图片，30：插播视频，40：区域捕获，50：桌面共享，60：自定义场景）
+             * **/
+            this.socket.on('switch_source', function (data) {
+                if (typeof DWLive.onSwitchSource === 'function') {
+                    DWLive.onSwitchSource(data);
                 }
             });
 

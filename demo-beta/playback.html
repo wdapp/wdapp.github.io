@@ -212,7 +212,8 @@
 <script src="js/common.js"></script>
 <script src="js/jquery.jslider.js"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="//view.csslcloud.net/js/playbackSDK.js?v=201809181356"></script>
+<!--<script src="js/playbackSDK.js?v=201809111416"></script>-->
+<script src="dist/bundle.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/callback.pc.extend.js"></script>
 <script type="text/javascript">
@@ -230,16 +231,33 @@
 
     $.DW.isShowBar(1);  // 隐藏视频控制条
 
+//    $.DW.config({
+//        userId: localStorage.userId,
+//        roomId: localStorage.roomId,
+//        recordId: localStorage.recordId,
+//        viewername: localStorage.viewername,
+//        viewertoken: localStorage.viewertoken,
+//        isH5play: true,
+//        fastMode: localStorage.fastmode
+//    });
     $.DW.config({
-        userId: localStorage.userId,
-        roomId: localStorage.roomId,
-        recordId: localStorage.recordId,
-        viewername: localStorage.viewername,
-        viewertoken: localStorage.viewertoken,
-        isH5play: true,
-        fastMode: localStorage.fastmode
+        userId: 'B27039502337407C',
+        roomId: '3115C441D8B66A719C33DC5901307461',
+        recordId: '5BE52E119F256394',
+        viewername: 'safddsa',
+        viewertoken: '123',
+        isH5play: false,
+        fastMode: false
     });
-
+//    $.DW.config({
+//        userId: 'C783F0F7CB77E1F3',
+//        roomId: '907DE174D77ED2C39C33DC5901307461',
+//        recordId: '969A2591339B2979',
+//        viewername: 'safddsa',
+//        viewertoken: '123',
+//        isH5play: false,
+//        fastMode: false
+//    });
 </script>
 
 </body>
