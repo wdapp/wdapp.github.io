@@ -234,12 +234,16 @@
 <script src="js/base.js"></script>
 <script src="js/common.js"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<!--<script src="js/liveSDK.js?v=201809111416"></script>-->
-<script src="dist/bundle.js"></script>
+<script src="js/liveSDK.js?v=201809111416"></script>
+<!--<script src="dist/bundle.js"></script>-->
 <script src="js/ui.js"></script>
 <script src="js/live.js"></script>
 <script src="js/cc.questionnaire.js"></script>
+<button id="btn" style="position: absolute;top: 500px;z-index: 10000;width: 200px;height: 200px">btn</button>
 <script type="text/javascript">
+    $('#btn').click(function(){
+        DWLive.logout();
+    })
     // 直播SDK参数配置
     DWLive.init({
 //        userid: 'B27039502337407C',
@@ -252,7 +256,7 @@
         language: 'en',
         viewercustominfo: '',
         fastMode: false,
-        forcibly: false
+        forcibly: true
     });
 
     DWLive.onLiveTime = function (e) {
