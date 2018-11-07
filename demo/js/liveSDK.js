@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.6.0 2018/10/15
+ * v2.6.2 2018/11/5
  */
 (function () {
 
@@ -96,6 +96,45 @@
                 return;
             }
             this.dpc.changePageTo(dId, pI);
+        },
+        showMarquee:function (m) {
+            if(!this.fastMode){
+                return;
+            }
+            this.dpc.openMarquee(m);
+        },
+        closeMarquee:function () {
+            if(!this.fastMode){
+                return;
+            }
+            this.dpc.closeMarquee();
+        },
+        openBarrage:function (l) {
+            if(!this.fastMode){
+                return;
+            }
+            this.dpc.openBarrage();
+        },
+        insertBarrage:function (data) {
+            if(!this.fastMode){
+                return;
+            }
+            var ifo
+            try {
+                ifo=JSON.parse(data);
+            }catch(e){
+                ifo={
+                    type:'text',
+                    content:data
+                }
+            }
+            this.dpc.insertBarrage(ifo);
+        },
+        closeBarrage:function () {
+            if(!this.fastMode){
+                return;
+            }
+            this.dpc.closeBarrage();
         }
     };
 
@@ -535,7 +574,6 @@
             };
             Pusher.socket.emit('reply_vote', JSON.stringify(j));
         },
-
         docBarrage: function (msg, color) {
             if (!$.trim(msg)) {
                 return;
@@ -549,7 +587,30 @@
         openBarrage: function (b) {
             LivePlayer.openBarrage(b);
         },
-
+        openDocBarrage:function (l) {//开启doc弹幕功能
+            if (MobileLive.isMobile() == 'isMobile') {
+                return;
+            }
+            if(DWDpc.fastMode){
+                DWDpc.openBarrage(l);
+            }
+        },
+        insertDocBarrage:function (data) {//插入弹幕
+            if (MobileLive.isMobile() == 'isMobile') {
+                return;
+            }
+            if(DWDpc.fastMode){
+                DWDpc.insertBarrage(data);
+            }
+        },
+        closeDocBarrage:function () {//关闭弹幕功能
+            if (MobileLive.isMobile() == 'isMobile') {
+                return;
+            }
+            if(DWDpc.fastMode){
+                DWDpc.closeBarrage();
+            }
+        },
         showControl: function (b) {
             LivePlayer.showControl(b);
         },
@@ -623,8 +684,20 @@
         showMarquee: function (m) {
             LivePlayer.showMarquee(m);
         },
+        closeMarquee:function () {
+            LivePlayer.closeMarquee();
+        },
         showMarqueeDoc: function (m) {
-            DrawPanel.showMarquee(m);
+            if(DWDpc.fastMode){
+                DWDpc.showMarquee(m);
+            }else{
+                DrawPanel.showMarquee(m);
+            }
+        },
+        closeMarqueeDoc:function () {
+            if(DWDpc.fastMode){
+                DWDpc.closeMarquee();
+            }
         },
         setDocMode: function (t) {
             if (!DWDpc.fastMode) {
@@ -721,10 +794,10 @@
     var options = {
         init: function () {
             this['userId'] = DWLive.userid,
-            this['roomId'] = DWLive.roomid,
-            this['liveId'] = DWLive.liveid,
-            this['viewerId'] = DWLive.viewerid,
-            this['upId'] = DWLive.upid;
+                this['roomId'] = DWLive.roomid,
+                this['liveId'] = DWLive.liveid,
+                this['viewerId'] = DWLive.viewerid,
+                this['upId'] = DWLive.upid;
         }
     };
     // Pusher
@@ -1051,6 +1124,14 @@
             this.socket.on('unban_chat', function (data) {
                 if (typeof DWLive.onUnBanChat === 'function') {
                     DWLive.onUnBanChat(toJson(data));
+                }
+            });
+            /**
+             * 获取当前播放（数据源）场景（0：无意义(默认)，10、11:（开启/关闭）摄像头，20：图片，30：插播视频，40：区域捕获，50：桌面共享，60：自定义场景）
+             * **/
+            this.socket.on('switch_source',function (data) {
+                if(typeof DWLive.onSwitchSource === 'function'){
+                    DWLive.onSwitchSource(data);
                 }
             });
 
@@ -1741,6 +1822,12 @@
             }
 
             this.getFlash()._showMarqueePlugin(marquee);
+        },
+        closeMarquee:function () {
+            if(!this.getFlash()){
+                return;
+            }
+            this.getFlash()._closeMarqueePlugin({name:"PluginForMarquee"});
         }
     };
 
