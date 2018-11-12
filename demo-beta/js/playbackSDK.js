@@ -350,7 +350,7 @@
                     }
                     skipOnceSeek = true;
                 }
-                beforeTime = e.currentTarget.currentTime;
+                beforeTime = ft;
                 return;
             }
 
