@@ -557,7 +557,7 @@
                 }
                 if (data.success) {
                     // options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
-                    options.drawRequestTime = 1;
+                    options.drawRequestTime = 25;
                     util.log('options', options);
 
                     callback.state = new StateMachine();
