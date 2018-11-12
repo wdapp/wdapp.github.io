@@ -343,7 +343,7 @@
 
             if (isCustomSeek) {
                 nextTime = ft;
-                if (Math.abs(nextTime - beforeTime) >= 4) {
+                if (Math.abs(nextTime - beforeTime) >= 2.5) {
                     if (skipOnceSeek) {
                         console.log('自定义拖动');
                         console.log('nextTime',nextTime);
