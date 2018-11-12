@@ -1099,13 +1099,17 @@
         callback.drawsInfoRequestPool.httpRequestStream(function (data) {
             callback.draws = data;
 
+            if(!callback.drawPanel.isReady){
+                setTimeout(function () {
+                    initDrawPanelInfo();
+                    console.log(11111,'====>>>>>')
+                }, 1500);
+            }
             callback.isHistoryReady = true;
             callback.drawPanel.isReady = true;
+
         });
 
-        setTimeout(function () {
-            initDrawPanelInfo();
-        }, 1500);
         window.on_cc_limit_request_draws = null;
     };
 
