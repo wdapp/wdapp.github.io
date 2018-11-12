@@ -346,6 +346,8 @@
                 if (Math.abs(nextTime - beforeTime) >= 2) {
                     if (skipOnceSeek) {
                         console.log('自定义拖动');
+                        console.log('nextTime',nextTime);
+                        console.log('beforeTime',beforeTime);
                         seekComplete && seekComplete();
                         return;
                     }
