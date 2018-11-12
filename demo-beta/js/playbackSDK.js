@@ -1053,7 +1053,7 @@
 
         util.log('分页请求画笔数据', options.drawRequestTime);
         var duration = (callback.callbackPlayer.getDuration()) + 1;
-        util.log('duration', duration+'');
+        util.log('duration', duration + '');
         //请求数据左包含，右不包含，duration+1秒，防止最后一秒数据无法请求到。
         var blockTime = Math.ceil(duration / options.drawRequestTime);
         var startTime = 0;
@@ -2137,7 +2137,7 @@
                 if (MobileLive.isMobile() == 'isMobile') {
                     window.on_cc_live_player_load && window.on_cc_live_player_load();
                     window.on_cc_h5_player_load && window.on_cc_h5_player_load();
-                    window.on_cc_limit_request_draws &&
+                    window.on_cc_limit_request_draws && window.on_cc_limit_request_draws();
                 } else if (DW.isH5play) {
                     window.on_cc_live_player_init && window.on_cc_live_player_init();
                 }
