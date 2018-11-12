@@ -347,11 +347,11 @@
                     if (skipOnceSeek) {
                         console.log('自定义拖动');
                         seekComplete && seekComplete();
+                        return;
                     }
                     skipOnceSeek = true;
                 }
                 beforeTime = ft;
-                return;
             }
 
             if (callback.isRequestDraws) {
