@@ -342,7 +342,7 @@
             }
 
             if (isCustomSeek) {
-                nextTime = e.currentTarget.currentTime;
+                nextTime = ft;
                 if (Math.abs(nextTime - beforeTime) >= 2) {
                     if (skipOnceSeek) {
                         console.log('自定义拖动');
