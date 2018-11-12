@@ -344,13 +344,11 @@
             if (isCustomSeek) {
                 nextTime = ft;
                 if (Math.abs(nextTime - beforeTime) >= 2.5) {
-                    if (skipOnceSeek) {
+                    // if (skipOnceSeek) {
                         console.log('自定义拖动');
-                        console.log('nextTime',nextTime);
-                        console.log('beforeTime',beforeTime);
                         seekComplete && seekComplete();
-                    }
-                    skipOnceSeek = true;
+                    // }
+                    // skipOnceSeek = true;
                 }
                 beforeTime = ft;
             }
@@ -2114,7 +2112,7 @@
 
     var beforeTime = 0;
     var nextTime = 0;
-    var skipOnceSeek = false;
+    // var skipOnceSeek = false;
     var isCustomSeek = true;
 
     var MobileLive = {
