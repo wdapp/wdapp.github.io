@@ -349,11 +349,10 @@
                         console.log('nextTime',nextTime);
                         console.log('beforeTime',beforeTime);
                         seekComplete && seekComplete();
-                        beforeTime = ft;
-                        return;
                     }
                     skipOnceSeek = true;
                 }
+                beforeTime = ft;
             }
 
             if (callback.isRequestDraws) {
