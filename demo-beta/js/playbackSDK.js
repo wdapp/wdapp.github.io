@@ -1046,6 +1046,21 @@
 
     };
 
+    //防止获取不到duration
+    window.ListenerDuration = function () {
+        if (!on_cc_limit_request_draws) {
+            return;
+        }
+        var t = setInterval(function () {
+            var duration = parseInt(callback.callbackPlayer.getDuration());
+            if (duration) {
+                on_cc_limit_request_draws && on_cc_limit_request_draws();
+                clearInterval(t);
+            }
+        }, 50);
+        window.ListenerDuration = null;
+    };
+
     window.on_cc_limit_request_draws = function () {
         if (!options.drawRequestTime) {
             return;
@@ -1838,9 +1853,6 @@
             window.on_cc_live_player_load();
         }
 
-        if (typeof window.on_cc_limit_request_draws === 'function') {
-            window.on_cc_limit_request_draws();
-        }
     };
 
     function cc_live_callback_chat_interval() {
@@ -2137,9 +2149,17 @@
                 if (MobileLive.isMobile() == 'isMobile') {
                     window.on_cc_live_player_load && window.on_cc_live_player_load();
                     window.on_cc_h5_player_load && window.on_cc_h5_player_load();
-                    window.on_cc_limit_request_draws && window.on_cc_limit_request_draws();
                 } else if (DW.isH5play) {
                     window.on_cc_live_player_init && window.on_cc_live_player_init();
+                }
+
+                if (on_cc_limit_request_draws) {
+                    var duration = parseInt(callback.callbackPlayer.getDuration());
+                    if (duration) {
+                        on_cc_limit_request_draws && on_cc_limit_request_draws();
+                    } else {
+                        ListenerDuration && ListenerDuration();
+                    }
                 }
             }, false);
 
