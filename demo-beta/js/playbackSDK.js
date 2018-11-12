@@ -1098,10 +1098,10 @@
 
         callback.drawsInfoRequestPool.httpRequestStream(function (data) {
             callback.draws = data;
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
         });
 
-        callback.isHistoryReady = true;
-        callback.drawPanel.isReady = true;
         setTimeout(function () {
             initDrawPanelInfo();
         }, 1500);
