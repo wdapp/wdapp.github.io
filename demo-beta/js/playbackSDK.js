@@ -341,6 +341,19 @@
                 return;
             }
 
+            if (isCustomSeek) {
+                nextTime = e.currentTarget.currentTime;
+                if (Math.abs(nextTime - beforeTime) >= 2) {
+                    if (skipOnceSeek) {
+                        console.log('自定义拖动');
+                        seekComplete && seekComplete();
+                    }
+                    skipOnceSeek = true;
+                }
+                beforeTime = e.currentTarget.currentTime;
+                return;
+            }
+
             if (callback.isRequestDraws) {
                 callback.drawsInfoRequestPool.isHttpRequestCurrentDraws(ft, function (data) {
                     callback.draws = data;
@@ -2098,6 +2111,10 @@
         }
     }
 
+    var beforeTime = 0;
+    var nextTime = 0;
+    var skipOnceSeek = false;
+    var isCustomSeek = true;
 
     var MobileLive = {
         pauseState: false,
@@ -2179,10 +2196,12 @@
             }, false);
 
             Event.addEvents(video, 'seeking', function () {
+                isCustomSeek = false;
                 seekStart && seekStart();
             }, false);
 
             Event.addEvents(video, 'seeked', function () {
+                isCustomSeek = false;
                 seekComplete && seekComplete();
             }, false);
         },
