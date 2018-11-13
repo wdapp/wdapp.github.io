@@ -341,6 +341,18 @@
                 return;
             }
 
+            if (isCustomSeek) {
+                nextTime = ft;
+                if (Math.abs(nextTime - beforeTime) >= 2.5) {
+                    // if (skipOnceSeek) {
+                    console.log('自定义拖动');
+                    seekComplete && seekComplete();
+                    // }
+                    // skipOnceSeek = true;
+                }
+                beforeTime = ft;
+            }
+
             if (callback.isRequestDraws) {
                 callback.drawsInfoRequestPool.isHttpRequestCurrentDraws(ft, function (data) {
                     callback.draws = data;
@@ -545,6 +557,9 @@
                 if (data.success) {
                     // options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
                     options.drawRequestTime = 25;
+                    if (!DWDpc.fastMode) {
+                        options.drawRequestTime = '';
+                    }
                     util.log('options', options);
 
                     callback.state = new StateMachine();
@@ -736,7 +751,7 @@
                         if (this.tryCount < this.retryLimit) {
                             //try again
                             $.ajax(this);
-                            util.log('ajax try again tryCount', this.tryCount);
+                            util.log('ajax[' + self.key + '] try again tryCount', this.tryCount);
                             return;
                         } else {
                             util.log('数据请求失败且重试多次');
@@ -862,8 +877,8 @@
             };
             _state.httpRequest(param, function (data) {
                 var draw = data.datas.meta.draw;
-                util.log('预加载成功 callback.draws[' + index + ']', draw);
-                self.draws = unique(self.draws, draw);
+                util.log('*** 预加载成功 callback.draws[' + index + '] ***', draw);
+                self.draws = distinct(self.draws, draw);
                 self.draws.sort(function (p1, p2) {
                     return parseInt(p1.time) - parseInt(p2.time);
                 });
@@ -915,7 +930,7 @@
                             util.log('请求流 draw[' + state.key + ']', draw);
                             //合并分段请求返回的画笔数据
                             if (callback.isRequestDraws) {
-                                self.draws = unique(self.draws, draw);
+                                self.draws = distinct(self.draws, draw);
                             } else {
                                 self.draws = self.draws.concat(draw);
                             }
@@ -955,11 +970,16 @@
             var index = state.getCurrentStateIndex(currentTime);
             var _state = states[index];
 
+            if (!_state) {
+                return;
+            }
+
             var _snapshoot = snapshoot.getSnapshoot();
-            var _isSnapshoot = _snapshoot[index + '_' + e.docId + '_' + e.pageNum + '_' + e.time];
+            var _isSnapshoot = _snapshoot[e.docId + '_' + e.pageNum + '_' + e.url];
 
             //请求快照
             if (!_state.result && !_isSnapshoot) {//当前时间段是否有数据 && 当前页是否存在快照
+                util.log('_snapshoot.getSnapshoot()', _snapshoot);
                 //中断没有请求完的快照，快照只能存在一个请求
                 if (snapshoot.requestState) {
                     snapshoot.abort();
@@ -976,13 +996,13 @@
                 };
                 snapshoot.httpRequest(options, function (data) {
                     //缓存快照数据
-                    snapshoot.setSnapshoot(index + '_' + e.docId + '_' + e.pageNum + '_' + e.time, data);
+                    snapshoot.setSnapshoot(e.docId + '_' + e.pageNum + '_' + e.url, data);
 
                     if (!_state.result) {
                         callback.isRequestDraws = true;
                         var draw = data.datas.meta.draw;
-                        util.log('快照 callback.draws', draw);
-                        self.draws = unique(self.draws, draw);
+                        util.log('*** 快照 callback.draws[' + e.docId + '_' + e.pageNum + '_' + e.url + '] ***', draw);
+                        self.draws = distinct(self.draws, draw);
                         self.draws.sort(function (p1, p2) {
                             return parseInt(p1.time) - parseInt(p2.time);
                         });
@@ -996,9 +1016,21 @@
             }
         };
 
-        //合并数据方法
+        function distinct(a, b) {
+            let arr = a.concat(b);
+            let result = [];
+            let obj = {};
+
+            for (let i of arr) {
+                if (!obj[JSON.stringify(i)]) {
+                    result.push(i);
+                    obj[JSON.stringify(i)] = 1;
+                }
+            }
+            return result;
+        }
+
         function unique(oldDraws, newDraws) {
-            //TODO 并发比较，分段比较  通过状态机记录快照，当前段数据请求到，丢弃快照。
             //分段数据与快照合并
             var _oldDraws = oldDraws;
             var _newDraws = newDraws;
@@ -1046,13 +1078,30 @@
 
     };
 
+    //防止获取不到duration
+    window.ListenerDuration = function () {
+        if (!on_cc_limit_request_draws) {
+            return;
+        }
+        var t = setInterval(function () {
+            var duration = parseInt(callback.callbackPlayer.getDuration());
+            if (duration) {
+                util.log('ListenerDuration');
+                on_cc_limit_request_draws && on_cc_limit_request_draws();
+                clearInterval(t);
+            }
+        }, 50);
+        window.ListenerDuration = null;
+    };
+
     window.on_cc_limit_request_draws = function () {
         if (!options.drawRequestTime) {
             return;
         }
-        util.log('分页请求画笔数据', options.drawRequestTime);
 
+        util.log('分页请求画笔数据', options.drawRequestTime);
         var duration = (callback.callbackPlayer.getDuration()) + 1;
+        util.log('duration', duration + '');
         //请求数据左包含，右不包含，duration+1秒，防止最后一秒数据无法请求到。
         var blockTime = Math.ceil(duration / options.drawRequestTime);
         var startTime = 0;
@@ -1067,24 +1116,31 @@
 
         util.log('callback.state', callback.state);
 
-        callback.drawsInfoRequestPool.httpRequestStream(function (data) {
-            callback.draws = data;
-
-            callback.isHistoryReady = true;
-            callback.drawPanel.isReady = true;
-        });
+        setTimeout(function () {
+            callback.drawsInfoRequestPool.httpRequestStream(function (data) {
+                callback.draws = data;
+                callback.isHistoryReady = true;
+                callback.drawPanel.isReady = true;
+            });
+        }, 5000);
 
         setTimeout(function () {
             initDrawPanelInfo();
         }, 1500);
+
         window.on_cc_limit_request_draws = null;
     };
 
     window.on_cc_request_snapshoot = function (pageChange) {
+        if (!options.drawRequestTime) {
+            return;
+        }
+        util.log('pageChange', pageChange);
         var currentTime = callback.callbackPlayer.getPlayerTime();
         callback.drawsInfoRequestPool.httpRequestSnapshoot(pageChange, currentTime, function (data) {
             callback.draws = data;
-            // util.log('快照 callback.draws', callback.draws);
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
         });
     };
 
@@ -1834,9 +1890,6 @@
             window.on_cc_live_player_load();
         }
 
-        if (typeof window.on_cc_limit_request_draws === 'function') {
-            window.on_cc_limit_request_draws();
-        }
     };
 
     function cc_live_callback_chat_interval() {
@@ -2082,6 +2135,10 @@
         }
     }
 
+    var beforeTime = 0;
+    var nextTime = 0;
+    // var skipOnceSeek = false;
+    var isCustomSeek = true;
 
     var MobileLive = {
         pauseState: false,
@@ -2133,10 +2190,19 @@
                 if (MobileLive.isMobile() == 'isMobile') {
                     window.on_cc_live_player_load && window.on_cc_live_player_load();
                     window.on_cc_h5_player_load && window.on_cc_h5_player_load();
-                    window.on_cc_limit_request_draws && window.on_cc_limit_request_draws();
                 } else if (DW.isH5play) {
                     window.on_cc_live_player_init && window.on_cc_live_player_init();
                 }
+
+                if (on_cc_limit_request_draws) {
+                    var duration = parseInt(callback.callbackPlayer.getDuration());
+                    if (duration) {
+                        on_cc_limit_request_draws && on_cc_limit_request_draws();
+                    } else {
+                        ListenerDuration && ListenerDuration();
+                    }
+                }
+
             }, false);
 
             Event.addEvents(video, 'playing', function () {
@@ -2155,10 +2221,12 @@
             }, false);
 
             Event.addEvents(video, 'seeking', function () {
+                isCustomSeek = false;
                 seekStart && seekStart();
             }, false);
 
             Event.addEvents(video, 'seeked', function () {
+                isCustomSeek = false;
                 seekComplete && seekComplete();
             }, false);
         },
