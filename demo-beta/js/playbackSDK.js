@@ -1116,13 +1116,11 @@
 
         util.log('callback.state', callback.state);
 
-        setTimeout(function () {
-            callback.drawsInfoRequestPool.httpRequestStream(function (data) {
-                callback.draws = data;
-                callback.isHistoryReady = true;
-                callback.drawPanel.isReady = true;
-            });
-        }, 5000);
+        callback.drawsInfoRequestPool.httpRequestStream(function (data) {
+            callback.draws = data;
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
+        });
 
         setTimeout(function () {
             initDrawPanelInfo();
