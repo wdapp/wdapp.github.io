@@ -1892,6 +1892,15 @@
             window.on_cc_live_player_load();
         }
 
+        if (on_cc_limit_request_draws) {
+            var duration = parseInt(callback.callbackPlayer.getDuration());
+            if (duration) {
+                on_cc_limit_request_draws && on_cc_limit_request_draws();
+            } else {
+                ListenerDuration && ListenerDuration();
+            }
+        }
+
     };
 
     function cc_live_callback_chat_interval() {
