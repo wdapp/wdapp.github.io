@@ -555,8 +555,8 @@
                     return false;
                 }
                 if (data.success) {
-                    //options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
-                    options.drawRequestTime = 25;
+                    options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
                     }
@@ -734,7 +734,7 @@
                 data: options.param,
                 tryCount: 0,
                 retryLimit: 3,
-                timeout: 5000,
+                timeout: 20000,//20秒超时
                 dataType: 'jsonp',
                 success: function (data) {
                     self.result = data;
@@ -755,6 +755,7 @@
                             return;
                         } else {
                             util.log('数据请求失败且重试多次');
+                            self.requestState = false;
                             return;
                         }
                         return;
