@@ -555,8 +555,8 @@
                     return false;
                 }
                 if (data.success) {
-                    // options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
-                    options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
+                    options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
                     // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
@@ -1117,7 +1117,7 @@
         callback.state.init(blockDuration);
 
         util.log('callback.state', callback.state);
-        
+
         callback.drawsInfoRequestPool.httpRequestStream(function (data) {
             callback.draws = data;
             callback.isHistoryReady = true;
@@ -1514,7 +1514,7 @@
         }
     };
 
-    window.TIMEOUT = 25000;
+    window.TIMEOUT = 5000;
 
     var options = {
         userId: $('#userId').val(),
