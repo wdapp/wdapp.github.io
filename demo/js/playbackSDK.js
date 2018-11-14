@@ -735,7 +735,7 @@
                 data: options.param,
                 tryCount: 0,
                 retryLimit: 3,
-                timeout: 20000,//20秒超时
+                timeout: window.TIMEOUT,//20秒超时
                 dataType: 'jsonp',
                 success: function (data) {
                     self.result = data;
@@ -1513,6 +1513,8 @@
             }
         }
     };
+
+    window.TIMEOUT = 25000;
 
     var options = {
         userId: $('#userId').val(),
