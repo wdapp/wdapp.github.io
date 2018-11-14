@@ -555,7 +555,8 @@
                     return false;
                 }
                 if (data.success) {
-                    options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    // options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
                     // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
