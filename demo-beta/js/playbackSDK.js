@@ -556,6 +556,7 @@
                 }
                 if (data.success) {
                     options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
                     // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
