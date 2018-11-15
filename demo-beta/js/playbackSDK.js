@@ -558,7 +558,7 @@
                     options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
                     window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
-                    // options.drawRequestTime = 25;
+                    options.drawRequestTime = '';
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
                     }
@@ -1019,19 +1019,19 @@
             }
         };
 
-        function distinct(a, b) {
-            let arr = a.concat(b);
-            let result = [];
-            let obj = {};
-
-            for (let i of arr) {
-                if (!obj[JSON.stringify(i)]) {
-                    result.push(i);
-                    obj[JSON.stringify(i)] = 1;
-                }
-            }
-            return result;
-        }
+        // function distinct(a, b) {
+        //     let arr = a.concat(b);
+        //     let result = [];
+        //     let obj = {};
+        //
+        //     for (let i of arr) {
+        //         if (!obj[JSON.stringify(i)]) {
+        //             result.push(i);
+        //             obj[JSON.stringify(i)] = 1;
+        //         }
+        //     }
+        //     return result;
+        // }
 
         function unique(oldDraws, newDraws) {
             //分段数据与快照合并
