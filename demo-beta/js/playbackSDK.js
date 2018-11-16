@@ -558,7 +558,7 @@
                     options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
                     window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
-                    options.drawRequestTime = '';
+                    // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
                     }
@@ -1019,19 +1019,19 @@
             }
         };
 
-        // function distinct(a, b) {
-        //     let arr = a.concat(b);
-        //     let result = [];
-        //     let obj = {};
-        //
-        //     for (let i of arr) {
-        //         if (!obj[JSON.stringify(i)]) {
-        //             result.push(i);
-        //             obj[JSON.stringify(i)] = 1;
-        //         }
-        //     }
-        //     return result;
-        // }
+        function distinct(a, b) {
+            // 数组去重
+            var arr = a.concat(b);
+            var result = [];
+            var obj = {};
+            for (var i in arr) {
+                if (!obj[JSON.stringify(arr[i])]) {
+                    result.push(arr[i]);
+                    obj[JSON.stringify(arr[i])] = 1;
+                }
+            }
+            return result;
+        }
 
         function unique(oldDraws, newDraws) {
             //分段数据与快照合并
@@ -1119,11 +1119,13 @@
 
         util.log('callback.state', callback.state);
 
-        callback.drawsInfoRequestPool.httpRequestStream(function (data) {
-            callback.draws = data;
-            callback.isHistoryReady = true;
-            callback.drawPanel.isReady = true;
-        });
+        setTimeout(function () {
+            callback.drawsInfoRequestPool.httpRequestStream(function (data) {
+                callback.draws = data;
+                callback.isHistoryReady = true;
+                callback.drawPanel.isReady = true;
+            });
+        }, 10000);
 
         setTimeout(function () {
             initDrawPanelInfo();
