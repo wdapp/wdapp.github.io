@@ -556,6 +556,7 @@
                 }
                 if (data.success) {
                     options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
                     // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
@@ -1019,14 +1020,14 @@
         };
 
         function distinct(a, b) {
-            let arr = a.concat(b);
-            let result = [];
-            let obj = {};
-
-            for (let i of arr) {
-                if (!obj[JSON.stringify(i)]) {
-                    result.push(i);
-                    obj[JSON.stringify(i)] = 1;
+            // 数组去重
+            var arr = a.concat(b);
+            var result = [];
+            var obj = {};
+            for (var i in arr) {
+                if (!obj[JSON.stringify(arr[i])]) {
+                    result.push(arr[i]);
+                    obj[JSON.stringify(arr[i])] = 1;
                 }
             }
             return result;
