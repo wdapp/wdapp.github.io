@@ -1501,7 +1501,7 @@
     var callback = {};
 
     var util = {
-        debug: true,
+        debug: false,
         log: function (arg1, arg2) {
             if (this.debug) {
                 if (arg2) {
