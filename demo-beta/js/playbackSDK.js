@@ -344,11 +344,7 @@
             if (isCustomSeek) {
                 nextTime = ft;
                 if (Math.abs(nextTime - beforeTime) >= 2.5) {
-                    // if (skipOnceSeek) {
-                    console.log('自定义拖动');
                     seekComplete && seekComplete();
-                    // }
-                    // skipOnceSeek = true;
                 }
                 beforeTime = ft;
             }
