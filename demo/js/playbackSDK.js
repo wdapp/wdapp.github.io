@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.4.2 2018/10/09
+ * v2.5.0 2018/11/19
  */
 !(function ($, window, document) {
 
@@ -555,10 +555,10 @@
                     return false;
                 }
                 if (data.success) {
-                    // options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
-                    // window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
+                    options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
-                    options.drawRequestTime = '';
+                    // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
                         options.drawRequestTime = '';
                     }
