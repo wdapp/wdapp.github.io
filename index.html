@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>我的主页</title>
+    <meta charset="utf-8">
+    <title>我的主页</title>
 </head>
 <body>
 <h1>hell word,ada的主页</h1>
 <p>20181107</p>
+
+<script>
+    var util = {
+        debug: true,
+        log: function (...param) {
+            if (this.debug) {
+                console.log('~', ...param);
+            }
+        }
+    };
+
+    util.log(123, 123, 'sadfas', {});
+</script>
 </body>
 </html>

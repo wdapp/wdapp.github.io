@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.4.2 2018/10/09
+ * v2.5.0 2018/11/19
  */
 !(function ($, window, document) {
 
@@ -341,6 +341,20 @@
                 return;
             }
 
+            if (isCustomSeek) {
+                nextTime = ft;
+                if (Math.abs(nextTime - beforeTime) >= 2.5) {
+                    seekComplete && seekComplete();
+                }
+                beforeTime = ft;
+            }
+
+            if (callback.isRequestDraws) {
+                callback.drawsInfoRequestPool.isHttpRequestCurrentDraws(ft, function (data) {
+                    callback.draws = data;
+                });
+            }
+
             try {
                 if (callback.animations && callback.animations.length > 0) {
                     if (callback.animationIndex < callback.animations.length) {
@@ -377,7 +391,9 @@
                             if (typeof window.on_cc_callback_page_change === 'function') {
                                 window.on_cc_callback_page_change(pc);
                             }
-
+                            if (typeof window.on_cc_request_snapshoot === 'function') {
+                                window.on_cc_request_snapshoot(pc);
+                            }
                             if (DWDpc.fastMode) {
                                 this.filp(pc);
                             } else {
@@ -534,6 +550,20 @@
                 if (!checkout(data, window.on_cc_login_error)) {
                     return false;
                 }
+                if (data.success) {
+                    options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
+                    window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
+                    // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
+                    // options.drawRequestTime = 25;
+                    if (!DWDpc.fastMode) {
+                        options.drawRequestTime = '';
+                    }
+                    util.log('options', options);
+
+                    callback.state = new StateMachine();
+                    var snapshoot = new StateMachine();
+                    callback.drawsInfoRequestPool = new DrawsInfoRequestPool(callback.state, snapshoot);
+                }
                 concatMeta(sub.globalData, data);
                 sub.requestLoginData = true;
                 sub.requestInfoData = false;
@@ -544,28 +574,30 @@
 
                 //登录成功
 
-                // 请求画笔数据
-                substepRequest({
-                    url: '//view.csslcloud.net/api/view/replay/draw/info',
-                    data: param,
-                    fn: window.on_cc_request_draw_error,
-                    done: function (data) {
-                        if (!checkout(data, window.on_cc_request_draw_error)) {
-                            return false;
+                if (!options.drawRequestTime) {
+                    // 请求画笔数据
+                    substepRequest({
+                        url: '//view.csslcloud.net/api/view/replay/draw/info',
+                        data: param,
+                        fn: window.on_cc_request_draw_error,
+                        done: function (data) {
+                            if (!checkout(data)) {
+                                return false;
+                            }
+                            concatMeta(sub.globalData, data);
+                            sub.requestLoginData = false;
+                            sub.requestInfoData = false;
+                            sub.requestDrawData = true;
+                            sub.requestChatqaData = false;
+                            sub.allRequests++;
+                            success(sub);
                         }
-                        concatMeta(sub.globalData, data);
-                        sub.requestLoginData = false;
-                        sub.requestInfoData = false;
-                        sub.requestDrawData = true;
-                        sub.requestChatqaData = false;
-                        sub.allRequests++;
-                        success(sub);
-                    }
-                });
+                    });
+                }
 
                 // 请求聊天和问答数据
                 substepRequest({
-                    url: '//view.csslcloud.net/api/view/replay/chatqa/info',
+                    url: '//view.csslcloud.net/api/view/replay/v2/chatqa/info',
                     data: param,
                     fn: window.on_cc_request_chatqa_error,
                     done: function (data) {
@@ -584,7 +616,7 @@
 
                 // 广播，翻页，animation及后续新增数据
                 substepRequest({
-                    url: '//view.csslcloud.net/api/view/replay/info',
+                    url: '//view.csslcloud.net/api/view/replay/v2/info',
                     data: param,
                     fn: window.on_cc_request_info_error,
                     done: function (data) {
@@ -639,6 +671,474 @@
             fn(sub);
         };
 
+    };
+
+    //优化meta数据 画笔数据--------------------
+
+    //状态机
+    var StateMachine = function () {
+
+        this.requestState = false;
+        this.result = 0;
+        this.startTime = 0;
+        this.endTime = 0;
+        this.key = 0;//key 为每一个状态机块的索引， id 或 index。
+        this.index = 0;//自动排列 key
+        this.ajax = {};
+        this.states = [];
+        this.snapshoot = [];
+        this.drawsAlready = 0;
+
+        this.roomId = options.roomId;
+        this.userId = options.userId;
+        this.recordId = options.recordId;
+        this.liveId = options.liveId;
+        this.drawRequestTime = options.drawRequestTime;
+
+        this.setSnapshoot = function (docId, data) {
+            this.snapshoot[docId] = data;
+        };
+
+        this.getSnapshoot = function () {
+            return this.snapshoot;
+        };
+
+        //初始化状态机
+        this.init = function (options) {
+
+            //分时间块，状态机记录
+            for (var i = 0; i < this.drawRequestTime; i++) {
+                var s = {
+                    requestState: false,
+                    result: 0,
+                    startTime: options.startTime,
+                    endTime: options.endTime,
+                    key: i
+                };
+
+                options.startTime = options.startTime + options.blockTime;
+                options.endTime = options.startTime + options.blockTime;
+                this.setState(s);
+            }
+        };
+
+        this.httpRequest = function (options, callback) {
+            var self = this;
+            self.requestState = true;
+
+            this.ajax = $.ajax({
+                url: options.url,
+                type: 'GET',
+                data: options.param,
+                tryCount: 0,
+                retryLimit: 3,
+                timeout: window.TIMEOUT,//20秒超时
+                dataType: 'jsonp',
+                success: function (data) {
+                    self.result = data;
+                    if (!data.success) {
+                        util.log('data.success', data.success);
+                        return;
+                    }
+                    callback(data);
+                    self.requestState = false;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    if (textStatus == 'timeout') {
+                        this.tryCount++;
+                        if (this.tryCount < this.retryLimit) {
+                            //try again
+                            $.ajax(this);
+                            util.log('ajax[' + self.key + '] try again tryCount', this.tryCount);
+                            return;
+                        } else {
+                            util.log('数据请求失败且重试多次');
+                            self.requestState = false;
+                            return;
+                        }
+                        return;
+                    }
+                    if (xhr.status == 500) {
+                        //handle error
+                    } else {
+                        //handle error
+                    }
+                }
+            });
+        };
+
+        this.abort = function () {
+            //模拟中断http请求
+            this.ajax.abort();
+            this.requestState = false;
+        };
+
+        this.setState = function (options) {
+            if (typeof options !== 'object') {
+                return;
+            }
+            //key 为每一个状态机块的索引， id 或 index。
+            var key = (options.key || this.index++);
+            if (options.key && !isNaN(options.key)) {
+                this.index = parseInt(options.key) + 1;
+            }
+            var state = new StateMachine();
+            state.requestState = options.requestState || this.requestState;
+            state.result = options.result || this.result;
+            state.startTime = options.startTime || this.startTime;
+            state.endTime = options.endTime || this.endTime;
+            state.ajax = options.ajax || this.ajax;
+            state.snapshoot = options.snapshoot || this.snapshoot;
+            state.key = key;
+            this.states[key] = state;
+        };
+
+        this.getState = function (key) {
+            return this.states[key];
+        };
+
+        this.getStates = function () {
+            return this.states;
+        };
+
+        this.getCurrentStateIndex = function (currentTime) {
+            var index = 0;
+            for (var i = 0; i < this.states.length; i++) {
+                if (currentTime > this.states[i].startTime && currentTime <= this.states[i].endTime) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        };
+
+        this.isDrawsAlready = function () {
+            return parseInt(this.drawRequestTime, 10) === parseInt(this.drawsAlready, 10);
+        };
+    };
+
+    //画笔信息请求池管理
+    var DrawsInfoRequestPool = function (state, snapshoot) {
+        this.state = state;
+        this.requestNumber = 2;
+        this.httpRequestPool = [];
+        this.draws = [];
+        this.preState = {};
+
+        this.isHttpRequestCurrentDraws = function (currentTime, fn) {
+            if (!state.drawRequestTime) {
+                return;
+            }
+            var drawsAlready = state.isDrawsAlready();
+            if (drawsAlready) {
+                util.log('画笔数据加载完毕，不在预加载某一段数据');
+                return;
+            }
+
+            var states = state.getStates();
+            var index = state.getCurrentStateIndex(currentTime);
+            var _state = states[index];
+
+            if (this.preState != _state && this.preState.requestState) {
+                util.log('发现新的预加载请求，中断上一个预加载请求;index=' + this.preState.key);
+                this.preState.abort();
+            }
+            this.preState = _state;
+
+            //请求数据
+            if (!drawsAlready && !_state.result && !_state.requestState) {
+                util.log('预加载数据', index);
+                var options = {
+                    index: index,
+                    states: states
+                };
+                this.httpRequestCurrentDraws(options, fn);
+            } else {
+                util.log('预加载过这段数据或已有数据;index=' + index);
+            }
+        };
+
+        this.httpRequestCurrentDraws = function (options, fn) {
+            var self = this;
+            var states = options.states;
+            var index = options.index;
+            var _state = states[index];
+
+            var param = {
+                url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
+                param: {
+                    starttime: _state.startTime,
+                    endtime: _state.endTime,
+                    userid: _state.userId,
+                    recordid: _state.recordId,
+                    liveid: _state.liveId,
+                }
+            };
+            _state.httpRequest(param, function (data) {
+                var draw = data.datas.meta.draw;
+                util.log('*** 预加载成功 callback.draws[' + index + '] ***', draw);
+                self.draws = distinct(self.draws, draw);
+                self.draws.sort(function (p1, p2) {
+                    return parseInt(p1.time) - parseInt(p2.time);
+                });
+                fn(self.draws);
+                callback.state.drawsAlready++;
+            });
+        };
+
+        this.httpRequestStream = function (fn) {
+            var self = this;
+            var drawsAlready = self.state.isDrawsAlready();
+            if (drawsAlready) {
+                util.log('httpRequestStream draws already', self.draws);
+                util.log('callback.state', callback.state);
+                util.log('snapshoot', snapshoot);
+                return;
+            }
+            var states = self.state.getStates();
+
+            //获取符合条件的请求
+            for (var i = 0; i < states.length; i++) {
+                var state = states[i];
+                if (!state.result && !state.requestState) {
+                    if (self.httpRequestPool.length < self.requestNumber) {
+                        self.httpRequestPool.push(state);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            //处理请求池，发起请求
+            for (var j = 0; j < self.httpRequestPool.length; j++) {
+                var state = self.httpRequestPool[j];
+                if (!state.result && !state.requestState) {
+                    (function (state) {
+                        var options = {
+                            url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
+                            param: {
+                                starttime: state.startTime,
+                                endtime: state.endTime,
+                                userid: state.userId,
+                                recordid: state.recordId,
+                                liveid: state.liveId,
+                            }
+                        };
+                        state.httpRequest(options, function (data) {
+                            var draw = data.datas.meta.draw;
+                            util.log('请求流 draw[' + state.key + ']', draw);
+                            //合并分段请求返回的画笔数据
+                            if (callback.isRequestDraws) {
+                                self.draws = distinct(self.draws, draw);
+                            } else {
+                                self.draws = self.draws.concat(draw);
+                            }
+
+                            //排序
+                            self.draws.sort(function (p1, p2) {
+                                return parseInt(p1.time) - parseInt(p2.time);
+                            });
+                            //回调画笔数据
+                            fn(self.draws);
+                            //请求池管理，删除已完成的请求
+                            for (var k = 0; k < self.httpRequestPool.length; k++) {
+                                if (self.httpRequestPool[k].key == state.key) {
+                                    self.httpRequestPool.splice(k, 1);
+                                    break;
+                                }
+                            }
+                            //继续监测请求池中符合请求条件的请求，发起请求
+                            callback.state.drawsAlready++;
+                            self.httpRequestStream(fn);
+                        });
+                    })(state);
+                }
+            }
+        };
+
+        this.httpRequestSnapshoot = function (e, currentTime, fn) {
+            var self = this;
+            var drawsAlready = state.isDrawsAlready();
+            if (drawsAlready) {
+                util.log('画笔数据请求完整，不在请求快照数据');
+                return;
+            }
+
+            var states = state.getStates();
+            var currentTime = currentTime;
+            var index = state.getCurrentStateIndex(currentTime);
+            var _state = states[index];
+
+            if (!_state) {
+                return;
+            }
+
+            var _snapshoot = snapshoot.getSnapshoot();
+            var _isSnapshoot = _snapshoot[e.docId + '_' + e.pageNum + '_' + e.url];
+
+            //请求快照
+            if (!_state.result && !_isSnapshoot) {//当前时间段是否有数据 && 当前页是否存在快照
+                util.log('_snapshoot.getSnapshoot()', _snapshoot);
+                //中断没有请求完的快照，快照只能存在一个请求
+                if (snapshoot.requestState) {
+                    snapshoot.abort();
+                }
+
+                var options = {
+                    url: '//view.csslcloud.net/api/view/replay/v2/draw/snapshot',
+                    param: {
+                        docid: e.docId,
+                        currentpage: e.pageNum,
+                        userid: snapshoot.userId,
+                        recordid: snapshoot.recordId,
+                    }
+                };
+                snapshoot.httpRequest(options, function (data) {
+                    //缓存快照数据
+                    snapshoot.setSnapshoot(e.docId + '_' + e.pageNum + '_' + e.url, data);
+
+                    if (!_state.result) {
+                        callback.isRequestDraws = true;
+                        var draw = data.datas.meta.draw;
+                        util.log('*** 快照 callback.draws[' + e.docId + '_' + e.pageNum + '_' + e.url + '] ***', draw);
+                        self.draws = distinct(self.draws, draw);
+                        self.draws.sort(function (p1, p2) {
+                            return parseInt(p1.time) - parseInt(p2.time);
+                        });
+                        fn(self.draws);
+                    } else {
+                        util.log('快照请求成功，当前时间段数据存在，丢弃快照' + index + '');
+                    }
+                });
+            } else {
+                util.log('当前时间段存在数据或存在快照', index + '');
+            }
+        };
+
+        function distinct(a, b) {
+            // 数组去重
+            var arr = a.concat(b);
+            var result = [];
+            var obj = {};
+            for (var i in arr) {
+                if (!obj[JSON.stringify(arr[i])]) {
+                    result.push(arr[i]);
+                    obj[JSON.stringify(arr[i])] = 1;
+                }
+            }
+            return result;
+        }
+
+        function unique(oldDraws, newDraws) {
+            //分段数据与快照合并
+            var _oldDraws = oldDraws;
+            var _newDraws = newDraws;
+            var draws = [];
+            for (var i = 0; i < _newDraws.length; i++) {
+                var newDraw = _newDraws[i];
+                for (var j = 0; j < _oldDraws.length; j++) {
+                    var oldDraw = _oldDraws[j];
+                    if (isObjectValueEqual(oldDraw, newDraw)) {
+                        _oldDraws.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+            draws = _oldDraws.concat(_newDraws);
+            return draws;
+        }
+
+        function isObjectValueEqual(a, b) {
+            // Of course, we can do it use for in
+            // Create arrays of property names
+            var aProps = Object.getOwnPropertyNames(a);
+            var bProps = Object.getOwnPropertyNames(b);
+
+            // If number of properties is different,
+            // objects are not equivalent
+            if (aProps.length != bProps.length) {
+                return false;
+            }
+
+            for (var i = 0; i < aProps.length; i++) {
+                var propName = aProps[i];
+
+                // If values of same property are not equal,
+                // objects are not equivalent
+                if (a[propName] !== b[propName]) {
+                    return false;
+                }
+            }
+
+            // If we made it this far, objects
+            // are considered equivalent
+            return true;
+        }
+
+    };
+
+    //防止获取不到duration
+    window.ListenerDuration = function () {
+        if (!on_cc_limit_request_draws) {
+            return;
+        }
+        var t = setInterval(function () {
+            var duration = parseInt(callback.callbackPlayer.getDuration());
+            if (duration) {
+                util.log('ListenerDuration');
+                on_cc_limit_request_draws && on_cc_limit_request_draws();
+                clearInterval(t);
+            }
+        }, 50);
+        window.ListenerDuration = null;
+    };
+
+    window.on_cc_limit_request_draws = function () {
+        if (!options.drawRequestTime) {
+            return;
+        }
+
+        util.log('分页请求画笔数据', options.drawRequestTime);
+        var duration = (callback.callbackPlayer.getDuration()) + 1;
+        util.log('duration', duration + '');
+        //请求数据左包含，右不包含，duration+1秒，防止最后一秒数据无法请求到。
+        var blockTime = Math.ceil(duration / options.drawRequestTime);
+        var startTime = 0;
+        var endTime = startTime + blockTime;
+
+        var blockDuration = {
+            blockTime: blockTime,
+            startTime: startTime,
+            endTime: endTime
+        };
+        callback.state.init(blockDuration);
+
+        util.log('callback.state', callback.state);
+
+        callback.drawsInfoRequestPool.httpRequestStream(function (data) {
+            callback.draws = data;
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
+        });
+
+        setTimeout(function () {
+            initDrawPanelInfo();
+        }, 1500);
+
+        window.on_cc_limit_request_draws = null;
+    };
+
+    window.on_cc_request_snapshoot = function (pageChange) {
+        if (!options.drawRequestTime) {
+            return;
+        }
+        util.log('pageChange', pageChange);
+        var currentTime = callback.callbackPlayer.getPlayerTime();
+        callback.drawsInfoRequestPool.httpRequestSnapshoot(pageChange, currentTime, function (data) {
+            callback.draws = data;
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
+        });
     };
 
     // 历史数据
@@ -985,6 +1485,7 @@
         this.pageChangeIndex = -1;
         this.drawIndex = -1;
         this.animationIndex = -1;
+        this.isRequestDraws = false;
 
         //this.callbackPlayer = new CallbackPlayer(opts);
         //this.socket = new Socket(opts);
@@ -997,10 +1498,24 @@
 
     var callback = {};
 
+    var util = {
+        debug: false,
+        log: function (arg1, arg2) {
+            if (this.debug) {
+                if (arg2) {
+                    console.log(arg1 + ' => ', arg2);
+                } else {
+                    console.log(arg1);
+                }
+            }
+        }
+    };
+
+    window.TIMEOUT = 5000;
+
     var options = {
         userId: $('#userId').val(),
         roomId: $('#roomId').val(),
-
         liveId: $('#liveId').val(),
         recordId: $('#recordId').val(),
         videoId: $('#videoId').val(),
@@ -1085,6 +1600,7 @@
     function init(opts) {
         options.viewerId = opts.viewerid;
         options = $.extend(options, opts);
+
         callback = new Callback(options);
     }
 
@@ -1372,6 +1888,16 @@
         if (typeof window.on_cc_live_player_load === 'function') {
             window.on_cc_live_player_load();
         }
+
+        if (on_cc_limit_request_draws) {
+            var duration = parseInt(callback.callbackPlayer.getDuration());
+            if (duration) {
+                on_cc_limit_request_draws && on_cc_limit_request_draws();
+            } else {
+                ListenerDuration && ListenerDuration();
+            }
+        }
+
     };
 
     function cc_live_callback_chat_interval() {
@@ -1490,6 +2016,9 @@
                 var pc = callback.pageChanges[callback.pageChangeIndex];
                 if (typeof window.on_cc_callback_page_change === 'function') {
                     window.on_cc_callback_page_change(pc);
+                }
+                if (typeof window.on_cc_request_snapshoot === 'function') {
+                    window.on_cc_request_snapshoot(pc);
                 }
                 callback.drawPanel.filp(JSON.stringify({
                     'fileName': pc.docName,
@@ -1614,6 +2143,10 @@
         }
     }
 
+    var beforeTime = 0;
+    var nextTime = 0;
+    // var skipOnceSeek = false;
+    var isCustomSeek = true;
 
     var MobileLive = {
         pauseState: false,
@@ -1668,6 +2201,16 @@
                 } else if (DW.isH5play) {
                     window.on_cc_live_player_init && window.on_cc_live_player_init();
                 }
+
+                if (on_cc_limit_request_draws) {
+                    var duration = parseInt(callback.callbackPlayer.getDuration());
+                    if (duration) {
+                        on_cc_limit_request_draws && on_cc_limit_request_draws();
+                    } else {
+                        ListenerDuration && ListenerDuration();
+                    }
+                }
+
             }, false);
 
             Event.addEvents(video, 'playing', function () {
@@ -1686,10 +2229,12 @@
             }, false);
 
             Event.addEvents(video, 'seeking', function () {
+                isCustomSeek = false;
                 seekStart && seekStart();
             }, false);
 
             Event.addEvents(video, 'seeked', function () {
+                isCustomSeek = false;
                 seekComplete && seekComplete();
             }, false);
         },
