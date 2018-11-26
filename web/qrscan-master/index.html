@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <title>获取设备摄像头 getUserMedia</title>
+    <style>
+        video {
+            display: block;
+            margin: 0 auto;
+            width: 240px;
+            height: 240px;
+            background: #000;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video"></div>
+    <div>
+        <button id="open">打开</button>
+        <button id="close">关闭</button>
+    </div>
+    <div id="result"></div>
+</body>
+<script src="qrscan.js"></script>
+<script>
+    var ds = null;
+    var scan = new QRScan('video');
+
+    document.getElementById('open').onclick = function () {
+        scan.openScan();
+        ds = window.setInterval(function () {
+            startScan();
+        }, 1500);
+    };
+    document.getElementById('close').onclick = function () {
+        scan.closeScan();
+        window.clearInterval(ds);
+    };
+
+    var re_div = document.getElementById('result');
+    function startScan() {
+        scan.getImgDecode(function (data) {
+            console.log(data);
+            var p = document.createElement('p');
+            if (data.success) {
+                p.innerHTML = 'RESULT: ' + data.payload;
+            } else {
+                p.innerHTML = 'ERROR: ' + data.msg;
+            }
+            re_div.appendChild(p);
+        });
+    };
+</script>
+</html>
