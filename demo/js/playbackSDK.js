@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.5.0 2018/11/19
+ * v2.5.1 2018/11/20
  */
 !(function ($, window, document) {
 
@@ -344,11 +344,7 @@
             if (isCustomSeek) {
                 nextTime = ft;
                 if (Math.abs(nextTime - beforeTime) >= 2.5) {
-                    // if (skipOnceSeek) {
-                    console.log('自定义拖动');
                     seekComplete && seekComplete();
-                    // }
-                    // skipOnceSeek = true;
                 }
                 beforeTime = ft;
             }
@@ -1119,13 +1115,11 @@
 
         util.log('callback.state', callback.state);
 
-        setTimeout(function () {
-            callback.drawsInfoRequestPool.httpRequestStream(function (data) {
-                callback.draws = data;
-                callback.isHistoryReady = true;
-                callback.drawPanel.isReady = true;
-            });
-        }, 10000);
+        callback.drawsInfoRequestPool.httpRequestStream(function (data) {
+            callback.draws = data;
+            callback.isHistoryReady = true;
+            callback.drawPanel.isReady = true;
+        });
 
         setTimeout(function () {
             initDrawPanelInfo();
@@ -1195,18 +1189,19 @@
 
             if (sub.requestInfoData) {
                 var pages = meta.pageChange;
-
-                for (var i = 0; i < pages.length; i++) {
-                    var imgUrl = pages[i].url;
-                    var isHttps = window.location.protocol === 'https:';
-                    if (imgUrl.indexOf('//') > 0 && isHttps) {
-                        imgUrl = imgUrl.replace('http:', 'https:');
-                        pages[i].url = imgUrl;
+                if (pages) {
+                    for (var i = 0; i < pages.length; i++) {
+                        var imgUrl = pages[i].url;
+                        var isHttps = window.location.protocol === 'https:';
+                        if (imgUrl.indexOf('//') > 0 && isHttps) {
+                            imgUrl = imgUrl.replace('http:', 'https:');
+                            pages[i].url = imgUrl;
+                        }
                     }
-                }
 
-                if (typeof window.on_cc_callback_pages === 'function') {
-                    window.on_cc_callback_pages(pages);
+                    if (typeof window.on_cc_callback_pages === 'function') {
+                        window.on_cc_callback_pages(pages);
+                    }
                 }
 
                 var pageChanges = meta.pageChange;
@@ -1505,7 +1500,7 @@
     var callback = {};
 
     var util = {
-        debug: true,
+        debug: false,
         log: function (arg1, arg2) {
             if (this.debug) {
                 if (arg2) {
