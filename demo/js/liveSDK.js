@@ -97,41 +97,41 @@
             }
             this.dpc.changePageTo(dId, pI);
         },
-        showMarquee:function (m) {
-            if(!this.fastMode){
+        showMarquee: function (m) {
+            if (!this.fastMode) {
                 return;
             }
             this.dpc.openMarquee(m);
         },
-        closeMarquee:function () {
-            if(!this.fastMode){
+        closeMarquee: function () {
+            if (!this.fastMode) {
                 return;
             }
             this.dpc.closeMarquee();
         },
-        openBarrage:function (l) {
-            if(!this.fastMode){
+        openBarrage: function (l) {
+            if (!this.fastMode) {
                 return;
             }
             this.dpc.openBarrage();
         },
-        insertBarrage:function (data) {
-            if(!this.fastMode){
+        insertBarrage: function (data) {
+            if (!this.fastMode) {
                 return;
             }
-            var ifo
+            var ifo;
             try {
-                ifo=JSON.parse(data);
-            }catch(e){
-                ifo={
-                    type:'text',
-                    content:data
-                }
+                ifo = JSON.parse(data);
+            } catch (e) {
+                ifo = {
+                    type: 'text',
+                    content: data
+                };
             }
             this.dpc.insertBarrage(ifo);
         },
-        closeBarrage:function () {
-            if(!this.fastMode){
+        closeBarrage: function () {
+            if (!this.fastMode) {
                 return;
             }
             this.dpc.closeBarrage();
@@ -587,27 +587,27 @@
         openBarrage: function (b) {
             LivePlayer.openBarrage(b);
         },
-        openDocBarrage:function (l) {//开启doc弹幕功能
+        openDocBarrage: function (l) {//开启doc弹幕功能
             if (MobileLive.isMobile() == 'isMobile') {
                 return;
             }
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 DWDpc.openBarrage(l);
             }
         },
-        insertDocBarrage:function (data) {//插入弹幕
+        insertDocBarrage: function (data) {//插入弹幕
             if (MobileLive.isMobile() == 'isMobile') {
                 return;
             }
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 DWDpc.insertBarrage(data);
             }
         },
-        closeDocBarrage:function () {//关闭弹幕功能
+        closeDocBarrage: function () {//关闭弹幕功能
             if (MobileLive.isMobile() == 'isMobile') {
                 return;
             }
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 DWDpc.closeBarrage();
             }
         },
@@ -684,18 +684,18 @@
         showMarquee: function (m) {
             LivePlayer.showMarquee(m);
         },
-        closeMarquee:function () {
+        closeMarquee: function () {
             LivePlayer.closeMarquee();
         },
         showMarqueeDoc: function (m) {
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 DWDpc.showMarquee(m);
-            }else{
+            } else {
                 DrawPanel.showMarquee(m);
             }
         },
-        closeMarqueeDoc:function () {
-            if(DWDpc.fastMode){
+        closeMarqueeDoc: function () {
+            if (DWDpc.fastMode) {
                 DWDpc.closeMarquee();
             }
         },
@@ -725,12 +725,12 @@
             }
             var params = {
                 questionnaireid: _data.questionnaireId,
-                answers: JSON.stringify({subjectsAnswer:_data.subjectsAnswer})
-            }
+                answers: JSON.stringify({subjectsAnswer: _data.subjectsAnswer})
+            };
             $.ajax({
                 url: '//eva.csslcloud.net/api/questionnaire/submit',
-                type: "GET",
-                dataType: "jsonp",
+                type: 'GET',
+                dataType: 'jsonp',
                 timeout: 5000,
                 data: params,
                 xhrFields: {
@@ -829,6 +829,7 @@
         },
 
         bind: function () {
+            var currentLayout = false;
             // 翻页回调
             this.socket.on('page_change', function (j) {
                 if (j && typeof(j) === 'string') {
@@ -893,19 +894,23 @@
             });
 
             this.socket.on('end_stream', function (j) {
-                if (LivePlayer) {
-                    LivePlayer.isPublishing = 0;
-                }
-                if (LivePlayer && LivePlayer.end) {
-                    LivePlayer.end();
-                }
-                if (DrawPanel && DrawPanel.clear) {
-                    DrawPanel.clear();
-                }
-                DWDpc.clear();
-                if (typeof DWLive.onLiveEnd === 'function') {
-                    DWLive.onLiveEnd(j);
-                }
+                console.log('end_stream delayTime', getDelayTime());
+                setTimeout(function () {
+                    console.log('end_stream');
+                    if (LivePlayer) {
+                        LivePlayer.isPublishing = 0;
+                    }
+                    if (LivePlayer && LivePlayer.end) {
+                        LivePlayer.end();
+                    }
+                    if (DrawPanel && DrawPanel.clear) {
+                        DrawPanel.clear();
+                    }
+                    DWDpc.clear();
+                    if (typeof DWLive.onLiveEnd === 'function') {
+                        DWLive.onLiveEnd(j);
+                    }
+                }, getDelayTime());
             });
 
             this.socket.on('kick_out', function (j) {
@@ -1014,7 +1019,6 @@
                     MobileLive.unban();
                 } else {
                     LivePlayer.unbanLive();
-
                 }
 
                 if (typeof DWLive.onUnBanStream === 'function') {
@@ -1025,6 +1029,12 @@
                 data = toJson(data);
                 if (typeof DWLive.onRoomSetting === 'function') {
                     DWLive.onRoomSetting(data);
+                }
+                if (data.layout_video_main != currentLayout) {
+                    var main = data.layout_video_main;
+                    if (typeof DWLive.onSwitchVideoDoc === 'function') {
+                        DWLive.onSwitchVideoDoc(main);
+                    }
                 }
             });
 
@@ -1129,8 +1139,8 @@
             /**
              * 获取当前播放（数据源）场景（0：无意义(默认)，10、11:（开启/关闭）摄像头，20：图片，30：插播视频，40：区域捕获，50：桌面共享，60：自定义场景）
              * **/
-            this.socket.on('switch_source',function (data) {
-                if(typeof DWLive.onSwitchSource === 'function'){
+            this.socket.on('switch_source', function (data) {
+                if (typeof DWLive.onSwitchSource === 'function') {
                     DWLive.onSwitchSource(data);
                 }
             });
@@ -1823,11 +1833,11 @@
 
             this.getFlash()._showMarqueePlugin(marquee);
         },
-        closeMarquee:function () {
-            if(!this.getFlash()){
+        closeMarquee: function () {
+            if (!this.getFlash()) {
                 return;
             }
-            this.getFlash()._closeMarqueePlugin({name:"PluginForMarquee"});
+            this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'});
         }
     };
 
@@ -2148,7 +2158,7 @@
                             'userrole': chatLog.userRole,
                             'useravatar': chatLog.userAvatar,
                             'msg': chatLog.content,
-                            'time': '',
+                            'time': chatLog.time,
                             'usercustommark': chatLog.userCustomMark
                         });
                     }
@@ -2713,6 +2723,35 @@
             b = 0;
         }
         b = b * 1000;
+
+        // 低延迟
+        if (MobileLive.isMobile() == 'isMobile') {
+            if (b === 0) {
+                return 5000;
+            } else {
+                return 10000;
+            }
+        } else {
+            if (b === 0) {
+                return 1300;
+            } else {
+                return 3000;
+            }
+        }
+    }
+
+
+    function getDelayTime() {
+        var b = LivePlayer.delay;
+        if (isNaN(b) || b < 0) {
+            b = 0;
+        }
+        if (b) {
+            console.log('非低延迟模式');
+        } else {
+            console.log('低延迟模式');
+        }
+        // b = b * 1000;
 
         // 低延迟
         if (MobileLive.isMobile() == 'isMobile') {
