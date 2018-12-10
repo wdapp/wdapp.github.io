@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.5.1 2018/11/20
+ * v2.5.2 2018/12/10
  */
 !(function ($, window, document) {
 
@@ -1309,7 +1309,8 @@
                                 msg: chatLog.content,
                                 useravatar: chatLog.userAvatar,
                                 userRole: chatLog.userRole,
-                                usercustommark: chatLog.userCustomMark
+                                usercustommark: chatLog.userCustomMark,
+                                role: chatLog.role
                             });
                         }
                     }
@@ -1500,7 +1501,7 @@
     var callback = {};
 
     var util = {
-        debug: false,
+        debug: true,
         log: function (arg1, arg2) {
             if (this.debug) {
                 if (arg2) {
@@ -1843,7 +1844,8 @@
                     msg: chatLog.content,
                     useravatar: chatLog.userAvatar,
                     userRole: chatLog.userRole,
-                    usercustommark: chatLog.userCustomMark
+                    usercustommark: chatLog.userCustomMark,
+                    role: chatLog.role,
                 });
 
                 if (!callback.chatLogs.length) {
@@ -1927,7 +1929,8 @@
                     msg: cl.content,
                     useravatar: cl.userAvatar,
                     userRole: cl.userRole,
-                    usercustommark: cl.userCustomMark
+                    usercustommark: cl.userCustomMark,
+                    role: cl.role,
                 });
                 if (!window.CHATLOGS.length) {
                     break;

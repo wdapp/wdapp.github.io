@@ -82,6 +82,10 @@ $('#only-me').bind('click', function () {
     }
 });
 
+DWLive.onSwitchVideoDoc= function( main ){
+    "use strict";
+    alert('当前是否以视频为主-->' + main);
+}
 
 // 优选网络
 $('#btn-network').bind('click', function () {
@@ -229,11 +233,46 @@ $('#left-bar').bind('click', function () {
     }
     return;
 });
+window.on_docs_data_complate=function (da) {
+
+};
+DWLive.onSilenceUserChatMessage = function(da){
+    alert(da);
+}
+$('#jump_btn').on('click',function () {
+    var docId = $('#docId').val();
+    var pageIndex=$('#pageIndeId').val()
+    DWLive.changePageTo(docId,pageIndex);
+});
+//切换自由模式
+var isFree = false;
+$('#changeMode').on('click',function () {
+		isFree = !isFree;
+		var type = isFree ?DWLive.DocModeType.FreeMode:DWLive.DocModeType.NormalMode;
+		DWLive.setDocMode(type);
+        DWLive.getDocs(on_docs_data_complate);
+});
+
+//退出直播间
+$('#logout').click(function () {
+    var isC = confirm('确认要退出登录?');
+    if (isC) {
+        DWLive.logout({
+            success: function (data){
+                window.location.href = '/login';
+            },
+            error: function(data){
+                alert(data.msg);
+            }
+        })
+    }
+    e.preventDefault();
+});
 
 
 // 视频切换
 $('#btn-switch').bind('click', switchPptToVideo);
-
+var isMainVideo=false;
 function switchPptToVideo() {
     if ($('#widget-video').is(':animated')) {
         return false;
@@ -287,6 +326,7 @@ function switchPptToVideo() {
         $('#full-ppt').fadeOut(0, function () {
             $('#full-vod').fadeIn();
         });
+        isMainVideo = true;
     } else {
         pptLeft = (pptLeft == '270px') ? '0' : pptLeft;
         pptWidth = 'auto';
@@ -322,6 +362,10 @@ function switchPptToVideo() {
         $('#full-vod').fadeOut(0, function () {
             $('#full-ppt').fadeIn();
         });
+        isMainVideo= false;
+    }
+    if(typeof window.switch_main_show_marquee ==='function'){
+        window.switch_main_show_marquee();
     }
     return false;
 }

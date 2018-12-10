@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.6.2 2018/11/5
+ * v2.6.3 2018/12/10
  */
 (function () {
 
@@ -404,7 +404,8 @@
             });
         },
 
-        logout: function () {
+        logout: function (value) {
+            if (!value) return;
             $.ajax({
                 url: '//view.csslcloud.net/api/live/logout',
                 type: 'GET',
@@ -414,8 +415,14 @@
                     withCredentials: true
                 },
                 success: function (data) {
+                    if (typeof callback.success === 'function') {
+                        value.success(data);
+                    }
                 },
                 error: function (xhr, status, error) {
+                    if (typeof callback.error === 'function') {
+                        value.error({'errorcode': '100', 'msg': '退出失败', 'info': data});
+                    }
                 }
             });
         },
@@ -894,7 +901,6 @@
             });
 
             this.socket.on('end_stream', function (j) {
-                console.log('end_stream delayTime', getDelayTime());
                 setTimeout(function () {
                     console.log('end_stream');
                     if (LivePlayer) {
@@ -1034,7 +1040,16 @@
                     var main = data.layout_video_main;
                     if (typeof DWLive.onSwitchVideoDoc === 'function') {
                         DWLive.onSwitchVideoDoc(main);
+                        currentLayout = main;
                     }
+                }
+            });
+
+            //禁言某人发送信息回调
+            this.socket.on('silence_user_chat_message', function (data) {
+                /*alert("您已被禁言！" + data);*/
+                if (typeof DWLive.onSilenceUserChatMessage === 'function') {
+                    DWLive.onSilenceUserChatMessage(toJson(data));
                 }
             });
 
