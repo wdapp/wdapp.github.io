@@ -187,7 +187,7 @@
             viewername: localStorage.viewername,
             viewertoken: localStorage.viewertoken,
             fastMode: localStorage.fastmode,
-            forceNew: localStorage.forceNew
+            forceNew: localStorage.forceNew === 'true' ? true : false
         });
 
         DWLive.onLiveTime = function (e) {

@@ -90,7 +90,7 @@
         viewername: localStorage.viewername,
         viewertoken: localStorage.viewertoken,
         fastMode: localStorage.fastmode,
-        forceNew: localStorage.forceNew
+        forceNew: localStorage.forceNew === 'true' ? true : false
     });
 
     // 接收聊天信息

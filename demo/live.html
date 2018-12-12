@@ -263,7 +263,7 @@
         language: 'en',
         viewercustominfo: '',
         fastMode: localStorage.fastmode,
-        forceNew: localStorage.forceNew
+        forceNew: localStorage.forceNew === 'true' ? true : false
     });
 
     DWLive.onLiveTime = function (e) {
