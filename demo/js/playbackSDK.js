@@ -228,8 +228,10 @@
                     terminal: terminal
                 }
             });
+            util.log('{forceNew: false}')
         } else {
             var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true});
+            util.log('{forceNew: true}')
         }
     };
 
@@ -1504,7 +1506,7 @@
 
     var callback = {};
 
-    window.debug = false;
+    window.debug = true;
     var util = {
         debug: window.debug,
         log: function (arg1, arg2) {

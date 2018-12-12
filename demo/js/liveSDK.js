@@ -2703,7 +2703,7 @@
         }
     };
 
-    window.isDebug = false;
+    window.isDebug = true;
     // 打印debug信息
     var debug = function (t, d) {
         if (!window.isDebug) {
