@@ -219,14 +219,18 @@
             terminal = 1;
         }
 
-        var socket = io.connect(document.location.protocol + '//' + host + '/replay', {
-            query: {
-                roomid: opts.roomId,
-                sessionid: opts.viewer.sessionId,
-                platform: 1,
-                terminal: terminal
-            }
-        });
+        if (!DW.forceNew) {
+            var socket = io.connect(document.location.protocol + '//' + host + '/replay', {
+                query: {
+                    roomid: opts.roomId,
+                    sessionid: opts.viewer.sessionId,
+                    platform: 1,
+                    terminal: terminal
+                }
+            });
+        } else {
+            var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true});
+        }
     };
 
     var DrawPanel = function (opts, callbackPlayer) {
@@ -1500,10 +1504,11 @@
 
     var callback = {};
 
+    window.debug = false;
     var util = {
-        debug: true,
+        debug: window.debug,
         log: function (arg1, arg2) {
-            if (this.debug) {
+            if (window.debug) {
                 if (arg2) {
                     console.log(arg1 + ' => ', arg2);
                 } else {
@@ -1609,6 +1614,7 @@
     var DW = {
         isH5play: false,
         fastMode: false,
+        forceNew: false,
         setFastMode: function (opts) {
             if (typeof opts.fastMode == 'string') {
                 if (opts.fastMode === 'false') {
@@ -1649,6 +1655,10 @@
                     DW.appendDrawPanel();
                 }
             });
+
+            if (typeof opts.forceNew === 'boolean') {
+                this.forceNew = opts.forceNew;
+            }
         },
         appendDrawPanel: function () {
             var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'

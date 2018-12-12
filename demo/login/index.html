@@ -155,6 +155,14 @@
                         </div>
 
                     </li>
+                    <li>
+                        <label for="qq" class="input-tips2">PC端观看回放开启H5模式：</label>
+                        <div class="inputOuter2">
+                            <input id="isH5play" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
 
                     <li>
                         <div class="inputArea">
@@ -315,7 +323,9 @@
     </div>
 
 </div>
-<div class="jianyi">*推荐使用ie8或以上版本ie浏览器或Chrome内核浏览器访问本站</div>
+<div class="options">
+    是否允许链接多个socket <input type="checkbox" id="forceNew">
+</div>
 <script>
 
     clear();
@@ -324,6 +334,9 @@
         $(this).val(index);
         $(this).click(function () {
             clear();
+
+            obj.forceNew = $('#forceNew')[0].checked;
+
             switch ($(this).val()) {
                 case '0':
                     var obj = {};
@@ -343,6 +356,7 @@
                     obj.viewername = $('#playback-viewername').val();
                     obj.viewertoken = $('#playback-viewertoken').val();
                     obj.fastmode = $('#playback-fastmode')[0].checked;
+                    obj.isH5play = $('#isH5play')[0].checked;
                     setValue(obj);
                     location.href = '../playback.html';
                     break;
@@ -384,6 +398,8 @@
         localStorage.viewername = obj.viewername;
         localStorage.viewertoken = obj.viewertoken;
         localStorage.fastmode = obj.fastmode;
+        localStorage.forceNew = obj.forceNew;
+        localStorage.isH5play = obj.isH5play;
     }
 
     function clear(){
@@ -399,6 +415,8 @@
         localStorage.viewername = '';
         localStorage.viewertoken = '';
         localStorage.fastmode = '';
+        localStorage.forceNew = '';
+        localStorage.isH5play = '';
     }
 
 </script>

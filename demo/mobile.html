@@ -174,8 +174,8 @@
 <script src="js/jquery.panzoom.min.js?v=20160706151521566"></script>
 <script src="js/main.js?v=20160706151521566"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<!--<script src="js/liveSDK.js"></script>-->
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201809181356"></script>
+<script src="js/liveSDK.js"></script>
+<!--<script src="//view.csslcloud.net/js/liveSDK.js?v=201809181356"></script>-->
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
@@ -186,7 +186,8 @@
             roomid: localStorage.roomid,
             viewername: localStorage.viewername,
             viewertoken: localStorage.viewertoken,
-            fastMode: localStorage.fastmode
+            fastMode: localStorage.fastmode,
+            forceNew: localStorage.forceNew
         });
 
         DWLive.onLiveTime = function (e) {

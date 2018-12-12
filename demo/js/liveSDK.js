@@ -168,6 +168,12 @@
             }
             DWDpc.fastMode = this.fastMode;
 
+
+            this.forceNew = false;
+            if (typeof option.forceNew === 'boolean') {
+                this.forceNew = option.forceNew;
+            }
+
             var _this = this;
             var scripts = [
                 '//static.csslcloud.net/js/socket.io.js',
@@ -825,13 +831,20 @@
 
             var t = MobileLive.isMobile() == 'isMobile' ? 1 : 0;
 
-            this.socket = io.connect(this.options.pusherUrl, {
-                query: {
-                    sessionid: Pusher.options.key,
-                    platform: 1,
-                    terminal: t
-                }
-            });
+            if (!DWLive.forceNew) {
+                this.socket = io.connect(this.options.pusherUrl, {
+                    query: {
+                        sessionid: Pusher.options.key,
+                        platform: 1,
+                        terminal: t
+                    }
+                });
+                debug('forceNew: false');
+            } else {
+                this.socket = io.connect(this.options.pusherUrl + '?sessionid=' + Pusher.options.key + '&platform=' + 1 + '&terminal=', {forceNew: true});
+                debug('forceNew: true');
+            }
+
             this.bind();
         },
 
@@ -1040,8 +1053,9 @@
                     var main = data.layout_video_main;
                     if (typeof DWLive.onSwitchVideoDoc === 'function') {
                         DWLive.onSwitchVideoDoc(main);
-                        currentLayout = main;
+
                     }
+                    currentLayout = main;
                 }
             });
 
@@ -2689,10 +2703,10 @@
         }
     };
 
+    window.isDebug = false;
     // 打印debug信息
     var debug = function (t, d) {
-        var isDegbug = false;
-        if (!isDegbug) {
+        if (!window.isDebug) {
             return;
         }
 
