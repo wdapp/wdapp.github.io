@@ -266,7 +266,6 @@ $('#logout').click(function () {
             }
         })
     }
-    e.preventDefault();
 });
 
 
