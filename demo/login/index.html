@@ -335,11 +335,12 @@
         $(this).click(function () {
             clear();
 
+            var obj = {};
             obj.forceNew = $('#forceNew')[0].checked;
 
             switch ($(this).val()) {
                 case '0':
-                    var obj = {};
+//                    var obj = {};
                     obj.userid = $('#live-userid').val();
                     obj.roomid = $('#live-roomid').val();
                     obj.viewername = $('#live-viewername').val();
@@ -349,7 +350,7 @@
                     location.href = '../live.html';
                     break;
                 case '1':
-                    var obj = {};
+//                    var obj = {};
                     obj.userId = $('#playback-userId').val();
                     obj.roomId = $('#playback-roomId').val();
                     obj.recordId = $('#playback-recordId').val();
@@ -361,7 +362,7 @@
                     location.href = '../playback.html';
                     break;
                 case '2':
-                    var obj = {};
+//                    var obj = {};
                     obj.userid = $('#mobile-userid').val();
                     obj.roomid = $('#mobile-roomid').val();
                     obj.viewername = $('#mobile-viewername').val();
@@ -371,7 +372,7 @@
                     location.href = '../mobile.html';
                     break;
                 case '3':
-                    var obj = {};
+//                    var obj = {};
                     obj.userId = $('#playback-mobile-userId').val();
                     obj.roomId = $('#playback-mobile-roomId').val();
                     obj.recordId = $('#playback-mobile-recordId').val();
