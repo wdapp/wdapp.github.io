@@ -268,7 +268,6 @@ $('#logout').click(function () {
     }
 });
 
-
 // 视频切换
 $('#btn-switch').bind('click', switchPptToVideo);
 var isMainVideo=false;
