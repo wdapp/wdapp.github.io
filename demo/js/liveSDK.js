@@ -427,7 +427,7 @@
                 },
                 error: function (xhr, status, error) {
                     if (typeof value.error === 'function') {
-                        value.error({'errorcode': '100', 'msg': '退出失败', 'info': data});
+                        value.error({'errorcode': '100', 'msg': '退出失败', 'info': error});
                     }
                 }
             });
