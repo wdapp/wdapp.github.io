@@ -262,7 +262,7 @@ $('#logout').click(function () {
                 window.location.href = '../login';
             },
             error: function(data){
-                console.log(data.msg);
+                // console.log(data.msg);
             }
         })
     }
