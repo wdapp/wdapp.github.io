@@ -259,10 +259,10 @@ $('#logout').click(function () {
     if (isC) {
         DWLive.logout({
             success: function (data){
-                window.location.href = '/login';
+                window.location.href = '../login';
             },
             error: function(data){
-                alert(data.msg);
+                console.log(data.msg);
             }
         })
     }
