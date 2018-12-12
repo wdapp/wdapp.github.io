@@ -84,7 +84,7 @@ $('#only-me').bind('click', function () {
 
 DWLive.onSwitchVideoDoc= function( main ){
     "use strict";
-    alert('当前是否以视频为主-->' + main);
+    // alert('当前是否以视频为主-->' + main);
 }
 
 // 优选网络
