@@ -415,7 +415,7 @@
             $.ajax({
                 url: '//view.csslcloud.net/api/live/logout',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'jsonp',
                 timeout: 5000,
                 xhrFields: {
                     withCredentials: true
