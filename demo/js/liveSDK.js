@@ -421,12 +421,12 @@
                     withCredentials: true
                 },
                 success: function (data) {
-                    if (typeof callback.success === 'function') {
+                    if (typeof value.success === 'function') {
                         value.success(data);
                     }
                 },
                 error: function (xhr, status, error) {
-                    if (typeof callback.error === 'function') {
+                    if (typeof value.error === 'function') {
                         value.error({'errorcode': '100', 'msg': '退出失败', 'info': data});
                     }
                 }
