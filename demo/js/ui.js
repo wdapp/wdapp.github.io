@@ -236,9 +236,9 @@ $('#left-bar').bind('click', function () {
 window.on_docs_data_complate=function (da) {
 
 };
-DWLive.onSilenceUserChatMessage = function(da){
-    alert(da);
-}
+// DWLive.onSilenceUserChatMessage = function(da){
+//     alert(da);
+// }
 $('#jump_btn').on('click',function () {
     var docId = $('#docId').val();
     var pageIndex=$('#pageIndeId').val()
