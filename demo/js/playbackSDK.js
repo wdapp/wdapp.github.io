@@ -106,6 +106,9 @@
         this.getBuffer = function () {
 
             if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+                if(!this.getH5player()||!this.getH5player().buffered||!this.getH5player().buffered.end(0)){
+                    return 0;
+                }
                 return this.getH5player().buffered.end(0);
             } else {
                 var swf = this.getFlash();
@@ -228,10 +231,10 @@
                     terminal: terminal
                 }
             });
-            util.log('{forceNew: false}')
+            util.log('{forceNew: false}');
         } else {
             var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true});
-            util.log('{forceNew: true}')
+            util.log('{forceNew: true}');
         }
     };
 
@@ -579,6 +582,9 @@
                 success(sub);
 
                 //登录成功
+                if (typeof  window.on_cc_login_success === 'function') {
+                    window.on_cc_login_success();
+                }
 
                 if (!options.drawRequestTime) {
                     // 请求画笔数据
