@@ -82,10 +82,9 @@ $('#only-me').bind('click', function () {
     }
 });
 
-// DWLive.onSwitchVideoDoc= function( main ){
-//     "use strict";
-//     // alert('当前是否以视频为主-->' + main);
-// }
+DWLive.onSwitchVideoDoc= function(main){
+    console.log('当前是否以视频为主-->' + main);
+}
 
 // 优选网络
 $('#btn-network').bind('click', function () {
@@ -121,7 +120,6 @@ $('#btn-netsubmit').bind('click', function () {
 $('#btn-netcannel').bind('click', function () {
     $('#network').fadeOut(200);
 });
-
 
 // 只听音频
 $('#btn-audio').click(function () {
@@ -236,9 +234,10 @@ $('#left-bar').bind('click', function () {
 window.on_docs_data_complate=function (da) {
 
 };
-// DWLive.onSilenceUserChatMessage = function(da){
-//     alert(da);
-// }
+DWLive.onSilenceUserChatMessage = function(da){
+
+}
+
 $('#jump_btn').on('click',function () {
     var docId = $('#docId').val();
     var pageIndex=$('#pageIndeId').val()
@@ -262,7 +261,7 @@ $('#logout').click(function () {
                 window.location.href = '../demo';
             },
             error: function(data){
-                // console.log(data.msg);
+                console.log(data.msg);
             }
         })
     }

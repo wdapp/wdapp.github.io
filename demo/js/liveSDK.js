@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.6.4 2018/12/12
+ * v2.6.5 2018/12/12
  */
 (function () {
 
@@ -915,7 +915,6 @@
 
             this.socket.on('end_stream', function (j) {
                 setTimeout(function () {
-                    console.log('end_stream');
                     if (LivePlayer) {
                         LivePlayer.isPublishing = 0;
                     }
