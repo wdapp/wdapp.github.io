@@ -82,10 +82,6 @@ $('#only-me').bind('click', function () {
     }
 });
 
-DWLive.onSwitchVideoDoc= function(main){
-    console.log('当前是否以视频为主-->' + main);
-}
-
 // 优选网络
 $('#btn-network').bind('click', function () {
 
@@ -234,9 +230,6 @@ $('#left-bar').bind('click', function () {
 window.on_docs_data_complate=function (da) {
 
 };
-DWLive.onSilenceUserChatMessage = function(da){
-
-}
 
 $('#jump_btn').on('click',function () {
     var docId = $('#docId').val();

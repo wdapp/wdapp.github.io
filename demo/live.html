@@ -286,6 +286,14 @@
     window.onload = function () {
         $('#mr5').html(localStorage.viewername);
     }
+
+    DWLive.onSilenceUserChatMessage = function(da){
+
+    }
+
+    DWLive.onSwitchVideoDoc= function(main){
+        console.log('当前是否以视频为主-->' + main);
+    }
 </script>
 
 </body>
