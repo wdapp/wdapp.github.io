@@ -2175,20 +2175,23 @@
         init: function (opts) {
             var _this = this;
             $.ajax({
-                url: '//view.csslcloud.net/api/vod/play/mobile',
+                // url: '//view.csslcloud.net/api/vod/play/mobile',
+                url: '//view.csslcloud.net/api/vod/v2/play/h5',
                 type: 'GET',
-                dataType: 'jsonp',
-                data: {userid: opts.userId, videoid: opts.videoId},
+                // dataType: 'jsonp',
+                dataType: 'json',
+                // data: {userid: opts.userId, videoid: opts.videoId},
+                data: {userid: opts.userId, recordid: opts.recordId, roomid: opts.roomId},
                 success: function (data) {
                     var pvdefault = data.video[0];
 
                     var playurl = pvdefault.playurl;
-                    var secureplayurl = pvdefault.secureplayurl;
-
-                    var isHttps = window.location.protocol === 'https:';
-                    if (isHttps && !!secureplayurl) {
-                        playurl = secureplayurl;
-                    }
+                    // var secureplayurl = pvdefault.secureplayurl;
+                    //
+                    // var isHttps = window.location.protocol === 'https:';
+                    // if (isHttps && !!secureplayurl) {
+                    //     playurl = secureplayurl;
+                    // }
 
                     _this.appendVideo(playurl, opts);
                 }
