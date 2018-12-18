@@ -2186,12 +2186,12 @@
                     var pvdefault = data.video[0];
 
                     var playurl = pvdefault.playurl;
-                    // var secureplayurl = pvdefault.secureplayurl;
-                    //
-                    // var isHttps = window.location.protocol === 'https:';
-                    // if (isHttps && !!secureplayurl) {
-                    //     playurl = secureplayurl;
-                    // }
+                    var secureplayurl = pvdefault.secureplayurl;
+
+                    var isHttps = window.location.protocol === 'https:';
+                    if (isHttps && !!secureplayurl) {
+                        playurl = secureplayurl;
+                    }
 
                     _this.appendVideo(playurl, opts);
                 }
