@@ -146,6 +146,7 @@
             }
             this.userid = $.trim(option.userid);
             this.roomid = $.trim(option.roomid);
+            this.groupid = $.trim(option.groupid);
             this.viewername = $.trim(option.viewername);
             this.viewertoken = $.trim(option.viewertoken);
             this.forcibly = $.trim(option.forcibly);
@@ -248,6 +249,7 @@
                 data: {
                     roomid: this.roomid,
                     userid: this.userid,
+                    groupid: this.groupid,
                     viewername: this.viewername,
                     viewertoken: this.viewertoken,
                     forcibly: this.forcibly,
@@ -287,6 +289,7 @@
                     DWLive.multiQuality = data.datas.room.multiQuality;
                     DWLive.documentDisplayMode = data.datas.room.documentDisplayMode;
                     DWLive.liveCountdown = data.datas.room.liveCountdown;
+                    DWLive.groupId = data.datas.viewer.groupId;
 
                     //初始化极速动画对象
                     if (DWDpc.fastMode) {
@@ -335,7 +338,7 @@
                     }
 
                     var announcement = data.datas.announcement;
-                    if (typeof DWLive.onAnnouncementShow === 'function' && announcement) {
+                    if (typeof DWLive.onAnnouncementShow === 'function') {
                         DWLive.onAnnouncementShow(announcement);
                     }
 
@@ -808,6 +811,7 @@
         init: function () {
             this['userId'] = DWLive.userid,
                 this['roomId'] = DWLive.roomid,
+                this['groupId'] = DWLive.groupId,
                 this['liveId'] = DWLive.liveid,
                 this['viewerId'] = DWLive.viewerid,
                 this['upId'] = DWLive.upid;
@@ -821,6 +825,7 @@
             maxMessageCount: 300, // 保存聊天条数
             userId: '',
             roomId: '',
+            groupId: '',
             livePlayerId: '',
             drawPanel: ''
         },
@@ -1679,6 +1684,7 @@
             var flashvars = {
                 'userid': DWLive.userid,
                 'roomid': DWLive.roomid,
+                'groupId': DWLive.groupId,
                 'foreignPublish': this.foreignPublish,
                 'warmvideoid': this.warmVideoId,
                 'openhostmode': this.openHostMode, // 多主讲

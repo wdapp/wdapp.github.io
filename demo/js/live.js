@@ -83,15 +83,16 @@ $(function () {
             + '<p class="chat-content">' + showEm(o.msg) + '</p>'
             + '</div>'
             + '</li>';
-        $('#chat-list').append(d);
+        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+            $('#chat-list').append(d);
 
-        $('#chat-list').parent().scrollTop($('#chat-list').height());
+            $('#chat-list').parent().scrollTop($('#chat-list').height());
 
-        if (o.userid == DWLive.viewerid) {
-            $('#chat-list li[uid = ' + o.userid + ']').addClass('me');
+            if (o.userid === DWLive.viewerid) {
+                $('#chat-list li[uid = ' + o.userid + ']').addClass('me');
+            }
+            DWLive.barrage(o.msg); // 发送弹幕
         }
-
-        DWLive.barrage(o.msg); // 发送弹幕
     };
 
     // 接收私聊
@@ -172,11 +173,13 @@ $(function () {
             + '<p class="chat-content">' + o.value.content + '</p>'
             + '</div>'
             + '</li>';
-        $('#question-main').append(d);
-        $('#question-main').parent().scrollTop($('#question-main').height());
+        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+            $('#question-main').append(d);
+            $('#question-main').parent().scrollTop($('#question-main').height());
 
-        if (o.value.userName !== DWLive.viewername) {
-            $('#' + qid).addClass('not-mines');
+            if (o.value.userName !== DWLive.viewername) {
+                $('#' + qid).addClass('not-mines');
+            }
         }
     };
 
@@ -197,8 +200,10 @@ $(function () {
             + '</p>'
             + '<p class="repeat-content">' + o.value.content + '</p>'
             + '</div>';
-        $('#' + qid).append(d).show();
-        $('#question-main').parent().scrollTop($('#question-main').height());
+        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+            $('#' + qid).append(d).show();
+            $('#question-main').parent().scrollTop($('#question-main').height());
+        }
     };
 
     var Viewer = {
