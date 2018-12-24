@@ -355,6 +355,36 @@
 </div>
 <script>
 
+    function scancode(url) {
+
+        var self = this;
+
+        var data = parseUrl(url);
+        return data;
+
+        function parseUrl(url) {
+            var querys = url.split('?');
+            if (!querys[1]) {
+                console.log('无效链接');
+                return false;
+            }
+            var query = url.split('?')[1];
+            var queryArr = query.split('&');
+            if (queryArr.length === 0) {
+                console.log('无效链接');
+                return false;
+            }
+            var obj = {};
+            queryArr.forEach(function (item) {
+                var key = item.split('=')[0];
+                var value = item.split('=')[1];
+                obj[key] = value;
+            });
+            return obj;
+        }
+
+    }
+
     clear();
 
     $('.inputArea').each(function (index) {
@@ -367,6 +397,12 @@
 
             switch ($(this).val()) {
                 case '0':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#live-userid').val(data['userid']);
+                        $('#live-roomid').val(data['roomid']);
+                    }
+
 //                    var obj = {};
                     obj.userid = $('#live-userid').val();
                     obj.roomid = $('#live-roomid').val();
@@ -378,6 +414,12 @@
                     location.href = '../live.html';
                     break;
                 case '1':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#live-userid').val(data['userid']);
+                        $('#live-roomid').val(data['roomid']);
+                        $('#live-recordId').val(data['recordid']);
+                    }
 //                    var obj = {};
                     obj.userId = $('#playback-userId').val();
                     obj.roomId = $('#playback-roomId').val();
@@ -391,6 +433,11 @@
                     location.href = '../playback.html';
                     break;
                 case '2':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#live-userid').val(data['userid']);
+                        $('#live-roomid').val(data['roomid']);
+                    }
 //                    var obj = {};
                     obj.userid = $('#mobile-userid').val();
                     obj.roomid = $('#mobile-roomid').val();
@@ -402,6 +449,12 @@
                     location.href = '../mobile.html';
                     break;
                 case '3':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#live-userid').val(data['userid']);
+                        $('#live-roomid').val(data['roomid']);
+                        $('#live-recordId').val(data['recordid']);
+                    }
 //                    var obj = {};
                     obj.userId = $('#playback-mobile-userId').val();
                     obj.roomId = $('#playback-mobile-roomId').val();
