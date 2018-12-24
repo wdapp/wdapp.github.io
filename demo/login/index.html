@@ -416,9 +416,9 @@
                 case '1':
                     if($('#url').val()){
                         var data = scancode($('#url').val());
-                        $('#live-userid').val(data['userid']);
-                        $('#live-roomid').val(data['roomid']);
-                        $('#live-recordId').val(data['recordid']);
+                        $('#playback-userid').val(data['userid']);
+                        $('#playback-roomid').val(data['roomid']);
+                        $('#playback-recordId').val(data['recordid']);
                     }
 //                    var obj = {};
                     obj.userId = $('#playback-userId').val();
@@ -435,8 +435,8 @@
                 case '2':
                     if($('#url').val()){
                         var data = scancode($('#url').val());
-                        $('#live-userid').val(data['userid']);
-                        $('#live-roomid').val(data['roomid']);
+                        $('#mobile-userid').val(data['userid']);
+                        $('#mobile-roomid').val(data['roomid']);
                     }
 //                    var obj = {};
                     obj.userid = $('#mobile-userid').val();
@@ -451,9 +451,9 @@
                 case '3':
                     if($('#url').val()){
                         var data = scancode($('#url').val());
-                        $('#live-userid').val(data['userid']);
-                        $('#live-roomid').val(data['roomid']);
-                        $('#live-recordId').val(data['recordid']);
+                        $('#playback-userid').val(data['userid']);
+                        $('#playback-roomid').val(data['roomid']);
+                        $('#playback-recordId').val(data['recordid']);
                     }
 //                    var obj = {};
                     obj.userId = $('#playback-mobile-userId').val();
