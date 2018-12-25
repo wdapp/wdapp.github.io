@@ -228,7 +228,7 @@
 
         var m3u8 = null;
         DWLive.onLiveStarting = function () {
-            m3u8 = DWLive.getLine(); // 获取线路
+            m3u8 = DWLive.getLine(); //  获取线路
             $('.line').empty();
             $.each(m3u8, function (index, pd) {
                 var acls = '';
