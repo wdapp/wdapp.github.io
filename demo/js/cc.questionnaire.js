@@ -191,6 +191,7 @@ function showQuestionnaireAnswer() {
 		// } else {
 		// 		questionnaireMsg = '不要灰心，请继续努力！';
 		// }
+
 		//$('#questionnaireMsg').text(questionnaireMsg).show();
 		 $('#questionnaireSuccess').hide();
 }
