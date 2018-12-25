@@ -32,7 +32,7 @@ $(function () {
         $('.video-box').css({'width': '100%', 'height': '100%'});
         var questionnaireId = $('#questionnaire').attr('questionnaireId');
 
-        // 是否有没有回答的问题
+        //是否有没有回答的问题
         var hasNotAnswerSubject = false;
         var subjectsAnswer = [];
         $('div[name="subject"]').each(function () {
