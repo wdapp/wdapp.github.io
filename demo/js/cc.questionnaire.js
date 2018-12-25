@@ -3,18 +3,19 @@
  *
  *  Created by shanglt on 2017/3/27.
  */
-var Lr={questionnaireTip: '问卷调查',
-		questionnaireTypeSingle: '单选',
-		questionnaireTypeMultiple: '多选',
-		questionnaireTypeQA: '问答',
-		successTip: '操作成功',
-		failTip: '操作失败',
-		tipSubmit: '提交',
-        tipSure:"确认"
-}
+var Lr = {
+    questionnaireTip: '问卷调查',
+    questionnaireTypeSingle: '单选',
+    questionnaireTypeMultiple: '多选',
+    questionnaireTypeQA: '问答',
+    successTip: '操作成功',
+    failTip: '操作失败',
+    tipSubmit: '提交',
+    tipSure: '确认'
+};
 $(function () {
 
-		
+
     function errorTip(msg) {
         $('#questionnaireSuccess, #questionnaireFail').hide();
         $('#questionnaireFail').text(msg).show();
@@ -85,6 +86,7 @@ $(function () {
             questionnaireId: questionnaireId,
             subjectsAnswer: subjectsAnswer
         };
+
         function getDatainfo(data) {
             if (data.success) {
                 // 答卷成功
@@ -116,7 +118,8 @@ $(function () {
             }
             $('#submitQuestionnaire').attr('disabled', false);
         }
-        DWLive.submitQuestionnaire(params,getDatainfo)
+
+        DWLive.submitQuestionnaire(params, getDatainfo);
     });
 
     // 关闭问卷
@@ -124,10 +127,10 @@ $(function () {
         $('#questionnaire').remove();
         $('.video-box').css({'width': '100%', 'height': '100%'});
     });
-		$(document).on('click','#close2Questionnaire',function () {
-				$('#questionnaire').remove();
-				$('.video-box').css({'width': '100%', 'height': '100%'});
-		})
+    $(document).on('click', '#close2Questionnaire', function () {
+        $('#questionnaire').remove();
+        $('.video-box').css({'width': '100%', 'height': '100%'});
+    });
 });
 
 /**
@@ -135,72 +138,73 @@ $(function () {
  *
  * */
 function showQuestionnaireAnswer() {
-		// 可以关闭
-		$('#closeQuestionnaire').show();
-		
-		// 显示正确选项
-		$('span[name="correctOption"]').show();
-		
-		// 按钮进行缩进
-		$('span[name="correctSubjectOption"]').show();
-		
-		// 绿色背景
-		$('label[correct=1]').css('color', '#4DB131');
-		
-		$('#submitQuestionnaire').hide();
-		$('#close2Questionnaire').show();
-		
-		$('div[name="subject"]').find('input').attr('disabled', true);
-		
-		// 拥有正确答案的题目个数
-		var hasCorrectSubjectCount = $('div[name="subject"]:has(span[name="correctSubjectOption"])').length;
-		if (hasCorrectSubjectCount == 0) {
-				return;
-		}
-		
-		// 用户答对题目个数
-		var answerCorrectSubjectCount = 0;
-		$('div[name="subject"]:has(span[name="correctSubjectOption"])').each(function () {
-				var type = $(this).attr('type');
-				if (type == 0) {
-						if ($(this).find('input[type="radio"][correct="1"]:checked').length) {
-								answerCorrectSubjectCount += 1;
-						}
-				} else if (type == 1) {
-						// 多选题
-						var selectedOptionIds = [];
-						$(this).find('input[type="checkbox"]:checked').each(function () {
-								selectedOptionIds.push($(this).val());
-						});
-						
-						var correctOptionIds = [];
-						$(this).find('input[type="checkbox"][correct="1"]').each(function () {
-								correctOptionIds.push($(this).val());
-						});
-						
-						if (selectedOptionIds.sort().toString() == correctOptionIds.sort().toString()) {
-								answerCorrectSubjectCount += 1;
-						}
-				}
-		});
-		
-		// var questionnaireMsg = '';
-		// if (answerCorrectSubjectCount == hasCorrectSubjectCount) {
-		// 		questionnaireMsg = '你的表现太棒了！';
-		// } else if ((answerCorrectSubjectCount / hasCorrectSubjectCount) >= 0.6) {
-		// 		questionnaireMsg = '恭喜您，通过了';
-		// } else {
-		// 		questionnaireMsg = '不要灰心，请继续努力！';
-		// }
+    // 可以关闭
+    $('#closeQuestionnaire').show();
 
-		//$('#questionnaireMsg').text(questionnaireMsg).show();
-		 $('#questionnaireSuccess').hide();
+    // 显示正确选项
+    $('span[name="correctOption"]').show();
+
+    // 按钮进行缩进
+    $('span[name="correctSubjectOption"]').show();
+
+    // 绿色背景
+    $('label[correct=1]').css('color', '#4DB131');
+
+    $('#submitQuestionnaire').hide();
+    $('#close2Questionnaire').show();
+
+    $('div[name="subject"]').find('input').attr('disabled', true);
+
+    // 拥有正确答案的题目个数
+    var hasCorrectSubjectCount = $('div[name="subject"]:has(span[name="correctSubjectOption"])').length;
+    if (hasCorrectSubjectCount == 0) {
+        return;
+    }
+
+    // 用户答对题目个数
+    var answerCorrectSubjectCount = 0;
+    $('div[name="subject"]:has(span[name="correctSubjectOption"])').each(function () {
+        var type = $(this).attr('type');
+        if (type == 0) {
+            if ($(this).find('input[type="radio"][correct="1"]:checked').length) {
+                answerCorrectSubjectCount += 1;
+            }
+        } else if (type == 1) {
+            // 多选题
+            var selectedOptionIds = [];
+            $(this).find('input[type="checkbox"]:checked').each(function () {
+                selectedOptionIds.push($(this).val());
+            });
+
+            var correctOptionIds = [];
+            $(this).find('input[type="checkbox"][correct="1"]').each(function () {
+                correctOptionIds.push($(this).val());
+            });
+
+            if (selectedOptionIds.sort().toString() == correctOptionIds.sort().toString()) {
+                answerCorrectSubjectCount += 1;
+            }
+        }
+    });
+
+    // var questionnaireMsg = '';
+    // if (answerCorrectSubjectCount == hasCorrectSubjectCount) {
+    // 		questionnaireMsg = '你的表现太棒了！';
+    // } else if ((answerCorrectSubjectCount / hasCorrectSubjectCount) >= 0.6) {
+    // 		questionnaireMsg = '恭喜您，通过了';
+    // } else {
+    // 		questionnaireMsg = '不要灰心，请继续努力！';
+    // }
+
+    //$('#questionnaireMsg').text(questionnaireMsg).show();
+    $('#questionnaireSuccess').hide();
 }
+
 DWLive.onQuestionnairePublish = function (options) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
     $('.video-box').css({'width': '100%', 'height': '100%'});
-    console.log(options)
+    console.log(options);
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/info',
         type: 'GET',
@@ -212,7 +216,7 @@ DWLive.onQuestionnairePublish = function (options) {
             withCredentials: true
         },
         success: function (data) {
-            console.log(data)
+            console.log(data);
 
             if (!data.success) {
                 return;
@@ -248,11 +252,11 @@ DWLive.onQuestionnairePublish = function (options) {
                     });
                 }
             });
-		
-						questionnaire.questionnaireTip = Lr.questionnaireTip;
-						questionnaire.successTip = Lr.successTip;
-						questionnaire.failTip = Lr.failTip;
-						questionnaire.tipSubmit = Lr.tipSubmit;
+
+            questionnaire.questionnaireTip = Lr.questionnaireTip;
+            questionnaire.successTip = Lr.successTip;
+            questionnaire.failTip = Lr.failTip;
+            questionnaire.tipSubmit = Lr.tipSubmit;
             // 问题排序
             questionnaire.subjects.sort(function (s1, s2) {
                 return s1.index - s2.index;
@@ -264,89 +268,89 @@ DWLive.onQuestionnairePublish = function (options) {
     });
 };
 // 显示统计信息
-DWLive.onQuestionnairePublishStatis=function(data) {
-		// 关闭弹出框
-		$('#questionnaire, #questionnaireTip').remove();
-		$('.video-box').css({'width': '100%', 'height': '100%'});
-		
-		$.ajax({
-				url: '//eva.csslcloud.net/api/questionnaire/statis/info',
-				type: "GET",
-				dataType: "jsonp",
-				data: {
-						questionnaireid: data.questionnaireId
-				},
-				xhrFields: {
-						withCredentials: true
-				},
-				success: function (data) {
-						if (!data.success) {
-								return;
-						}
-						
-						var questionnaire = data.datas;
-						// 显示统计信息
-						questionnaire.isShowStatisResult = true;
-						var submitAnswerViewerCount = questionnaire.submitAnswerViewerCount;
-						var subjects = questionnaire.subjects;
-						$.each(subjects, function (subjectsIndex, subject) {
-								
-								subject.subjectIndex = subject.index + 1;
-								
-								if (subject.type == 0) {
-										subject.isSingleSubject = true;
-										subject.typeDesc = Lr.questionnaireTypeSingle;
-								}
-								
-								if (subject.type == 1) {
-										subject.isMultipleSubject = true;
-										subject.typeDesc = Lr.questionnaireTypeMultiple;
-								}
-								
-								if (subject.type == 2) {
-										subject.isQASubject = true;
-										subject.typeDesc = Lr.questionnaireTypeQA;
-										return true;
-								}
-								
-								$.each(subject.options, function (optionIndex, option) {
-										option.indexDesc = String.fromCharCode(65 + option.index);
-										
-										var selectedCount = option.selectedCount;
-										var selectedCountScale = 0;
-										var selectedCountProgress = '0%';
-										
-										if (submitAnswerViewerCount > 0) {
-												selectedCountScale = (selectedCount * 100 / submitAnswerViewerCount).toFixed(0);
-												selectedCountProgress = selectedCountScale + '%';
-										}
-										
-										option.selectedCountScale = selectedCountScale;
-										option.selectedCountProgress = selectedCountProgress;
-								});
-								
-								// 选项排序
-								subject.options.sort(function (o1, o2) {
-										return o1.index - o2.index;
-								});
-						});
-						
-						// 问题排序
-						questionnaire.subjects.sort(function (s1, s2) {
-								return s1.index - s2.index;
-						});
-						
-						questionnaire.questionnaireTip = Lr.questionnaireTip;
-						questionnaire.successTip = Lr.successTip;
-						questionnaire.failTip = Lr.failTip;
-						questionnaire.tipSubmit = Lr.tipSubmit;
-						
-						$('body').append(Handlebars.getTemplate('questionnaire')(questionnaire));
-						// 缩小播放器
-						$('.video-box').css({'width': 1, 'height': 1});
-				}
-		});
-}
+DWLive.onQuestionnairePublishStatis = function (data) {
+    // 关闭弹出框
+    $('#questionnaire, #questionnaireTip').remove();
+    $('.video-box').css({'width': '100%', 'height': '100%'});
+
+    $.ajax({
+        url: '//eva.csslcloud.net/api/questionnaire/statis/info',
+        type: 'GET',
+        dataType: 'jsonp',
+        data: {
+            questionnaireid: data.questionnaireId
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (data) {
+            if (!data.success) {
+                return;
+            }
+
+            var questionnaire = data.datas;
+            // 显示统计信息
+            questionnaire.isShowStatisResult = true;
+            var submitAnswerViewerCount = questionnaire.submitAnswerViewerCount;
+            var subjects = questionnaire.subjects;
+            $.each(subjects, function (subjectsIndex, subject) {
+
+                subject.subjectIndex = subject.index + 1;
+
+                if (subject.type == 0) {
+                    subject.isSingleSubject = true;
+                    subject.typeDesc = Lr.questionnaireTypeSingle;
+                }
+
+                if (subject.type == 1) {
+                    subject.isMultipleSubject = true;
+                    subject.typeDesc = Lr.questionnaireTypeMultiple;
+                }
+
+                if (subject.type == 2) {
+                    subject.isQASubject = true;
+                    subject.typeDesc = Lr.questionnaireTypeQA;
+                    return true;
+                }
+
+                $.each(subject.options, function (optionIndex, option) {
+                    option.indexDesc = String.fromCharCode(65 + option.index);
+
+                    var selectedCount = option.selectedCount;
+                    var selectedCountScale = 0;
+                    var selectedCountProgress = '0%';
+
+                    if (submitAnswerViewerCount > 0) {
+                        selectedCountScale = (selectedCount * 100 / submitAnswerViewerCount).toFixed(0);
+                        selectedCountProgress = selectedCountScale + '%';
+                    }
+
+                    option.selectedCountScale = selectedCountScale;
+                    option.selectedCountProgress = selectedCountProgress;
+                });
+
+                // 选项排序
+                subject.options.sort(function (o1, o2) {
+                    return o1.index - o2.index;
+                });
+            });
+
+            // 问题排序
+            questionnaire.subjects.sort(function (s1, s2) {
+                return s1.index - s2.index;
+            });
+
+            questionnaire.questionnaireTip = Lr.questionnaireTip;
+            questionnaire.successTip = Lr.successTip;
+            questionnaire.failTip = Lr.failTip;
+            questionnaire.tipSubmit = Lr.tipSubmit;
+
+            $('body').append(Handlebars.getTemplate('questionnaire')(questionnaire));
+            // 缩小播放器
+            $('.video-box').css({'width': 1, 'height': 1});
+        }
+    });
+};
 Handlebars.getTemplate = function (name) {
     if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
         $.ajax({
@@ -383,7 +387,7 @@ function confirmAndCloseQuestionnaire(questionnaireId) {
         id: 'questionnaireTip',
         msg: '问卷已停止回收，点击确定后关闭问卷',
         fix: 'fixQuestionnaire("' + questionnaireId + '");',
-        defineTip:Lr.tipSure
+        defineTip: Lr.tipSure
     }));
 }
 
