@@ -195,7 +195,7 @@ function showQuestionnaireAnswer() {
 		//$('#questionnaireMsg').text(questionnaireMsg).show();
 		 $('#questionnaireSuccess').hide();
 }
-DWLive.onQuestionnairePublish = function (data) {
+DWLive.onQuestionnairePublish = function (options) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
     $('.video-box').css({'width': '100%', 'height': '100%'});
@@ -205,7 +205,7 @@ DWLive.onQuestionnairePublish = function (data) {
         type: 'GET',
         dataType: 'json',
         data: {
-            questionnaireid: data.questionnaireId
+            questionnaireid: options.questionnaireId
         },
         xhrFields: {
             withCredentials: true
