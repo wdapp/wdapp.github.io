@@ -199,7 +199,7 @@ DWLive.onQuestionnairePublish = function (options) {
     // 关闭弹出框
     $('#questionnaire, #questionnaireTip').remove();
     $('.video-box').css({'width': '100%', 'height': '100%'});
-
+    console.log(options)
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/info',
         type: 'GET',
@@ -211,6 +211,8 @@ DWLive.onQuestionnairePublish = function (options) {
             withCredentials: true
         },
         success: function (data) {
+            console.log(data)
+
             if (!data.success) {
                 return;
             }
