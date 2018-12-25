@@ -29,6 +29,7 @@ $(function () {
     $(document).on('click', '#submitQuestionnaire', function (e) {
         $('#submitQuestionnaire').attr('disabled', true);
 
+        $('.video-box').css({'width': '100%', 'height': '100%'});
         var questionnaireId = $('#questionnaire').attr('questionnaireId');
 
         // 是否有没有回答的问题
