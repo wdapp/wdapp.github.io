@@ -203,7 +203,7 @@ DWLive.onQuestionnairePublish = function (options) {
     $.ajax({
         url: '//eva.csslcloud.net/api/questionnaire/info',
         type: 'GET',
-        dataType: 'json',
+        dataType: 'jsonp',
         data: {
             questionnaireid: options.questionnaireId
         },
