@@ -175,8 +175,8 @@
 <script src="js/jquery.panzoom.min.js?v=20160706151521566"></script>
 <script src="js/main.js?v=20160706151521566"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<!--<script src="js/liveSDK.js"></script>-->
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201809181356"></script>
+<script src="js/liveSDK.js"></script>
+<!--<script src="//view.csslcloud.net/js/liveSDK.js?v=201809181356"></script>-->
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
@@ -228,7 +228,7 @@
 
         var m3u8 = null;
         DWLive.onLiveStarting = function () {
-            m3u8 = DWLive.getLine(); //  获取线路
+            m3u8 = DWLive.getLine(); // 获取线路
             $('.line').empty();
             $.each(m3u8, function (index, pd) {
                 var acls = '';

@@ -26,11 +26,15 @@ function on_cc_live_player_load() {
 // 同步接收聊天信息
 function on_cc_live_chat_msg_sync(datas) {
     var cmHtml = '';
+
     $.each(datas, function (index, data) {
-        cmHtml += Template.chatMsg({
-            name: data.username,
-            content: showEm(data.msg)
-        });
+        if (data.groupId === $.DW.groupId || !$.DW.groupId  || !data.groupId ){
+            cmHtml += Template.chatMsg({
+                name: data.username,
+                content: showEm(data.msg)
+            });
+        }
+
     });
 
     var rc = $('#chat-list').children().length - 500 + datas.length;
@@ -68,16 +72,14 @@ function on_cc_live_chat_private_answer(data) {
 // 提问
 function on_cc_live_qa_question(data) {
     var question = data.value;
-    // if (question.isPublish != 1) {
-    //     return;
-    // }
-
-    $('#qas').append(Template.question({
-        id: question.id,
-        questionUserId: question.userId,
-        questionUserName: question.userName,
-        content: question.content
-    }));
+    if (question.groupId === $.DW.groupId || !$.DW.groupId   || !question.groupId){
+        $('#qas').append(Template.question({
+            id: question.id,
+            questionUserId: question.userId,
+            questionUserName: question.userName,
+            content: question.content
+        }));
+    }
 
     qaScroll();
 }
@@ -86,15 +88,18 @@ function on_cc_live_qa_question(data) {
 function on_cc_live_qa_answer(data) {
 
     var answer = data.value;
-    // 私密回答只能自己看
-    if (answer.isPrivate) {
-        return;
+    if (answer.groupId === $.DW.groupId || !$.DW.groupId || !answer.groupId){
+        // 私密回答只能自己看
+        if (answer.isPrivate) {
+            return;
+        }
+
+        $('#' + answer.questionId).append(Template.answer({
+            answerUserName: answer.userName,
+            content: answer.content
+        }));
     }
 
-    $('#' + answer.questionId).append(Template.answer({
-        answerUserName: answer.userName,
-        content: answer.content
-    }));
 
     qaScroll();
 }

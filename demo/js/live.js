@@ -83,7 +83,7 @@ $(function () {
             + '<p class="chat-content">' + showEm(o.msg) + '</p>'
             + '</div>'
             + '</li>';
-        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+        if (o.groupId == DWLive.groupId || !o.groupId || !DWLive.groupId) {
             $('#chat-list').append(d);
 
             $('#chat-list').parent().scrollTop($('#chat-list').height());
@@ -149,12 +149,17 @@ $(function () {
             $q.show();
         }
     };
-
+    DWLive.onBanChat = function (j) {
+        console.log('您已被禁言'+j);
+    }
+    DWLive.onUnBanChat = function (j) {
+        console.log('您已解禁'+j);
+    }
     // 提问
     DWLive.onQuestion = function (j) {
         var o = JSON.parse(j);
         var qid = o.value.id;
-
+        var question=o.value;
         // 提问者
         var isFromMe = Viewer.isMe(o.value.userId);
         // 只看自己的问答
@@ -173,7 +178,7 @@ $(function () {
             + '<p class="chat-content">' + o.value.content + '</p>'
             + '</div>'
             + '</li>';
-        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+        if (question.groupId == DWLive.groupId || !question.groupId || !DWLive.groupId) {
             $('#question-main').append(d);
             $('#question-main').parent().scrollTop($('#question-main').height());
 
@@ -192,7 +197,6 @@ $(function () {
         if (answer.questionUserId !== DWLive.userid && answer.isPrivate) {
             return;
         }
-
         var qid = o.value.questionId;
         var d = '<div class="peo-repeat">'
             + '<p class="teacher-name">'
@@ -200,7 +204,7 @@ $(function () {
             + '</p>'
             + '<p class="repeat-content">' + o.value.content + '</p>'
             + '</div>';
-        if (o.groupId == this.groupId || !o.groupId || !this.groupId) {
+        if (answer.groupId == DWLive.groupId || !answer.groupId || !DWLive.groupId) {
             $('#' + qid).append(d).show();
             $('#question-main').parent().scrollTop($('#question-main').height());
         }

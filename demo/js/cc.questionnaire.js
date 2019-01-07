@@ -4,49 +4,48 @@
  *  Created by shanglt on 2017/3/27.
  */
 var Lr = {
-    questionnaireTip: '问卷调查',
-    questionnaireTypeSingle: '单选',
-    questionnaireTypeMultiple: '多选',
-    questionnaireTypeQA: '问答',
-    successTip: '操作成功',
-    failTip: '操作失败',
-    tipSubmit: '提交',
-    tipSure: '确认'
+    questionnaireTip: "问卷调查",
+    questionnaireTypeSingle: "单选",
+    questionnaireTypeMultiple: "多选",
+    questionnaireTypeQA: "问答",
+    successTip: "操作成功",
+    failTip: "操作失败",
+    tipSubmit: "提交",
+    tipSure: "确认"
 };
 $(function () {
 
 
     function errorTip(msg) {
-        $('#questionnaireSuccess, #questionnaireFail').hide();
-        $('#questionnaireFail').text(msg).show();
+        $("#questionnaireSuccess, #questionnaireFail").hide();
+        $("#questionnaireFail").text(msg).show();
     }
 
     function successTip(msg) {
-        $('#questionnaireSuccess, #questionnaireFail').hide();
-        $('#questionnaireSuccess').text(msg).show();
+        $("#questionnaireSuccess, #questionnaireFail").hide();
+        $("#questionnaireSuccess").text(msg).show();
     }
 
     // 提交问卷
-    $(document).on('click', '#submitQuestionnaire', function (e) {
-        $('#submitQuestionnaire').attr('disabled', true);
+    $(document).on("click", "#submitQuestionnaire", function (e) {
+        $("#submitQuestionnaire").attr("disabled", true);
 
-        $('.video-box').css({'width': '100%', 'height': '100%'});
-        var questionnaireId = $('#questionnaire').attr('questionnaireId');
+        var questionnaireId = $("#questionnaire").attr("questionnaireId");
 
-        //是否有没有回答的问题
+        // 是否有没有回答的问题
         var hasNotAnswerSubject = false;
         var subjectsAnswer = [];
-        $('div[name="subject"]').each(function () {
+        $("div[name=\"subject\"]").each(function () {
             var $t = $(this);
 
-            var subjectId = $t.attr('subjectId');
+            var subjectId = $t.attr("subjectId");
             var subjectParam = {
                 subjectId: subjectId
             };
 
-            var type = $(this).attr('type');
+            var type = $(this).attr("type");
             if (type == 0) {
-                var selectedOptionId = $t.find('input[type="radio"][name="' + subjectId + '"]:checked').val();
+                var selectedOptionId = $t.find("input[type=\"radio\"][name=\"" + subjectId + "\"]:checked").val();
                 if (!selectedOptionId) {
                     hasNotAnswerSubject = true;
                     return;
@@ -54,7 +53,7 @@ $(function () {
                 subjectParam.selectedOptionId = selectedOptionId;
             } else if (type == 1) {
                 var selectedOptionIds = [];
-                $t.find('input[name="' + subjectId + '"]:checked').each(function () {
+                $t.find("input[name=\"" + subjectId + "\"]:checked").each(function () {
                     selectedOptionIds.push($(this).val());
                 });
 
@@ -66,19 +65,20 @@ $(function () {
 
                 subjectParam.selectedOptionIds = selectedOptionIds.toString();
             } else if (type == 2) {
-                var c = $.trim($t.find('textarea[name="qASubject"]').val());
+                var c = $.trim($t.find("textarea[name=\"qASubject\"]").val());
                 if (!c) {
                     hasNotAnswerSubject = true;
                     return;
                 }
                 subjectParam.answerContent = c;
             }
+
             subjectsAnswer.push(subjectParam);
         });
 
         if (hasNotAnswerSubject) {
-            errorTip('您尚有部分题目未回答，请检查');
-            $('#submitQuestionnaire').attr('disabled', false);
+            errorTip("您尚有部分题目未回答，请检查");
+            $("#submitQuestionnaire").attr("disabled", false);
             return;
         }
 
@@ -92,16 +92,16 @@ $(function () {
                 // 答卷成功
                 successTip(Lr.successTip);
 
-                var submitedAction = $('#questionnaire').attr('submitedAction');
+                var submitedAction = $("#questionnaire").attr("submitedAction");
                 if (submitedAction == 1) {
                     showQuestionnaireAnswer();
                 } else {
                     setTimeout(function () {
-                        $('#questionnaire').hide('slow', function () {
+                        $("#questionnaire").hide("slow", function () {
                             if (window.DOCMAIN) {
-                                $('.video-box').css({'width': '100%', 'height': $('#topHalf').height()});
-                                if ($('.vote').is(':visible') || $('.mask').is(':visible')) {
-                                    $('.video-box').css({'width': 1, 'height': 1});
+                                $(".video-box").css({"width": "100%", "height": $("#topHalf").height()});
+                                if ($(".vote").is(":visible") || $(".mask").is(":visible")) {
+                                    $(".video-box").css({"width": 1, "height": 1});
                                 }
                             }
                             $(this).remove();
@@ -116,20 +116,20 @@ $(function () {
             } else {
                 errorTip(data.msg);
             }
-            $('#submitQuestionnaire').attr('disabled', false);
+            $("#submitQuestionnaire").attr("disabled", false);
         }
 
         DWLive.submitQuestionnaire(params, getDatainfo);
     });
 
     // 关闭问卷
-    $(document).on('click', '#closeQuestionnaire', function (e) {
-        $('#questionnaire').remove();
-        $('.video-box').css({'width': '100%', 'height': '100%'});
+    $(document).on("click", "#closeQuestionnaire", function (e) {
+        $("#questionnaire").remove();
+        $(".video-box").css({"width": "100%", "height": "100%"});
     });
-    $(document).on('click', '#close2Questionnaire', function () {
-        $('#questionnaire').remove();
-        $('.video-box').css({'width': '100%', 'height': '100%'});
+    $(document).on("click", "#close2Questionnaire", function () {
+        $("#questionnaire").remove();
+        $(".video-box").css({"width": "100%", "height": "100%"});
     });
 });
 
@@ -139,45 +139,45 @@ $(function () {
  * */
 function showQuestionnaireAnswer() {
     // 可以关闭
-    $('#closeQuestionnaire').show();
+    $("#closeQuestionnaire").show();
 
     // 显示正确选项
-    $('span[name="correctOption"]').show();
+    $("span[name=\"correctOption\"]").show();
 
     // 按钮进行缩进
-    $('span[name="correctSubjectOption"]').show();
+    $("span[name=\"correctSubjectOption\"]").show();
 
     // 绿色背景
-    $('label[correct=1]').css('color', '#4DB131');
+    $("label[correct=1]").css("color", "#4DB131");
 
-    $('#submitQuestionnaire').hide();
-    $('#close2Questionnaire').show();
+    $("#submitQuestionnaire").hide();
+    $("#close2Questionnaire").show();
 
-    $('div[name="subject"]').find('input').attr('disabled', true);
+    $("div[name=\"subject\"]").find("input").attr("disabled", true);
 
     // 拥有正确答案的题目个数
-    var hasCorrectSubjectCount = $('div[name="subject"]:has(span[name="correctSubjectOption"])').length;
+    var hasCorrectSubjectCount = $("div[name=\"subject\"]:has(span[name=\"correctSubjectOption\"])").length;
     if (hasCorrectSubjectCount == 0) {
         return;
     }
 
     // 用户答对题目个数
     var answerCorrectSubjectCount = 0;
-    $('div[name="subject"]:has(span[name="correctSubjectOption"])').each(function () {
-        var type = $(this).attr('type');
+    $("div[name=\"subject\"]:has(span[name=\"correctSubjectOption\"])").each(function () {
+        var type = $(this).attr("type");
         if (type == 0) {
-            if ($(this).find('input[type="radio"][correct="1"]:checked').length) {
+            if ($(this).find("input[type=\"radio\"][correct=\"1\"]:checked").length) {
                 answerCorrectSubjectCount += 1;
             }
         } else if (type == 1) {
             // 多选题
             var selectedOptionIds = [];
-            $(this).find('input[type="checkbox"]:checked').each(function () {
+            $(this).find("input[type=\"checkbox\"]:checked").each(function () {
                 selectedOptionIds.push($(this).val());
             });
 
             var correctOptionIds = [];
-            $(this).find('input[type="checkbox"][correct="1"]').each(function () {
+            $(this).find("input[type=\"checkbox\"][correct=\"1\"]").each(function () {
                 correctOptionIds.push($(this).val());
             });
 
@@ -195,29 +195,27 @@ function showQuestionnaireAnswer() {
     // } else {
     // 		questionnaireMsg = '不要灰心，请继续努力！';
     // }
-
+    //
     //$('#questionnaireMsg').text(questionnaireMsg).show();
-    $('#questionnaireSuccess').hide();
+    $("#questionnaireSuccess").hide();
 }
 
-DWLive.onQuestionnairePublish = function (options) {
+DWLive.onQuestionnairePublish = function (data) {
     // 关闭弹出框
-    $('#questionnaire, #questionnaireTip').remove();
-    $('.video-box').css({'width': '100%', 'height': '100%'});
-    console.log(options);
+    $("#questionnaire, #questionnaireTip").remove();
+    $(".video-box").css({"width": "100%", "height": "100%"});
+
     $.ajax({
-        url: '//eva.csslcloud.net/api/questionnaire/info',
-        type: 'GET',
-        dataType: 'jsonp',
+        url: "//eva.csslcloud.net/api/questionnaire/info",
+        type: "GET",
+        dataType: "jsonp",
         data: {
-            questionnaireid: options.questionnaireId
+            questionnaireid: data.questionnaireId
         },
         xhrFields: {
             withCredentials: true
         },
         success: function (data) {
-            console.log(data);
-
             if (!data.success) {
                 return;
             }
@@ -228,17 +226,17 @@ DWLive.onQuestionnairePublish = function (options) {
 
                 if (subject.type == 0) {
                     subject.isSingleSubject = true;
-                    subject.typeDesc = '单选';
+                    subject.typeDesc = "单选";
                 }
 
                 if (subject.type == 1) {
                     subject.isMultipleSubject = true;
-                    subject.typeDesc = '多选';
+                    subject.typeDesc = "多选";
                 }
 
                 if (subject.type == 2) {
                     subject.isQASubject = true;
-                    subject.typeDesc = '问答';
+                    subject.typeDesc = "问答";
                 }
 
                 if (subject.options) {
@@ -261,22 +259,22 @@ DWLive.onQuestionnairePublish = function (options) {
             questionnaire.subjects.sort(function (s1, s2) {
                 return s1.index - s2.index;
             });
-            $('body').append(Handlebars.getTemplate('questionnaire')(questionnaire));
+            $("body").append(Handlebars.getTemplate("questionnaire")(questionnaire));
             // 缩小播放器
-            $('.video-box').css({'width': 1, 'height': 1});
+            $(".video-box").css({"width": 1, "height": 1});
         }
     });
 };
 // 显示统计信息
 DWLive.onQuestionnairePublishStatis = function (data) {
     // 关闭弹出框
-    $('#questionnaire, #questionnaireTip').remove();
-    $('.video-box').css({'width': '100%', 'height': '100%'});
+    $("#questionnaire, #questionnaireTip").remove();
+    $(".video-box").css({"width": "100%", "height": "100%"});
 
     $.ajax({
-        url: '//eva.csslcloud.net/api/questionnaire/statis/info',
-        type: 'GET',
-        dataType: 'jsonp',
+        url: "//eva.csslcloud.net/api/questionnaire/statis/info",
+        type: "GET",
+        dataType: "jsonp",
         data: {
             questionnaireid: data.questionnaireId
         },
@@ -318,11 +316,11 @@ DWLive.onQuestionnairePublishStatis = function (data) {
 
                     var selectedCount = option.selectedCount;
                     var selectedCountScale = 0;
-                    var selectedCountProgress = '0%';
+                    var selectedCountProgress = "0%";
 
                     if (submitAnswerViewerCount > 0) {
                         selectedCountScale = (selectedCount * 100 / submitAnswerViewerCount).toFixed(0);
-                        selectedCountProgress = selectedCountScale + '%';
+                        selectedCountProgress = selectedCountScale + "%";
                     }
 
                     option.selectedCountScale = selectedCountScale;
@@ -345,23 +343,23 @@ DWLive.onQuestionnairePublishStatis = function (data) {
             questionnaire.failTip = Lr.failTip;
             questionnaire.tipSubmit = Lr.tipSubmit;
 
-            $('body').append(Handlebars.getTemplate('questionnaire')(questionnaire));
+            $("body").append(Handlebars.getTemplate("questionnaire")(questionnaire));
             // 缩小播放器
-            $('.video-box').css({'width': 1, 'height': 1});
+            $(".video-box").css({"width": 1, "height": 1});
         }
     });
 };
 Handlebars.getTemplate = function (name) {
     if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
         $.ajax({
-            url: 'js/templates/' + name + '.hbs',
+            url: "js/templates/" + name + ".hbs",
             success: function (data) {
                 if (Handlebars.templates === undefined) {
                     Handlebars.templates = {};
                 }
                 Handlebars.templates[name] = Handlebars.compile(data);
             },
-            dataType: 'text',
+            dataType: "text",
             async: false,
             cache: true
         });
@@ -378,21 +376,21 @@ DWLive.onQuestionnairePublishStop = function (data) {
 
 
 function confirmAndCloseQuestionnaire(questionnaireId) {
-    var $q = $('div[questionnaireid="' + questionnaireId + '"]');
+    var $q = $("div[questionnaireid=\"" + questionnaireId + "\"]");
     if (!$q.length) {
         return;
     }
 
-    $('body').append(Handlebars.getTemplate('confirm')({
-        id: 'questionnaireTip',
-        msg: '问卷已停止回收，点击确定后关闭问卷',
-        fix: 'fixQuestionnaire("' + questionnaireId + '");',
+    $("body").append(Handlebars.getTemplate("confirm")({
+        id: "questionnaireTip",
+        msg: "问卷已停止回收，点击确定后关闭问卷",
+        fix: "fixQuestionnaire(\"" + questionnaireId + "\");",
         defineTip: Lr.tipSure
     }));
 }
 
 function fixQuestionnaire(questionnaireId) {
-    $('#questionnaireTip').remove();
-    $('.video-box').css({'width': '100%', 'height': '100%'});
-    $('div[questionnaireid="' + questionnaireId + '"]').remove();
+    $("#questionnaireTip").remove();
+    $(".video-box").css({"width": "100%", "height": "100%"});
+    $("div[questionnaireid=\"" + questionnaireId + "\"]").remove();
 }

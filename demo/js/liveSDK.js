@@ -1,23 +1,23 @@
 /**
  * CC live video
- * v2.6.5 2018/12/12
+ * v2.7.0 2019/01/07
  */
 (function () {
 
     var DELAY_TIME = 10 * 1000;
 
     function isSupportFlash() {
-        var isIE = (navigator.appVersion.indexOf('MSIE') >= 0);
+        var isIE = (navigator.appVersion.indexOf("MSIE") >= 0);
         var hasFlash = true;
 
         if (isIE) {
             try {
-                var objFlash = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                var objFlash = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
             } catch (e) {
                 hasFlash = false;
             }
         } else {
-            if (!navigator.plugins['Shockwave Flash']) {
+            if (!navigator.plugins["Shockwave Flash"]) {
                 hasFlash = false;
             }
         }
@@ -32,14 +32,14 @@
             this.dpc = new Dpc();
         },
         appendDrawPanel: function () {
-            var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>';
-            if (MobileLive.isMobile() == 'isMobile') {
-                dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>';
+            var dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;\"></iframe>";
+            if (MobileLive.isMobile() == "isMobile") {
+                dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;pointer-events: none;\"></iframe>";
             }
-            $('#drawPanel').parent().append(dp);
-            $('div#drawPanel').remove();
+            $("#drawPanel").parent().append(dp);
+            $("div#drawPanel").remove();
 
-            if (typeof window.on_cc_live_db_flip === 'function') {
+            if (typeof window.on_cc_live_db_flip === "function") {
                 window.on_cc_live_db_flip();
             }
         },
@@ -124,7 +124,7 @@
                 ifo = JSON.parse(data);
             } catch (e) {
                 ifo = {
-                    type: 'text',
+                    type: "text",
                     content: data
                 };
             }
@@ -141,7 +141,7 @@
     var DWLive = {
         DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
         init: function (option) {
-            if (typeof option == 'undefined') {
+            if (typeof option == "undefined") {
                 option = {};
             }
             this.userid = $.trim(option.userid);
@@ -156,13 +156,13 @@
             this.ua = $.trim(option.ua);
             this.viewerid = $.trim(option.viewerid);
             this.upid = $.trim(option.upid);
-            if (typeof option.fastMode == 'string') {
-                if (option.fastMode === 'false') {
+            if (typeof option.fastMode == "string") {
+                if (option.fastMode === "false") {
                     this.fastMode = false;
                 } else {
                     this.fastMode = true;
                 }
-            } else if (typeof option.fastMode == 'boolean') {
+            } else if (typeof option.fastMode == "boolean") {
                 this.fastMode = option.fastMode;
             } else {
                 this.fastMode = false;
@@ -171,57 +171,57 @@
 
 
             this.forceNew = false;
-            if (typeof option.forceNew === 'boolean') {
+            if (typeof option.forceNew === "boolean") {
                 this.forceNew = option.forceNew;
             }
 
             var _this = this;
             var scripts = [
-                '//static.csslcloud.net/js/socket.io.js',
-                '//static.csslcloud.net/js/report.js'
+                "//static.csslcloud.net/js/socket.io.js",
+                "//static.csslcloud.net/js/report.js"
             ];
 
-            if (MobileLive.isMobile() == 'isMobile') {
-                if ($('#drawPanel').length > 0) {
+            if (MobileLive.isMobile() == "isMobile") {
+                if ($("#drawPanel").length > 0) {
                     //启动极速动画模式
                     if (!DWDpc.fastMode) {
-                        scripts.push('//static.csslcloud.net/js/module/drawingBoard-2.0.0.js');
+                        scripts.push("//static.csslcloud.net/js/module/drawingBoard-2.0.0.js");
                     }
                 }
             } else {
                 if (!isSupportFlash()) {
 
-                    if (typeof DWLive.onNotSupportFlash === 'function') {
+                    if (typeof DWLive.onNotSupportFlash === "function") {
                         DWLive.onNotSupportFlash();
                     }
 
-                    if (this.userid == '18452D400D6B81D5') {
-                        var lpph = $('#' + LivePlayer.id).parent().height();
-                        var lppw = $('#' + LivePlayer.id).parent().width();
+                    if (this.userid == "18452D400D6B81D5") {
+                        var lpph = $("#" + LivePlayer.id).parent().height();
+                        var lppw = $("#" + LivePlayer.id).parent().width();
 
-                        var tip = '<div style="z-index: 999999;"><p style="color: #0e0e0e; width: 260px;">您还没有安装flash播放器,请点击'
-                            + '<a href="http://www.adobe.com/go/getflash" style="color: red;" target="_blank">这里'
-                            + '</a>安装</p></div>';
+                        var tip = "<div style=\"z-index: 999999;\"><p style=\"color: #0e0e0e; width: 260px;\">您还没有安装flash播放器,请点击"
+                            + "<a href=\"http://www.adobe.com/go/getflash\" style=\"color: red;\" target=\"_blank\">这里"
+                            + "</a>安装</p></div>";
 
-                        $('#' + LivePlayer.id).append(tip).parent().css('z-index', '999999');
+                        $("#" + LivePlayer.id).append(tip).parent().css("z-index", "999999");
 
-                        var lpdh = $($('#' + LivePlayer.id + ' div p')[0]).height();
-                        var lpdw = $($('#' + LivePlayer.id + ' div p')[0]).width();
+                        var lpdh = $($("#" + LivePlayer.id + " div p")[0]).height();
+                        var lpdw = $($("#" + LivePlayer.id + " div p")[0]).width();
 
-                        $('#' + LivePlayer.id + ' div').css({
-                            'margin-left': ((lppw - lpdw - 60) / 2) + 'px',
-                            'margin-top': ((lpph - lpdh) / 2) + 'px'
+                        $("#" + LivePlayer.id + " div").css({
+                            "margin-left": ((lppw - lpdw - 60) / 2) + "px",
+                            "margin-top": ((lpph - lpdh) / 2) + "px"
                         });
 
                         setInterval(function () {
-                            $('#' + LivePlayer.id).parent().show();
+                            $("#" + LivePlayer.id).parent().show();
                         }, 3000);
                     }
                 }
 
                 scripts.push(
-                    '//static.csslcloud.net/js/swfobject.js',
-                    '//static.csslcloud.net/js/json3.min.js'
+                    "//static.csslcloud.net/js/swfobject.js",
+                    "//static.csslcloud.net/js/json3.min.js"
                 );
             }
             _this.loadScript(scripts, function () {
@@ -231,11 +231,11 @@
                     _this.history = new History();
                 }
 
-                if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard) {
-                    var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
-                        + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>';
-                    $('#drawPanel').parent().append(dp);
-                    $('div#drawPanel').remove();
+                if (MobileLive.isMobile() == "isMobile" && $.DrawingBoard) {
+                    var dp = "<canvas id=\"drawPanel\" width=\"1200\" height=\"1200\" style=\"position: absolute;z-index:2;top:0;left: 0\"></canvas>"
+                        + "<iframe id=\"dpa\" src=\"\" frameborder=\"0\" style=\"position: absolute;top:0;left: 0\"></iframe>";
+                    $("#drawPanel").parent().append(dp);
+                    $("div#drawPanel").remove();
                     $.DrawingBoard.config();
                 }
             });
@@ -243,9 +243,9 @@
 
         login: function (fn) {
             $.ajax({
-                url: '//view.csslcloud.net/api/room/login',
-                type: 'GET',
-                dataType: 'jsonp',
+                url: "//view.csslcloud.net/api/room/login",
+                type: "GET",
+                dataType: "jsonp",
                 data: {
                     roomid: this.roomid,
                     userid: this.userid,
@@ -258,26 +258,26 @@
                 },
                 success: function (data) {
                     if (!data.success) {
-                        if (typeof DWLive.onLoginError === 'function') {
+                        if (typeof DWLive.onLoginError === "function") {
                             DWLive.onLoginError(data);
                         }
                         return;
                     }
 
-                    var isHttps = window.location.protocol === 'https:';
+                    var isHttps = window.location.protocol === "https:";
                     var host = data.datas.pusherNode.primary;
-                    if (isHttps && host && host.indexOf(':')) {
-                        var s = host.split(':');
+                    if (isHttps && host && host.indexOf(":")) {
+                        var s = host.split(":");
                         if (s.length == 2) {
                             var port = parseInt(s[1]);
                             if (!isNaN(port)) {
                                 var httpsPort = port + 400;
-                                host = s[0] + ':' + httpsPort;
+                                host = s[0] + ":" + httpsPort;
                             }
                         }
                     }
 
-                    var url = document.location.protocol + '//' + host + '/' + data.datas.pusher.nsp;
+                    var url = document.location.protocol + "//" + host + "/" + data.datas.pusher.nsp;
                     var key = data.datas.viewer.key;
                     Pusher.options.pusherUrl = url;
                     Pusher.options.key = key;
@@ -293,7 +293,7 @@
 
                     //初始化极速动画对象
                     if (DWDpc.fastMode) {
-                        $('#documentDisplayMode').val(DWLive.documentDisplayMode);
+                        $("#documentDisplayMode").val(DWLive.documentDisplayMode);
                         DWDpc.appendDrawPanel();
                         DWDpc.init();
                     }
@@ -314,61 +314,61 @@
                     LivePlayer.viewerid = data.datas.viewer.id;
                     var playerBackgroundImageUri = data.datas.room.playerBackgroundImageUri;
                     if (!playerBackgroundImageUri) {
-                        playerBackgroundImageUri = '';
+                        playerBackgroundImageUri = "";
                     } else {
-                        var isHttps = window.location.protocol === 'https:';
+                        var isHttps = window.location.protocol === "https:";
                         if (isHttps) {
-                            playerBackgroundImageUri = playerBackgroundImageUri.replace(/http:/g, 'https:');
+                            playerBackgroundImageUri = playerBackgroundImageUri.replace(/http:/g, "https:");
                         }
                     }
                     LivePlayer.backgroundImageUri = playerBackgroundImageUri;
 
-                    if (typeof DWLive.playerBackgroundImageUri === 'function') {
+                    if (typeof DWLive.playerBackgroundImageUri === "function") {
                         DWLive.playerBackgroundImageUri(playerBackgroundImageUri);
                     }
 
                     var playerBackgroundHint = data.datas.room.playerBackgroundHint;
                     if (!playerBackgroundHint) {
-                        playerBackgroundHint = '';
+                        playerBackgroundHint = "";
                     }
                     LivePlayer.backgroundHint = playerBackgroundHint;
 
-                    if (typeof DWLive.playerBackgroundHint === 'function') {
+                    if (typeof DWLive.playerBackgroundHint === "function") {
                         DWLive.playerBackgroundHint(playerBackgroundHint);
                     }
 
                     var announcement = data.datas.announcement;
-                    if (typeof DWLive.onAnnouncementShow === 'function') {
+                    if (typeof DWLive.onAnnouncementShow === "function" && announcement) {
                         DWLive.onAnnouncementShow(announcement);
                     }
 
                     var desc = data.datas.room.desc;
-                    if (typeof DWLive.onLiveDesc === 'function') {
+                    if (typeof DWLive.onLiveDesc === "function") {
                         DWLive.onLiveDesc(desc);
                     }
 
                     var count = data.datas.room.showUserCount;
-                    if (typeof DWLive.showUserCount === 'function') {
+                    if (typeof DWLive.showUserCount === "function") {
                         DWLive.showUserCount(count);
                     }
 
                     var marquee = data.datas.viewer.marquee;
-                    if (typeof DWLive.getMarquee === 'function') {
+                    if (typeof DWLive.getMarquee === "function") {
                         DWLive.getMarquee(marquee);
                     }
 
-                    if (typeof DWLive.onLoginSuccess === 'function') {
+                    if (typeof DWLive.onLoginSuccess === "function") {
                         DWLive.onLoginSuccess();
                     }
 
                     var time = data.datas.live;
-                    if (typeof DWLive.onLiveTime === 'function') {
+                    if (typeof DWLive.onLiveTime === "function") {
                         DWLive.onLiveTime(time);
                     }
 
                     Pusher.init();
 
-                    if (MobileLive.isMobile() == 'isMobile') {
+                    if (MobileLive.isMobile() == "isMobile") {
                         MobileLive.init();
                     } else {
                         LivePlayer.init();
@@ -416,34 +416,36 @@
         logout: function (value) {
             if (!value) return;
             $.ajax({
-                url: '//view.csslcloud.net/api/live/logout',
-                type: 'GET',
-                dataType: 'jsonp',
+                url: "//view.csslcloud.net/api/live/logout",
+                type: "GET",
+                dataType: "jsonp",
                 timeout: 5000,
                 xhrFields: {
                     withCredentials: true
                 },
                 success: function (data) {
-                    if (typeof value.success === 'function') {
+                    if (typeof value.success === "function") {
                         value.success(data);
                     }
                 },
                 error: function (xhr, status, error) {
-                    if (typeof value.error === 'function') {
-                        value.error({'errorcode': '100', 'msg': '退出失败', 'info': error});
+                    if (typeof value.error === "function") {
+                        value.error({"errorcode": "100", "msg": "退出失败", "info": error});
                     }
                 }
             });
+
+            Pusher.socket.disconnect();
         },
 
         getScript: function (url, success) {
 
             var readyState = false,
-                script = document.createElement('script');
+                script = document.createElement("script");
             script.src = url;
 
             script.onload = script.onreadystatechange = function () {
-                if (!readyState && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+                if (!readyState && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
                     readyState = true;
                     success && success();
                 }
@@ -454,7 +456,7 @@
 
         loadScript: function (res, callback) {
 
-            if (typeof res === 'string') {
+            if (typeof res === "string") {
                 var _res = res;
                 res = [];
                 res.push(_res);
@@ -472,34 +474,34 @@
 
         //改名
         changeNickname: function (name) {
-            if (!name || typeof name !== 'string' || name.length > 20) {
+            if (!name || typeof name !== "string" || name.length > 20) {
                 return false;
             }
-            Pusher.socket.emit('change_nickname', name);
+            Pusher.socket.emit("change_nickname", name);
         },
 
         sendPublicChatMsg: function (msg) {
             if (!msg || msg.length > 300) {
                 return;
             }
-            Pusher.socket.emit('chat_message', msg);
+            Pusher.socket.emit("chat_message", msg);
         },
 
         sendPrivateChatMsg: function (touserid, tousername, msg) {
             var h = new Date().getHours(),
                 m = new Date().getMinutes(),
                 s = new Date().getSeconds();
-            m = m > 9 ? m : '0' + m;
-            s = s > 9 ? s : '0' + s;
+            m = m > 9 ? m : "0" + m;
+            s = s > 9 ? s : "0" + s;
             var j = {
-                'fromuserid': this.viewerid,
-                'fromusername': this.viewername,
-                'touserid': touserid,
-                'tousername': tousername,
-                'msg': $.trim(msg),
-                'time': h + ':' + m + ':' + s
+                "fromuserid": this.viewerid,
+                "fromusername": this.viewername,
+                "touserid": touserid,
+                "tousername": tousername,
+                "msg": $.trim(msg),
+                "time": h + ":" + m + ":" + s
             };
-            Pusher.socket.emit('private_chat', JSON.stringify(j));
+            Pusher.socket.emit("private_chat", JSON.stringify(j));
         },
 
         sendQuestionMsg: function (content) {
@@ -508,23 +510,23 @@
             }
 
             var j = {
-                'action': 'question',
-                'value': {
-                    'userId': this.viewerid,
-                    'userName': this.viewername,
-                    'content': content
+                "action": "question",
+                "value": {
+                    "userId": this.viewerid,
+                    "userName": this.viewername,
+                    "content": content
                 }
             };
 
             try {
-                Pusher.socket.emit('question', JSON.stringify(j));
+                Pusher.socket.emit("question", JSON.stringify(j));
             } catch (e) {
             }
         },
 
         barrage: function (msg, color) {
             // 移动H5暂不支持弹幕功能
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 return;
             }
 
@@ -532,16 +534,16 @@
             if (!newm) {
                 return;
             }
-            newm = msg.replace(/\[em2?_([0-9]*)\]/g, '');
+            newm = msg.replace(/\[em2?_([0-9]*)\]/g, "");
 
             LivePlayer.barrage({
-                'txt': newm,
-                'color': color == null ? 0xffffff : color
+                "txt": newm,
+                "color": color == null ? 0xffffff : color
             });
         },
 
         getLine: function () {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 var l = MobileLive.src;
                 return l;
             } else {
@@ -550,7 +552,7 @@
         },
 
         changeLine: function (line) {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 MobileLive.changeLine(line);
             } else {
                 LivePlayer.changeLine(line);
@@ -558,7 +560,7 @@
         },
 
         onlyAudio: function () {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 MobileLive.onlyAudio();
             } else {
                 LivePlayer.onlyAudio();
@@ -566,7 +568,7 @@
         },
 
         setSound: function (n) {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 return;
             }
             LivePlayer.setSound(n);
@@ -574,29 +576,29 @@
 
         answerRollcall: function (rid, pid) {
             var j = {
-                'rollcallId': rid,
-                'userId': this.viewerid,
-                'userName': this.viewername,
-                'publisherId': pid
+                "rollcallId": rid,
+                "userId": this.viewerid,
+                "userName": this.viewername,
+                "publisherId": pid
             };
-            Pusher.socket.emit('answer_rollcall', JSON.stringify(j));
+            Pusher.socket.emit("answer_rollcall", JSON.stringify(j));
         },
 
         replyVote: function (voteid, option, pid) {
             var j = {
-                'voteId': voteid,
-                'voteOption': option,
-                'publisherId': pid
+                "voteId": voteid,
+                "voteOption": option,
+                "publisherId": pid
             };
-            Pusher.socket.emit('reply_vote', JSON.stringify(j));
+            Pusher.socket.emit("reply_vote", JSON.stringify(j));
         },
         docBarrage: function (msg, color) {
             if (!$.trim(msg)) {
                 return;
             }
             DrawPanel.barrage({
-                'txt': msg,
-                'color': color == null ? 0xffffff : color
+                "txt": msg,
+                "color": color == null ? 0xffffff : color
             });
         },
 
@@ -604,7 +606,7 @@
             LivePlayer.openBarrage(b);
         },
         openDocBarrage: function (l) {//开启doc弹幕功能
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 return;
             }
             if (DWDpc.fastMode) {
@@ -612,7 +614,7 @@
             }
         },
         insertDocBarrage: function (data) {//插入弹幕
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 return;
             }
             if (DWDpc.fastMode) {
@@ -620,7 +622,7 @@
             }
         },
         closeDocBarrage: function () {//关闭弹幕功能
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 return;
             }
             if (DWDpc.fastMode) {
@@ -661,26 +663,26 @@
         enterInteractionRoom: function (callback) {
             var err = undefined;
             try {
-                Pusher.socket.emit('speak_enter');
+                Pusher.socket.emit("speak_enter");
             } catch (e) {
                 err = e;
             } finally {
-                if (typeof callback === 'function') callback(err);
+                if (typeof callback === "function") callback(err);
             }
         },
 
         // 发送互动信息
         sendInteractionMessage: function (p, toId, event, data, callback) {
-            var type = 'audio';
+            var type = "audio";
             if (p.video) {
-                type = 'audiovideo';
+                type = "audiovideo";
             }
 
             var j = {
                 type: type,
                 fromname: this.viewername,
                 fromid: this.viewerid,
-                fromrole: 'student',
+                fromrole: "student",
                 toid: toId,
                 event: event,
                 data: JSON.stringify(data)
@@ -688,11 +690,11 @@
 
             var err = undefined;
             try {
-                Pusher.socket.emit('speak_message', JSON.stringify(j));
+                Pusher.socket.emit("speak_message", JSON.stringify(j));
             } catch (e) {
                 err = e;
             } finally {
-                if (typeof callback === 'function') callback(err);
+                if (typeof callback === "function") callback(err);
             }
         },
 
@@ -744,9 +746,9 @@
                 answers: JSON.stringify({subjectsAnswer: _data.subjectsAnswer})
             };
             $.ajax({
-                url: '//eva.csslcloud.net/api/questionnaire/submit',
-                type: 'GET',
-                dataType: 'jsonp',
+                url: "//eva.csslcloud.net/api/questionnaire/submit",
+                type: "GET",
+                dataType: "jsonp",
                 timeout: 5000,
                 data: params,
                 xhrFields: {
@@ -757,7 +759,7 @@
                         callBack(data);
                     } else {
                         if (console.log) {
-                            console.log('no callback');
+                            console.log("no callback");
                         }
                     }
                 },
@@ -765,7 +767,7 @@
                     if (callBack) {
                         callBack({
                             errorCode: 1,
-                            msg: 'request was aborted', result: error
+                            msg: "request was aborted", result: error
                         });
                     }
                 }
@@ -775,9 +777,9 @@
         },
         getPublishingQuestionnaire: function () {
             $.ajax({
-                url: '//eva.csslcloud.net/api/questionnaire/info',
-                type: 'GET',
-                dataType: 'jsonp',
+                url: "//eva.csslcloud.net/api/questionnaire/info",
+                type: "GET",
+                dataType: "jsonp",
                 xhrFields: {
                     withCredentials: true
                 },
@@ -786,20 +788,20 @@
                         return;
                     }
 
-                    if (typeof DWLive.onQuestionnairePublish === 'function') {
+                    if (typeof DWLive.onQuestionnairePublish === "function") {
                         DWLive.onQuestionnairePublish(data);
                     } else {
                         if (console.log) {
-                            console.log('onQuestionnairePublish is undefined');
+                            console.log("onQuestionnairePublish is undefined");
                         }
                     }
                 },
                 error: function (e) {
-                    if (typeof DWLive.onQuestionnairePublish === 'function') {
-                        DWLive.onQuestionnairePublish({errorCode: 1, msg: 'request error', result: e});
+                    if (typeof DWLive.onQuestionnairePublish === "function") {
+                        DWLive.onQuestionnairePublish({errorCode: 1, msg: "request error", result: e});
                     } else {
                         if (console.log) {
-                            console.log('onQuestionnairePublish is undefined');
+                            console.log("onQuestionnairePublish is undefined");
                         }
                     }
                 }
@@ -809,32 +811,31 @@
     };
     var options = {
         init: function () {
-            this['userId'] = DWLive.userid,
-                this['roomId'] = DWLive.roomid,
-                this['groupId'] = DWLive.groupId,
-                this['liveId'] = DWLive.liveid,
-                this['viewerId'] = DWLive.viewerid,
-                this['upId'] = DWLive.upid;
+            this["userId"] = DWLive.userid,
+                this["roomId"] = DWLive.roomid,
+                this["groupId"] = DWLive.groupId,
+                this["liveId"] = DWLive.liveid,
+                this["viewerId"] = DWLive.viewerid,
+                this["upId"] = DWLive.upid;
         }
     };
     // Pusher
     var Pusher = {
         options: {
-            pusherUrl: '',
-            key: '',
+            pusherUrl: "",
+            key: "",
             maxMessageCount: 300, // 保存聊天条数
-            userId: '',
-            roomId: '',
-            groupId: '',
-            livePlayerId: '',
-            drawPanel: ''
+            userId: "",
+            roomId: "",
+            livePlayerId: "",
+            drawPanel: ""
         },
         drawjson: [],
         pagechangedata: [],
 
         init: function () {
 
-            var t = MobileLive.isMobile() == 'isMobile' ? 1 : 0;
+            var t = MobileLive.isMobile() == "isMobile" ? 1 : 0;
 
             if (!DWLive.forceNew) {
                 this.socket = io.connect(this.options.pusherUrl, {
@@ -844,10 +845,10 @@
                         terminal: t
                     }
                 });
-                debug('forceNew: false');
+                debug("forceNew: false");
             } else {
-                this.socket = io.connect(this.options.pusherUrl + '?sessionid=' + Pusher.options.key + '&platform=' + 1 + '&terminal=', {forceNew: true});
-                debug('forceNew: true');
+                this.socket = io.connect(this.options.pusherUrl + "?sessionid=" + Pusher.options.key + "&platform=" + 1 + "&terminal=", {forceNew: true});
+                debug("forceNew: true");
             }
 
             this.bind();
@@ -855,15 +856,28 @@
 
         bind: function () {
             var currentLayout = false;
+
+            this.socket.on("connect", function () {
+                if (typeof window.onSocketConnect === "function") {
+                    window.onSocketConnect();
+                }
+            });
+
+            this.socket.on("disconnect", function () {
+                if (typeof window.onSocketDisconnect === "function") {
+                    window.onSocketDisconnect();
+                }
+            });
+
             // 翻页回调
-            this.socket.on('page_change', function (j) {
-                if (j && typeof(j) === 'string') {
+            this.socket.on("page_change", function (j) {
+                if (j && typeof(j) === "string") {
                     Pusher.pagechangedata.push(JSON.parse(j));
                 }
-                if (typeof window.on_cc_live_dw_page_change === 'function') {
+                if (typeof window.on_cc_live_dw_page_change === "function") {
                     window.on_cc_live_dw_page_change(j);
                 }
-                if (typeof DWLive.onPageChange === 'function') {
+                if (typeof DWLive.onPageChange === "function") {
                     var obj = JSON.parse(j);
                     var data = {
                         docId: obj.value.docid,
@@ -876,49 +890,49 @@
             });
 
             // 改名
-            this.socket.on('change_nickname', function (j) {
+            this.socket.on("change_nickname", function (j) {
                 DWLive.viewername = j;
-                if (typeof DWLive.onChangeNickname === 'function') {
+                if (typeof DWLive.onChangeNickname === "function") {
                     DWLive.onChangeNickname(j);
                 }
             });
 
             // 动画翻页
-            this.socket.on('animation_change', function (j) {
-                if (typeof window.on_cc_live_dw_animation_change === 'function') {
+            this.socket.on("animation_change", function (j) {
+                if (typeof window.on_cc_live_dw_animation_change === "function") {
                     window.on_cc_live_dw_animation_change(j);
                 }
             });
 
             // 画板回调
-            this.socket.on('draw', function (j) {
-                if (j && typeof(j) === 'string') {
+            this.socket.on("draw", function (j) {
+                if (j && typeof(j) === "string") {
                     Pusher.drawjson.push(JSON.parse(j));
                 }
-                if (typeof window.on_cc_live_dw_draw === 'function') {
+                if (typeof window.on_cc_live_dw_draw === "function") {
                     window.on_cc_live_dw_draw(j);
                 }
             });
 
-            this.socket.on('room_user_count', function (j) {
-                if (typeof DWLive.onUserCountMessage === 'function') {
+            this.socket.on("room_user_count", function (j) {
+                if (typeof DWLive.onUserCountMessage === "function") {
                     DWLive.onUserCountMessage(j);
                 }
             });
 
-            this.socket.on('publish_stream', function (j) {
+            this.socket.on("publish_stream", function (j) {
                 if (LivePlayer) {
                     LivePlayer.isPublishing = 1;
                 }
                 if (LivePlayer && LivePlayer.start) {
                     LivePlayer.start();
                 }
-                if (typeof DWLive.onLiveStart === 'function') {
+                if (typeof DWLive.onLiveStart === "function") {
                     DWLive.onLiveStart(j);
                 }
             });
 
-            this.socket.on('end_stream', function (j) {
+            this.socket.on("end_stream", function (j) {
                 setTimeout(function () {
                     if (LivePlayer) {
                         LivePlayer.isPublishing = 0;
@@ -930,16 +944,16 @@
                         DrawPanel.clear();
                     }
                     DWDpc.clear();
-                    if (typeof DWLive.onLiveEnd === 'function') {
+                    if (typeof DWLive.onLiveEnd === "function") {
                         DWLive.onLiveEnd(j);
                     }
                 }, getDelayTime());
             });
 
-            this.socket.on('kick_out', function (j) {
+            this.socket.on("kick_out", function (j) {
                 Pusher.socket.disconnect();
 
-                if (typeof DWLive.onKickOut === 'function') {
+                if (typeof DWLive.onKickOut === "function") {
                     DWLive.onKickOut(j);
                 }
                 if (!MobileLive.isIPad() && !MobileLive.isIPhone() && !MobileLive.isAndroid() && !MobileLive.isWindowsPhone()) {
@@ -947,115 +961,115 @@
                 }
             });
 
-            this.socket.on('announcement', function (data) {
+            this.socket.on("announcement", function (data) {
                 data = toJson(data);
 
-                if (data.action == 'release') {
-                    if (typeof DWLive.onAnnouncementRelease === 'function') {
+                if (data.action == "release") {
+                    if (typeof DWLive.onAnnouncementRelease === "function") {
                         DWLive.onAnnouncementRelease(data.announcement);
                     }
-                } else if (data.action == 'remove') {
-                    if (typeof DWLive.onAnnouncementRemove === 'function') {
+                } else if (data.action == "remove") {
+                    if (typeof DWLive.onAnnouncementRemove === "function") {
                         DWLive.onAnnouncementRemove(data);
                     }
                 }
             });
 
             // 签到功能
-            this.socket.on('start_rollcall', function (data) {
+            this.socket.on("start_rollcall", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onStartRollCall === 'function') {
+                if (typeof DWLive.onStartRollCall === "function") {
                     DWLive.onStartRollCall(data);
                 }
             });
 
             // 开始抽奖
-            this.socket.on('start_lottery', function (data) {
+            this.socket.on("start_lottery", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onStartLottery === 'function') {
+                if (typeof DWLive.onStartLottery === "function") {
                     DWLive.onStartLottery(data);
                 }
             });
 
             // 中奖
-            this.socket.on('win_lottery', function (data) {
+            this.socket.on("win_lottery", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onWinLottery === 'function') {
+                if (typeof DWLive.onWinLottery === "function") {
                     DWLive.onWinLottery(data);
                 }
             });
 
             // 结束抽奖
-            this.socket.on('stop_lottery', function (data) {
+            this.socket.on("stop_lottery", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onStopLottery === 'function') {
+                if (typeof DWLive.onStopLottery === "function") {
                     DWLive.onStopLottery(data);
                 }
             });
 
             // 开始答题
-            this.socket.on('start_vote', function (data) {
+            this.socket.on("start_vote", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onStartVote === 'function') {
+                if (typeof DWLive.onStartVote === "function") {
                     DWLive.onStartVote(data);
                 }
             });
 
             // 结束答题
-            this.socket.on('stop_vote', function (data) {
+            this.socket.on("stop_vote", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onStopVote === 'function') {
+                if (typeof DWLive.onStopVote === "function") {
                     DWLive.onStopVote(data);
                 }
             });
 
             // 答题结果
-            this.socket.on('vote_result', function (data) {
+            this.socket.on("vote_result", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onVoteResult === 'function') {
+                if (typeof DWLive.onVoteResult === "function") {
                     DWLive.onVoteResult(data);
                 }
             });
 
             // 禁播
-            this.socket.on('ban_stream', function (data) {
+            this.socket.on("ban_stream", function (data) {
                 data = toJson(data);
                 //h5禁播
                 DWLive.isBan = 1;
-                if (MobileLive.isMobile() == 'isMobile') {
+                if (MobileLive.isMobile() == "isMobile") {
                     MobileLive.ban();
 
                 } else {
                     LivePlayer.banLive();
                 }
 
-                if (typeof DWLive.onBanStream === 'function') {
+                if (typeof DWLive.onBanStream === "function") {
                     DWLive.onBanStream(data);
                 }
             });
             // 解禁
-            this.socket.on('unban_stream', function (data) {
+            this.socket.on("unban_stream", function (data) {
                 data = toJson(data);
                 //h5解禁
                 DWLive.isBan = 0;
-                if (MobileLive.isMobile() == 'isMobile') {
+                if (MobileLive.isMobile() == "isMobile") {
                     MobileLive.unban();
                 } else {
                     LivePlayer.unbanLive();
                 }
 
-                if (typeof DWLive.onUnBanStream === 'function') {
+                if (typeof DWLive.onUnBanStream === "function") {
                     DWLive.onUnBanStream(data);
                 }
             });
-            this.socket.on('room_setting', function (data) {
+            this.socket.on("room_setting", function (data) {
                 data = toJson(data);
-                if (typeof DWLive.onRoomSetting === 'function') {
+                if (typeof DWLive.onRoomSetting === "function") {
                     DWLive.onRoomSetting(data);
                 }
                 if (data.layout_video_main != currentLayout) {
                     var main = data.layout_video_main;
-                    if (typeof DWLive.onSwitchVideoDoc === 'function') {
+                    if (typeof DWLive.onSwitchVideoDoc === "function") {
                         DWLive.onSwitchVideoDoc(main);
 
                     }
@@ -1064,51 +1078,51 @@
             });
 
             //禁言某人发送信息回调
-            this.socket.on('silence_user_chat_message', function (data) {
-                /*alert("您已被禁言！" + data);*/
-                if (typeof DWLive.onSilenceUserChatMessage === 'function') {
+            this.socket.on("silence_user_chat_message", function (data) {
+
+                if (typeof DWLive.onSilenceUserChatMessage === "function") {
                     DWLive.onSilenceUserChatMessage(toJson(data));
                 }
             });
 
             // 讲师接受互动信息
-            this.socket.on('accept_speak', function (data) {
-                if (typeof window.on_cc_live_accept_interaction === 'function') {
+            this.socket.on("accept_speak", function (data) {
+                if (typeof window.on_cc_live_accept_interaction === "function") {
                     window.on_cc_live_accept_interaction(toJson(data));
                 }
             });
 
             // 互动信息
-            this.socket.on('speak_message', function (data) {
-                if (typeof window.on_cc_live_interaction_message === 'function') {
+            this.socket.on("speak_message", function (data) {
+                if (typeof window.on_cc_live_interaction_message === "function") {
                     window.on_cc_live_interaction_message(toJson(data));
                 }
             });
 
             // 已经在聊天的列表信息
-            this.socket.on('speak_peer_list', function (data) {
-                if (typeof window.on_cc_live_interaction_chatusers === 'function') {
+            this.socket.on("speak_peer_list", function (data) {
+                if (typeof window.on_cc_live_interaction_chatusers === "function") {
                     window.on_cc_live_interaction_chatusers(toJson(data));
                 }
             });
 
             // 挂断互动信息
-            this.socket.on('speak_disconnect', function (data) {
-                if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+            this.socket.on("speak_disconnect", function (data) {
+                if (typeof window.on_cc_live_interaction_disconnect === "function") {
                     window.on_cc_live_interaction_disconnect(toJson(data));
                 }
             });
 
             // 广播信息
-            this.socket.on('broadcast_msg', function (data) {
-                if (typeof DWLive.onBroadcastMsg === 'function') {
+            this.socket.on("broadcast_msg", function (data) {
+                if (typeof DWLive.onBroadcastMsg === "function") {
                     DWLive.onBroadcastMsg(toJson(data).value);
                 }
             });
 
             // 发布提问
-            this.socket.on('publish_question', function (data) {
-                if (typeof DWLive.onQaPublish === 'function') {
+            this.socket.on("publish_question", function (data) {
+                if (typeof DWLive.onQaPublish === "function") {
                     DWLive.onQaPublish(toJson(data));
                 }
             });
@@ -1116,10 +1130,10 @@
             /**
              * 发布问卷
              * */
-            this.socket.on('questionnaire_publish', function (data) {
+            this.socket.on("questionnaire_publish", function (data) {
                 data = toJson(data);
 
-                if (typeof DWLive.onQuestionnairePublish === 'function') {
+                if (typeof DWLive.onQuestionnairePublish === "function") {
                     DWLive.onQuestionnairePublish(data);
                 }
             });
@@ -1127,10 +1141,10 @@
             /**
              * 结束发布问卷
              * */
-            this.socket.on('questionnaire_publish_stop', function (data) {
+            this.socket.on("questionnaire_publish_stop", function (data) {
                 data = toJson(data);
 
-                if (typeof DWLive.onQuestionnairePublishStop === 'function') {
+                if (typeof DWLive.onQuestionnairePublishStop === "function") {
                     DWLive.onQuestionnairePublishStop(data);
                 }
             });
@@ -1138,42 +1152,42 @@
             /**
              * 发布问卷统计
              * */
-            this.socket.on('questionnaire_publish_statis', function (data) {
+            this.socket.on("questionnaire_publish_statis", function (data) {
                 data = toJson(data);
 
-                if (typeof DWLive.onQuestionnairePublishStatis === 'function') {
+                if (typeof DWLive.onQuestionnairePublishStatis === "function") {
                     DWLive.onQuestionnairePublishStatis(data);
                 }
             });
 
-            this.socket.on('room_teachers', function (data) {
-                if (typeof DWLive.onOnlineTeachers === 'function') {
+            this.socket.on("room_teachers", function (data) {
+                if (typeof DWLive.onOnlineTeachers === "function") {
                     DWLive.onOnlineTeachers(toJson(data));
                 }
             });
 
-            this.socket.on('external_questionnaire_publish', function (data) {
-                if (typeof DWLive.onExternalQuestionnairePublish === 'function') {
+            this.socket.on("external_questionnaire_publish", function (data) {
+                if (typeof DWLive.onExternalQuestionnairePublish === "function") {
                     DWLive.onExternalQuestionnairePublish(toJson(data));
                 }
             });
 
-            this.socket.on('ban_chat', function (data) {
-                if (typeof DWLive.onBanChat === 'function') {
+            this.socket.on("ban_chat", function (data) {
+                if (typeof DWLive.onBanChat === "function") {
                     DWLive.onBanChat(toJson(data));
                 }
             });
 
-            this.socket.on('unban_chat', function (data) {
-                if (typeof DWLive.onUnBanChat === 'function') {
+            this.socket.on("unban_chat", function (data) {
+                if (typeof DWLive.onUnBanChat === "function") {
                     DWLive.onUnBanChat(toJson(data));
                 }
             });
             /**
              * 获取当前播放（数据源）场景（0：无意义(默认)，10、11:（开启/关闭）摄像头，20：图片，30：插播视频，40：区域捕获，50：桌面共享，60：自定义场景）
              * **/
-            this.socket.on('switch_source', function (data) {
-                if (typeof DWLive.onSwitchSource === 'function') {
+            this.socket.on("switch_source", function (data) {
+                if (typeof DWLive.onSwitchSource === "function") {
                     DWLive.onSwitchSource(data);
                 }
             });
@@ -1181,21 +1195,21 @@
             var _this = this;
             setTimeout(function () {
                 try {
-                    _this.socket.emit('room_user_count');
+                    _this.socket.emit("room_user_count");
                 } catch (e) {
                 }
                 try {
-                    _this.socket.emit('room_teachers');
+                    _this.socket.emit("room_teachers");
                 } catch (e) {
                 }
             }, 1500);
             setInterval(function () {
                 try {
-                    _this.socket.emit('room_user_count');
+                    _this.socket.emit("room_user_count");
                 } catch (e) {
                 }
                 try {
-                    _this.socket.emit('room_teachers');
+                    _this.socket.emit("room_teachers");
                 } catch (e) {
                 }
             }, 15000);
@@ -1204,65 +1218,65 @@
         // 请求互动
         requestInteraction: function (p, callback) {
 
-            var t = 'audio';
+            var t = "audio";
 
             if (p.video) {
-                t += 'video';
+                t += "video";
             }
 
             var j = {
-                'viewerId': DWLive.viewerid,
-                'viewerName': DWLive.viewername,
-                'type': t
+                "viewerId": DWLive.viewerid,
+                "viewerName": DWLive.viewername,
+                "type": t
             };
 
             var err = undefined;
             try {
-                this.socket.emit('request_speak', JSON.stringify(j));
+                this.socket.emit("request_speak", JSON.stringify(j));
             } catch (e) {
                 err = e;
             } finally {
-                if (typeof callback === 'function') callback(err);
+                if (typeof callback === "function") callback(err);
             }
         },
 
         // 取消申请
         cancelRequestInteraction: function (type, callback) {
             var j = {
-                'viewerId': this.viewerid,
-                'viewerName': this.viewername,
-                'type': type
+                "viewerId": this.viewerid,
+                "viewerName": this.viewername,
+                "type": type
             };
 
-            debug('interaction', '取消申请：' + JSON.stringify(j));
+            debug("interaction", "取消申请：" + JSON.stringify(j));
 
             var err = undefined;
             try {
-                this.socket.emit('cancel_request_speak', JSON.stringify(j));
+                this.socket.emit("cancel_request_speak", JSON.stringify(j));
             } catch (e) {
                 err = e;
             } finally {
-                if (typeof callback === 'function') callback(err);
+                if (typeof callback === "function") callback(err);
             }
         },
 
         //挂断互动
         hangupInteraction: function (type, callback) {
             var j = {
-                'viewerId': DWLive.viewerid,
-                'viewerName': DWLive.viewername,
-                'type': type
+                "viewerId": DWLive.viewerid,
+                "viewerName": DWLive.viewername,
+                "type": type
             };
 
-            debug('interaction', '挂断事件：' + JSON.stringify(j));
+            debug("interaction", "挂断事件：" + JSON.stringify(j));
 
             var err = undefined;
             try {
-                this.socket.emit('hangup_interaction', JSON.stringify(j));
+                this.socket.emit("hangup_interaction", JSON.stringify(j));
             } catch (e) {
                 err = e;
             } finally {
-                if (typeof callback === 'function') callback(err);
+                if (typeof callback === "function") callback(err);
             }
         }
     };
@@ -1306,7 +1320,7 @@
          * }
          * */
         this.requestInteraction = function (t, callback) {
-            debug('Interaction', '请求互动');
+            debug("Interaction", "请求互动");
 
             this.local.type = t;
 
@@ -1318,8 +1332,8 @@
             // 创建音视频信息
             this.createLocalMedia(function (error) {
                 if (error) {
-                    if (typeof window.on_cc_live_interaction_error === 'function') {
-                        window.on_cc_live_interaction_error(live.interaction.local.type, error, '创建音视频信息出错');
+                    if (typeof window.on_cc_live_interaction_error === "function") {
+                        window.on_cc_live_interaction_error(live.interaction.local.type, error, "创建音视频信息出错");
                     }
                     return;
                 }
@@ -1334,7 +1348,7 @@
             live.interaction.interactionTime = 0;
             live.interaction.interactionTimeInterval = setInterval(function () {
                 ++live.interaction.interactionTime;
-                if (typeof window.on_cc_live_interaction_interval === 'function') {
+                if (typeof window.on_cc_live_interaction_interval === "function") {
                     var p = live.interaction.local.type;
                     var t = live.interaction.interactionTime;
                     window.on_cc_live_interaction_interval(p, t);
@@ -1363,10 +1377,10 @@
 
                 live.interaction.isRequesting = false;
 
-                $('#interactionLocalVideo')[0].src = '';
-                $('#videoInteraction').hide();
+                $("#interactionLocalVideo")[0].src = "";
+                $("#videoInteraction").hide();
 
-                if (typeof window.on_cc_live_interaction_request_timeout === 'function') {
+                if (typeof window.on_cc_live_interaction_request_timeout === "function") {
                     window.on_cc_live_interaction_request_timeout(live.interaction.local.type);
                 }
             }, 60000);
@@ -1403,7 +1417,7 @@
         this.cancelInteraction = function () {
             live.interaction.isRequesting = false;
 
-            if (typeof window.on_cc_live_interaction_cancal === 'function') {
+            if (typeof window.on_cc_live_interaction_cancal === "function") {
                 window.on_cc_live_interaction_cancal(live.interaction.local.type);
             }
         };
@@ -1471,13 +1485,13 @@
             }, function (stream) {
                 that.local.video.stream = stream;
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c(stream);
                 }
             }, function (error) {
-                debug('Interaction', 'getUserMedia error: ' + error);
+                debug("Interaction", "getUserMedia error: " + error);
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c(error);
                 }
             });
@@ -1492,13 +1506,13 @@
             }, function (stream) {
                 that.local.audio.stream = stream;
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c(stream);
                 }
             }, function (error) {
-                debug('Interaction', 'getUserMedia error: ' + error);
+                debug("Interaction", "getUserMedia error: " + error);
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c(error);
                 }
             });
@@ -1514,31 +1528,31 @@
                     that.local.audio.stream = stream;
                 }
 
-                if (typeof window.on_cc_live_interaction_local_media === 'function') {
+                if (typeof window.on_cc_live_interaction_local_media === "function") {
                     window.on_cc_live_interaction_local_media(p, stream);
                 }
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c();
                 }
             }, function (error) {
-                debug('Interaction', 'getUserMedia error: ' + error);
+                debug("Interaction", "getUserMedia error: " + error);
 
-                if (c && typeof c === 'function') {
+                if (c && typeof c === "function") {
                     c(error);
                 }
             });
         };
 
         this.iceServers = {
-            'iceServers': [{
-                url: 'stun:turn.csslcloud.net:3478',
-                credential: 'bokecc',
-                username: 'cc'
+            "iceServers": [{
+                url: "stun:turn.csslcloud.net:3478",
+                credential: "bokecc",
+                username: "cc"
             }, {
-                url: 'turn:turn.csslcloud.net:3478',
-                credential: 'bokecc',
-                username: 'cc'
+                url: "turn:turn.csslcloud.net:3478",
+                credential: "bokecc",
+                username: "cc"
             }]
         };
 
@@ -1546,7 +1560,7 @@
         this.createAnswerPeerConnection = function (chatuser) {
             var pc = new PeerConnection(this.iceServers);
 
-            if (chatuser.type == 'audio') {
+            if (chatuser.type == "audio") {
                 if (!live.interaction.local.audio.stream) {
                     this.createLocalAudioMedia();
                 }
@@ -1560,21 +1574,21 @@
 
             // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
             pc.onaddstream = function (event) {
-                if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+                if (typeof window.on_cc_live_interaction_remote_media === "function") {
                     window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream);
                 }
             };
 
             pc.createAnswer(function (desc) {
                 pc.setLocalDescription(desc);
-                DWLive.sendInteractionMessage(live.interaction.local.type, chatuser.id, 'answer', desc);
+                DWLive.sendInteractionMessage(live.interaction.local.type, chatuser.id, "answer", desc);
             }, function (error) {
-                debug('Interaction', 'Failure callback: ' + error);
+                debug("Interaction", "Failure callback: " + error);
             });
 
             pc.onicecandidate = function (event) {
                 if (event.candidate !== null) {
-                    DWLive.sendInteractionMessage(live.interaction.local.type, chatuser.id, '', event.candidate);
+                    DWLive.sendInteractionMessage(live.interaction.local.type, chatuser.id, "", event.candidate);
                 }
             };
 
@@ -1599,20 +1613,20 @@
 
             // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
             pc.onaddstream = function (event) {
-                if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+                if (typeof window.on_cc_live_interaction_remote_media === "function") {
                     window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream);
                 }
             };
 
             pc.oniceconnectionstatechange = function (d) {
-                debug('Interaction', 'iceConnectionState ...' + pc.iceConnectionState);
+                debug("Interaction", "iceConnectionState ..." + pc.iceConnectionState);
 
-                if (pc.iceConnectionState == 'failed') {
-                    debug('Interaction', 'iceConnectionState failed');
+                if (pc.iceConnectionState == "failed") {
+                    debug("Interaction", "iceConnectionState failed");
 
                     live.interaction.hangupInteraction();
 
-                    if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+                    if (typeof window.on_cc_live_interaction_disconnect === "function") {
                         window.on_cc_live_interaction_disconnect({
                             disconnectid: DWLive.viewerid
                         });
@@ -1623,16 +1637,16 @@
             pc.createOffer(function (desc) {
                 pc.setLocalDescription(desc);
 
-                DWLive.sendInteractionMessage(p, chatuser.id, 'offer', desc);
+                DWLive.sendInteractionMessage(p, chatuser.id, "offer", desc);
             }, function (error) {
-                if (typeof window.on_cc_live_interaction_error === 'function') {
-                    window.on_cc_live_interaction_error(live.interaction.local.type, error, 'createOfferPeerConnection');
+                if (typeof window.on_cc_live_interaction_error === "function") {
+                    window.on_cc_live_interaction_error(live.interaction.local.type, error, "createOfferPeerConnection");
                 }
             });
 
             pc.onicecandidate = function (event) {
                 if (event.candidate !== null) {
-                    DWLive.sendInteractionMessage(p, chatuser.id, '', event.candidate);
+                    DWLive.sendInteractionMessage(p, chatuser.id, "", event.candidate);
                 }
             };
 
@@ -1648,7 +1662,7 @@
 
         // 当前浏览器是否支持互动功能
         this.isSupportInteraction = function () {
-            return window.location.protocol === 'https:' && !!(PeerConnection && URL && getUserMedia && nativeRTCIceCandidate && nativeRTCSessionDescription);
+            return window.location.protocol === "https:" && !!(PeerConnection && URL && getUserMedia && nativeRTCIceCandidate && nativeRTCSessionDescription);
         };
 
         // 挂断互动
@@ -1668,37 +1682,36 @@
 
     // LivePlayer
     var LivePlayer = {
-        id: 'livePlayer',
+        id: "livePlayer",
 
-        swfUrl: '//zeus.csslcloud.net/flash/Player.swf',
+        swfUrl: "//zeus.csslcloud.net/flash/Player.swf",
 
         isReady: false,
 
         isPublishing: 0,
 
-        delay: '',
+        delay: "",
 
-        foreignPublish: '',
+        foreignPublish: "",
 
         init: function () {
             var flashvars = {
-                'userid': DWLive.userid,
-                'roomid': DWLive.roomid,
-                'groupId': DWLive.groupId,
-                'foreignPublish': this.foreignPublish,
-                'warmvideoid': this.warmVideoId,
-                'openhostmode': this.openHostMode, // 多主讲
-                'dvr': this.dvr,
-                'barrage': this.barrageData,
-                'backgroundImageUri': this.backgroundImageUri,
-                'backgroundHint': this.backgroundHint,
-                'countDownTime': DWLive.liveCountdown,
-                'openMultiQuality': DWLive.multiQuality,
-                'language': DWLive.language || '',
-                'type': 'liveplayer',
-                'upid': DWLive.upid,
-                'viewerid': this.viewerid,
-                'ua': 1
+                "userid": DWLive.userid,
+                "roomid": DWLive.roomid,
+                "foreignPublish": this.foreignPublish,
+                "warmvideoid": this.warmVideoId,
+                "openhostmode": this.openHostMode, // 多主讲
+                "dvr": this.dvr,
+                "barrage": this.barrageData,
+                "backgroundImageUri": this.backgroundImageUri,
+                "backgroundHint": this.backgroundHint,
+                "countDownTime": DWLive.liveCountdown,
+                "openMultiQuality": DWLive.multiQuality,
+                "language": DWLive.language || "",
+                "type": "liveplayer",
+                "upid": DWLive.upid,
+                "viewerid": this.viewerid,
+                "ua": 1
             };
 
             var buffer = this.delay;
@@ -1707,13 +1720,13 @@
             }
 
             var params = {
-                allowFullscreen: 'true',
-                allowScriptAccess: 'always',
-                wmode: 'transparent'
+                allowFullscreen: "true",
+                allowScriptAccess: "always",
+                wmode: "transparent"
             };
 
-            swfobject.embedSWF(this.swfUrl, this.id, '100%', '100%', '10.0.0',
-                '/flash/expressInstall.swf', flashvars, params);
+            swfobject.embedSWF(this.swfUrl, this.id, "100%", "100%", "10.0.0",
+                "/flash/expressInstall.swf", flashvars, params);
 
         },
 
@@ -1730,16 +1743,16 @@
         },
 
         start: function () {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 //禁播
                 if (DWLive.isBan) {
-                    $('#livePlayer').css({
-                        'text-align': 'center',
-                        'color': 'white',
-                        'font-size': '18px',
-                        'line-height': '232px'
+                    $("#livePlayer").css({
+                        "text-align": "center",
+                        "color": "white",
+                        "font-size": "18px",
+                        "line-height": "232px"
                     });
-                    $('#livePlayer').html('<p>直播已封禁，请联系管理员</p>');
+                    $("#livePlayer").html("<p>直播已封禁，请联系管理员</p>");
                     return;
                 }
 
@@ -1756,7 +1769,7 @@
         },
 
         end: function () {
-            if (MobileLive.isMobile() == 'isMobile') {
+            if (MobileLive.isMobile() == "isMobile") {
                 setTimeout(function () {
                     MobileLive.end();
                 }, DELAY_TIME);
@@ -1871,7 +1884,7 @@
             if (!this.getFlash()) {
                 return;
             }
-            this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'});
+            this.getFlash()._closeMarqueePlugin({name: "PluginForMarquee"});
         }
     };
 
@@ -1925,37 +1938,37 @@
 
     // DrawPanel
     var DrawPanel = {
-        id: 'drawPanel',
+        id: "drawPanel",
 
         isReady: false,
 
         isProcessing: false,
 
         getWidth: function () {
-            return '100%';
+            return "100%";
         },
 
         getHeight: function () {
-            return '100%';
+            return "100%";
         },
 
-        swfUrl: '//zeus.csslcloud.net/flash/Player.swf',
+        swfUrl: "//zeus.csslcloud.net/flash/Player.swf",
 
         init: function () {
             var flashvars = {
-                'type': 'drawpanel'
+                "type": "drawpanel"
             };
             var params = {
-                allowFullscreen: 'true',
-                allowScriptAccess: 'always',
-                wmode: 'transparent'
+                allowFullscreen: "true",
+                allowScriptAccess: "always",
+                wmode: "transparent"
             };
             var attributes = {};
 
             if (!MobileLive.isIPad() && !MobileLive.isIPhone() && !MobileLive.isAndroid() && !MobileLive.isWindowsPhone()) {
                 //开启极速动画模式
                 if (!DWDpc.fastMode) {
-                    swfobject.embedSWF(this.swfUrl, this.id, this.getWidth(), this.getHeight(), '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
+                    swfobject.embedSWF(this.swfUrl, this.id, this.getWidth(), this.getHeight(), "10.0.0", "/flash/expressInstall.swf", flashvars, params, attributes);
                 }
 
             }
@@ -2011,22 +2024,22 @@
 
             var documentDisplayMode = DWLive.documentDisplayMode;
             if (documentDisplayMode == 1) {
-                this.displayMode = 'auto';
+                this.displayMode = "auto";
             } else if (documentDisplayMode == 2) {
-                this.displayMode = 'width';
+                this.displayMode = "width";
             } else {
-                this.displayMode = 'auto';
+                this.displayMode = "auto";
             }
 
             if (live.adapt !== undefined) {
-                this.displayMode = live.adapt ? 'auto' : 'width';
+                this.displayMode = live.adapt ? "auto" : "width";
             }
 
             var jj = JSON.parse(j);
             var u = jj.url;
-            var isHttps = window.location.protocol === 'https:';
+            var isHttps = window.location.protocol === "https:";
             if (isHttps) {
-                jj.url = u.replace(/http:/g, 'https:');
+                jj.url = u.replace(/http:/g, "https:");
             }
 
             swf.filp(JSON.stringify(jj), this.displayMode);
@@ -2082,9 +2095,9 @@
     // 历史数据
     var History = function () {
         $.ajax({
-            url: '//view.csslcloud.net/api/view/info?userid=' + DWLive.userid + '&roomid=' + DWLive.roomid,
-            type: 'GET',
-            dataType: 'jsonp',
+            url: "//view.csslcloud.net/api/view/info?userid=" + DWLive.userid + "&roomid=" + DWLive.roomid,
+            type: "GET",
+            dataType: "jsonp",
             success: function (data) {
                 if (!data.success) {
                     return;
@@ -2123,17 +2136,18 @@
                 if (questions && questions.length) {
                     for (var i = 0; i < questions.length; i++) {
                         var question = questions[i];
-                        if (typeof DWLive.onQuestion === 'function') {
+                        if (typeof DWLive.onQuestion === "function") {
                             DWLive.onQuestion(JSON.stringify({
-                                'action': 'question',
-                                'value': {
-                                    'id': question.encryptId,
-                                    'content': question.content,
-                                    'userId': question.questionUserId,
-                                    'userName': question.questionUserName,
-                                    'isPublish': question.isPublish,
-                                    'triggerTime': question.triggerTime,
-                                    'userAvatar': question.userAvatar
+                                "action": "question",
+                                "value": {
+                                    "id": question.encryptId,
+                                    "content": question.content,
+                                    "userId": question.questionUserId,
+                                    "groupId": question.groupId,
+                                    "userName": question.questionUserName,
+                                    "isPublish": question.isPublish,
+                                    "triggerTime": question.triggerTime,
+                                    "userAvatar": question.userAvatar
                                 }
                             }));
                         }
@@ -2143,18 +2157,19 @@
                 if (answers && answers.length) {
                     for (var i = 0; i < answers.length; i++) {
                         var answer = answers[i];
-                        if (typeof DWLive.onAnswer === 'function') {
+                        if (typeof DWLive.onAnswer === "function") {
                             DWLive.onAnswer(JSON.stringify({
-                                'action': 'answer',
-                                'value': {
-                                    'questionId': answer.encryptId,
-                                    'isPrivate': answer.isPrivate,
-                                    'content': answer.content,
-                                    'userId': answer.answerUserId,
-                                    'userName': answer.answerUserName,
-                                    'questionUserId': answer.questionUserId,
-                                    'triggerTime': answer.triggerTime,
-                                    'userAvatar': answer.userAvatar
+                                "action": "answer",
+                                "value": {
+                                    "questionId": answer.encryptId,
+                                    "isPrivate": answer.isPrivate,
+                                    "content": answer.content,
+                                    "userId": answer.answerUserId,
+                                    "groupId": answer.groupId,
+                                    "userName": answer.answerUserName,
+                                    "questionUserId": answer.questionUserId,
+                                    "triggerTime": answer.triggerTime,
+                                    "userAvatar": answer.userAvatar
                                 }
                             }));
                         }
@@ -2164,7 +2179,7 @@
                 if (broadcasts && broadcasts.length) {
                     for (var i = 0; i < broadcasts.length; i++) {
                         var broadcast = broadcasts[i];
-                        if (typeof DWLive.onBroadcastMsg == 'function') {
+                        if (typeof DWLive.onBroadcastMsg == "function") {
                             DWLive.onBroadcastMsg({
                                 content: broadcast.content,
                                 time: broadcast.time
@@ -2173,7 +2188,7 @@
                     }
                 }
 
-                if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard) {
+                if (MobileLive.isMobile() == "isMobile" && $.DrawingBoard) {
                     $.DrawingBoard.history(meta);
                 }
 
@@ -2186,18 +2201,20 @@
                     for (var i = 0; i < chatLogs.length; i++) {
                         var chatLog = chatLogs[i];
 
+
                         cls.push({
-                            'userid': chatLog.userId,
-                            'username': chatLog.userName,
-                            'userrole': chatLog.userRole,
-                            'useravatar': chatLog.userAvatar,
-                            'msg': chatLog.content,
-                            'time': chatLog.time,
-                            'usercustommark': chatLog.userCustomMark
+                            "userid": chatLog.userId,
+                            "username": chatLog.userName,
+                            "userrole": chatLog.userRole,
+                            "useravatar": chatLog.userAvatar,
+                            "groupId": chatLog.groupId,
+                            "msg": chatLog.content,
+                            "time": chatLog.time,
+                            "usercustommark": chatLog.userCustomMark
                         });
                     }
 
-                    if (typeof DWLive.onPublicChatMessage === 'function') {
+                    if (typeof DWLive.onPublicChatMessage === "function") {
                         for (var idx = 0; idx < cls.length; idx++) {
                             DWLive.onPublicChatMessage(JSON.stringify(cls[idx]));
                         }
@@ -2212,13 +2229,13 @@
                         });
                         var lastPage = pageChange.pop();
                         pageChanges.push(JSON.stringify({
-                            'fileName': lastPage.docName,
-                            'totalPage': lastPage.docTotalPage,
-                            'docid': lastPage.encryptDocId,
-                            'url': lastPage.url,
-                            'page': lastPage.pageNum,
-                            'time': lastPage.time,
-                            'useSDK': lastPage.useSDK
+                            "fileName": lastPage.docName,
+                            "totalPage": lastPage.docTotalPage,
+                            "docid": lastPage.encryptDocId,
+                            "url": lastPage.url,
+                            "page": lastPage.pageNum,
+                            "time": lastPage.time,
+                            "useSDK": lastPage.useSDK
                         }));
                     }
 
@@ -2229,13 +2246,13 @@
                         });
                         var lastAnimation = animation.pop();
                         animations.push(JSON.stringify({
-                            'fileName': lastAnimation.docName,
-                            'totalPage': lastAnimation.docTotalPage,
-                            'docid': lastAnimation.encryptDocId,
-                            'url': lastAnimation.url,
-                            'page': lastAnimation.pageNum,
-                            'time': lastAnimation.time,
-                            'step': lastAnimation.step
+                            "fileName": lastAnimation.docName,
+                            "totalPage": lastAnimation.docTotalPage,
+                            "docid": lastAnimation.encryptDocId,
+                            "url": lastAnimation.url,
+                            "page": lastAnimation.pageNum,
+                            "time": lastAnimation.time,
+                            "step": lastAnimation.step
                         }));
                     }
 
@@ -2256,9 +2273,9 @@
     var opts = {
         // 互动信息
         interaction: {
-            id: 'interactionPlayer',
-            width: '100%',
-            height: '100%'
+            id: "interactionPlayer",
+            width: "100%",
+            height: "100%"
         }
     };
     var Live = function (opts) {
@@ -2285,7 +2302,7 @@
             var j = toJson(data);
             DrawPanel.draw(JSON.stringify(j.value.data));
         }, getDeltaTime());
-        if (MobileLive.isMobile() == 'isMobile') {
+        if (MobileLive.isMobile() == "isMobile") {
             setTimeout(function () {
                 $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
@@ -2304,7 +2321,7 @@
             DrawPanel.filp(JSON.stringify(j.value));
         }, getDeltaTime());
         //canvas
-        if (MobileLive.isMobile() == 'isMobile') {
+        if (MobileLive.isMobile() == "isMobile") {
             setTimeout(function () {
                 $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
@@ -2320,7 +2337,7 @@
             var j = toJson(data);
             DrawPanel.animationFilp(JSON.stringify(j.value));
         }, getDeltaTime());
-        if (MobileLive.isMobile() == 'isMobile') {
+        if (MobileLive.isMobile() == "isMobile") {
             setTimeout(function () {
                 $.DrawingBoard && $.DrawingBoard.db(data);
             }, getDeltaTime());
@@ -2331,47 +2348,47 @@
     // Chat
     var Chat = {
         init: function () {
-            Pusher.socket.on('chat_message', function (j) {
-                if (typeof DWLive.onPublicChatMessage === 'function') {
+            Pusher.socket.on("chat_message", function (j) {
+                if (typeof DWLive.onPublicChatMessage === "function") {
                     DWLive.onPublicChatMessage(j);
                 }
             });
 
             // 消息提醒
-            Pusher.socket.on('notification', function (j) {
-                if (typeof DWLive.onNotification === 'function') {
+            Pusher.socket.on("notification", function (j) {
+                if (typeof DWLive.onNotification === "function") {
                     DWLive.onNotification(j);
                 }
             });
 
-            Pusher.socket.on('information', function (j) {
-                if (typeof DWLive.onInformation === 'function') {
+            Pusher.socket.on("information", function (j) {
+                if (typeof DWLive.onInformation === "function") {
                     DWLive.onInformation(j);
                 }
             });
 
             // 接收发送私聊函数
-            Pusher.socket.on('private_chat_self', function (j) {
-                if (typeof DWLive.onPrivateChatMessage === 'function') {
+            Pusher.socket.on("private_chat_self", function (j) {
+                if (typeof DWLive.onPrivateChatMessage === "function") {
                     DWLive.onPrivateChatMessage(j);
                 }
             });
 
             // 接收回答私聊函数
-            Pusher.socket.on('private_chat', function (j) {
-                if (typeof DWLive.onPrivateAnswer === 'function') {
+            Pusher.socket.on("private_chat", function (j) {
+                if (typeof DWLive.onPrivateAnswer === "function") {
                     DWLive.onPrivateAnswer(j);
                 }
             });
 
             // 在线列表
-            Pusher.socket.on('room_context', function (msg) {
+            Pusher.socket.on("room_context", function (msg) {
 
             });
 
             // 自定义消息
-            Pusher.socket.on('custom_message', function (j) {
-                if (typeof DWLive.onCustomChatMessage === 'function') {
+            Pusher.socket.on("custom_message", function (j) {
+                if (typeof DWLive.onCustomChatMessage === "function") {
                     DWLive.onCustomChatMessage(j);
                 }
             });
@@ -2383,21 +2400,21 @@
         init: function () {
 
             // 问答->提交问题
-            Pusher.socket.on('question', function (j) {
-                if (typeof DWLive.onQuestion === 'function') {
+            Pusher.socket.on("question", function (j) {
+                if (typeof DWLive.onQuestion === "function") {
                     DWLive.onQuestion(j);
                 }
-                if (typeof DWLive.onQuestionSend === 'function') {
+                if (typeof DWLive.onQuestionSend === "function") {
                     DWLive.onQuestionSend(j);
                 }
             });
 
             // 问答->返回答案
-            Pusher.socket.on('answer', function (j) {
-                if (typeof DWLive.onAnswer === 'function') {
+            Pusher.socket.on("answer", function (j) {
+                if (typeof DWLive.onAnswer === "function") {
                     DWLive.onAnswer(j);
                 }
-                if (typeof DWLive.onAnswerSend === 'function') {
+                if (typeof DWLive.onAnswerSend === "function") {
                     DWLive.onAnswerSend(j);
                 }
             });
@@ -2413,7 +2430,7 @@
             };
         } else {
             Event.addEvents = function (target, eventType, handle) {
-                target.attachEvent('on' + eventType, function () {
+                target.attachEvent("on" + eventType, function () {
                     handle.call(target, arguments);
                 });
             };
@@ -2424,16 +2441,16 @@
 
     var MobileLive = {
 
-        src: '',
+        src: "",
         audio: false,
         line: 0,
 
         init: function () {
             var _this = this;
             $.ajax({
-                url: '//zeus.csslcloud.net/api/hls/play',
-                type: 'GET',
-                dataType: 'json',
+                url: "//zeus.csslcloud.net/api/hls/play",
+                type: "GET",
+                dataType: "json",
                 data: {roomid: DWLive.roomid, userid: DWLive.userid},
                 success: function (data) {
                     var status = data.live.status;
@@ -2444,7 +2461,7 @@
                         _this.secureHosts = data.live.secureHosts || [];
                         _this.audioM3u8 = data.live.audioM3u8 || [];
                         _this.audioSecureHosts = data.live.audioSecureHosts || [];
-                        _this.isHttps = window.location.protocol === 'https:';
+                        _this.isHttps = window.location.protocol === "https:";
                         options.init();
                         options.liveId = data.live.liveId;
                         if (_this.isHttps && _this.secureHosts && _this.secureHosts.length) {
@@ -2453,37 +2470,37 @@
 
                         _this.appendVideo(_this.m3u8[0]);
 
-                        if (typeof DWLive.onLiveStarting === 'function') {
+                        if (typeof DWLive.onLiveStarting === "function") {
                             DWLive.onLiveStarting();
                         }
 
                         //ios解禁播放失败处理
-                        var vd = $('#livePlayer>video')[0];
+                        var vd = $("#livePlayer>video")[0];
                         var index = 0;
                         var handle = function () {
                             if (index >= 3) {
-                                vd.removeEventListener('error', handle);
+                                vd.removeEventListener("error", handle);
                                 return;
                             }
-                            vd.removeEventListener('error', handle);
+                            vd.removeEventListener("error", handle);
                             setTimeout(function () {
                                 index++;
                                 vd.src = vd.src;
-                                Event.addEvents(vd, 'error', handle, false);
+                                Event.addEvents(vd, "error", handle, false);
                             }, 1000);
                         };
 
-                        Event.addEvents(vd, 'error', handle, false);
+                        Event.addEvents(vd, "error", handle, false);
 
                     } else {
                         if (DWLive.isBan) {
-                            $('#livePlayer').css({
-                                'text-align': 'center',
-                                'color': 'white',
-                                'font-size': '18px',
-                                'line-height': '232px'
+                            $("#livePlayer").css({
+                                "text-align": "center",
+                                "color": "white",
+                                "font-size": "18px",
+                                "line-height": "232px"
                             });
-                            $('#livePlayer').html('<p>直播已封禁，请联系管理员</p>');
+                            $("#livePlayer").html("<p>直播已封禁，请联系管理员</p>");
                             return;
                         }
                     }
@@ -2493,63 +2510,63 @@
         },
 
         appendVideo: function (s) {
-            var v = '<video id="player_live" webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
-            $('#' + LivePlayer.id).html(v);
-            var video = document.getElementById('player_live');
+            var v = "<video id=\"player_live\" webkit-playsinline playsinline controls autoplay x-webkit-airplay=\"allow\" x5-playsinline width=\"100%\" height=\"100%\" src=\"" + s + "\"></video>";
+            $("#" + LivePlayer.id).html(v);
+            var video = document.getElementById("player_live");
             DWLive.onKickOut = function () {
-                $('#' + LivePlayer.id).html('');
+                $("#" + LivePlayer.id).html("");
             };
             this.report = new ReportLog(options, 1, 11, video, true);
         },
 
         ban: function () {
-            $('#livePlayer').css({
-                'text-align': 'center',
-                'color': 'white',
-                'font-size': '18px',
-                'line-height': '232px'
+            $("#livePlayer").css({
+                "text-align": "center",
+                "color": "white",
+                "font-size": "18px",
+                "line-height": "232px"
             });
-            $('#livePlayer').html('<p>直播已封禁，请联系管理员</p>');
+            $("#livePlayer").html("<p>直播已封禁，请联系管理员</p>");
         },
 
         unban: function () {
-            $('#livePlayer').css({
-                'text-align': '',
-                'color': '',
-                'font-size': '',
-                'line-height': ''
+            $("#livePlayer").css({
+                "text-align": "",
+                "color": "",
+                "font-size": "",
+                "line-height": ""
             });
             this.init();
         },
 
         end: function () {
-            $('#' + LivePlayer.id).html('');
+            $("#" + LivePlayer.id).html("");
             this.report.stopTimer();
         },
 
         appendDoc: function (s) {
-            var isHttps = window.location.protocol === 'https:';
+            var isHttps = window.location.protocol === "https:";
             if (isHttps) {
-                s = s.replace(/http:/g, 'https:');
+                s = s.replace(/http:/g, "https:");
             }
 
-            var img = '<img src="' + s + '" />';
-            $('#' + DrawPanel.id).html(img);
+            var img = "<img src=\"" + s + "\" />";
+            $("#" + DrawPanel.id).html(img);
         },
 
         changeLine: function (line) {
-            $('#' + LivePlayer.id).find('video').attr('src', this.m3u8[line]);
+            $("#" + LivePlayer.id).find("video").attr("src", this.m3u8[line]);
             this.line = line;
 
             if (MobileLive.audio) {
-                audio.src = '';
+                audio.src = "";
                 audio.src = this.m3u8[this.line];
                 audio.play();
             }
         },
 
         onlyAudio: function () {
-            var v = $('#' + LivePlayer.id).find('video');
+            var v = $("#" + LivePlayer.id).find("video");
             MobileLive.audio = !MobileLive.audio;
             if (MobileLive.audio) {
                 if (this.isHttps && this.audioSecureHosts && this.audioSecureHosts.length) {
@@ -2566,14 +2583,14 @@
                 } else {
                     this.m3u8 = this.src;
                 }
-                audio.src = '';
-                v.attr('src', this.m3u8[this.line]);
+                audio.src = "";
+                v.attr("src", this.m3u8[this.line]);
             }
         },
 
         isMobile: function () {
             if (this.isIPad() || this.isIPhone() || this.isAndroid() || this.isWindowsPhone()) {
-                return 'isMobile';
+                return "isMobile";
             }
         },
 
@@ -2608,7 +2625,7 @@
 
         live.interaction.setCallingTimer();
 
-        if (typeof window.on_cc_live_interaction_accept === 'function') {
+        if (typeof window.on_cc_live_interaction_accept === "function") {
             window.on_cc_live_interaction_accept(live.interaction.local.type, toJson(data));
         }
     };
@@ -2622,7 +2639,7 @@
             }
 
             // 客户端只是和主播进行语音互动
-            if (chatuser.role == 'publisher' && !chatuser.isMainSpeaker) {
+            if (chatuser.role == "publisher" && !chatuser.isMainSpeaker) {
                 return true;
             }
 
@@ -2635,20 +2652,20 @@
     window.on_cc_live_interaction_message = function (d) {
         var d = toJson(d);
 
-        debug('Interaction', 'rtc互动信息:' + JSON.stringify(d));
+        debug("Interaction", "rtc互动信息:" + JSON.stringify(d));
 
         var toId = d.toid;
         var fromId = d.fromid;
         var fromName = d.fromname;
         var type = d.type;
         var data = d.data;
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
             data = JSON.parse(data);
         }
 
         var event = d.event;
 
-        if (event === 'offer') {
+        if (event === "offer") {
             data.type = event;
 
             live.interaction.createAnswerPeerConnection({
@@ -2665,10 +2682,10 @@
             pc.setRemoteDescription(new nativeRTCSessionDescription(data));
             pc.createAnswer(function () {
             }, function (error) {
-                debug('Interaction', 'Failure callback: ' + error);
+                debug("Interaction", "Failure callback: " + error);
             });
 
-        } else if (event === 'answer') {
+        } else if (event === "answer") {
             var pc = live.interaction.usersPcs[fromId].pc;
             if (!pc) {
                 return;
@@ -2676,7 +2693,7 @@
 
             data.type = event;
 
-            debug('Interaction', 'answer spark_message信息:' + data);
+            debug("Interaction", "answer spark_message信息:" + data);
             pc.setRemoteDescription(new nativeRTCSessionDescription(data));
 
             pc.receivedAnswer = true;
@@ -2708,20 +2725,20 @@
         }
     };
 
-    window.isDebug = true;
+    window.isDebug = false;
     // 打印debug信息
     var debug = function (t, d) {
         if (!window.isDebug) {
             return;
         }
 
-        if (console && typeof console.log === 'function') {
+        if (console && typeof console.log === "function") {
             console.log(t, d);
         }
     };
 
     function toJson(data) {
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
             try {
                 return JSON.parse(data);
             } catch (e) {
@@ -2737,7 +2754,7 @@
 
     // live player ready
     window._swfInit = function () {
-        if (typeof window.on_cc_live_player_ready === 'function') {
+        if (typeof window.on_cc_live_player_ready === "function") {
             window.on_cc_live_player_ready();
         }
     };
@@ -2746,7 +2763,7 @@
      * Flash 加载完成
      * */
     window._swfOk = function (id) {
-        if (typeof window.on_cc_swf_loading_completed === 'function') {
+        if (typeof window.on_cc_swf_loading_completed === "function") {
             window.on_cc_swf_loading_completed(id);
         }
     };
@@ -2759,7 +2776,7 @@
         b = b * 1000;
 
         // 低延迟
-        if (MobileLive.isMobile() == 'isMobile') {
+        if (MobileLive.isMobile() == "isMobile") {
             if (b === 0) {
                 return 5000;
             } else {
@@ -2781,14 +2798,14 @@
             b = 0;
         }
         if (b) {
-            console.log('非低延迟模式');
+            // console.log("非低延迟模式");
         } else {
-            console.log('低延迟模式');
+            // console.log("低延迟模式");
         }
         // b = b * 1000;
 
         // 低延迟
-        if (MobileLive.isMobile() == 'isMobile') {
+        if (MobileLive.isMobile() == "isMobile") {
             if (b === 0) {
                 return 5000;
             } else {

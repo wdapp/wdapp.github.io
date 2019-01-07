@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.5.3 2018/12/12
+ * v2.7.0 2019/01/07
  */
 !(function ($, window, document) {
 
@@ -535,6 +535,7 @@
             userid: opts.userId,
             liveid: opts.liveId,
             upid: opts.upId,
+            groupid:opts.groupId,
             recordid: opts.recordId,
             viewertoken: opts.viewertoken,
             viewername: opts.viewername,
@@ -1181,7 +1182,7 @@
                 opts.upId = data.datas.upId;
                 opts.viewerId = data.datas.viewer.id;
                 callback.socket = new Socket(opts);
-
+                $.DW.groupId =  data.datas.viewer.groupId;
                 if (typeof window.on_cc_callback_player === 'function') {
                     window.on_cc_callback_player(data.datas.live.encryptRecordvideoId);
                 }
@@ -1268,6 +1269,7 @@
                                 'value': {
                                     'id': question.encryptId,
                                     'content': question.content,
+                                    'groupId':question.groupId,
                                     'userId': question.questionUserId,
                                     'userName': question.questionUserName,
                                     'userAvatar': question.questionUserAvatar,
@@ -1296,6 +1298,7 @@
                                     'content': answer.content,
                                     'userId': answer.answerUserId,
                                     'isPrivate': answer.isPrivate,
+                                    'groupId':answer.groupId,
                                     'userName': answer.answerUserName,
                                     'userAvatar': answer.answerUserAvatar,
                                     'userRole': answer.answerUserRole
@@ -1319,6 +1322,7 @@
                                 username: chatLog.userName,
                                 time: chatLog.time,
                                 msg: chatLog.content,
+                                groupId:chatLog.groupId,
                                 useravatar: chatLog.userAvatar,
                                 userRole: chatLog.userRole,
                                 usercustommark: chatLog.userCustomMark,
@@ -1512,7 +1516,7 @@
 
     var callback = {};
 
-    window.debug = true;
+    window.debug = false;
     var util = {
         debug: window.debug,
         log: function (arg1, arg2) {
@@ -1860,6 +1864,7 @@
                     username: chatLog.userName,
                     time: chatLog.time,
                     msg: chatLog.content,
+                    groupId:chatLog.groupId,
                     useravatar: chatLog.userAvatar,
                     userRole: chatLog.userRole,
                     usercustommark: chatLog.userCustomMark,
@@ -1945,10 +1950,11 @@
                     username: cl.userName,
                     time: cl.time,
                     msg: cl.content,
+                    groupId:cl.groupId,
                     useravatar: cl.userAvatar,
                     userRole: cl.userRole,
                     usercustommark: cl.userCustomMark,
-                    role: cl.role,
+                    role: cl.role
                 });
                 if (!window.CHATLOGS.length) {
                     break;
@@ -2175,13 +2181,10 @@
         init: function (opts) {
             var _this = this;
             $.ajax({
-                // url: '//view.csslcloud.net/api/vod/play/mobile',
                 url: '//view.csslcloud.net/api/vod/v2/play/h5',
                 type: 'GET',
-                // dataType: 'jsonp',
-                dataType: 'json',
-                // data: {userid: opts.userId, videoid: opts.videoId},
-                data: {userid: opts.userId, recordid: opts.recordId, roomid: opts.roomId},
+                dataType: 'jsonp',
+                data: {userid: opts.userId, videoid: opts.videoId},
                 success: function (data) {
                     var pvdefault = data.video[0];
 

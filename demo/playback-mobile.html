@@ -77,8 +77,6 @@
 <script src="//image.csslcloud.net/js/dpc.js"></script>
 <script src="js/playbackSDK.js"></script>
 <!--<script src="//view.csslcloud.net/js/playbackSDK.js?v=201809181356"></script>-->
-<!--<script src="js/playbackSDK.js?v=201809181356"></script>-->
-<!--<script src="dist/playbackSDK.min.js?v=201811161441"></script>-->
 <script type="text/javascript">
     var width = $('#qst1').width();
     $('#qst2').css({width: width});
@@ -180,25 +178,28 @@
         if (!v) {
             return;
         }
-        var qid = v.questionId,
-            qc = v.content,
-            quid = v.userId,
-            quname = v.userName,
-            isPrivate = v.isPrivate;
-        if (isPrivate) {
-            return;
-        }
-        if (!$('#questionInfo').length) {
-            return;
-        }
+        ///console.log('接收到回答的groupId' + v.groupId);
+        if (v.groupId === $.DW.groupId || !$.DW.groupId  || !v.groupId ){
+            var qid = v.questionId,
+                qc = v.content,
+                quid = v.userId,
+                quname = v.userName,
+                isPrivate = v.isPrivate;
+            if (isPrivate) {
+                return;
+            }
+            if (!$('#questionInfo').length) {
+                return;
+            }
 
-        var q = $('#questionInfo #' + qid);
-        if (!q.length) {
-            $('#questionInfo').append('<li id="' + qid + '"></li>');
-            q = $('#questionInfo #' + qid);
+            var q = $('#questionInfo #' + qid);
+
+            if(q){
+                q.append('<p class="qaanswer"><span class="answername">' + $.escapeHTML(quname) + ' 答：</span><span class="answermsg">' + $.escapeHTML(qc) + '</span></p>');
+            }
+
+
         }
-//        q.show();
-        q.append('<p class="qaanswer"><span class="answername">' + $.escapeHTML(quname) + ' 答：</span><span class="answermsg">' + $.escapeHTML(qc) + '</span></p>');
         $('#questionInfo').scrollTop($('#questionInfo').height());
     }
 
@@ -211,25 +212,30 @@
             return;
         }
         var v = j.value;
-        if (!v || (v.isPublish != 1)) {
-            return;
-        }
-        var qid = v.id,
-            qc = v.content,
-            quid = v.userId,
-            quname = v.userName;
-        if (!$('#questionInfo').length) {
-            return;
-        }
+       // console.log('接收到提问的groupId' + v.groupId);
+        if (v.groupId === $.DW.groupId || !$.DW.groupId  ||!v.groupId ){
+            if (!v || (v.isPublish != 1)) {
+                return;
+            }
+            var qid = v.id,
+                qc = v.content,
+                quid = v.userId,
+                quname = v.userName;
+            if (!$('#questionInfo').length) {
+                return;
+            }
 
-        var q = $('#questionInfo #' + qid);
-        if (!q.length) {
-            $('#questionInfo').append('<li id="' + qid + '"></li>');
-            q = $('#questionInfo #' + qid);
-        }
-        q.append('<p class="qaask"><span class="askname">' + $.escapeHTML(quname) + ' 问：</span><span class="askmsg">' + $.escapeHTML(qc) + '</span></p>');
+            var q = $('#questionInfo #' + qid);
+            if (!q.length) {
+                $('#questionInfo').append('<li id="' + qid + '"></li>');
+                q = $('#questionInfo #' + qid);
+            }
+            q.append('<p class="qaask"><span class="askname">' + $.escapeHTML(quname) + ' 问：</span><span class="askmsg">' + $.escapeHTML(qc) + '</span></p>');
 
+
+        }
         $('#questionInfo').scrollTop($('#questionInfo').height());
+
     }
 
 </script>

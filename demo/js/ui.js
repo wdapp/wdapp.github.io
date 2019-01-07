@@ -251,7 +251,7 @@ $('#logout').click(function () {
     if (isC) {
         DWLive.logout({
             success: function (data){
-                window.location.href = '../demo';
+                window.location.href = '../login';
             },
             error: function(data){
                 console.log(data.msg);
@@ -466,4 +466,17 @@ $('#btn-fullscreen').click(function () {
     }
     screen = !screen;
 });
+
+function onSocketConnect(){
+    if(console && typeof console.log == "function"){
+        console.log("socket 链接成功")
+    }
+}
+
+function onSocketDisconnect(){
+    if(console && typeof console.log == "function"){
+        console.log("socket 断开链接")
+    }
+}
+
 
