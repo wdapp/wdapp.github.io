@@ -267,6 +267,10 @@
         forceNew: localStorage.forceNew === 'true' ? true : false
     });
 
+    DWLive.onLoginError = function(){
+        console.log('登录失败')
+    }
+
     DWLive.onLiveTime = function (e) {
         console.log('onLiveTime', e);
     };

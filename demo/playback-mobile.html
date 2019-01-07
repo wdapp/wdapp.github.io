@@ -90,18 +90,6 @@
         fastMode: localStorage.fastmode,
         forceNew: localStorage.forceNew === 'true' ? true : false
     });
-
-    // 接收聊天信息
-    //    function on_cc_live_chat_msg(data) {
-    //        console.log(data);
-    //        var msg = data.msg;
-    //        var name = data.username, msgStr = showEm(msg);
-    //        var liEl = $('<li>');
-    //        liEl.append($('<p>').text(name + "：").append(
-    //                $('<span>').html(msgStr).addClass("tmsg")));
-    //        $('#chat_container').append(liEl);
-    //    }
-
     document.addEventListener('WeixinJSBridgeReady', function () {
         setTimeout(function () {
             document.getElementsByTagName('video')[0].play();
