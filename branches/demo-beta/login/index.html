@@ -422,7 +422,7 @@
 //                    var obj = {};
                     obj.userid = $('#live-userid').val();
                     obj.roomid = $('#live-roomid').val();
-                    obj.groupid = $('#live-groupId').val();
+                    obj.groupid = !$('#live-groupId').val()?'':$('#live-groupId').val();
                     obj.viewername = $('#live-viewername').val();
                     obj.viewertoken = $('#live-viewertoken').val();
                     obj.fastmode = $('#live-fastmode')[0].checked;
@@ -437,10 +437,10 @@
                         $('#playback-recordId').val(data['recordid']);
                     }
 //                    var obj = {};
-                    obj.userId = $('#playback-userId').val();
-                    obj.roomId = $('#playback-roomId').val();
-                    obj.groupId = $('#playback-groupId').val();
-                    obj.recordId = $('#playback-recordId').val();
+                    obj.userid = $('#playback-userId').val();
+                    obj.roomid = $('#playback-roomId').val();
+                    obj.groupid = !$('#playback-groupId').val()?'':$('#playback-groupId').val();
+                    obj.recordid = $('#playback-recordId').val();
                     obj.viewername = $('#playback-viewername').val();
                     obj.viewertoken = $('#playback-viewertoken').val();
                     obj.fastmode = $('#playback-fastmode')[0].checked;
@@ -457,7 +457,7 @@
 //                    var obj = {};
                     obj.userid = $('#mobile-userid').val();
                     obj.roomid = $('#mobile-roomid').val();
-                    obj.groupid = $('#mobile-groupId').val();
+                    obj.groupid = !$('#mobile-groupId').val()?'':$('#mobile-groupId').val();
                     obj.viewername = $('#mobile-viewername').val();
                     obj.viewertoken = $('#mobile-viewertoken').val();
                     obj.fastmode = $('#mobile-fastmode')[0].checked;
@@ -472,10 +472,10 @@
                         $('#playback-mobile-recordId').val(data['recordid']);
                     }
 //                    var obj = {};
-                    obj.userId = $('#playback-mobile-userId').val();
-                    obj.roomId = $('#playback-mobile-roomId').val();
-                    obj.groupid = $('#playback-mobile-groupId').val();
-                    obj.recordId = $('#playback-mobile-recordId').val();
+                    obj.userid = $('#playback-mobile-userId').val();
+                    obj.roomid = $('#playback-mobile-roomId').val();
+                    obj.groupid = !$('#playback-mobile-groupId').val()?'':$('#playback-mobile-groupId').val();
+                    obj.recordid = $('#playback-mobile-recordId').val();
                     obj.viewername = $('#playback-mobile-viewername').val();
                     obj.viewertoken = $('#playback-mobile-viewertoken').val();
                     obj.fastmode = $('#playback-mobile-fastmode')[0].checked;
@@ -494,10 +494,10 @@
         localStorage.viewertoken = obj.viewertoken;
         localStorage.viewercustomua = obj.viewercustomua;
         localStorage.language = obj.language;
-        localStorage.userId = obj.userId;
-        localStorage.roomId = obj.roomId;
-        localStorage.groupId = obj.groupId;
-        localStorage.recordId = obj.recordId;
+        localStorage.userId = obj.userid;
+        localStorage.roomId = obj.roomid;
+        localStorage.groupId = obj.groupid;
+        localStorage.recordId = obj.recordid;
         localStorage.viewername = obj.viewername;
         localStorage.viewertoken = obj.viewertoken;
         localStorage.fastmode = obj.fastmode;
