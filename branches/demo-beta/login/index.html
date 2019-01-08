@@ -14,6 +14,25 @@
             width: 100%;
             height: 100%;
         }
+        .url-login{
+            height: 34px;
+            padding-left: 5px;
+            line-height: 34px;
+            border: 1px solid #D7D7D7;
+            background: #fff;
+            color: #333;
+            border-radius: 2px;
+            font-family: Verdana, Tahoma, Arial;
+            font-size: 16px;
+            border-radius: 2px;
+            width: 210px;
+        }
+        .url-login-box{
+            margin:10px 0px 10px 63px;
+        }
+        .url-login-text{
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +49,7 @@
             <div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
         </div>
     </div>
+    <div class="url-login-box"><span class="url-login-text">链接登录:</span><input type="text" id="url" class="url-login"></div>
 
     <div class="qlogin" id="live-menu" style="display: block; ">
 
@@ -340,8 +360,6 @@
                     <div class="cl"></div>
                 </ul>
             </form>
-
-
         </div>
 
 
@@ -350,7 +368,6 @@
 </div>
 <div class="options">
     是否允许链接多个socket <input type="checkbox" id="forceNew"><br>
-    链接登录 <input type="text" id="url">
 </div>
 <script>
 
