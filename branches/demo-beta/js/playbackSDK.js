@@ -2184,7 +2184,7 @@
                 url: "//view.csslcloud.net/api/vod/v2/play/h5",
                 type: "GET",
                 dataType: "jsonp",
-                data: {userid: opts.userId, recordid: opts.recordId, roomid: opts.roomId},
+                data: {},
                 success: function (data) {
                     var pvdefault = data.video[0];
 
