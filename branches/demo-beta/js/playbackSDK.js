@@ -2187,7 +2187,7 @@
             $.ajax({
                 url: "//view.csslcloud.net/api/vod/v2/play/h5",
                 type: "GET",
-                dataType: "json",
+                dataType: "jsonp",
                 data: {
                     userid: opts.userId,
                     roomid: opts.roomId,
