@@ -1643,7 +1643,11 @@
         // 初始化DW对象
         config: function (opts) {
             if (checkVideo()) {
-                this.isH5play = opts.isH5play;
+                if(opts.isH5play + "" === "true"){
+                    this.isH5play = true;
+                }else{
+                    this.isH5play = false;
+                }
             }
 
             this.setFastMode(opts);
