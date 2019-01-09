@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.8.2 2019/01/07
+ * v2.5.1 2018/11/20
  */
 !(function ($, window, document) {
 
@@ -10,32 +10,32 @@
         this.isPublishing = 0;
         this.id = opts.callbackPlayer.id;
 
-        var swfUrl = "//player.csslcloud.net/platform/live/CallbackPlayer.swf";
+        var swfUrl = '//player.csslcloud.net/platform/live/CallbackPlayer.swf';
         var flashvars = {
-            "userid": opts.userId,
-            "videoid": opts.videoId,
-            "recordid": opts.recordId,
-            "isShowBar": opts.isShowBar,
-            "upid": opts.upId,
-            "viewerid": opts.viewerId,
-            "roomid": opts.roomId,
-            "ua": "1"
+            'userid': opts.userId,
+            'videoid': opts.videoId,
+            'recordid': opts.recordId,
+            'isShowBar': opts.isShowBar,
+            'upid': opts.upId,
+            'viewerid': opts.viewerId,
+            'roomid': opts.roomId,
+            'ua': '1'
         };
         var params = {
-            allowFullscreen: "true",
-            allowScriptAccess: "always",
-            wmode: "transparent"
+            allowFullscreen: 'true',
+            allowScriptAccess: 'always',
+            wmode: 'transparent'
         };
 
         this.flashPlayerInit = function () {
-            swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, "10.0.0",
-                "/flash/expressInstall.swf", flashvars, params);
-            if (MobileLive.isMobile() != "isMobile") {
+            swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, '10.0.0',
+                '/flash/expressInstall.swf', flashvars, params);
+            if (MobileLive.isMobile() != 'isMobile') {
                 var report = new ReportLog(opts, 0, 1, null, false);
             }
         };
 
-        if (MobileLive.isMobile() !== "isMobile" && !DW.isH5play) {
+        if (!DW.isH5play) {
             this.flashPlayerInit();
         }
 
@@ -44,7 +44,7 @@
         };
 
         this.playbackRate = function (t) {
-            if (!DW.isH5play && MobileLive.isMobile() !== "isMobile") {
+            if (!DW.isH5play && MobileLive.isMobile() !== 'isMobile') {
                 return;
             }
             var t = parseFloat(t);
@@ -55,7 +55,7 @@
             if (t < 0) {
                 return;
             }
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 this.getH5player().currentTime = t;
             } else {
                 var swf = this.getFlash();
@@ -71,7 +71,7 @@
         };
 
         this.getH5player = function () {
-            return $("#playbackVideo")[0];
+            return $('#playbackVideo')[0];
         };
 
         this.getPlayerTime = function () {
@@ -79,7 +79,7 @@
                 return 0;
             }
             var t;
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 t = this.getH5player().currentTime;
             } else {
                 t = parseInt(this.getFlash().getPosition(), 10);
@@ -92,7 +92,7 @@
         };
 
         this.getDuration = function () {
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 return this.getH5player().duration;
             } else {
                 var swf = this.getFlash();
@@ -105,10 +105,7 @@
 
         this.getBuffer = function () {
 
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-                if (!this.getH5player() || !this.getH5player().buffered || !this.getH5player().buffered.end(0)) {
-                    return 0;
-                }
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 return this.getH5player().buffered.end(0);
             } else {
                 var swf = this.getFlash();
@@ -121,7 +118,7 @@
         };
 
         this.setVolume = function (n) {
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 this.getH5player().volume = parseFloat(n);
             } else {
                 var swf = this.getFlash();
@@ -133,7 +130,7 @@
         };
 
         this.getVolume = function () {
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 return this.getH5player().volume;
             } else {
                 var swf = this.getFlash();
@@ -145,7 +142,7 @@
         };
 
         this.play = function () {
-            if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+            if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
                 if (MobileLive.pauseState) {
                     this.getH5player().play();
                 } else {
@@ -204,58 +201,52 @@
 
     var Socket = function (opts) {
 
-        var isHttps = window.location.protocol === "https:";
+        var isHttps = window.location.protocol === 'https:';
         var host = opts.chat.host;
-        if (isHttps && host && host.indexOf(":")) {
-            var s = host.split(":");
+        if (isHttps && host && host.indexOf(':')) {
+            var s = host.split(':');
             if (s.length == 2) {
                 var port = parseInt(s[1]);
                 if (!isNaN(port)) {
                     var httpsPort = port + 400;
-                    host = s[0] + ":" + httpsPort;
+                    host = s[0] + ':' + httpsPort;
                 }
             }
         }
 
         var terminal = 0;
-        if (MobileLive.isMobile() == "isMobile") {
+        if (MobileLive.isMobile() == 'isMobile') {
             terminal = 1;
         }
 
-        if (!DW.forceNew) {
-            var socket = io.connect(document.location.protocol + "//" + host + "/replay", {
-                query: {
-                    roomid: opts.roomId,
-                    sessionid: opts.viewer.sessionId,
-                    platform: 1,
-                    terminal: terminal
-                }
-            });
-            util.log("{forceNew: false}");
-        } else {
-            var socket = io.connect(document.location.protocol + "//" + host + "/replay?roomid=" + opts.roomId + "&sessionid=" + opts.viewer.sessionId + "&platform=" + 1 + "&terminal=" + terminal, {forceNew: true});
-            util.log("{forceNew: true}");
-        }
+        var socket = io.connect(document.location.protocol + '//' + host + '/replay', {
+            query: {
+                roomid: opts.roomId,
+                sessionid: opts.viewer.sessionId,
+                platform: 1,
+                terminal: terminal
+            }
+        });
     };
 
     var DrawPanel = function (opts, callbackPlayer) {
         this.isReady = false;
 
-        var swfUrl = "//zeus.csslcloud.net/flash/Player.swf";
+        var swfUrl = '//zeus.csslcloud.net/flash/Player.swf';
 
         var flashvars = {
-            "type": "drawpanel"
+            'type': 'drawpanel'
         };
         var params = {
-            allowFullscreen: "true",
-            allowScriptAccess: "always",
-            wmode: "transparent"
+            allowFullscreen: 'true',
+            allowScriptAccess: 'always',
+            wmode: 'transparent'
         };
         var attributes = {};
 
         if (!DWDpc.fastMode) {
             swfobject.embedSWF(swfUrl, opts.drawPanel.id, opts.drawPanel.width, opts.drawPanel.height,
-                "10.0.0", "/flash/expressInstall.swf", flashvars, params, attributes);
+                '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes);
         }
 
         this.getFlash = function () {
@@ -312,13 +303,13 @@
 
             var jj = JSON.parse(j);
             var u = jj.url;
-            var isHttps = window.location.protocol === "https:";
+            var isHttps = window.location.protocol === 'https:';
             if (isHttps) {
-                jj.url = u.replace(/http:/g, "https:");
+                jj.url = u.replace(/http:/g, 'https:');
             }
 
             if (options.adapt) {
-                swf.filp(JSON.stringify(jj), "auto");
+                swf.filp(JSON.stringify(jj), 'auto');
             } else {
                 swf.filp(JSON.stringify(jj));
             }
@@ -376,12 +367,12 @@
                                     this.animation(a);
                                 } else {
                                     this.animation(JSON.stringify({
-                                        "fileName": a.docName,
-                                        "totalPage": a.docTotalPage,
-                                        "docid": a.encryptDocId,
-                                        "url": a.url,
-                                        "page": a.pageNum,
-                                        "step": a.step
+                                        'fileName': a.docName,
+                                        'totalPage': a.docTotalPage,
+                                        'docid': a.encryptDocId,
+                                        'url': a.url,
+                                        'page': a.pageNum,
+                                        'step': a.step
                                     }));
                                 }
                                 callback.animationIndex = callback.animationIndex + 1;
@@ -397,22 +388,22 @@
                     if (callback.pageChangeIndex < callback.pageChanges.length) {
                         var pc = callback.pageChanges[callback.pageChangeIndex + 1];
                         if (ft >= pc.time) {
-                            if (typeof window.on_cc_callback_page_change === "function") {
+                            if (typeof window.on_cc_callback_page_change === 'function') {
                                 window.on_cc_callback_page_change(pc);
                             }
-                            if (typeof window.on_cc_request_snapshoot === "function") {
+                            if (typeof window.on_cc_request_snapshoot === 'function') {
                                 window.on_cc_request_snapshoot(pc);
                             }
                             if (DWDpc.fastMode) {
                                 this.filp(pc);
                             } else {
                                 this.filp(JSON.stringify({
-                                    "fileName": pc.docName,
-                                    "totalPage": pc.docTotalPage,
-                                    "docid": pc.encryptDocId,
-                                    "url": pc.url,
-                                    "page": pc.pageNum,
-                                    "useSDK": pc.useSDK
+                                    'fileName': pc.docName,
+                                    'totalPage': pc.docTotalPage,
+                                    'docid': pc.encryptDocId,
+                                    'url': pc.url,
+                                    'page': pc.pageNum,
+                                    'useSDK': pc.useSDK
                                 }));
                             }
 
@@ -425,7 +416,7 @@
                             obj.docTotalPage = pc.docTotalPage;
                             obj.pageNum = pc.pageNum;
 
-                            if (typeof window.on_cc_callback_pagechange === "function") {
+                            if (typeof window.on_cc_callback_pagechange === 'function') {
                                 window.on_cc_callback_pagechange(obj);
                             }
 
@@ -447,12 +438,12 @@
                                     this.animation(a);
                                 } else {
                                     this.animation(JSON.stringify({
-                                        "fileName": a.docName,
-                                        "totalPage": a.docTotalPage,
-                                        "docid": a.encryptDocId,
-                                        "url": a.url,
-                                        "page": a.pageNum,
-                                        "step": a.step
+                                        'fileName': a.docName,
+                                        'totalPage': a.docTotalPage,
+                                        'docid': a.encryptDocId,
+                                        'url': a.url,
+                                        'page': a.pageNum,
+                                        'step': a.step
                                     }));
                                 }
                                 callback.animationIndex = callback.animationIndex + 1;
@@ -496,24 +487,24 @@
     var substepRequest = function (opts) {
         $.ajax({
             url: opts.url,
-            type: "GET",
+            type: 'GET',
             data: opts.data,
             tryCount: 0,
             retryLimit: 3,
             timeout: 5000,
-            dataType: "jsonp",
+            dataType: 'jsonp',
             success: function (data) {
                 opts.done(data);
             },
             error: function (xhr, textStatus, errorThrown) {
-                if (textStatus == "timeout") {
+                if (textStatus == 'timeout') {
                     this.tryCount++;
                     if (this.tryCount < this.retryLimit) {
                         //try again
                         $.ajax(this);
                         return;
                     } else {
-                        if (typeof opts.fn === "function") {
+                        if (typeof opts.fn === 'function') {
                             opts.fn(textStatus);
                         }
                         return;
@@ -535,7 +526,6 @@
             userid: opts.userId,
             liveid: opts.liveId,
             upid: opts.upId,
-            groupid: opts.groupId,
             recordid: opts.recordId,
             viewertoken: opts.viewertoken,
             viewername: opts.viewername,
@@ -553,7 +543,7 @@
 
         // 登录
         substepRequest({
-            url: "//view.csslcloud.net/api/room/replay/login",
+            url: '//view.csslcloud.net/api/room/replay/login',
             data: param,
             fn: window.on_cc_login_error,
             done: function (data) {
@@ -566,9 +556,9 @@
                     // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
                     // options.drawRequestTime = 25;
                     if (!DWDpc.fastMode) {
-                        options.drawRequestTime = "";
+                        options.drawRequestTime = '';
                     }
-                    util.log("options", options);
+                    util.log('options', options);
 
                     callback.state = new StateMachine();
                     var snapshoot = new StateMachine();
@@ -582,19 +572,12 @@
                 sub.allRequests++;
                 success(sub);
 
-                //encryptRecordId
-                if(!options.recordId){
-                    options.recordId = data.datas.encryptRecordId;
-                }
                 //登录成功
-                if (typeof  window.on_cc_login_success === "function") {
-                    window.on_cc_login_success();
-                }
 
                 if (!options.drawRequestTime) {
                     // 请求画笔数据
                     substepRequest({
-                        url: "//view.csslcloud.net/api/view/replay/draw/info",
+                        url: '//view.csslcloud.net/api/view/replay/draw/info',
                         data: param,
                         fn: window.on_cc_request_draw_error,
                         done: function (data) {
@@ -614,7 +597,7 @@
 
                 // 请求聊天和问答数据
                 substepRequest({
-                    url: "//view.csslcloud.net/api/view/replay/v2/chatqa/info",
+                    url: '//view.csslcloud.net/api/view/replay/v2/chatqa/info',
                     data: param,
                     fn: window.on_cc_request_chatqa_error,
                     done: function (data) {
@@ -633,7 +616,7 @@
 
                 // 广播，翻页，animation及后续新增数据
                 substepRequest({
-                    url: "//view.csslcloud.net/api/view/replay/v2/info",
+                    url: '//view.csslcloud.net/api/view/replay/v2/info',
                     data: param,
                     fn: window.on_cc_request_info_error,
                     done: function (data) {
@@ -656,7 +639,7 @@
 
         var checkout = function (data, fn) {
             if (!data.success) {
-                if (typeof fn === "function") {
+                if (typeof fn === 'function') {
                     fn(data);
                 }
                 return false;
@@ -745,31 +728,31 @@
 
             this.ajax = $.ajax({
                 url: options.url,
-                type: "GET",
+                type: 'GET',
                 data: options.param,
                 tryCount: 0,
                 retryLimit: 3,
                 timeout: window.TIMEOUT,//20秒超时
-                dataType: "jsonp",
+                dataType: 'jsonp',
                 success: function (data) {
                     self.result = data;
                     if (!data.success) {
-                        util.log("data.success", data.success);
+                        util.log('data.success', data.success);
                         return;
                     }
                     callback(data);
                     self.requestState = false;
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    if (textStatus == "timeout") {
+                    if (textStatus == 'timeout') {
                         this.tryCount++;
                         if (this.tryCount < this.retryLimit) {
                             //try again
                             $.ajax(this);
-                            util.log("ajax[" + self.key + "] try again tryCount", this.tryCount);
+                            util.log('ajax[' + self.key + '] try again tryCount', this.tryCount);
                             return;
                         } else {
-                            util.log("数据请求失败且重试多次");
+                            util.log('数据请求失败且重试多次');
                             self.requestState = false;
                             return;
                         }
@@ -791,7 +774,7 @@
         };
 
         this.setState = function (options) {
-            if (typeof options !== "object") {
+            if (typeof options !== 'object') {
                 return;
             }
             //key 为每一个状态机块的索引， id 或 index。
@@ -848,7 +831,7 @@
             }
             var drawsAlready = state.isDrawsAlready();
             if (drawsAlready) {
-                util.log("画笔数据加载完毕，不在预加载某一段数据");
+                util.log('画笔数据加载完毕，不在预加载某一段数据');
                 return;
             }
 
@@ -857,21 +840,21 @@
             var _state = states[index];
 
             if (this.preState != _state && this.preState.requestState) {
-                util.log("发现新的预加载请求，中断上一个预加载请求;index=" + this.preState.key);
+                util.log('发现新的预加载请求，中断上一个预加载请求;index=' + this.preState.key);
                 this.preState.abort();
             }
             this.preState = _state;
 
             //请求数据
             if (!drawsAlready && !_state.result && !_state.requestState) {
-                util.log("预加载数据", index);
+                util.log('预加载数据', index);
                 var options = {
                     index: index,
                     states: states
                 };
                 this.httpRequestCurrentDraws(options, fn);
             } else {
-                util.log("预加载过这段数据或已有数据;index=" + index);
+                util.log('预加载过这段数据或已有数据;index=' + index);
             }
         };
 
@@ -882,7 +865,7 @@
             var _state = states[index];
 
             var param = {
-                url: "//view.csslcloud.net/api/view/replay/v2/draw/range",
+                url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
                 param: {
                     starttime: _state.startTime,
                     endtime: _state.endTime,
@@ -893,7 +876,7 @@
             };
             _state.httpRequest(param, function (data) {
                 var draw = data.datas.meta.draw;
-                util.log("*** 预加载成功 callback.draws[" + index + "] ***", draw);
+                util.log('*** 预加载成功 callback.draws[' + index + '] ***', draw);
                 self.draws = distinct(self.draws, draw);
                 self.draws.sort(function (p1, p2) {
                     return parseInt(p1.time) - parseInt(p2.time);
@@ -907,9 +890,9 @@
             var self = this;
             var drawsAlready = self.state.isDrawsAlready();
             if (drawsAlready) {
-                util.log("httpRequestStream draws already", self.draws);
-                util.log("callback.state", callback.state);
-                util.log("snapshoot", snapshoot);
+                util.log('httpRequestStream draws already', self.draws);
+                util.log('callback.state', callback.state);
+                util.log('snapshoot', snapshoot);
                 return;
             }
             var states = self.state.getStates();
@@ -932,7 +915,7 @@
                 if (!state.result && !state.requestState) {
                     (function (state) {
                         var options = {
-                            url: "//view.csslcloud.net/api/view/replay/v2/draw/range",
+                            url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
                             param: {
                                 starttime: state.startTime,
                                 endtime: state.endTime,
@@ -943,7 +926,7 @@
                         };
                         state.httpRequest(options, function (data) {
                             var draw = data.datas.meta.draw;
-                            util.log("请求流 draw[" + state.key + "]", draw);
+                            util.log('请求流 draw[' + state.key + ']', draw);
                             //合并分段请求返回的画笔数据
                             if (callback.isRequestDraws) {
                                 self.draws = distinct(self.draws, draw);
@@ -977,7 +960,7 @@
             var self = this;
             var drawsAlready = state.isDrawsAlready();
             if (drawsAlready) {
-                util.log("画笔数据请求完整，不在请求快照数据");
+                util.log('画笔数据请求完整，不在请求快照数据');
                 return;
             }
 
@@ -991,18 +974,18 @@
             }
 
             var _snapshoot = snapshoot.getSnapshoot();
-            var _isSnapshoot = _snapshoot[e.docId + "_" + e.pageNum + "_" + e.url];
+            var _isSnapshoot = _snapshoot[e.docId + '_' + e.pageNum + '_' + e.url];
 
             //请求快照
             if (!_state.result && !_isSnapshoot) {//当前时间段是否有数据 && 当前页是否存在快照
-                util.log("_snapshoot.getSnapshoot()", _snapshoot);
+                util.log('_snapshoot.getSnapshoot()', _snapshoot);
                 //中断没有请求完的快照，快照只能存在一个请求
                 if (snapshoot.requestState) {
                     snapshoot.abort();
                 }
 
                 var options = {
-                    url: "//view.csslcloud.net/api/view/replay/v2/draw/snapshot",
+                    url: '//view.csslcloud.net/api/view/replay/v2/draw/snapshot',
                     param: {
                         docid: e.docId,
                         currentpage: e.pageNum,
@@ -1012,23 +995,23 @@
                 };
                 snapshoot.httpRequest(options, function (data) {
                     //缓存快照数据
-                    snapshoot.setSnapshoot(e.docId + "_" + e.pageNum + "_" + e.url, data);
+                    snapshoot.setSnapshoot(e.docId + '_' + e.pageNum + '_' + e.url, data);
 
                     if (!_state.result) {
                         callback.isRequestDraws = true;
                         var draw = data.datas.meta.draw;
-                        util.log("*** 快照 callback.draws[" + e.docId + "_" + e.pageNum + "_" + e.url + "] ***", draw);
+                        util.log('*** 快照 callback.draws[' + e.docId + '_' + e.pageNum + '_' + e.url + '] ***', draw);
                         self.draws = distinct(self.draws, draw);
                         self.draws.sort(function (p1, p2) {
                             return parseInt(p1.time) - parseInt(p2.time);
                         });
                         fn(self.draws);
                     } else {
-                        util.log("快照请求成功，当前时间段数据存在，丢弃快照" + index + "");
+                        util.log('快照请求成功，当前时间段数据存在，丢弃快照' + index + '');
                     }
                 });
             } else {
-                util.log("当前时间段存在数据或存在快照", index + "");
+                util.log('当前时间段存在数据或存在快照', index + '');
             }
         };
 
@@ -1102,7 +1085,7 @@
         var t = setInterval(function () {
             var duration = parseInt(callback.callbackPlayer.getDuration());
             if (duration) {
-                util.log("ListenerDuration");
+                util.log('ListenerDuration');
                 on_cc_limit_request_draws && on_cc_limit_request_draws();
                 clearInterval(t);
             }
@@ -1115,9 +1098,9 @@
             return;
         }
 
-        util.log("分页请求画笔数据", options.drawRequestTime);
+        util.log('分页请求画笔数据', options.drawRequestTime);
         var duration = (callback.callbackPlayer.getDuration()) + 1;
-        util.log("duration", duration + "");
+        util.log('duration', duration + '');
         //请求数据左包含，右不包含，duration+1秒，防止最后一秒数据无法请求到。
         var blockTime = Math.ceil(duration / options.drawRequestTime);
         var startTime = 0;
@@ -1130,7 +1113,7 @@
         };
         callback.state.init(blockDuration);
 
-        util.log("callback.state", callback.state);
+        util.log('callback.state', callback.state);
 
         callback.drawsInfoRequestPool.httpRequestStream(function (data) {
             callback.draws = data;
@@ -1149,7 +1132,7 @@
         if (!options.drawRequestTime) {
             return;
         }
-        util.log("pageChange", pageChange);
+        util.log('pageChange', pageChange);
         var currentTime = callback.callbackPlayer.getPlayerTime();
         callback.drawsInfoRequestPool.httpRequestSnapshoot(pageChange, currentTime, function (data) {
             callback.draws = data;
@@ -1173,7 +1156,7 @@
             if (sub.requestLoginData) {
 
                 if (DWDpc.fastMode) {
-                    $("#documentDisplayMode").val(data.datas.room.documentDisplayMode);
+                    $('#documentDisplayMode').val(data.datas.room.documentDisplayMode);
                     DWDpc.appendDrawPanel();
                     DWDpc.init();
                 }
@@ -1186,14 +1169,14 @@
                 opts.upId = data.datas.upId;
                 opts.viewerId = data.datas.viewer.id;
                 callback.socket = new Socket(opts);
-                $.DW.groupId = data.datas.viewer.groupId;
-                if (typeof window.on_cc_callback_player === "function") {
+
+                if (typeof window.on_cc_callback_player === 'function') {
                     window.on_cc_callback_player(data.datas.live.encryptRecordvideoId);
                 }
 
                 if (DW.isH5play) {
                     MobileLive.init(opts);
-                } else if (MobileLive.isMobile() == "isMobile") {
+                } else if (MobileLive.isMobile() == 'isMobile') {
                     MobileLive.init(opts);
                 }
             }
@@ -1209,14 +1192,14 @@
                 if (pages) {
                     for (var i = 0; i < pages.length; i++) {
                         var imgUrl = pages[i].url;
-                        var isHttps = window.location.protocol === "https:";
-                        if (imgUrl.indexOf("//") > 0 && isHttps) {
-                            imgUrl = imgUrl.replace("http:", "https:");
+                        var isHttps = window.location.protocol === 'https:';
+                        if (imgUrl.indexOf('//') > 0 && isHttps) {
+                            imgUrl = imgUrl.replace('http:', 'https:');
                             pages[i].url = imgUrl;
                         }
                     }
 
-                    if (typeof window.on_cc_callback_pages === "function") {
+                    if (typeof window.on_cc_callback_pages === 'function') {
                         window.on_cc_callback_pages(pages);
                     }
                 }
@@ -1246,7 +1229,7 @@
                     });
                     for (var i = 0; i < broadcasts.length; i++) {
                         var broadcast = broadcasts[i];
-                        if (typeof window.on_cc_live_broadcast_msg == "function") {
+                        if (typeof window.on_cc_live_broadcast_msg == 'function') {
                             window.on_cc_live_broadcast_msg({
                                 content: broadcast.content,
                                 time: broadcast.time
@@ -1267,17 +1250,16 @@
                     for (var i = 0; i < callback.questions.length; i++) {
                         var question = questions[i];
 
-                        if (typeof window.on_cc_live_qa_question === "function") {
+                        if (typeof window.on_cc_live_qa_question === 'function') {
                             window.on_cc_live_qa_question({
-                                "action": "question",
-                                "value": {
-                                    "id": question.encryptId,
-                                    "content": question.content,
-                                    "groupId": question.groupId,
-                                    "userId": question.questionUserId,
-                                    "userName": question.questionUserName,
-                                    "userAvatar": question.questionUserAvatar,
-                                    "isPublish": question.isPublish
+                                'action': 'question',
+                                'value': {
+                                    'id': question.encryptId,
+                                    'content': question.content,
+                                    'userId': question.questionUserId,
+                                    'userName': question.questionUserName,
+                                    'userAvatar': question.questionUserAvatar,
+                                    'isPublish': question.isPublish
                                 }
                             });
                         }
@@ -1294,18 +1276,17 @@
                     for (var i = 0; i < callback.answers.length; i++) {
                         var answer = answers[i];
 
-                        if (typeof window.on_cc_live_qa_answer === "function") {
+                        if (typeof window.on_cc_live_qa_answer === 'function') {
                             window.on_cc_live_qa_answer({
-                                "action": "answer",
-                                "value": {
-                                    "questionId": answer.encryptId,
-                                    "content": answer.content,
-                                    "userId": answer.answerUserId,
-                                    "isPrivate": answer.isPrivate,
-                                    "groupId": answer.groupId,
-                                    "userName": answer.answerUserName,
-                                    "userAvatar": answer.answerUserAvatar,
-                                    "userRole": answer.answerUserRole
+                                'action': 'answer',
+                                'value': {
+                                    'questionId': answer.encryptId,
+                                    'content': answer.content,
+                                    'userId': answer.answerUserId,
+                                    'isPrivate': answer.isPrivate,
+                                    'userName': answer.answerUserName,
+                                    'userAvatar': answer.answerUserAvatar,
+                                    'userRole': answer.answerUserRole
                                 }
                             });
                         }
@@ -1320,13 +1301,12 @@
                     });
                     for (var i = 0; i < chatLogs.length; i++) {
                         var chatLog = chatLogs[i];
-                        if (typeof window.on_cc_live_chat_msg === "function") {
+                        if (typeof window.on_cc_live_chat_msg === 'function') {
                             window.on_cc_live_chat_msg({
                                 userid: chatLog.userId,
                                 username: chatLog.userName,
                                 time: chatLog.time,
                                 msg: chatLog.content,
-                                groupId: chatLog.groupId,
                                 useravatar: chatLog.userAvatar,
                                 userRole: chatLog.userRole,
                                 usercustommark: chatLog.userCustomMark,
@@ -1370,9 +1350,9 @@
                 }
                 onCCH5PlayerLoad = true;
 
-                var playbackPanel = document.getElementById("drawPanel");
+                var playbackPanel = document.getElementById('drawPanel');
                 if (playbackPanel) {
-                    $.Callback.config({playerId: "playbackVideo"}, meta);
+                    $.Callback.config({playerId: 'playbackVideo'}, meta);
                 }
 
             };
@@ -1425,7 +1405,7 @@
                 d.push(this.cache.shift());
             }
 
-            if (typeof window.on_cc_live_broadcast_msg_sync === "function") {
+            if (typeof window.on_cc_live_broadcast_msg_sync === 'function') {
                 window.on_cc_live_broadcast_msg_sync(d);
             }
 
@@ -1480,7 +1460,7 @@
                 d.push(this.cache.shift());
             }
 
-            if (typeof window.on_cc_live_chat_msg_sync === "function") {
+            if (typeof window.on_cc_live_chat_msg_sync === 'function') {
                 window.on_cc_live_chat_msg_sync(d);
             }
 
@@ -1520,13 +1500,12 @@
 
     var callback = {};
 
-    window.debug = false;
     var util = {
-        debug: window.debug,
+        debug: false,
         log: function (arg1, arg2) {
-            if (window.debug) {
+            if (this.debug) {
                 if (arg2) {
-                    console.log(arg1 + " => ", arg2);
+                    console.log(arg1 + ' => ', arg2);
                 } else {
                     console.log(arg1);
                 }
@@ -1537,35 +1516,35 @@
     window.TIMEOUT = 5000;
 
     var options = {
-        userId: $("#userId").val(),
-        roomId: $("#roomId").val(),
-        liveId: $("#liveId").val(),
-        recordId: $("#recordId").val(),
-        videoId: $("#videoId").val(),
+        userId: $('#userId').val(),
+        roomId: $('#roomId').val(),
+        liveId: $('#liveId').val(),
+        recordId: $('#recordId').val(),
+        videoId: $('#videoId').val(),
         adapt: false,
         isShowBar: 0,
-        viewerId: $("#viewerId").val(),
-        upId: $("#upId").val(),
+        viewerId: $('#viewerId').val(),
+        upId: $('#upId').val(),
         // 观看者用户信息
         viewer: {
-            id: $("#viewerId").val(),
-            name: $("#viewerName").val(),
-            role: $("#viewerRole").val(),
-            sessionId: $("#sessionId").val()
+            id: $('#viewerId').val(),
+            name: $('#viewerName').val(),
+            role: $('#viewerRole').val(),
+            sessionId: $('#sessionId').val()
         },
 
         // 直播播放器信息
         callbackPlayer: {
-            id: "playbackPlayer",
-            width: "100%",
-            height: "100%"
+            id: 'playbackPlayer',
+            width: '100%',
+            height: '100%'
         },
 
         // 画板信息
         drawPanel: {
-            id: "playbackPanel",
-            width: "100%",
-            height: "100%"
+            id: 'playbackPanel',
+            width: '100%',
+            height: '100%'
         }
     };
 
@@ -1577,14 +1556,14 @@
             this.dpc = new Dpc();
         },
         appendDrawPanel: function () {
-            var dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;\"></iframe>";
-            if (MobileLive.isMobile() == "isMobile") {
-                dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;pointer-events: none;\"></iframe>";
+            var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>';
+            if (MobileLive.isMobile() == 'isMobile') {
+                dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>';
             }
-            $("#playbackPanel").parent().append(dp);
-            $("div#playbackPanel").remove();
+            $('#playbackPanel').parent().append(dp);
+            $('div#playbackPanel').remove();
 
-            if (typeof window.on_cc_live_db_flip === "function") {
+            if (typeof window.on_cc_live_db_flip === 'function') {
                 window.on_cc_live_db_flip();
             }
         },
@@ -1630,15 +1609,14 @@
     var DW = {
         isH5play: false,
         fastMode: false,
-        forceNew: false,
         setFastMode: function (opts) {
-            if (typeof opts.fastMode == "string") {
-                if (opts.fastMode === "false") {
+            if (typeof opts.fastMode == 'string') {
+                if (opts.fastMode === 'false') {
                     this.fastMode = false;
                 } else {
                     this.fastMode = true;
                 }
-            } else if (typeof opts.fastMode == "boolean") {
+            } else if (typeof opts.fastMode == 'boolean') {
                 this.fastMode = opts.fastMode;
             } else {
                 this.fastMode = false;
@@ -1647,23 +1625,19 @@
         // 初始化DW对象
         config: function (opts) {
             if (checkVideo()) {
-                if(opts.isH5play + "" === "true"){
-                    this.isH5play = true;
-                }else{
-                    this.isH5play = false;
-                }
+                this.isH5play = opts.isH5play;
             }
 
             this.setFastMode(opts);
             DWDpc.fastMode = this.fastMode;
 
             var scriptArray = [
-                "//static.csslcloud.net/js/socket.io.js",
-                "//static.csslcloud.net/js/swfobject.js",
-                "//static.csslcloud.net/js/json3.min.js",
-                "//static.csslcloud.net/js/module/drawingBoard-2.0.0.js",
-                "//static.csslcloud.net/js/module/drawingBoardPlayback.js",
-                "//static.csslcloud.net/js/report.js"
+                '//static.csslcloud.net/js/socket.io.js',
+                '//static.csslcloud.net/js/swfobject.js',
+                '//static.csslcloud.net/js/json3.min.js',
+                '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
+                '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
+                '//static.csslcloud.net/js/report.js'
             ];
             if (DWDpc.fastMode) {
                 scriptArray.splice(3, 2);
@@ -1671,26 +1645,22 @@
 
             this.loadScript(scriptArray, function () {
                 init(opts);
-                if (MobileLive.isMobile() == "isMobile" && $.DrawingBoard && !DWDpc.fastMode) {
+                if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard && !DWDpc.fastMode) {
                     DW.appendDrawPanel();
                 }
             });
-
-            if (typeof opts.forceNew === "boolean") {
-                this.forceNew = opts.forceNew;
-            }
         },
         appendDrawPanel: function () {
-            var dp = "<canvas id=\"drawPanel\" width=\"1200\" height=\"1200\" style=\"position: absolute;z-index:2;top:0;left: 0\"></canvas>"
-                + "<iframe id=\"dpa\" src=\"\" frameborder=\"0\" style=\"position: absolute;top:0;left: 0\"></iframe>";
-            $("#playbackPanel").parent().append(dp);
-            $("div#playbackPanel").remove();
+            var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
+                + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>';
+            $('#playbackPanel').parent().append(dp);
+            $('div#playbackPanel').remove();
         },
         logout: function () {
             $.ajax({
-                url: "//view.csslcloud.net/api/callback/logout",
-                type: "GET",
-                dataType: "json",
+                url: '//view.csslcloud.net/api/callback/logout',
+                type: 'GET',
+                dataType: 'json',
                 timeout: 5000,
                 xhrFields: {
                     withCredentials: true
@@ -1705,11 +1675,11 @@
         getScript: function (url, success) {
 
             var readyState = false,
-                script = document.createElement("script");
+                script = document.createElement('script');
             script.src = url;
 
             script.onload = script.onreadystatechange = function () {
-                if (!readyState && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+                if (!readyState && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
                     readyState = true;
                     success && success();
                 }
@@ -1720,7 +1690,7 @@
 
         loadScript: function (res, callback) {
 
-            if (typeof res === "string") {
+            if (typeof res === 'string') {
                 var _res = res;
                 res = [];
                 res.push(_res);
@@ -1754,7 +1724,7 @@
         getDuration: function () {
             if (DW.isH5play) {
                 return MobileLive.getDuration();
-            } else if (MobileLive.isMobile() == "isMobile") {
+            } else if (MobileLive.isMobile() == 'isMobile') {
                 return MobileLive.getDuration();
             } else {
                 return callback.callbackPlayer.getDuration();
@@ -1872,7 +1842,6 @@
                     username: chatLog.userName,
                     time: chatLog.time,
                     msg: chatLog.content,
-                    groupId: chatLog.groupId,
                     useravatar: chatLog.userAvatar,
                     userRole: chatLog.userRole,
                     usercustommark: chatLog.userCustomMark,
@@ -1919,7 +1888,7 @@
             }
         }, 1000);
 
-        if (typeof window.on_cc_live_player_load === "function") {
+        if (typeof window.on_cc_live_player_load === 'function') {
             window.on_cc_live_player_load();
         }
 
@@ -1938,7 +1907,7 @@
         setInterval(function () {
             var ft = 0;
             try {
-                ft = parseInt($("#playbackVideo")[0].currentTime, 10);
+                ft = parseInt($('#playbackVideo')[0].currentTime, 10);
             } catch (e) {
             }
             if (ft <= 0) {
@@ -1958,11 +1927,10 @@
                     username: cl.userName,
                     time: cl.time,
                     msg: cl.content,
-                    groupId: cl.groupId,
                     useravatar: cl.userAvatar,
                     userRole: cl.userRole,
                     usercustommark: cl.userCustomMark,
-                    role: cl.role
+                    role: cl.role,
                 });
                 if (!window.CHATLOGS.length) {
                     break;
@@ -1977,7 +1945,7 @@
         setInterval(function () {
             var ft = 0;
             try {
-                ft = parseInt($("#playbackVideo")[0].currentTime, 10);
+                ft = parseInt($('#playbackVideo')[0].currentTime, 10);
             } catch (e) {
             }
             if (ft <= 0) {
@@ -2050,19 +2018,19 @@
 
             if (callback.pageChangeIndex >= 0) {
                 var pc = callback.pageChanges[callback.pageChangeIndex];
-                if (typeof window.on_cc_callback_page_change === "function") {
+                if (typeof window.on_cc_callback_page_change === 'function') {
                     window.on_cc_callback_page_change(pc);
                 }
-                if (typeof window.on_cc_request_snapshoot === "function") {
+                if (typeof window.on_cc_request_snapshoot === 'function') {
                     window.on_cc_request_snapshoot(pc);
                 }
                 callback.drawPanel.filp(JSON.stringify({
-                    "fileName": pc.docName,
-                    "totalPage": pc.docTotalPage,
-                    "docid": pc.encryptDocId,
-                    "url": pc.url,
-                    "page": pc.pageNum,
-                    "useSDK": pc.useSDK
+                    'fileName': pc.docName,
+                    'totalPage': pc.docTotalPage,
+                    'docid': pc.encryptDocId,
+                    'url': pc.url,
+                    'page': pc.pageNum,
+                    'useSDK': pc.useSDK
                 }));
 
                 meta.pageChange.push(pc);
@@ -2085,12 +2053,12 @@
 
                     if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
                         callback.drawPanel.animation(JSON.stringify({
-                            "fileName": a.docName,
-                            "totalPage": a.docTotalPage,
-                            "docid": a.encryptDocId,
-                            "url": a.url,
-                            "page": a.pageNum,
-                            "step": a.step
+                            'fileName': a.docName,
+                            'totalPage': a.docTotalPage,
+                            'docid': a.encryptDocId,
+                            'url': a.url,
+                            'page': a.pageNum,
+                            'step': a.step
                         }));
 
                         meta.animation.push(a);
@@ -2137,7 +2105,7 @@
             };
         } else {
             Event.addEvents = function (target, eventType, handle) {
-                target.attachEvent("on" + eventType, function () {
+                target.attachEvent('on' + eventType, function () {
                     handle.call(target, arguments);
                 });
             };
@@ -2148,16 +2116,16 @@
 
     //video兼容处理
     function checkVideo() {
-        if (!!document.createElement("video").canPlayType) {
-            var vidTest = document.createElement("video");
-            oggTest = vidTest.canPlayType("video/ogg; codecs=\"theora, vorbis\"");
+        if (!!document.createElement('video').canPlayType) {
+            var vidTest = document.createElement('video');
+            oggTest = vidTest.canPlayType('video/ogg; codecs="theora, vorbis"');
             if (!oggTest) {
-                h264Test = vidTest.canPlayType("video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"");
+                h264Test = vidTest.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
                 if (!h264Test) {
                     return false;
                 }
                 else {
-                    if (h264Test == "probably") {
+                    if (h264Test == 'probably') {
                         return true;
                     }
                     else {
@@ -2166,7 +2134,7 @@
                 }
             }
             else {
-                if (oggTest == "probably") {
+                if (oggTest == 'probably') {
                     return true;
                 }
                 else {
@@ -2189,21 +2157,17 @@
         init: function (opts) {
             var _this = this;
             $.ajax({
-                url: "//view.csslcloud.net/api/vod/v2/play/h5",
-                type: "GET",
-                dataType: "jsonp",
-                data: {
-                    userid: opts.userId,
-                    roomid: opts.roomId,
-                    recordid: opts.recordId
-                },
+                url: '//view.csslcloud.net/api/vod/play/mobile',
+                type: 'GET',
+                dataType: 'jsonp',
+                data: {userid: opts.userId, videoid: opts.videoId},
                 success: function (data) {
                     var pvdefault = data.video[0];
 
                     var playurl = pvdefault.playurl;
                     var secureplayurl = pvdefault.secureplayurl;
 
-                    var isHttps = window.location.protocol === "https:";
+                    var isHttps = window.location.protocol === 'https:';
                     if (isHttps && !!secureplayurl) {
                         playurl = secureplayurl;
                     }
@@ -2216,16 +2180,16 @@
         appendVideo: function (s, opts) {
             var _this = this;
 
-            var v = "<video id=\"playbackVideo\" webkit-playsinline playsinline controls autoplay x-webkit-airplay=\"deny\" x5-playsinline width=\"100%\" height=\"100%\" src=\"" + s + "\"></video>";
-            $("#" + playbackPlayer.id).html(v);
-            var video = document.getElementById("playbackVideo");
+            var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + s + '"></video>';
+            $('#' + playbackPlayer.id).html(v);
+            var video = document.getElementById('playbackVideo');
             if (opts.isShowBar) {
-                video.removeAttribute("controls");
+                video.removeAttribute('controls');
             }
 
             var isMobie = 0;
             var ua = 1;
-            if (MobileLive.isMobile() == "isMobile") {
+            if (MobileLive.isMobile() == 'isMobile') {
                 isMobie = 1;
                 ua = 11;
             }
@@ -2234,8 +2198,8 @@
                 this.pauseState = true;
             }
 
-            Event.addEvents(video, "canplay", function () {
-                if (MobileLive.isMobile() == "isMobile") {
+            Event.addEvents(video, 'canplay', function () {
+                if (MobileLive.isMobile() == 'isMobile') {
                     window.on_cc_live_player_load && window.on_cc_live_player_load();
                     window.on_cc_h5_player_load && window.on_cc_h5_player_load();
                 } else if (DW.isH5play) {
@@ -2253,34 +2217,34 @@
 
             }, false);
 
-            Event.addEvents(video, "playing", function () {
+            Event.addEvents(video, 'playing', function () {
                 _this.pauseState = false;
                 window.on_player_start && on_player_start();
                 window.on_spark_player_resume && on_spark_player_resume();
             }, false);
 
-            Event.addEvents(video, "pause", function () {
+            Event.addEvents(video, 'pause', function () {
                 _this.pauseState = true;
                 window.on_spark_player_pause && on_spark_player_pause();
             }, false);
 
-            Event.addEvents(video, "ended", function () {
+            Event.addEvents(video, 'ended', function () {
                 window.on_spark_player_end && on_spark_player_end();
             }, false);
 
-            Event.addEvents(video, "seeking", function () {
+            Event.addEvents(video, 'seeking', function () {
                 isCustomSeek = false;
                 seekStart && seekStart();
             }, false);
 
-            Event.addEvents(video, "seeked", function () {
+            Event.addEvents(video, 'seeked', function () {
                 isCustomSeek = false;
                 seekComplete && seekComplete();
             }, false);
         },
 
         getDuration: function () {
-            var v = document.getElementById("playbackVideo");
+            var v = document.getElementById('playbackVideo');
             if (!v) {
                 return;
             }
@@ -2288,7 +2252,7 @@
         },
 
         getPlayerTime: function () {
-            var v = document.getElementById("playbackVideo");
+            var v = document.getElementById('playbackVideo');
             if (!v) {
                 return;
             }
@@ -2296,17 +2260,17 @@
         },
 
         end: function () {
-            $("#" + playbackPlayer.id).html("end");
+            $('#' + playbackPlayer.id).html('end');
         },
 
         appendDoc: function (s) {
-            var img = "<img src=\"" + s + "\" />";
-            $("#" + playbackPanel.id).append(img);
+            var img = '<img src="' + s + '" />';
+            $('#' + playbackPanel.id).append(img);
         },
 
         isMobile: function () {
             if (this.isIPad() || this.isIPhone() || this.isAndroid() || this.isWindowsPhone()) {
-                return "isMobile";
+                return 'isMobile';
             }
         },
 
