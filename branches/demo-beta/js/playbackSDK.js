@@ -35,7 +35,7 @@
             }
         };
 
-        if (!DW.isH5play) {
+        if (MobileLive.isMobile() !== "isMobile" && !DW.isH5play) {
             this.flashPlayerInit();
         }
 
