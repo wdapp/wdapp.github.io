@@ -582,6 +582,10 @@
                 sub.allRequests++;
                 success(sub);
 
+                //encryptRecordId
+                if(!options.recordId){
+                    options.recordId = data.datas.encryptRecordId;
+                }
                 //登录成功
                 if (typeof  window.on_cc_login_success === "function") {
                     window.on_cc_login_success();
