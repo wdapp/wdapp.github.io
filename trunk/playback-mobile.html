@@ -104,7 +104,7 @@
         for (var idx = 0; idx < datas.length; idx++) {
             var msg = datas[idx];
             if (msg.groupId === $.DW.groupId || !$.DW.groupId || !msg.groupId ){
-                var name = msg['username'], msgStr = showEm(msg['msg'] || '');             
+                var name = msg['username'], msgStr = showEm(msg['msg'] || '');
 
                 var liEl = '<li><p>' + name + '：<span class="tmsg">' + msgStr + ' </span></p></li>';
 
