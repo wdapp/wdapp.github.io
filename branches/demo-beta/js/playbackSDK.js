@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.8.2 2019/01/07
+ * v2.8.3 2019/01/15
  */
 !(function ($, window, document) {
 
@@ -582,10 +582,6 @@
                 sub.allRequests++;
                 success(sub);
 
-                //encryptRecordId
-                if(!options.recordId){
-                    options.recordId = data.datas.encryptRecordId;
-                }
                 //登录成功
                 if (typeof  window.on_cc_login_success === "function") {
                     window.on_cc_login_success();
@@ -1189,6 +1185,11 @@
                 $.DW.groupId = data.datas.viewer.groupId;
                 if (typeof window.on_cc_callback_player === "function") {
                     window.on_cc_callback_player(data.datas.live.encryptRecordvideoId);
+                }
+
+                //encryptRecordId
+                if(!opts.recordId){
+                    opts.recordId = data.datas.encryptRecordId;
                 }
 
                 if (DW.isH5play) {
