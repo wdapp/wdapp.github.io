@@ -188,3 +188,9 @@ input[type=checkbox] { -webkit-border-radius:2px; -moz-border-radius:2px; border
 .header .danmubtn{float: right; display: none; width: 30px; height: 18px; line-height: 18px; font-size: 12px; margin: 5px 5px 0 0; text-align: center; border: 1px solid #CCC; border-radius: 3px; background: #F1F1F1;}
 .header .active{background: #0e90d2; color: #FFF; border: 1px solid #148ed2;}
 .abp{opacity: 1;}
+#chat_container li[status='1']{
+    display: none;
+}
+#chat_container li[status='0']{
+    display: block;
+}

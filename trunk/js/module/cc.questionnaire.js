@@ -75,7 +75,6 @@ $(function () {
             questionnaireid: questionnaireId,
             subjectsAnswer: subjectsAnswer
         };
-
         function getDatainfo(data) {
             if (data.success) {
                 // 答卷成功
@@ -107,8 +106,7 @@ $(function () {
             }
             $("#submitQuestionnaire").attr("disabled", false);
         }
-
-        DWLive.submitQuestionnaire(params);
+        DWLive.submitQuestionnaire(params)
         // $.ajax({
         //     url: '//eva.csslcloud.net/api/questionnaire/submit',
         //     type: 'GET',
@@ -321,6 +319,8 @@ function on_cc_live_questionnaire_publish(data) {
 }
 
 Handlebars.getTemplate = function (name) {
+
+
     if (Handlebars.templates === undefined || Handlebars.templates[name] === undefined) {
         $.ajax({
             url: "/js/templates/" + name + ".hbs",

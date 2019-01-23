@@ -31,33 +31,42 @@ $(function () {
                 adminClass = "admin";
                 adminText = "<span>管理</span>";
             }
-            var name = escapeHTML(msg["username"]), msgStr = showEm(msg["msg"]
-                || ""), userId = msg["userid"], divEl;
+            var name = escapeHTML(msg['username']), msgStr = showEm(msg['msg']
+                || ''), userId = msg['userid'], divEl,chatId=msg['chatId'],status=msg['status'];
             if (name == DWLive.viewername) {
-                divEl = "<li class=\"message msg-send\"><div class=\"msg-info\"><span class=\"user-name " + adminClass + "\">" + adminText
+                divEl = '<li class="message msg-send"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
                     + name
-                    + ":</span><span class=\"msg-time\">" + msg.time + "</span></div><div class=\"msg-content\">"
-                    + msgStr + "</div></li>";
+                    + ':</span><span class="msg-time">' + msg.time + '</span></div><div class="msg-content">'
+                    + msgStr + '</div></li>';
             } else {
-                divEl = "<li class=\"message message-received\"><div class=\"msg-info\"><span class=\"user-name " + adminClass + "\">" + adminText
+                divEl = '<li  class="message message-received"chatId="'+chatId+'" status="'+status+'"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
                     + name
-                    + ":</span><span class=\"msg-time\">" + msg.time + "</span></div><div class=\"msg-content\">"
-                    + msgStr + "</div></li>";
+                    + ':</span><span class="msg-time">' + msg.time + '</span></div><div class="msg-content">'
+                    + msgStr + '</div></li>';
             }
-            $("#chat_container").append(divEl);
-            var messageCount = $("#chat_container").children().length;
+            $('#chat_container').append(divEl);
+            var messageCount = $('#chat_container').children().length;
             var overCount = messageCount - maxMessageCount;
             if (overCount > 0) {
-                $("#chat_container > div:lt(" + overCount + ")")
+                $('#chat_container > div:lt(' + overCount + ')')
                     .remove();
             }
         }
 
 
-        $("#chat_container").parent().scrollTop($("#chat_container").height());
+        $('#chat_container').parent().scrollTop($('#chat_container').height());
 
     };
-
+    //聊天控制
+    DWLive.onPublicChatLogManage=function (j) {
+        var chatInfo= JSON.parse(j);
+        var status = chatInfo.status;
+        var chatIds=chatInfo.chatIds;
+        $.each(chatIds,function (index,data) {
+            var cId='[chatId='+ data+']';
+            $(cId).attr('status',status);
+        });
+    };
     // 接收私聊
     DWLive.onPrivateChatMessage = function (s) {
         var j = JSON.parse(s);

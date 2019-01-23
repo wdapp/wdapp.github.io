@@ -74,12 +74,10 @@
 <script src="js/touchSlide.js"></script>
 <script src="js/main.js"></script>
 <script src="js/jquery.panzoom.min.js"></script>
-<script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="//view.csslcloud.net/js/playbackSDK.js"></script>
+<script src="//view.csslcloud.net/js/playbackSDK.js" type="text/javascript"></script>
 <script type="text/javascript">
     var width = $('#qst1').width();
     $('#qst2').css({width: width});
-
     $.DW.config({
         userId: localStorage.userId,
         roomId: localStorage.roomId,
@@ -96,17 +94,20 @@
         }, 1000);
     }, false);
 
+
     // 同步接收聊天信息
     function on_cc_live_chat_msg_sync(datas) {
         console.log('on_cc_live_chat_msg_sync', datas);
+
         var mh = '';
 
         for (var idx = 0; idx < datas.length; idx++) {
             var msg = datas[idx];
             if (msg.groupId === $.DW.groupId || !$.DW.groupId || !msg.groupId ){
                 var name = msg['username'], msgStr = showEm(msg['msg'] || '');
+                var chatId = msg['chatId'], status = msg['status'] || '0';
 
-                var liEl = '<li><p>' + name + '：<span class="tmsg">' + msgStr + ' </span></p></li>';
+                var liEl = '<li chatId="'+chatId+'" status="'+status+'"><p>' + name + '：<span class="tmsg">' + msgStr + ' </span></p></li>';
 
                 mh += liEl;
             }
@@ -125,28 +126,37 @@
     }
 
     function showEm(str) {
-        if (!$.trim(str)) {
-            return '';
-        }
-        str = str.replace(/\</g, '&lt;');
-        str = str.replace(/\>/g, '&gt;');
-        str = str.replace(/\n/g, '<br/>');
-        str = str.replace(/\[em_([0-9]*)\]/g, '<img src="/img/em/$1.gif" border="0" />');
-        str = str.replace(/\[em2_([0-9]*)\]/g, '<img src="/img/em2/$1.png" border="0" />');
-
-        var nmsg = '';
-        $.each(str.split(' '), function (i, n) {
-            n = $.trim(n);
-            if (n.indexOf('[uri_') == 0 && n.indexOf(']') == n.length - 1 && n.length > 6) {
-                var u = n.substring(5, n.length - 1) + ' ';
-                nmsg += '<a target="_blank" style="color: #2f53ff" href="' + u + '">' + u + '</a>' + ' ';
-            } else {
-                nmsg += n + ' ';
-            }
-        });
-
-        return nmsg;
+    if (!$.trim(str)) {
+        return '';
     }
+    var str = $.trim(str);
+    str = str.replace(/\</g, '&lt;');
+    str = str.replace(/\>/g, '&gt;');
+    str = str.replace(/\n/g, '<br/>');
+    str = str.replace(/\[em_([0-9]*)\]/g, '<img src="img/em/$1.gif" border="0" />');
+    str = str.replace(/\[em2_([0-9]*)\]/g, '<img src="img/em2/$1.png" border="0" />');
+
+    var nmsg = '';
+    var reg = new RegExp(/\[img_http(s)?:\/\/(.*?)\]/g);
+    var isImage =reg.test(str)
+    if(isImage){
+        var sIndex = str.indexOf('_') + 1;
+        nmsg = str.slice(sIndex,str.length-1);
+        var imgTag = '<div class="chatImage" style="width: 100%; cursor: pointer;" ><img src="'+nmsg+'"  style="width: 100%;"/></div>';
+        return imgTag;
+    }
+
+    $.each(str.split(' '), function (i, n) {
+        n = $.trim(n);
+        if (n.indexOf('[uri_') == 0 && n.indexOf(']') == n.length - 1 && n.length > 6) {
+            var u = n.substring(5, n.length - 1) + ' ';
+            nmsg += '<a target="_blank" style="color: #2f53ff" href="' + u + '">' + u + '</a>' + ' ';
+        } else {
+            nmsg += n + ' ';
+        }
+    });
+    return nmsg;
+}
 
     function removeEm(str) {
         return str.replace(/\[em2?_([0-9]*)\]/g, '');
@@ -191,6 +201,7 @@
 
         }
         $('#questionInfo').scrollTop($('#questionInfo').height());
+
     }
 
     // 接收提问

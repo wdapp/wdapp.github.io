@@ -134,8 +134,25 @@ $(function () {
         mainCell: '.slider-container',
         defaultIndex: window.tabDefaultIndex,
         startFun: function (i, c) {
-            $('#qaV').blur();
-            $('#chat_input').blur();
+            // console.log(i,c)
+            // if (i === 1) {
+            //     $('#chat_input').removeAttr('disabled');
+            //     $('#qaV').attr('disabled', 'disabled');
+            //     $('#qaV').blur();
+            // } else if (i === 2) {
+            //     $('#chat_input').attr('disabled', 'disabled');
+            //     $('#chat_input').blur();
+            //     $('#qaV').removeAttr('disabled');
+            // } else {
+            //     $('#chat_input').attr('disabled', 'disabled');
+            //     $('#qaV').attr('disabled', 'disabled');
+            //     $('#chat_input').blur();
+            //     $('#qaV').blur();
+            // }
+        },
+        endFun:function(i,c){
+            // console.log(i,c)
+
         }
     });
 

@@ -1,7 +1,6 @@
 /**
  * CC live video
- * v2.8.1 2019/01/07
- */
+ * v2.7.0 2019/01/07 */
 (function () {
 
     var DELAY_TIME = 10 * 1000;
@@ -22,8 +21,44 @@
             }
         }
         return hasFlash;
-    }
+    };
+    //工具类
+    var Util = {
+        sendAjax:function(url,data,callBack){
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "jsonp",
+                data:data,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    if (!data.success) {
+                        callBack(data);
+                        return;
+                    }
+                    if (typeof callBack === "function") {
+                        callBack(data);
+                    } else {
+                        if (console.log) {
+                            console.log("onQuestionnairePublish is undefined");
+                        }
+                    }
+                },
+                error: function (e) {
+                    if (typeof callBack === "function") {
+                        callBack({errorCode: 1, msg: "request error", result: e});
+                    } else {
+                        if (console.log) {
+                            console.log("onQuestionnairePublish is undefined");
+                        }
+                    }
+                }
+            })
 
+        }
+    };
     var DWDpc = {
         DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
         dpc: {},
@@ -135,6 +170,13 @@
                 return;
             }
             this.dpc.closeBarrage();
+        },
+        docAdapt:function (t) {
+            if(!this.fastMode){
+                return;
+            }
+            var displayMode = t ? '1':'2';
+            this.dpc.setDisplayMode(displayMode);
         }
     };
 
@@ -180,6 +222,9 @@
                 "//static.csslcloud.net/js/socket.io.js",
                 "//static.csslcloud.net/js/report.js"
             ];
+            if(DWDpc.fastMode){
+                scripts.push("//image.csslcloud.net/js/dpc.js?v=20180121");
+            }
 
             if (MobileLive.isMobile() == "isMobile") {
                 if ($("#drawPanel").length > 0) {
@@ -312,6 +357,7 @@
                     LivePlayer.barrageData = data.datas.room.barrage;
                     LivePlayer.warmVideoId = data.datas.room.encryptWarmVideoId;
                     LivePlayer.viewerid = data.datas.viewer.id;
+
                     var playerBackgroundImageUri = data.datas.room.playerBackgroundImageUri;
                     if (!playerBackgroundImageUri) {
                         playerBackgroundImageUri = "";
@@ -358,7 +404,11 @@
                     }
 
                     if (typeof DWLive.onLoginSuccess === "function") {
-                        DWLive.onLoginSuccess();
+                        var template = {"desc":data.datas.template.desc,"type":data.datas.template.type,"name":data.datas.template.name,'id':data.datas.template.id};//返回给用户的模板信息
+                        var viewer = {"id":data.datas.viewer.id,"groupId":data.datas.viewer.groupId,"name":data.datas.viewer.name};//返回给用户的viewer信息;
+                        var live = data.datas.live;//返回给用户的live信息
+                        var loginInfo = {"live":live,"template":template,"viewer":viewer};
+                        DWLive.onLoginSuccess(loginInfo);
                     }
 
                     var time = data.datas.live;
@@ -646,7 +696,12 @@
         },
 
         docAdapt: function (t) {
-            live.adapt = t;
+            if(DWDpc.fastMode){
+                DWDpc.docAdapt(t);
+            }else{
+                live.adapt = t;
+            }
+
         },
 
         // 请求语音互动
@@ -776,38 +831,48 @@
 
         },
         getPublishingQuestionnaire: function () {
-            $.ajax({
-                url: "//eva.csslcloud.net/api/questionnaire/info",
-                type: "GET",
-                dataType: "jsonp",
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (data) {
-                    if (!data.success) {
-                        return;
-                    }
-
-                    if (typeof DWLive.onQuestionnairePublish === "function") {
-                        DWLive.onQuestionnairePublish(data);
-                    } else {
-                        if (console.log) {
-                            console.log("onQuestionnairePublish is undefined");
-                        }
-                    }
-                },
-                error: function (e) {
-                    if (typeof DWLive.onQuestionnairePublish === "function") {
-                        DWLive.onQuestionnairePublish({errorCode: 1, msg: "request error", result: e});
-                    } else {
-                        if (console.log) {
-                            console.log("onQuestionnairePublish is undefined");
-                        }
-                    }
-                }
-            });
-        }
-
+            var path = "//eva.csslcloud.net/api/questionnaire/info";
+            var info={};
+            Util.sendAjax(path,info,DWLive.onQuestionnairePublish);
+        },
+        //获取随堂测数据
+        getPracticeInfo:function (pId,callBack) {
+            var path="//eva.csslcloud.net/api/practice/info";
+            var info={
+                practiceId:pId,
+                sessionId:Pusher.options.key
+            };
+            Util.sendAjax(path,info,callBack);
+        },
+        //提交随堂测
+        submitPracticeInfo:function (pId,opt,callback) {
+            var path="//eva.csslcloud.net/api/practice/submit";
+            var info={
+                practiceId:pId,
+                options:opt,
+                sessionId:Pusher.options.key
+            };
+            Util.sendAjax(path , info , callback);
+        },
+        //获取随堂测统计信息接口API
+        getPracticeStatisInfo:function (pId,callback) {
+            var path = "//eva.csslcloud.net/api/practice/statis";
+            var info = {
+                practiceId:pId,
+                sessionId:Pusher.options.key
+            };
+            Util.sendAjax(path,info,callback);
+        },
+        //获取排名数据接口
+        getPracticeRanking:function (pId,callback) {
+            var path = "//eva.csslcloud.net/api/practice/ranking";
+           // var path = "http://192.168.202.183:8080/api/practice/ranking";
+            var info = {
+                practiceId:pId,
+                sessionId:Pusher.options.key
+            };
+            Util.sendAjax(path,info,callback);
+        },
     };
     var options = {
         init: function () {
@@ -819,6 +884,8 @@
                 this["upId"] = DWLive.upid;
         }
     };
+
+
     // Pusher
     var Pusher = {
         options: {
@@ -888,6 +955,7 @@
                     DWLive.onPageChange(data);
                 }
             });
+
 
             // 改名
             this.socket.on("change_nickname", function (j) {
@@ -1148,6 +1216,27 @@
                     DWLive.onQuestionnairePublishStop(data);
                 }
             });
+            //发布随堂测功能
+            this.socket.on("practice_publish",function (data) {
+                data = toJson(data);
+                if(typeof  DWLive.onPracticePublish === "function"){
+                    DWLive.onPracticePublish(data);
+                }
+            });
+            //停止发布随堂测功能
+            this.socket.on("practice_stop",function (data) {
+                data = toJson(data);
+                if(typeof  DWLive.onPracticePublishStop === "function"){
+                    DWLive.onPracticePublishStop(data);
+                }
+            });
+            //关闭随堂测功能
+            this.socket.on("practice_close",function (data) {
+                data=toJson(data);
+                if(typeof DWLive.onPracticeClose === "function"){
+                    DWLive.onPracticeClose(data);
+                }
+            });
 
             /**
              * 发布问卷统计
@@ -1161,6 +1250,7 @@
             });
 
             this.socket.on("room_teachers", function (data) {
+
                 if (typeof DWLive.onOnlineTeachers === "function") {
                     DWLive.onOnlineTeachers(toJson(data));
                 }
@@ -2203,14 +2293,16 @@
 
 
                         cls.push({
-                            "userid": chatLog.userId,
-                            "username": chatLog.userName,
-                            "userrole": chatLog.userRole,
-                            "useravatar": chatLog.userAvatar,
-                            "groupId": chatLog.groupId,
-                            "msg": chatLog.content,
-                            "time": chatLog.time,
-                            "usercustommark": chatLog.userCustomMark
+                            'userid': chatLog.userId,
+                            'username': chatLog.userName,
+                            'userrole': chatLog.userRole,
+                            'useravatar': chatLog.userAvatar,
+                            'groupId':chatLog.groupId,
+                            'msg': chatLog.content,
+                            'time': chatLog.time,
+                            'chatId':chatLog.chatId,
+                            'status':chatLog.status,
+                            'usercustommark': chatLog.userCustomMark
                         });
                     }
 
@@ -2351,6 +2443,12 @@
             Pusher.socket.on("chat_message", function (j) {
                 if (typeof DWLive.onPublicChatMessage === "function") {
                     DWLive.onPublicChatMessage(j);
+                }
+            });
+            //聊天审核
+            Pusher.socket.on('chat_log_manage', function (j) {
+                if (typeof DWLive.onPublicChatLogManage === 'function') {
+                    DWLive.onPublicChatLogManage(j);
                 }
             });
 

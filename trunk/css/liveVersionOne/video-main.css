@@ -1205,3 +1205,33 @@ a.green-btn { color: #FFF; }
     color: #f88119;
     word-break: break-all;
 }
+#chat-list li[status='1']{
+     display: none;
+ }
+#chat-list li[status='0']{
+    display: block;
+}
+.pStyle{
+    width: 500px;
+    height: 400px;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom:0px;
+    z-index: 30;
+    margin:auto;
+
+}
+.pStyle[status="1"]{
+    display: none;
+}
+.pStyle[status="0"]{
+    display:block;
+}
+
+
+.practice{
+    width: 100%;
+    height:100%;
+}
