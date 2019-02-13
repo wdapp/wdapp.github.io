@@ -1055,7 +1055,8 @@ function on_cc_live_interaction_local_media(p, stream) {
     if (p.video) {
         $('#videoInteractio').show();
         var $lv = $('#interactionLocalVideo')[0];
-        $lv.src = URL.createObjectURL(stream); // 加载流信息
+        // $lv.src = URL.createObjectURL(stream); // 加载流信息
+        $lv.srcObject = stream; // 加载流信息
         $lv.volume = 0; // 静音
     } else {
 
