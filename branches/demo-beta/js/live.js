@@ -1075,13 +1075,15 @@ function on_cc_live_interaction_remote_media(p, chatuser, stream) {
 
         var id = 'interactionRemoteVideo' + chatuser.id;
         $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
-        $('#' + id)[0].src = URL.createObjectURL(stream);
+        // $('#' + id)[0].src = URL.createObjectURL(stream);
+        $('#' + id)[0].srcObject = stream;
 
         $('#videoInteraction').hide();
     } else {// 远程音频
         var id = 'interactionRemoteAudio' + chatuser.id;
         $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
-        $('#' + id)[0].src = URL.createObjectURL(stream);
+        // $('#' + id)[0].src = URL.createObjectURL(stream);
+        $('#' + id)[0].srcObject = stream;
     }
 }
 
