@@ -1473,7 +1473,7 @@
                 if (typeof window.on_cc_live_interaction_request_timeout === "function") {
                     window.on_cc_live_interaction_request_timeout(live.interaction.local.type);
                 }
-            }, 6000000);
+            }, 60000);
         };
         // 清空互动请求超时定时器
         this.clearRequestTimeoutTimer = function () {
