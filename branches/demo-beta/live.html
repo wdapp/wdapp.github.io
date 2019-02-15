@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="css/liveVersionOne/fatstyle.css">
     <link rel="stylesheet" href="css/liveVersionOne/video-main.css">
     <link rel="stylesheet" href="css/liveVersionOne/pop.css">
+    <style>
+        #mask{width: 100%; height: 100%; background: #ccc; position: absolute; top: 0; left: 0; z-index: 100; display: none; opacity: 0.8;}
+        #mask img{max-width: 50%; max-height: 70%; cursor: pointer; position: absolute; top:0; bottom:0; left:0; right:0; margin:auto; z-index: 1001}
+        #mask p{display: block; position: fixed; top: 100px; right: 150px; font-size: 30px; cursor: pointer}
+
+    </style>
 </head>
 <body>
 <h1 class="main-title">直播间</h1>
@@ -85,19 +91,19 @@
                 <li>
                     <a href="javascript:;" class="gm" id="change-nickname" title="改名"></a>
                 </li>
-                <li>
+                <li  style="display: none;">
                     <a href="javascript:;" class="gm" id="changeMode" title="自由模式"></a>
                 </li>
-                <li style="width: 100px">
+                <li style="width: 100px; display: none;">
                     <input type="text" id="docId" placeholder="输入文档id">
                 </li>
-                <li style="width: 100px"><input  id="pageIndeId" type="text" placeholder="输入页码"></li>
-                <li style="width: 100px"><input  id="jump_btn" type="button" value="跳转"></li>
-                <li style="width: 100px; margin-left: 60px;">
+                <li style="width: 100px; display: none;"><input  id="pageIndeId" type="text" placeholder="输入页码"></li>
+                <li style="width: 100px; display: none;"><input  id="jump_btn" type="button" value="跳转"></li>
+                <li style="width: 100px; margin-left: 450px;">
                     <span class="fl mr5" style="float: left;" id="mr5"></span>
-                    <a title="退出登录" href="javascript:void(0);" id="logout" class="wl exit" data-title="退出"></a>
+                    <a title="退出登录" href="javascript:void(0);" id="logout" class="wl exit" data-title="退出" style="display: none;"></a>
                 </li>
-                <span id="interactionMsg" style="padding-top: 5px; display: inline-block;"></span>
+                <span id="interactionMsg" style="padding-top: 5px; display: inline-block;"  style="display: none;"></span>
             </ul>
         </div>
     </div>
@@ -240,18 +246,26 @@
     </div>
     <div class="maskbg"></div>
 </div>
-<input type="hidden" value="1" id="documentDisplayMode">
+<span id="viewerMarquee" style="display: none">
+    {"loop":-1,"type":"text","text":{"content":"123","font_size":20,"color":"0xffffff"},"action":[{"duration":4000,"start":{"xpos":0.3,"ypos":0,"alpha":0.5},"end":{"xpos":0,"ypos":0.4,"alpha":0.5}},{"duration":16000,"start":{"xpos":0,"ypos":0.4,"alpha":0.5},"end":{"xpos":0.8,"ypos":1,"alpha":0.5}},{"duration":4000,"start":{"xpos":0.8,"ypos":1,"alpha":0.5},"end":{"xpos":1,"ypos":0.8,"alpha":0.5}},{"duration":16000,"start":{"xpos":1,"ypos":0.8,"alpha":0.5},"end":{"xpos":0,"ypos":0.2,"alpha":0.5}},{"duration":4000,"start":{"xpos":0,"ypos":0.2,"alpha":0.5},"end":{"xpos":0.2,"ypos":0,"alpha":0.5}},{"duration":12000,"start":{"xpos":0.2,"ypos":0,"alpha":0.5},"end":{"xpos":1,"ypos":0.6,"alpha":0.5}},{"duration":8000,"start":{"xpos":1,"ypos":0.6,"alpha":0.5},"end":{"xpos":0.4,"ypos":1,"alpha":0.5}},{"duration":8000,"start":{"xpos":0.4,"ypos":1,"alpha":0.5},"end":{"xpos":0,"ypos":0.7,"alpha":0.5}},{"duration":16000,"start":{"xpos":0,"ypos":0.7,"alpha":0.5},"end":{"xpos":1,"ypos":0.3,"alpha":0.5}},{"duration":8000,"start":{"xpos":1,"ypos":0.3,"alpha":0.5},"end":{"xpos":0.3,"ypos":0,"alpha":0.5}}]}
+</span>
+
+
+<!--蒙板-->
+<div id="mask">
+    <p>x</p>
+    <img src=""/>
+</div>
+<!--<input type="hidden" value="1" id="documentDisplayMode">-->
 <script src="js/jquery-1.9.0.min.js"></script>
 <script src="js/handlebars.js"></script>
 <script src="js/base.js"></script>
 <script src="js/common.js"></script>
-<script src="//image.csslcloud.net/js/dpc.js"></script>
 <script src="js/liveSDK.js"></script>
 <!--<script src="//view.csslcloud.net/js/liveSDK.js"></script>-->
-<script src="js/ui.js"></script>
 <script src="js/live.js"></script>
 <script src="js/cc.questionnaire.js"></script>
-
+<script src="js/ui.js"></script>
 <script type="text/javascript">
     // 直播SDK参数配置
     DWLive.init({
@@ -269,7 +283,7 @@
 
     DWLive.onLoginError = function(){
         console.log('登录失败')
-    }
+    };
 
     DWLive.onLiveTime = function (e) {
         console.log('onLiveTime', e);
@@ -278,15 +292,37 @@
     var marquee;
     DWLive.getMarquee = function (data) {
         console.log(data);
-        marquee = data;
+        if(!!data){
+            marquee = data;
+            return;
+        }
+        marquee =$('#viewerMarquee').text();
     };
 
     window.on_cc_swf_loading_completed = function () {
         setTimeout(function () {
-            DWLive.showMarqueeDoc(marquee);
+            var marqueeInfo=$.trim(marquee);
+            if(!isMainVideo){
+                DWLive.showMarqueeDoc(marquee);
+            }else{
+                DWLive.showMarquee(marquee);
+            }
+
         }, 1000);
     };
-
+    window.switch_main_show_marquee = function () {
+        if(!isMainVideo){
+            DWLive.closeMarquee();
+            DWLive.showMarqueeDoc(marquee);
+        }else{
+            DWLive.closeMarqueeDoc();
+            DWLive.showMarquee(marquee);
+        }
+    };
+    DWLive.onLoginSuccess =function (data) {
+        DWLive.docAdapt(true);
+        DWLive.groupId = data.viewer.groupId;
+    };
     //动态显示登陆名
     window.onload = function () {
         $('#mr5').html(localStorage.viewername);

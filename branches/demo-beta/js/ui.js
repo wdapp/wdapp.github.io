@@ -22,6 +22,13 @@ $('#btn-face').click(function (e) {
     e.stopPropagation();
 });
 
+function handleEm(i) {
+    if (i < 10) {
+        return '0' + i;
+    }
+    return i;
+}
+
 function setEm(e) {
     var emstr = '[em2_' + handleEm(e) + ']';
     $('#chat-content').val(function () {
@@ -40,6 +47,15 @@ function showEm(str) {
     str = str.replace(/\[em2_([0-9]*)\]/g, '<img src="img/em2/$1.png" border="0" />');
 
     var nmsg = '';
+    var reg = new RegExp(/\[img_http(s)?:\/\/(.*?)\]/g);
+    var isImage =reg.test(str)
+    if(isImage){
+        var sIndex = str.indexOf('_') + 1;
+        nmsg = str.slice(sIndex,str.length-1);
+        var imgTag = '<div class="chatImage" style="width: 100%; cursor: pointer;" ><img src="'+nmsg+'"  style="width: 100%;" onclick="showMsgImage(event)"/></div>';
+        return imgTag;
+    }
+
     $.each(str.split(' '), function (i, n) {
         n = $.trim(n);
         if (n.indexOf('[uri_') == 0 && n.indexOf(']') == n.length - 1 && n.length > 6) {
@@ -49,16 +65,18 @@ function showEm(str) {
             nmsg += n + ' ';
         }
     });
-
     return nmsg;
 }
-
-function handleEm(i) {
-    if (i < 10) {
-        return '0' + i;
+    function showMsgImage(e) {
+        var imgTag = e.currentTarget;
+        var path = imgTag.src;
+        path = path.replace(/http(s)?:/g,'');
+        $('#mask').css('display','block');
+        $('#mask img').attr('src',path);
     }
-    return i;
-}
+    $('#mask p').click(function () {
+        $('#mask').css('display','none');
+    })
 
 // 监听表情
 $(document).bind('click', function (ev) {
@@ -132,6 +150,7 @@ $('#change-nickname').bind('click', function () {
 });
 
 // 侧边栏
+
 // 右侧侧边栏
 $('#right-bar').bind('click', function () {
     var winMain = $('#doc-main').attr('data-module');
@@ -259,6 +278,7 @@ $('#logout').click(function () {
         })
     }
 });
+
 
 // 视频切换
 $('#btn-switch').bind('click', switchPptToVideo);

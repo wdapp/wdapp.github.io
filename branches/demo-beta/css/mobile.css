@@ -561,3 +561,9 @@ a,button,input,li{-webkit-tap-highlight-color:rgba(255,0,0,0);}
 .waiting-layer img{
     width: 100%;
 }
+#chat_container li[status='1']{
+    display: none;
+}
+#chat_container li[status='0']{
+    display: block;
+}

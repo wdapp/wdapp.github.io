@@ -65,8 +65,13 @@ $(function () {
     // 接收公聊
     DWLive.onPublicChatMessage = function (j) {
         var o = JSON.parse(j);
-        var d = '<li class="clearfix" name="' + o.username + '" uid="' + o.userid + '">'
-            + '<div class="peo-infos">'
+        var d = '';
+        if (o.userid != DWLive.viewerid) {
+            d +='<li status="'+o.status+'" chatId="'+o.chatId+'" class="clearfix" name="' + o.username + '" uid="' + o.userid + '">'
+        }else{
+            d +='<li  class="clearfix" name="' + o.username + '" uid="' + o.userid + '">'
+        }
+            d += '<div class="peo-infos">'
             + '<p class="peo-names">'
             + '<span class="p-n-names"><span class="name-tip">' + o.username + '</span></span>'
             + '<i class="peo-icons "></i>'
@@ -95,6 +100,17 @@ $(function () {
         }
     };
 
+    //隐藏部分聊天
+    DWLive.onPublicChatLogManage = function (j) {
+        var chatInfo= JSON.parse(j);
+        var status = chatInfo.status;
+        var chatIds=chatInfo.chatIds;
+        $.each(chatIds,function (index,data) {
+            var cId='[chatId='+ data+']';
+            $(cId).attr('status',status);
+        });
+        $('#chat-list').parent().scrollTop($('#chat-list').height());
+    };
     // 接收私聊
     DWLive.onPrivateChatMessage = function (j) {
         var o = JSON.parse(j);
@@ -215,7 +231,18 @@ $(function () {
             return viwerId === DWLive.viewerid;
         }
     };
+    //随堂测功能
+    DWLive.onPracticePublishStop = function (j) {
 
+    };
+    //关闭随堂测功能
+    DWLive.onPracticeClose = function (j) {
+
+    };
+    //发布随堂测功能
+    DWLive.onPracticePublish = function (j) {
+
+    };
     // 禁言
     DWLive.onInformation = function (j) {
         var chat = $('#chat-content'),

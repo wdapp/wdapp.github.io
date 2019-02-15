@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.8.3 2019/01/15
+ * v2.9.0 2019/01/07
  */
 !(function ($, window, document) {
 
@@ -35,7 +35,7 @@
             }
         };
 
-        if (MobileLive.isMobile() !== "isMobile" && !DW.isH5play) {
+        if (!DW.isH5play) {
             this.flashPlayerInit();
         }
 
@@ -581,11 +581,14 @@
                 sub.requestChatqaData = false;
                 sub.allRequests++;
                 success(sub);
-
                 //登录成功
                 if (typeof  window.on_cc_login_success === "function") {
-                    window.on_cc_login_success();
+                    var logInfo=data.datas;
+                    var tmp = {"type":logInfo.template.type,"desc":logInfo.template.desc,"name":logInfo.template.name};
+                    var viewer = {"name":logInfo.viewer.name,"id":logInfo.viewer.id,"groupId":logInfo.viewer.groupId};
+                    window.on_cc_login_success({"template":tmp,"viewer":viewer});
                 }
+
 
                 if (!options.drawRequestTime) {
                     // 请求画笔数据
@@ -1328,6 +1331,8 @@
                                 time: chatLog.time,
                                 msg: chatLog.content,
                                 groupId: chatLog.groupId,
+                                chatId:chatLog.chatId,
+                                status:chatLog.status,
                                 useravatar: chatLog.userAvatar,
                                 userRole: chatLog.userRole,
                                 usercustommark: chatLog.userCustomMark,
@@ -1618,6 +1623,13 @@
                 return;
             }
             this.dpc.clear();
+        },
+        docAdapt:function (t) {
+            if(!this.fastMode){
+                return;
+            }
+            var displayMode = t ? '1':'2';
+            this.dpc.setDisplayMode(displayMode);
         }
     };
 
@@ -1659,8 +1671,10 @@
             DWDpc.fastMode = this.fastMode;
 
             var scriptArray = [
+
                 "//static.csslcloud.net/js/socket.io.js",
                 "//static.csslcloud.net/js/swfobject.js",
+                "//image.csslcloud.net/js/dpc.js?v=20180121",
                 "//static.csslcloud.net/js/json3.min.js",
                 "//static.csslcloud.net/js/module/drawingBoard-2.0.0.js",
                 "//static.csslcloud.net/js/module/drawingBoardPlayback.js",
@@ -1763,6 +1777,9 @@
         },
 
         docAdapt: function (t) {
+            if(DWDpc.fastMode){
+                DWDpc.docAdapt(t);
+            }
             options.adapt = t;
         },
 
@@ -1874,6 +1891,8 @@
                     time: chatLog.time,
                     msg: chatLog.content,
                     groupId: chatLog.groupId,
+                    chatId:chatLog.chatId,
+                    status:chatLog.status,
                     useravatar: chatLog.userAvatar,
                     userRole: chatLog.userRole,
                     usercustommark: chatLog.userCustomMark,
@@ -1962,6 +1981,8 @@
                     groupId: cl.groupId,
                     useravatar: cl.userAvatar,
                     userRole: cl.userRole,
+                    chatId:chatLog.chatId,
+                    status:chatLog.status,
                     usercustommark: cl.userCustomMark,
                     role: cl.role
                 });
@@ -2009,13 +2030,13 @@
     }
 
     // 画板Flash加载完成回调
-    //window.on_drampanel_ready = function () {
-    //    callback.drawPanel.isReady = true;
-    //
-    //    setTimeout(function () {
-    //        initDrawPanelInfo();
-    //    }, 1500);
-    //};
+    window.on_drampanel_ready = function () {
+       callback.drawPanel.isReady = true;
+
+       setTimeout(function () {
+           initDrawPanelInfo();
+       }, 1500);
+    };
 
     window.seekStart = function () {
         clearInterval(callback.drawPanel.intervalNum);
@@ -2104,10 +2125,13 @@
         if (callback.draws && callback.draws.length > 0) {
             for (var i = 0; i < callback.draws.length; i++) {
                 var dc = callback.draws[i];
-                if (ft >= dc.time) {
-                    //callback.drawPanel.draw(dc.data);
-                    callback.drawIndex = i;
+                if(dc){
+                    if (ft >= dc.time) {
+                        //callback.drawPanel.draw(dc.data);
+                        callback.drawIndex = i;
+                    }
                 }
+
             }
 
             var ds = callback.draws.slice(0, (callback.drawIndex + 1));

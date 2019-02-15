@@ -31,6 +31,8 @@ function on_cc_live_chat_msg_sync(datas) {
         if (data.groupId === $.DW.groupId || !$.DW.groupId  || !data.groupId ){
             cmHtml += Template.chatMsg({
                 name: data.username,
+                chatId:data.chatId,
+                status:data.status,
                 content: showEm(data.msg)
             });
         }

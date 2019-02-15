@@ -4761,3 +4761,9 @@ input[type="checkbox"]:focus {
 .banner-bg img {
     width: 100%;
 }
+#chat-list li[status='1']{
+    display: none;
+}
+#chat-list li[status='0']{
+    display: block;
+}
