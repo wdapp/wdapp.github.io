@@ -1648,6 +1648,8 @@
 
         // 创建被动创建连接的PC
         this.createAnswerPeerConnection = function (chatuser) {
+            console.log("new PeerConnection(this.iceServers);")
+            return;
             var pc = new PeerConnection(this.iceServers);
 
             if (chatuser.type == "audio") {
