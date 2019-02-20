@@ -1609,20 +1609,6 @@
         };
 
         this.createLocalMedia = function (c) {
-            const constraints = window.constraints = {
-                audio: false,
-                video: true
-            };
-            navigator.getUserMedia({audio: false, video: true},
-                function (stream) {
-                    const video = document.querySelector("#interactionLocalVideo");
-                    console.log(stream);
-                    video.srcObject = stream;
-                },
-                function (err) {
-                    console.log("The following error occurred: " + err.name);
-                });
-            return;
             var that = this;
             var p = that.local.type;
             getUserMedia.call(navigator, p, function (stream) {
@@ -1662,8 +1648,6 @@
 
         // 创建被动创建连接的PC
         this.createAnswerPeerConnection = function (chatuser) {
-            console.log("new PeerConnection(this.iceServers);")
-            return;
             var pc = new PeerConnection(this.iceServers);
 
             if (chatuser.type == "audio") {
