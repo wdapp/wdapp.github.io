@@ -28,7 +28,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="//view.csslcloud.net/js/jquery-1.9.0.min.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -57,13 +56,13 @@
 
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
-    $("#div").html(navigator.userAgent.match(/miniprogramhtmlwebview/i));
-    $("#div1").html(navigator.userAgent);
+    document.getElementById("div").html(navigator.userAgent.match(/miniprogramhtmlwebview/i));
+    document.getElementById("div1").html(navigator.userAgent);
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
         alert("111")
-        $("#div2").html(navigator.userAgent);
+        document.getElementById("div2").html(navigator.userAgent);
 
     }
 </script>
