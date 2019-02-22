@@ -75,6 +75,15 @@
         alert("111 ok ok ok miniprogram")
 //            div2.innerHTML = "div2 === "+navigator.userAgent.match(/miniprogram/ig);
     }
+
+    function fun(){
+        var reg = /miniprogram/i;
+        if(reg.test(navigator.userAgent)){
+            return;
+        }
+    }
+
+
 </script>
 </body>
 </html>
