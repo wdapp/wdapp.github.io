@@ -28,11 +28,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="//view.csslcloud.net/js/jquery-1.9.0.min.js" type="text/javascript"></script>
 </head>
 <body>
 
 
 <a href="/images/icon/CC_512_512.jpg" download="CC_512_512">download</a>
+
+<div id="div"></div>
 
 <script>
 
@@ -51,7 +54,8 @@
     };
 
     util.log(123, 123, 'hello', {});
-    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+//    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+    $("#div").html(navigator.userAgent.match(/miniprogramhtmlwebview/i));
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
