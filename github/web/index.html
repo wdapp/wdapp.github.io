@@ -56,14 +56,17 @@
 
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
-    document.getElementById("div").html(navigator.userAgent.match(/miniprogramhtmlwebview/i));
-    document.getElementById("div1").html(navigator.userAgent);
+    var div = document.getElementById("div");
+    div.html = "div"+navigator.userAgent.match(/miniprogramhtmlwebview/i);
+    var div1 = document.getElementById("div1");
+    div1.html = "div1"+navigator.userAgent;
+
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
         alert("111")
-        document.getElementById("div2").html(navigator.userAgent);
-
+        var div2 = document.getElementById("div2");
+            div2.html = "div2"+navigator.userAgent;
     }
 </script>
 </body>
