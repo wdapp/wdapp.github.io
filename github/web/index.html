@@ -61,10 +61,11 @@
 //    div.innerHTML = "div"+ navigator;
     var div1 = document.getElementById("div1");
     var div3 = document.getElementById("div3");
-    div1.innerHTML = "div1"+navigator.userAgent.match(/miniprogram/ig) + "";
+    div1.innerHTML = "div1"+/miniprogram/i.test(navigator.userAgent) + "";
     div3.innerHTML = "div3"+navigator.userAgent;
-    console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
-    console.log(navigator.userAgent.match(/miniprogram/ig) + "")
+//    console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+//    console.log(navigator.userAgent.match(/miniprogram/ig) + "")
+    console.log(typeof navigator.userAgent)
     if(navigator.userAgent.match(/miniprogram/ig) !== null){
         console.log("ok 111")
         alert("111")
