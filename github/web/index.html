@@ -36,6 +36,8 @@
 <a href="/images/icon/CC_512_512.jpg" download="CC_512_512">download</a>
 
 <div id="div"></div>
+<div id="div1"></div>
+<div id="div2"></div>
 
 <script>
 
@@ -56,10 +58,13 @@
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     $("#div").html(navigator.userAgent.match(/miniprogramhtmlwebview/i));
+    $("#div1").html(navigator.userAgent);
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
         alert("111")
+        $("#div2").html(navigator.userAgent);
+
     }
 </script>
 </body>
