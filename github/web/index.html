@@ -37,6 +37,7 @@
 <div id="div"></div>
 <div id="div1"></div>
 <div id="div2"></div>
+<div id="div3"></div>
 1
 <script>
 
@@ -57,9 +58,11 @@
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     var div = document.getElementById("div");
-    div.innerHTML = "div"+ JSON.stringify(navigator);
+    div.innerHTML = "div"+ navigator;
     var div1 = document.getElementById("div1");
+    var div3 = document.getElementById("div3");
     div1.innerHTML = "div1"+JSON.stringify(navigator.userAgent);
+    div3.innerHTML = "div3"+navigator.userAgent;
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
