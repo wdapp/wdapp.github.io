@@ -52,7 +52,11 @@
 
     util.log(123, 123, 'hello', {});
 
-    console.log(navigator.userAgent)
+    console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+    if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
+        console.log("ok 111")
+        alert("111")
+    }
 </script>
 </body>
 </html>
