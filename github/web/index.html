@@ -57,15 +57,15 @@
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     var div = document.getElementById("div");
-    div.html = "div"+ JSON.stringify(navigator);
+    div.innerHTML = "div"+ JSON.stringify(navigator);
     var div1 = document.getElementById("div1");
-    div1.html = "div1"+JSON.stringify(navigator.userAgent);
+    div1.innerHTML = "div1"+JSON.stringify(navigator.userAgent);
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
         alert("111")
         var div2 = document.getElementById("div2");
-            div2.html = "div2"+JSON.stringify(navigator.userAgent);
+            div2.innerHTML = "div2"+JSON.stringify(navigator.userAgent);
     }
 </script>
 </body>
