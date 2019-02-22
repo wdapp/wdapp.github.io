@@ -57,10 +57,9 @@
     util.log(123, 123, 'hello', {});
 //    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     var div = document.getElementById("div");
-    div.html = "div"+navigator.userAgent.match(/miniprogramhtmlwebview/i);
+    div.html = "div"+navigator;
     var div1 = document.getElementById("div1");
     div1.html = "div1"+navigator.userAgent;
-
     console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
     if(navigator.userAgent.match(/miniprogramhtmlwebview/i) !== null){
         console.log("ok 111")
