@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v2.9.0 2019/01/07
+ * v2.9.0 2019/01/21
  */
 !(function ($, window, document) {
 

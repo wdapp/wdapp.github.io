@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.7.0 2019/01/07 */
+ * v2.9.0 2019/01/21 */
 (function () {
 
     var DELAY_TIME = 10 * 1000;
