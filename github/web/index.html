@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的主页</title>
+    <style>
+        /*body,html{*/
+            /*width: 600px;*/
+            /*height: 600px;*/
+            /*border: 1px green solid;*/
+        /*}*/
+        img{
+            width: 200px;
+            height: 200px;
+            border: 1px green solid;
+        }
+    </style>
+</head>
+<body>
+<h1>hell word,ada的主页</h1>
+<p>20181107</p>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
+<a href="/images/icon/CC_512_512.jpg" download="CC_512_512">download</a>
+
+<div id="div"></div>
+<div id="div1"></div>
+<div id="div2"></div>
+<div id="div3"></div>
+1
+<script>
+
+</script>
+
+</body>
+</html>
+<script>
+    var util = {
+        debug: true,
+        log: function (...param) {
+            if (this.debug) {
+                console.log('~', ...param);
+            }
+        }
+    };
+
+    util.log(123, 123, 'hello', {});
+//    alert(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+    var div = document.getElementById("div");
+//    div.innerHTML = "div"+ navigator;
+    var div1 = document.getElementById("div1");
+    var div3 = document.getElementById("div3");
+    var div2 = document.getElementById("div2");
+
+    div2.innerHTML = "div2 === "+navigator.userAgent.match(/miniprogram/ig);
+    div1.innerHTML = "div1"+/miniprogram/i.test(navigator.userAgent) + "";
+    div3.innerHTML = "div3"+navigator.userAgent;
+//    console.log(navigator.userAgent.match(/miniprogramhtmlwebview/i))
+//    console.log(navigator.userAgent.match(/miniprogram/ig) + "")
+//    console.log(typeof navigator.userAgent)
+    var reg = /miniprogram/i;
+    if(reg.test(navigator.userAgent)){
+        console.log("ok 111")
+        alert("111 ok ok ok miniprogram")
+//            div2.innerHTML = "div2 === "+navigator.userAgent.match(/miniprogram/ig);
+    }
+
+    function fun(){
+        var reg = /miniprogram/i;
+        if(reg.test(navigator.userAgent)){
+            return;
+        }
+    }
+
+
+</script>
+</body>
+</html>

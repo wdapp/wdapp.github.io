@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div></div>
+<div></div>
+<canvas id="cvs"></canvas>
+<button id="btn">btn</button>
+<!--<script src="test.js"></script>-->
+<script>
+    var c = document.getElementById("cvs");
+    var ctx = c.getContext("2d");
+
+    function draw(x, y) {
+        ctx.beginPath();
+        ctx.fillStyle = getColor();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function getColor() {
+        var color = "";
+        color = colorRGB2Hex(parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255));
+        return color;
+    }
+
+    function colorRGB2Hex(color) {
+        var rgb = color.split(",");
+        var r = parseInt(rgb[0]);
+        var g = parseInt(rgb[1]);
+        var b = parseInt(rgb[2]);
+
+        var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        return hex;
+    }
+
+    var circleIndex = 0;
+
+    function btnClick() {
+        for (var i = 0; i < 200; i++) {
+            draw(50 + i, 50 + circleIndex);
+        }
+        circleIndex += 10;
+    }
+
+    document.getElementById("btn").onclick = function () {
+        btnClick();
+    };
+
+
+
+</script>
+</body>
+</html>

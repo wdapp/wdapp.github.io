@@ -1,0 +1,240 @@
+/*按钮公共默认样式*/
+
+.btntype {
+    border-radius: 2px;
+    width: 84px;
+    height: 28px;
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #ffffff;
+    line-height: 28px;
+    text-align: center;
+    margin: 3px 5px 3px 0px;
+    border: none;
+    outline: none;
+}
+
+.last {
+    clear: both;
+}
+
+/*开始直播*/
+
+.start-live {
+    background: #57b8f4;
+}
+
+.start-live-select {
+    background: #57b8f4;
+}
+
+.start-live-select:hover {
+    background: #39a9ef;
+}
+
+.start-live-disabled {
+    background: #aeaeae;
+}
+
+/*停止直播*/
+
+.stop-live {
+    background: #f59042;
+}
+
+.stop-live-select {
+    background: #f59042;
+}
+
+.stop-live-select:hover {
+    background: #f2842f;
+}
+
+.stop-live-disabled {
+    background: #aeaeae;
+}
+
+/*开始录制*/
+
+.start-transcribe {
+    background: #57b8f4;
+    width: 94px;
+
+}
+
+.start-transcribe-select {
+    background: #57b8f4;
+    width: 94px;
+
+}
+
+.start-transcribe-select:hover {
+    background: #39a9ef;
+    width: 94px;
+
+}
+
+.start-transcribe-disabled {
+    background: #aeaeae;
+    width: 94px;
+
+}
+
+/*正在录制-可选样式*/
+
+.being-transcribe-select {
+    background: #f59042;
+    width: 94px;
+    text-indent: 6px;
+}
+
+.being-transcribe-select .dorpdown-btn:after {
+    display: inline-block;
+    position: relative;
+    content: "";
+    border: 4px solid rgba(255, 255, 255, 0.69);
+    border-left-color: transparent;
+    border-top-color: transparent;
+    right: -12px;
+    bottom: -6px;
+}
+
+.being-transcribe-select:hover {
+    background: #f2842f;
+    width: 94px;
+}
+
+.being-transcribe-select:hover .dorpdown-menu {
+    display: block;
+}
+
+.being-transcribe-select .dorpdown-menu {
+    display: none;
+    margin: 0;
+    padding: 0;
+    padding-top: 3px;
+    background: #ffffff;
+    border: 1px solid #e8e9eb;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);
+    width: 98px;
+    height: 64px;
+    position: relative;
+    left: -3px;
+    top: 1px;
+    box-sizing: border-box;
+}
+
+.being-transcribe-select .dorpdown-menu li {
+    background: #ffffff;
+    width: 98px;
+    height: 28px;
+    text-indent: 10px;
+    list-style: none;
+}
+
+.being-transcribe-select .dorpdown-menu .over a {
+    width: 98px;
+    display: block;
+    background: url(/img/pause.png) 12px 6px no-repeat;
+}
+
+.being-transcribe-select .dorpdown-menu .pause a {
+    width: 98px;
+    display: block;
+    background: url(/img/over.png) 12px 6px no-repeat;
+}
+
+.being-transcribe-select .dorpdown-menu .over:hover {
+    background: #f1f1f1;
+}
+
+.being-transcribe-select .dorpdown-menu .pause:hover {
+    background: #f1f1f1;
+}
+
+.being-transcribe-select .dorpdown-menu a {
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #333333;
+    line-height: 28px;
+    text-decoration: none;
+}
+
+/*已暂停录制-可选样式*/
+
+.pause-transcribe-select {
+    background: #57b8f4;
+    width: 94px;
+    text-indent: 6px;
+}
+
+.pause-transcribe-select .dorpdown-btn:after {
+    display: inline-block;
+    position: relative;
+    content: "";
+    border: 4px solid rgba(255, 255, 255, 0.69);
+    border-left-color: transparent;
+    border-top-color: transparent;
+    right: -6px;
+    bottom: -6px;
+}
+
+.pause-transcribe-select:hover {
+    background: #39a9ef;
+    width: 94px;
+}
+
+.pause-transcribe-select:hover .dorpdown-menu {
+    display: block;
+}
+
+.pause-transcribe-select .dorpdown-menu {
+    display: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 3px;
+    background: #ffffff;
+    border: 1px solid #e8e9eb;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);
+    width: 98px;
+    height: 64px;
+    position: relative;
+    left: -3px;
+    top: 1px;
+    box-sizing: border-box;
+}
+
+.pause-transcribe-select .dorpdown-menu li {
+    background: #ffffff;
+    width: 98px;
+    height: 28px;
+    text-indent: 10px;
+    list-style: none;
+}
+
+.pause-transcribe-select .dorpdown-menu .over a {
+    background: url(/img/resume.png) 12px 6px no-repeat;
+}
+
+.pause-transcribe-select .dorpdown-menu .pause a {
+    background: url(/img/over.png) 12px 6px no-repeat;
+}
+
+.pause-transcribe-select .dorpdown-menu .over:hover {
+    background: #f1f1f1;
+}
+
+.pause-transcribe-select .dorpdown-menu .pause:hover {
+    background: #f1f1f1;
+}
+
+.pause-transcribe-select .dorpdown-menu a {
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #333333;
+    line-height: 28px;
+    text-decoration: none;
+    width: 98px;
+    display: block;
+}
+
