@@ -25,35 +25,35 @@ function on_cc_live_player_load() {
 
 // 同步接收聊天信息
 function on_cc_live_chat_msg_sync(datas) {
-    var cmHtml = '';
+    var cmHtml = "";
 
     $.each(datas, function (index, data) {
-        if (data.groupId === $.DW.groupId || !$.DW.groupId  || !data.groupId ){
+        if (data.groupId === $.DW.groupId || !$.DW.groupId || !data.groupId) {
             cmHtml += Template.chatMsg({
                 name: data.username,
-                chatId:data.chatId,
-                status:data.status,
+                chatId: data.chatId,
+                status: data.status,
                 content: showEm(data.msg)
             });
         }
 
     });
 
-    var rc = $('#chat-list').children().length - 500 + datas.length;
+    var rc = $("#chat-list").children().length - 500 + datas.length;
     if (rc > 0) {
-        $('#chat-list> li:lt(' + rc + ')').remove();
+        $("#chat-list> li:lt(" + rc + ")").remove();
     }
 
-    $('#chat-list').append(cmHtml);
+    $("#chat-list").append(cmHtml);
 
     chatScroll();
 }
 
 // 接收发送私聊
 function on_cc_live_chat_private_question(data) {
-    $('#chat-list').append(Template.privateChatMsg({
+    $("#chat-list").append(Template.privateChatMsg({
         fromUserName: data.username,
-        toUserName: '管理员',
+        toUserName: "管理员",
         content: showEm(data.msg)
     }));
 
@@ -62,8 +62,8 @@ function on_cc_live_chat_private_question(data) {
 
 // 接收回答私聊
 function on_cc_live_chat_private_answer(data) {
-    $('#chat-list').append(Template.privateChatMsg({
-        fromUserName: '管理员',
+    $("#chat-list").append(Template.privateChatMsg({
+        fromUserName: "管理员",
         toUserName: data.tousername,
         content: showEm(data.msg)
     }));
@@ -74,8 +74,8 @@ function on_cc_live_chat_private_answer(data) {
 // 提问
 function on_cc_live_qa_question(data) {
     var question = data.value;
-    if (question.groupId === $.DW.groupId || !$.DW.groupId   || !question.groupId){
-        $('#qas').append(Template.question({
+    if (question.groupId === $.DW.groupId || !$.DW.groupId || !question.groupId) {
+        $("#qas").append(Template.question({
             id: question.id,
             questionUserId: question.userId,
             questionUserName: question.userName,
@@ -90,13 +90,13 @@ function on_cc_live_qa_question(data) {
 function on_cc_live_qa_answer(data) {
 
     var answer = data.value;
-    if (answer.groupId === $.DW.groupId || !$.DW.groupId || !answer.groupId){
+    if (answer.groupId === $.DW.groupId || !$.DW.groupId || !answer.groupId) {
         // 私密回答只能自己看
         if (answer.isPrivate) {
             return;
         }
 
-        $('#' + answer.questionId).append(Template.answer({
+        $("#" + answer.questionId).append(Template.answer({
             answerUserName: answer.userName,
             content: answer.content
         }));
@@ -123,139 +123,139 @@ function on_cc_callback_pages(data) {
 
 var Template = {
     init: function () {
-        if ($('#chatMsgTemplate').length) {
-            this.chatMsg = Handlebars.compile($('#chatMsgTemplate').html());
+        if ($("#chatMsgTemplate").length) {
+            this.chatMsg = Handlebars.compile($("#chatMsgTemplate").html());
         }
-        if ($('#privateChatMsgTemplate').length) {
-            this.privateChatMsg = Handlebars.compile($('#privateChatMsgTemplate').html());
+        if ($("#privateChatMsgTemplate").length) {
+            this.privateChatMsg = Handlebars.compile($("#privateChatMsgTemplate").html());
         }
-        if ($('#questionTemplate').length) {
-            this.question = Handlebars.compile($('#questionTemplate').html());
+        if ($("#questionTemplate").length) {
+            this.question = Handlebars.compile($("#questionTemplate").html());
         }
-        if ($('#answerTemplate').length) {
-            this.answer = Handlebars.compile($('#answerTemplate').html());
+        if ($("#answerTemplate").length) {
+            this.answer = Handlebars.compile($("#answerTemplate").html());
         }
     }
 };
 
 
 var Viewer = {
-    id: $('#viewerId').val(),
-    name: $('#viewerName').val(),
-    role: $('#viewerRole').val(),
-    sessionId: $.cookie('sessionid'),
+    id: $("#viewerId").val(),
+    name: $("#viewerName").val(),
+    role: $("#viewerRole").val(),
+    sessionId: $.cookie("sessionid"),
     isMe: function (viwerId) {
         return viwerId == this.id;
     }
 };
 
 function chatScroll() {
-    $('#chat-list').parent().scrollTop($('#chat-list').height());
+    $("#chat-list").parent().scrollTop($("#chat-list").height());
 }
 
 function qaScroll() {
-    $('#qas').parent().scrollTop($('#qas').height());
+    $("#qas").parent().scrollTop($("#qas").height());
 }
 
 //翻页信息
 function on_cc_callback_pagechange(j) {
-    console.log('on_cc_callback_pagechange', j);
+    console.log("on_cc_callback_pagechange", j);
 };
 
 //接受全部广播消息
 function on_cc_live_broadcast_msg(data) {
-    console.log('on_cc_live_broadcast_msg', data);
+    console.log("on_cc_live_broadcast_msg", data);
 }
 
 //接受广播消息
 function on_cc_live_broadcast_msg_sync(datas) {
-    console.log('on_cc_live_broadcast_msg_sync', datas);
-    var cmHtml = '';
+    console.log("on_cc_live_broadcast_msg_sync", datas);
+    var cmHtml = "";
     $.each(datas, function (index, data) {
-        cmHtml += '<li class="msg-admin">系统消息：' + data.content + ' </li>';
+        cmHtml += "<li class=\"msg-admin\">系统消息：" + data.content + " </li>";
     });
 
-    $('#chat-list').append(cmHtml);
+    $("#chat-list").append(cmHtml);
 
-    $('#chat-list').parent().scrollTop($('#chat-list').height());
+    $("#chat-list").parent().scrollTop($("#chat-list").height());
 }
 
 //视频控制器
 
 //播放暂停
 
-var isPlay = true;
+var isPlay = false;
 
-$('#btn-play').click(function () {
+$("#btn-play").click(function () {
     $.DW.play();
 });
-$('#btn-play').mouseover(function () {
+$("#btn-play").mouseover(function () {
     if (isPlay) {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -120px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -120px");
     } else {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -170px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -170px");
     }
 });
-$('#btn-play').mouseout(function () {
+$("#btn-play").mouseout(function () {
     if (isPlay) {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -70px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -70px");
     } else {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -220px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -220px");
     }
 });
 
 //倍速播放
-$('#btn-rate').mouseover(function () {
-    $('.rate').css('border', '1px solid #ff920a');
-    $('.btn-rate').css('color', '#ff920a');
+$("#btn-rate").mouseover(function () {
+    $(".rate").css("border", "1px solid #ff920a");
+    $(".btn-rate").css("color", "#ff920a");
 });
-$('#btn-rate').mouseout(function () {
-    $('.rate').css('border', '1px solid #999999');
-    $('.btn-rate').css('color', '#999999');
+$("#btn-rate").mouseout(function () {
+    $(".rate").css("border", "1px solid #999999");
+    $(".btn-rate").css("color", "#999999");
 });
 var toggleSelect = false;
-$('#btn-rate').click(function () {
+$("#btn-rate").click(function () {
     if (toggleSelect) {
-        $('.select').css('display', 'none');
+        $(".select").css("display", "none");
     } else {
-        $('.select').css('display', 'block');
+        $(".select").css("display", "block");
     }
     toggleSelect = !toggleSelect;
 });
 
 var index = 1;
-var tag = '正常';
-$('.select li a').eq(1).css('color', '#ff920a');
-$('#select li').each(function (index) {
+var tag = "正常";
+$(".select li a").eq(1).css("color", "#ff920a");
+$("#select li").each(function (index) {
     $(this).click(function () {
         switch ($(this).val()) {
             case 0:
                 index = 0.8;
-                tag = '0.8X';
+                tag = "0.8X";
                 break;
             case 1:
                 index = 1;
-                tag = '正常';
+                tag = "正常";
                 break;
             case 2:
                 index = 1.25;
-                tag = '1.25X';
+                tag = "1.25X";
                 break;
             case 3:
                 index = 1.5;
-                tag = '1.5X';
+                tag = "1.5X";
                 break;
             case 4:
                 index = 2.0;
-                tag = '2.0X';
+                tag = "2.0X";
                 break;
         }
-        $('.select').css('display', 'none');
-        $('.select li a').each(function () {
-            $(this).css('color', '');
+        $(".select").css("display", "none");
+        $(".select li a").each(function () {
+            $(this).css("color", "");
         });
-        $('.select li a').eq($(this).val()).css('color', '#ff920a');
-        $('#btn-rate').html(tag);
+        $(".select li a").eq($(this).val()).css("color", "#ff920a");
+        $("#btn-rate").html(tag);
         $.DW.playbackRate(index);
     });
 });
@@ -263,33 +263,33 @@ $('#select li').each(function (index) {
 //音量
 var volume = 1;
 var volumeRecord = 1;
-$('#btn-volume').click(function () {
+$("#btn-volume").click(function () {
     if (volume) {
         volume = 0;
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -175px');
-        $('.v-progress').eq(0).css('width', volume * 100 + '%');
-        $('.v-dot').eq(0).css('left', 0 + 'px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -175px");
+        $(".v-progress").eq(0).css("width", volume * 100 + "%");
+        $(".v-dot").eq(0).css("left", 0 + "px");
     } else {
         volume = volumeRecord;
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -125px');
-        $('.v-progress').eq(0).css('width', volume * 100 + '%');
-        $('.v-dot').eq(0).css('left', (66 * volume) + 'px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -125px");
+        $(".v-progress").eq(0).css("width", volume * 100 + "%");
+        $(".v-dot").eq(0).css("left", (66 * volume) + "px");
     }
     $.DW.setVolume(volume);
 });
 
-$('#btn-volume').mouseover(function () {
+$("#btn-volume").mouseover(function () {
     if (volume) {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -125px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -125px");
     } else {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -175px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -175px");
     }
 });
-$('#btn-volume').mouseout(function () {
+$("#btn-volume").mouseout(function () {
     if (volume) {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -75px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -75px");
     } else {
-        $(this).css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -225px');
+        $(this).css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -225px");
     }
 });
 
@@ -308,8 +308,8 @@ scale.prototype = {
     init: function () {
         var f = this, g = document, b = window, m = Math;
         var max = f.bar.offsetWidth - f.btn.offsetWidth;
-        f.btn.style.left = max / 100 * this.initPercent + 'px';
-        f.pro.style.width = this.initPercent + '%';
+        f.btn.style.left = max / 100 * this.initPercent + "px";
+        f.pro.style.width = this.initPercent + "%";
 
         f.e = {percent: 0};
         f.btn.onmousedown = function (e) {
@@ -320,8 +320,8 @@ scale.prototype = {
             g.onmousemove = function (e) {
                 var thisX = (e || b.event).clientX;
                 var to = m.min(max, m.max(0, l + (thisX - x)));
-                f.btn.style.left = to + 'px';
-                f.pro.style.width = parseInt(to * 100 / max) + '%';
+                f.btn.style.left = to + "px";
+                f.pro.style.width = parseInt(to * 100 / max) + "%";
                 var e = {percent: to * 100 / max};
                 f.e = e;
                 f.mousemove(f.e);
@@ -340,9 +340,9 @@ scale.prototype = {
 
 //音量
 new scale({
-    dot: 'v-dot',
-    slider: 'volume-slider',
-    pro: 'v-progress',
+    dot: "v-dot",
+    slider: "volume-slider",
+    pro: "v-progress",
     initPercent: 100,
     mousedown: function (e) {
 
@@ -353,30 +353,30 @@ new scale({
     mouseup: function (e) {
         $.DW.setVolume(volumeRecord);
         if (volumeRecord) {
-            $('.btn-volume').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -75px');
+            $(".btn-volume").css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -75px");
         } else {
-            $('.btn-volume').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -134px -225px');
+            $(".btn-volume").css("background", "url(images/newLive/icon-playbar.png) no-repeat -134px -225px");
         }
     }
 });
 
 //视频进度
 var toggleProgress = true;
-$('.l-m-b').mouseover(function () {
+$(".l-m-b").mouseover(function () {
     if (toggleProgress) {
-        $('#dot').css('display', 'block');
+        $("#dot").css("display", "block");
     }
 });
-$('.l-m-b').mouseout(function () {
+$(".l-m-b").mouseout(function () {
     if (toggleProgress) {
-        $('#dot').css('display', 'none');
+        $("#dot").css("display", "none");
     }
 });
 
 new scale({
-    dot: 'dot',
-    slider: 'progress-box',
-    pro: 'progress',
+    dot: "dot",
+    slider: "progress-box",
+    pro: "progress",
     initPercent: 0,
     mousedown: function (e) {
         toggleProgress = false;
@@ -398,33 +398,33 @@ function playTimerCallback() {
     }
     var progress = $.DW.getPlayerTime() / $.DW.getDuration();
     var buffer = $.DW.getBuffer() / $.DW.getDuration();
-    $('#progress').css('width', progress * 100 + '%');
+    $("#progress").css("width", progress * 100 + "%");
 
-    $('#buffer').css('width', buffer * 100 + '%');
-    $('#dot').css('left', progress * 869 + 'px');
-    $('.time span').eq(0).html(sec_to_time(parseInt($.DW.getPlayerTime())));
-    $('.time span').eq(1).html(sec_to_time($.DW.getDuration()));
+    $("#buffer").css("width", buffer * 100 + "%");
+    $("#dot").css("left", progress * 869 + "px");
+    $(".time span").eq(0).html(sec_to_time(parseInt($.DW.getPlayerTime())));
+    $(".time span").eq(1).html(sec_to_time($.DW.getDuration()));
 }
 
 function sec_to_time(s) {
-    var t = '';
+    var t = "";
     if (s > -1) {
         var hour = Math.floor(s / 3600);
         var min = Math.floor(s / 60) % 60;
         var sec = s % 60;
         if (s >= 3600) {
             if (hour < 10) {
-                t = '0' + hour + ':';
+                t = "0" + hour + ":";
             } else {
-                t = hour + ':';
+                t = hour + ":";
             }
         }
         if (min < 10) {
-            t += '0';
+            t += "0";
         }
-        t += min + ':';
+        t += min + ":";
         if (sec < 10) {
-            t += '0';
+            t += "0";
         }
         t += sec;
     }
@@ -432,31 +432,36 @@ function sec_to_time(s) {
 }
 
 function on_cc_live_player_load() { // 播放器加载完成
-    console.log('视频总时长:', $.DW.getDuration()); // 获取视频总时长
+    console.log("视频总时长:", $.DW.getDuration()); // 获取视频总时长
     var playTimer = setInterval(playTimerCallback, 500);
+
+    setTimeout(function () {
+        isPlay = !($("#playbackVideo")[0].paused);
+        console.log("isPlay", isPlay);
+    }, 500);
 }
 
 function on_player_start() { // 播放开始
-    console.log('播放开始');
+    console.log("播放开始");
     isPlay = true;
-    $('#btn-play').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -70px');
+    $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -70px");
     // 播放后再把视频缩小
 }
 
 function on_spark_player_pause() { // 播放暂停
-    console.log('播放暂停');
+    console.log("播放暂停");
     isPlay = false;
-    $('#btn-play').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -170px');
+    $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -170px");
 }
 
 function on_spark_player_resume() { // 恢复播放
-    console.log('恢复播放');
+    console.log("恢复播放");
     isPlay = true;
-    $('#btn-play').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -70px');
+    $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -70px");
 }
 
 function on_spark_player_end() { // 播放停止
-    console.log('播放停止');
+    console.log("播放停止");
     isPlay = false;
-    $('#btn-play').css('background', 'url(images/newLive/icon-playbar.png) no-repeat -8px -170px');
+    $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -170px");
 }
