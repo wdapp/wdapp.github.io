@@ -168,7 +168,7 @@
 </div>
 <input id="barrage" type="hidden" value="0"/>
 <input type="hidden" value="2" id="documentDisplayMode">
-<script src="http://static.csslcloud.net/js/_fix_.js"></script>
+<script src="//static.csslcloud.net/js/_fix_.js"></script>
 <script src="js/jquery-1.9.0.min.js"></script>
 <script src="js/handlebars.js"></script>
 <script src="js/touchSlide.js"></script>
@@ -268,6 +268,41 @@
             });
         };
 
+        function isWeiXin() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger" && (navigator.userAgent.match(/iPad/i) != null || navigator.userAgent.match(/iPhone/i) != null)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        $("#chat_input").focus(function () {
+            $("#qaV").attr("tabIndex", "-1");
+            $(this).attr("tabIndex", "1");
+            if (isWeiXin()) {
+                setTimeout(function () {
+                    $("body").scrollTop(10000);
+                }, 100);
+            }
+        });
+
+        $("#qaV").focus(function () {
+            $("#chat_input").attr("tabIndex", "-1");
+            if (isWeiXin()) {
+                setTimeout(function () {
+                    $("body").scrollTop(10000);
+                }, 100);
+            }
+        });
+
+        $("#chat_input").blur(function () {
+            $("body").scrollTop(0);
+        });
+
+        $("#qaV").blur(function () {
+            $("body").scrollTop(0);
+        });
 
     });
 
