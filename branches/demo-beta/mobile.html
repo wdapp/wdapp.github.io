@@ -278,24 +278,24 @@
             }
         }
 
-//        $("#chat_input").focus(function () {
-//            $("#qaV").attr("tabIndex", "-1");
-//            $(this).attr("tabIndex", "1");
-//            if (isWeiXin()) {
-//                setTimeout(function () {
-//                    $("body").scrollTop(10000);
-//                }, 100);
-//            }
-//        });
-//
-//        $("#qaV").focus(function () {
-//            $("#chat_input").attr("tabIndex", "-1");
-//            if (isWeiXin()) {
-//                setTimeout(function () {
-//                    $("body").scrollTop(10000);
-//                }, 100);
-//            }
-//        });
+        $("#chat_input").focus(function () {
+            $("#qaV").attr("tabIndex", "-1");
+            $(this).attr("tabIndex", "1");
+            if (isWeiXin()) {
+                setTimeout(function () {
+                    $("body").scrollTop(10000);
+                }, 100);
+            }
+        });
+
+        $("#qaV").focus(function () {
+            $("#chat_input").attr("tabIndex", "-1");
+            if (isWeiXin()) {
+                setTimeout(function () {
+                    $("body").scrollTop(10000);
+                }, 100);
+            }
+        });
 
         $("#chat_input").blur(function () {
             $("body").scrollTop(0);
