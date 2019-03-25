@@ -390,10 +390,6 @@
         }
     };
 
-    window.addEventListener('popstate', function (e) {
-        e.preventDefault();
-    });
-
     window.frames.history.pushState(null, null, window.frames.document.URL);
     window.frames.addEventListener("popstate", function () {
         window.frames.history.pushState(null, null, window.frames.document.URL);
