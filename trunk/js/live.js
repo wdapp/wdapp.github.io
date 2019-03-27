@@ -245,7 +245,7 @@ $(function () {
     };
     // 发布奖杯
     DWLive.onPrizeSend = function(j){
-        consloe.log('奖杯信息：' + j)
+        console.log('奖杯信息：' + j)
     };
     // 禁言
     DWLive.onInformation = function (j) {
