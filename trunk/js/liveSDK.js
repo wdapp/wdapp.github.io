@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.9.0 2019/01/21 */
+ * v2.9.1 2019/01/21 */
 (function () {
 
     var DELAY_TIME = 10 * 1000;
@@ -1237,6 +1237,14 @@
                     DWLive.onPracticeClose(data);
                 }
             });
+            // 发布奖杯
+            this.socket.on("prize_send", function (data) {
+                data=toJson(data);
+                if (typeof DWLive.onPrizeSend === "function") {
+                    DWLive.onPrizeSend(data);
+                }
+            });
+
 
             /**
              * 发布问卷统计
