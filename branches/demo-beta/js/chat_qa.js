@@ -256,7 +256,8 @@ function chatSend() {
         DWLive.sendPrivateChatMsg(msg); // 发送私聊
     }
 
-    $("#chat_input").val("").focus();
+    // $("#chat_input").val("").focus();
+    $("#chat_input").val("");
 }
 
 function qaSend() {
@@ -275,7 +276,8 @@ function qaSend() {
 
     DWLive.sendQuestionMsg(msg); // 发送问题
 
-    qa.val("").focus();
+    // qa.val("").focus();
+    qa.val("");
 }
 
 
