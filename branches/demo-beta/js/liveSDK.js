@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.9.0 2019/01/21 */
+ * v2.9.1 2019/01/21 */
 (function () {
 
     var DELAY_TIME = 10 * 1000;
@@ -24,12 +24,12 @@
     };
     //工具类
     var Util = {
-        sendAjax:function(url,data,callBack){
+        sendAjax: function (url, data, callBack) {
             $.ajax({
                 url: url,
                 type: "GET",
                 dataType: "jsonp",
-                data:data,
+                data: data,
                 xhrFields: {
                     withCredentials: true
                 },
@@ -55,7 +55,7 @@
                         }
                     }
                 }
-            })
+            });
 
         }
     };
@@ -171,11 +171,11 @@
             }
             this.dpc.closeBarrage();
         },
-        docAdapt:function (t) {
-            if(!this.fastMode){
+        docAdapt: function (t) {
+            if (!this.fastMode) {
                 return;
             }
-            var displayMode = t ? '1':'2';
+            var displayMode = t ? "1" : "2";
             this.dpc.setDisplayMode(displayMode);
         }
     };
@@ -222,7 +222,7 @@
                 "//static.csslcloud.net/js/socket.io.js",
                 "//static.csslcloud.net/js/report.js"
             ];
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 scripts.push("//image.csslcloud.net/js/dpc.js?v=20180121");
             }
 
@@ -404,10 +404,19 @@
                     }
 
                     if (typeof DWLive.onLoginSuccess === "function") {
-                        var template = {"desc":data.datas.template.desc,"type":data.datas.template.type,"name":data.datas.template.name,'id':data.datas.template.id};//返回给用户的模板信息
-                        var viewer = {"id":data.datas.viewer.id,"groupId":data.datas.viewer.groupId,"name":data.datas.viewer.name};//返回给用户的viewer信息;
+                        var template = {
+                            "desc": data.datas.template.desc,
+                            "type": data.datas.template.type,
+                            "name": data.datas.template.name,
+                            "id": data.datas.template.id
+                        };//返回给用户的模板信息
+                        var viewer = {
+                            "id": data.datas.viewer.id,
+                            "groupId": data.datas.viewer.groupId,
+                            "name": data.datas.viewer.name
+                        };//返回给用户的viewer信息;
                         var live = data.datas.live;//返回给用户的live信息
-                        var loginInfo = {"live":live,"template":template,"viewer":viewer};
+                        var loginInfo = {"live": live, "template": template, "viewer": viewer};
                         DWLive.onLoginSuccess(loginInfo);
                     }
 
@@ -696,9 +705,9 @@
         },
 
         docAdapt: function (t) {
-            if(DWDpc.fastMode){
+            if (DWDpc.fastMode) {
                 DWDpc.docAdapt(t);
-            }else{
+            } else {
                 live.adapt = t;
             }
 
@@ -832,46 +841,46 @@
         },
         getPublishingQuestionnaire: function () {
             var path = "//eva.csslcloud.net/api/questionnaire/info";
-            var info={};
-            Util.sendAjax(path,info,DWLive.onQuestionnairePublish);
+            var info = {};
+            Util.sendAjax(path, info, DWLive.onQuestionnairePublish);
         },
         //获取随堂测数据
-        getPracticeInfo:function (pId,callBack) {
-            var path="//eva.csslcloud.net/api/practice/info";
-            var info={
-                practiceId:pId,
-                sessionId:Pusher.options.key
+        getPracticeInfo: function (pId, callBack) {
+            var path = "//eva.csslcloud.net/api/practice/info";
+            var info = {
+                practiceId: pId,
+                sessionId: Pusher.options.key
             };
-            Util.sendAjax(path,info,callBack);
+            Util.sendAjax(path, info, callBack);
         },
         //提交随堂测
-        submitPracticeInfo:function (pId,opt,callback) {
-            var path="//eva.csslcloud.net/api/practice/submit";
-            var info={
-                practiceId:pId,
-                options:opt,
-                sessionId:Pusher.options.key
+        submitPracticeInfo: function (pId, opt, callback) {
+            var path = "//eva.csslcloud.net/api/practice/submit";
+            var info = {
+                practiceId: pId,
+                options: opt,
+                sessionId: Pusher.options.key
             };
-            Util.sendAjax(path , info , callback);
+            Util.sendAjax(path, info, callback);
         },
         //获取随堂测统计信息接口API
-        getPracticeStatisInfo:function (pId,callback) {
+        getPracticeStatisInfo: function (pId, callback) {
             var path = "//eva.csslcloud.net/api/practice/statis";
             var info = {
-                practiceId:pId,
-                sessionId:Pusher.options.key
+                practiceId: pId,
+                sessionId: Pusher.options.key
             };
-            Util.sendAjax(path,info,callback);
+            Util.sendAjax(path, info, callback);
         },
         //获取排名数据接口
-        getPracticeRanking:function (pId,callback) {
+        getPracticeRanking: function (pId, callback) {
             var path = "//eva.csslcloud.net/api/practice/ranking";
-           // var path = "http://192.168.202.183:8080/api/practice/ranking";
+            // var path = "http://192.168.202.183:8080/api/practice/ranking";
             var info = {
-                practiceId:pId,
-                sessionId:Pusher.options.key
+                practiceId: pId,
+                sessionId: Pusher.options.key
             };
-            Util.sendAjax(path,info,callback);
+            Util.sendAjax(path, info, callback);
         },
     };
     var options = {
@@ -914,7 +923,7 @@
                 });
                 debug("forceNew: false");
             } else {
-                this.socket = io.connect(this.options.pusherUrl + "?sessionid=" + Pusher.options.key + "&platform=" + 1 + "&terminal=", {forceNew: true});
+                this.socket = io.connect(this.options.pusherUrl + "?sessionid=" + Pusher.options.key + "&platform=" + 1 + "&terminal=" + t, {forceNew: true});
                 debug("forceNew: true");
             }
 
@@ -1217,23 +1226,23 @@
                 }
             });
             //发布随堂测功能
-            this.socket.on("practice_publish",function (data) {
+            this.socket.on("practice_publish", function (data) {
                 data = toJson(data);
-                if(typeof  DWLive.onPracticePublish === "function"){
+                if (typeof  DWLive.onPracticePublish === "function") {
                     DWLive.onPracticePublish(data);
                 }
             });
             //停止发布随堂测功能
-            this.socket.on("practice_stop",function (data) {
+            this.socket.on("practice_stop", function (data) {
                 data = toJson(data);
-                if(typeof  DWLive.onPracticePublishStop === "function"){
+                if (typeof  DWLive.onPracticePublishStop === "function") {
                     DWLive.onPracticePublishStop(data);
                 }
             });
             //关闭随堂测功能
-            this.socket.on("practice_close",function (data) {
-                data=toJson(data);
-                if(typeof DWLive.onPracticeClose === "function"){
+            this.socket.on("practice_close", function (data) {
+                data = toJson(data);
+                if (typeof DWLive.onPracticeClose === "function") {
                     DWLive.onPracticeClose(data);
                 }
             });
@@ -2293,16 +2302,16 @@
 
 
                         cls.push({
-                            'userid': chatLog.userId,
-                            'username': chatLog.userName,
-                            'userrole': chatLog.userRole,
-                            'useravatar': chatLog.userAvatar,
-                            'groupId':chatLog.groupId,
-                            'msg': chatLog.content,
-                            'time': chatLog.time,
-                            'chatId':chatLog.chatId,
-                            'status':chatLog.status,
-                            'usercustommark': chatLog.userCustomMark
+                            "userid": chatLog.userId,
+                            "username": chatLog.userName,
+                            "userrole": chatLog.userRole,
+                            "useravatar": chatLog.userAvatar,
+                            "groupId": chatLog.groupId,
+                            "msg": chatLog.content,
+                            "time": chatLog.time,
+                            "chatId": chatLog.chatId,
+                            "status": chatLog.status,
+                            "usercustommark": chatLog.userCustomMark
                         });
                     }
 
@@ -2446,8 +2455,8 @@
                 }
             });
             //聊天审核
-            Pusher.socket.on('chat_log_manage', function (j) {
-                if (typeof DWLive.onPublicChatLogManage === 'function') {
+            Pusher.socket.on("chat_log_manage", function (j) {
+                if (typeof DWLive.onPublicChatLogManage === "function") {
                     DWLive.onPublicChatLogManage(j);
                 }
             });
