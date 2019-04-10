@@ -389,6 +389,20 @@
         }
     };
 
+    if (isWeiXin()) {
+        //禁止浏览器后退时，极速文档动画被翻页
+        window.frames.history.pushState(null, null, window.frames.document.URL);
+        window.frames.addEventListener("popstate", function () {
+            window.frames.history.pushState(null, null, window.frames.document.URL);
+        });
+        DWLive.onPageChange = function (data) {
+            window.frames.history.pushState(null, null, window.frames.document.URL);
+            window.frames.addEventListener("popstate", function (e) {
+                window.frames.history.go(0);
+                window.frames.history.pushState(null, null, window.frames.document.URL);
+            });
+        };
+    }
 </script>
 </body>
 </html>
