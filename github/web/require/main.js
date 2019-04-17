@@ -13,6 +13,12 @@
 //   }
 // );
 
-require(['math'], function (math){
-  alert(math.add(1,1));
+require(["index", "test", "math"], function (index, test, math) {
+  index.index();
+  test.test();
+  alert(math.add(1, 1));
 });
+
+// require(['math'], function (math){
+//   alert(math.add(1,1));
+// });
