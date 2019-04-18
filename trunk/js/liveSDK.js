@@ -182,6 +182,7 @@
 
     var DWLive = {
         DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
+        MediaScaleMode:{scale43:"4:3",scale169:"16:9",scaleFull:"full",scaleNormal:"normal"},
         init: function (option) {
             if (typeof option == "undefined") {
                 option = {};
@@ -625,7 +626,12 @@
                 LivePlayer.onlyAudio();
             }
         },
-
+        changeVideoScale:function (t) {
+            if(MobileLive.isMobile() != "isMobile"){
+                LivePlayer.changeVideoScale(t);
+            }
+        }
+        ,
         setSound: function (n) {
             if (MobileLive.isMobile() == "isMobile") {
                 return;
@@ -1916,7 +1922,9 @@
         changeLine: function (line) {
             this.getFlash().changeLine(line);
         },
-
+        changeVideoScale:function (t) {
+            this.getFlash()._showScreenScale(t);
+        },
         onlyAudio: function () {
             this.getFlash()._onlyAudio();
         },

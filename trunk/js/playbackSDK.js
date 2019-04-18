@@ -1187,7 +1187,7 @@
                 callback.socket = new Socket(opts);
                 $.DW.groupId = data.datas.viewer.groupId;
                 if (typeof window.on_cc_callback_player === "function") {
-                    window.on_cc_callback_player(data.datas.live.encryptRecordvideoId);
+                    window.on_cc_callback_player(data.datas);
                 }
 
                 //encryptRecordId
@@ -1829,7 +1829,6 @@
         DW: DW
     });
 
-
     function isLivePlayerReady() {
         if (!callback.callbackPlayer.isReady) {
             setTimeout(function () {
@@ -1837,7 +1836,6 @@
             }, 500);
             return;
         }
-
         callback.drawPanel.intervalPainting(callback);
     }
 
@@ -1850,12 +1848,12 @@
             }, 300);
             return;
         }
-
         isLivePlayerReady();
     }
 
-    window.on_cc_callback_player = function (videoId) {
-        options.videoId = videoId;
+    window.on_cc_callback_player = function (data) {
+        options.videoId = data.live.encryptRecordvideoId;
+        options.recordId = data.encryptRecordId;
         callback.callbackPlayer = new CallbackPlayer(options);
     };
 
