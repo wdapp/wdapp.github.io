@@ -1,0 +1,35 @@
+.login {
+
+  img {
+    margin: 0 auto;
+    width: 1.44rem;
+    height: 1.44rem;
+    display: block;
+  }
+  input {
+    border: 1px #eeeeee solid;
+    height: .46rem;
+    border-radius: .5rem;
+    margin: .1rem;
+    outline: none;
+    text-indent: .2rem;
+    display: block;
+    margin: .2rem auto;
+    width: 80vw;
+    max-width: 4rem;
+    min-width: 2rem;
+  }
+  button {
+    background-color: #fff;
+    border: 1px #eeeeee solid;
+    border-radius: .5rem;
+    outline: none;
+    margin: .1rem;
+    padding: .1rem;
+    display: block;
+    margin: .2rem auto;
+    width: 80vw;
+    max-width: 4rem;
+    min-width: 2rem;
+  }
+}
