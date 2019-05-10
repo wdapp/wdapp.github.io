@@ -1,29 +1,18 @@
-import StateMachine from "javascript-state-machine";
-import Utils from "./utils";
+import JavasSriptStateMachine from 'javascript-state-machine'
 
-const stateMachine = (function (options) {
-  let _instance;
-  return function () {
-    if (!_instance) {
-      _instance = new StateMachine(options);
-    }
-    return _instance;
-  };
-})({
-  init: "quiting",
-  transitions: [
-    {name: "login", from: "quiting", to: "loging"},
-    {name: "quit", from: "loging", to: "quiting"},
-  ],
-  methods: {
-    onLogin: function () {
-      Utils.log("login");
-    },
-    onQuit: function () {
-      Utils.log("quit");
-    }
+class StateMachine extends JavasSriptStateMachine {
+  constructor(options) {
+    super(options)
+    this.cacheGlobleState(options.name)
   }
-});
 
-export default stateMachine;
+  cacheGlobleState(name) {
+    if (!window.globleState) {
+      window.globleState = {}
+    }
+    window.globleState[name] = this
+  }
+}
+
+export default StateMachine
 

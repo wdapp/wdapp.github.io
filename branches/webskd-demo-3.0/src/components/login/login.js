@@ -1,10 +1,10 @@
-import node from "./login.html";
-import Utils from "../../common/utils";
-import Render from "../../common/render";
+import Component from "common/component";
+import Utils from "common/utils";
 import Model from "./model";
-import "./assets/style/login.scss";
+import node from "./login.html";
+import "./login.scss";
 
-class Login extends Render {
+class Login extends Component {
 
   constructor() {
     super();

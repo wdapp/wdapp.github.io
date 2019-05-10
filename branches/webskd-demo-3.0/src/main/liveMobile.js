@@ -1,12 +1,11 @@
-import "../common/config.js";//全局配置文件
-import "../../public/js/liveSDK";//引入观看直播Web SDK
-import fastClick from "fastclick";//解决移动端点击延迟问题
-import flexible from "@wdapp/flexible";//引入flex布局配置
-import "../../public/asset/style/reset.css";//重置样式
-import "../../public/asset/style/border.css";//解决移动端1像素边框问题
-import "./asset/style/live-mobile.scss"
+import 'common/config/config.js'//全局配置文件
+import LiveAdaptive from 'common/liveAdaptive'
+import {fastClick, flexible} from 'common/config/mobile'//移动端配置文件
+import './styles/live-mobile.scss'//移动端观看直播私有样式
 
-fastClick.attach(document.body);
+window.onload = function () {
+  fastClick.attach(document.body)
+  flexible.init(750, 750)
+}
 
-flexible.init(750, 750);
 

@@ -1,35 +1,45 @@
-const path = require("path");
+const path = require('path')
 //引用webpack
-const webpack = require("webpack");
+const webpack = require('webpack')
 //预处理HTML模板理插件
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 //压缩javascript插件
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 //单独打包文件
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
-  mode: "development",//development production
-  devtool: "eval-source-map",
+  mode: 'development',//development production
+  devtool: 'eval-source-map',
   entry: {
     //入口文件
-    login: "./src/main/login.js",
-    live: "./src/main/live.js",
-    liveMobile: "./src/main/liveMobile.js",
-    replay: "./src/main/replay.js",
-    replayMobile: "./src/main/replayMobile.js",
+    index: '@/main/index.js',
+    live: '@/main/live.js',
+    liveMobile: '@/main/liveMobile.js',
+    replay: '@/main/replay.js',
+    replayMobile: '@/main/replayMobile.js',
   },
   output: {
-    path: path.join(__dirname, "/dist"),
-    filename: "js/[name].js?hash=[hash]",
+    path: path.join(__dirname, '/dist'),
+    filename: 'js/[name].js?hash=[hash]',
     // publicPath:"//static.csslcloud.net"
+  },
+
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      'assets': path.resolve(__dirname, 'src/assets'),
+      'common': path.resolve(__dirname, 'src/common'),
+      'components': path.resolve(__dirname, 'src/components'),
+      'main': path.resolve(__dirname, 'src/main')
+    }
   },
 
   devServer: {
     //设置为true，当源文件改变时会自动刷新页面
     inline: true,
     //本地服务器所加载的页面所在的目录
-    contentBase: path.join(__dirname, "/dist"),
+    contentBase: path.join(__dirname, '/dist'),
     //禁止跳转
     historyApiFallback: true,
     //端口
@@ -48,11 +58,11 @@ module.exports = {
 
       {
         test: /\.(html)$/,
-        include: path.join(__dirname, "/src/components"),
+        include: path.join(__dirname, '/src/components'),
         use: {
-          loader: "html-loader",
+          loader: 'html-loader',
           options: {
-            attrs: ["img:src", "link:href"],
+            attrs: ['img:src', 'link:href'],
             minimize: true,
             collapseWhitespace: false,
             // removeComments: false
@@ -66,10 +76,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: [require("@babel/plugin-proposal-class-properties")]
+            presets: ['@babel/preset-env'],
+            plugins: [require('@babel/plugin-proposal-class-properties')]
           }
         }
       },
@@ -79,8 +89,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
+          fallback: 'style-loader',
+          use: 'css-loader'
         })
       },
 
@@ -88,22 +98,22 @@ module.exports = {
 
       {
         test: /\.scss$/,
-        use: ["style-loader", {
-          loader: "css-loader",
+        use: ['style-loader', {
+          loader: 'css-loader',
           options: {
             importLoaders: 2
           }
         }, {
-          loader: "postcss-loader",
+          loader: 'postcss-loader',
           options: {
-            ident: "postcss",
+            ident: 'postcss',
             plugins: [
-              require("autoprefixer")({
-                browsers: ["last 5 version"]
+              require('autoprefixer')({
+                browsers: ['last 5 version']
               }),
             ]
           }
-        }, "sass-loader"]
+        }, 'sass-loader']
       },
 
       //压缩图片、字体
@@ -111,9 +121,9 @@ module.exports = {
       {
         test: /(\.(png|jpg|gif)$)|(\.(woff2?|eot|ttf|otf)(\?.*)?$)/,
         use: [
-          "url-loader",
+          'url-loader',
           {
-            loader: "image-webpack-loader",
+            loader: 'image-webpack-loader',
             options: {
               limit: 10000,
             }
@@ -123,49 +133,50 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "登录",
-      inject: "body",
-      filename: "index.html",
-      template: "./src/index.html",
-      chunks: ["login"]
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      Popper: 'popper'
     }),
     new HtmlWebpackPlugin({
-      title: "WEB端观看直播",
-      inject: "body",
-      filename: "live.html",
-      template: "./src/live.html",
-      chunks: ["live"]
+      title: '登录',
+      inject: 'body',
+      filename: 'index.html',
+      template: './src/index.html',
+      chunks: ['index']
     }),
     new HtmlWebpackPlugin({
-      title: "移动端观看直播",
-      inject: "body",
-      filename: "live-mobile.html",
-      template: "./src/live-mobile.html",
-      chunks: ["liveMobile"]
+      title: 'WEB端观看直播',
+      inject: 'body',
+      filename: 'live.html',
+      template: './src/live.html',
+      chunks: ['live']
     }),
     new HtmlWebpackPlugin({
-      title: "WEB端观看回放",
-      inject: "body",
-      filename: "replay.html",
-      template: "./src/replay.html",
-      chunks: ["replay"]
+      title: '移动端观看直播',
+      inject: 'body',
+      filename: 'live-mobile.html',
+      template: './src/live-mobile.html',
+      chunks: ['liveMobile']
     }),
     new HtmlWebpackPlugin({
-      title: "移动端观看回放",
-      inject: "body",
-      filename: "replay-mobile.html",
-      template: "./src/replay-mobile.html",
-      chunks: ["replayMobile"]
+      title: 'WEB端观看回放',
+      inject: 'body',
+      filename: 'replay.html',
+      template: './src/replay.html',
+      chunks: ['replay']
+    }),
+    new HtmlWebpackPlugin({
+      title: '移动端观看回放',
+      inject: 'body',
+      filename: 'replay-mobile.html',
+      template: './src/replay-mobile.html',
+      chunks: ['replayMobile']
     }),
     // new UglifyJsPlugin({
     //   sourceMap: true,
     //   parallel: true
     // }),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    }),
-    new ExtractTextPlugin("css/main.css")
+    new ExtractTextPlugin('css/main.css')
   ]
-};
+}

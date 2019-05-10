@@ -4,15 +4,17 @@
   "description": "websdk-demo-3.0",
   "main": "main.js",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "bootstrap": "^4.3.1",
     "fastclick": "^1.0.6",
     "javascript-state-machine": "^3.1.0",
-    "jquery": "^3.4.0"
+    "jquery": "^3.4.0",
+    "popper.js": "^1.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/preset-env": "^7.4.3",
-    "@wdapp/flexible": "^1.0.2",
     "autoprefixer": "^9.5.1",
     "babel-loader": "^8.0.0-beta.0",
     "css-loader": "^2.1.1",

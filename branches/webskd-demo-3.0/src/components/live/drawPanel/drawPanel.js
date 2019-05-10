@@ -1,8 +1,8 @@
-import "./drawPanel.scss";
-import Render from "../../../common/render";
+import Component from "common/component";
 import node from "./drawPanel.html";
+import "./drawPanel.scss";
 
-class drawPanel extends Render {
+class DrawPanel extends Component {
   constructor() {
     super();
 
@@ -12,4 +12,4 @@ class drawPanel extends Render {
   }
 };
 
-export default drawPanel;
+export default DrawPanel;

@@ -1,55 +1,34 @@
-import Request from "./request";
-import "../../public/js/liveSDK";//引入观看直播Web SDK
-//
-// APIFUNCTIONLIS={
-//   INIT:"init",
-//   FILEPAge:"filepage",
-//   ....
-//
-// }
-//
-//
-// var apiFunc = {
-//   init:DWLive.init,
-//   filpage:DWLive.filpage,
-//   ....
-//   ..
-//
-//
-// }
-// live.callfunction(APIFUNCTIONLIS.INIT).call(this,);
+import 'common/public/liveSDK'//引入观看直播Web SDK
+import {LiveSDKInterface} from 'common/interface'//引入接口适配器
 
-class Live extends Request {
+class LiveAdaptive {
+
   constructor() {
-    super();
-
+    this.liveInterface = new LiveSDKInterface()
   }
-  // callfunction:function(t){
-  //   return apiFunc.t
-  // }
 
+  //初始化入口
   init(params) {
-    DWLive.init({
-      userid: params.userid || "",
-      roomid: params.roomid || "",
-      viewername: params.viewername || "",
-      groupid: params.groupid || "",
-      viewertoken: params.viewertoken || "",
-      viewercustomua: params.viewercustomua || "web",
-      language: params.language || "en",
-      viewercustominfo: params.viewercustominfo || "",
-      fastMode: params.fastMode || true
-    });
+    this.liveInterface.call(this.liveInterface.INIT, {
+      userid: params.userId || '',
+      roomid: params.roomId || '',
+      viewername: params.viewerName || '',
+      groupid: params.groupId || '',
+      viewertoken: params.viewerToken || '',
+      viewercustomua: params.viewerCustomua || '',
+      language: params.language || '',
+      viewercustominfo: params.viewerCustominfo || '',
+      fastMode: params.fastMode || true,
+    })
 
-    DWLive.onLoginSuccess = function (result) {
-      params.success && params.success(result);
-    };
-
-    DWLive.onLoginError = function (error) {
-      params.fail && params.fail(error);
-    };
+    this.liveInterface.on(this.liveInterface.ONLOGINSUCCESS).then((result) => {
+      params.success && params.success(result)
+    })
+    this.liveInterface.on(this.liveInterface.ONLOGINERROR).then((result) => {
+      params.success && params.fail(result)
+    })
   }
 
 }
 
-export default Live;
+export default LiveAdaptive

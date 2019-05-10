@@ -1674,7 +1674,7 @@
 
                 "//static.csslcloud.net/js/socket.io.js",
                 "//static.csslcloud.net/js/swfobject.js",
-                "//image.csslcloud.net/js/dpc.js?v=20180121",
+                "//image.csslcloud.net/js/dpc.js?v="+(Math.floor(Math.random()*10000)),
                 "//static.csslcloud.net/js/json3.min.js",
                 "//static.csslcloud.net/js/module/drawingBoard-2.0.0.js",
                 "//static.csslcloud.net/js/module/drawingBoardPlayback.js",

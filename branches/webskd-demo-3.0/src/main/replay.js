@@ -1,8 +1,5 @@
-import "../common/config.js";//全局配置文件
-import flexible from "@wdapp/flexible";//引入flex布局配置
-import "../../public/js/playbackSDK";//引入观看回放Web SDK
-import "../../public/asset/style/reset.css";//重置样式
-import "./asset/style/replay.scss"
+import 'common/config/config'//全局配置文件
+import ReplayAdaptive from 'common/replayAdaptive'
+import './styles/replay.scss'//观看回放私有样式
 
-flexible.init(750, 750);
 

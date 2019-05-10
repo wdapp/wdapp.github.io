@@ -1,5 +1,15 @@
-import "./chat.scss"
+import Component from "common/component";
+import node from "./chat.html";
+import "./chat.scss";
 
-DWLive.onPublicChatMessage = function(data){
-  console.log(data)
-}
+class Chat extends Component {
+  constructor() {
+    super();
+
+    this.render("chat", node, () => {
+
+    });
+  }
+};
+
+export default Chat;
