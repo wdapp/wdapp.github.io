@@ -1,0 +1,41 @@
+@mixin layout($top,$right,$bottom,$left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin width-height($width,$height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin width-height-same($value) {
+  width: $value;
+  height: $value;
+}
+
+@mixin width-height-full() {
+  width: 100%;
+  height: 100%;
+}
+
+@mixin word-break() {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+@mixin ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin flex($direction,$align-items,$justify-content) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align-items;
+  justify-content: $justify-content;
+}

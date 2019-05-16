@@ -13,6 +13,21 @@ class Utils {
     }
   }
 
+  static stringToJSON(d) {
+    if (!d) {
+      return {}
+    }
+    d = JSON.parse(d)
+    return d
+  }
+
+  static JSONTOString(d) {
+    if (typeof d === 'object') {
+      return JSON.stringify(d)
+    }
+    return d
+  }
+
   static log(...info) {
     if (window.debug && console.log) {
       console.log(...info)

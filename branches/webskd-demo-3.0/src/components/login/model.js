@@ -2,28 +2,28 @@
 class Model {
 
   constructor() {
-    this._addres = "";
+    this._addres = ''
 
   }
 
   set address(url) {
-    if (typeof url !== "string") {
-      return false;
+    if (typeof url !== 'string') {
+      return false
     }
-    this._addres = url;
-    this.setLocalStorage(url);
-    return true;
+    this._addres = url
+    this.setLocalStorage(url)
+    return true
   }
 
   setLocalStorage(url) {
-    localStorage.address = url;
+    localStorage.address = url
   }
 
   get address() {
-    return this._addres;
+    return this._addres
   }
 
 
 }
 
-export default Model;
+export default Model

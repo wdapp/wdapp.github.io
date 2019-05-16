@@ -7,7 +7,7 @@
     var FlashTip = {
         show: function () {
             var tip = '<div class="flashtip"><p>您还没有安装flash播放器,请点击<a href="http://www.adobe.com/go/getflash" target="_blank">这里</a>安装</p></div>';
-            $('#callbackPlayer, #livePlayer, #drawPanel, #playbackPanel, #playbackPlayer').append(tip);
+            $('#callbackPlayer, #livePlayer, #drawPanel, #playbackPanel, #playbackPlayer,#swfId').append(tip);
         },
 
         checkFlash: function () {

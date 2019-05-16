@@ -224,7 +224,7 @@
                 "//static.csslcloud.net/js/report.js"
             ];
             if (DWDpc.fastMode) {
-                scripts.push("//image.csslcloud.net/js/dpc.js?v=20180121");
+                scripts.push("//image.csslcloud.net/js/dpc.js?v="+(Math.floor(Math.random()*10000)));
             }
 
             if (MobileLive.isMobile() == "isMobile") {

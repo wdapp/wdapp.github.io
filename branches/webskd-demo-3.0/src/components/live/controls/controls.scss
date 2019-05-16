@@ -1,16 +1,14 @@
-@mixin width-height-full() {
-  width: 100%;
-  height: 100%;
-}
-
-@mixin ellipsis() {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+@import "~assets/styles/mixin.scss";
 
 .controls {
   @include width-height-full();
+  ul {
+    li {
+      span {
+        cursor: pointer;
+      }
+    }
+  }
   .controls-wrap {
     @include width-height-full();
     box-sizing: border-box;
@@ -65,6 +63,11 @@
               height: .12rem;
             }
             .controls-online-number {
+              font-size: .12rem;
+              color: rgba(102, 102, 102, 1);
+              vertical-align: top;
+            }
+            .controls-online-unit {
               font-size: .12rem;
               color: rgba(102, 102, 102, 1);
               vertical-align: top;
