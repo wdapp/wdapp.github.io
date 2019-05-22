@@ -1,0 +1,92 @@
+@import "~assets/styles/mixin.scss";
+
+.question-answer {
+  @include width-height-full();
+  .question-header {
+    @include width-height(100%, .35rem);
+    background-color: #E8E8E8;
+    .question-icon-wrap {
+      float: left;
+      .question-icon {
+        @include width-height-same(.22rem);
+        background-image: url(~assets/images/icon-playbar.png);
+        background-repeat: no-repeat;
+        background-position: -.53rem -2.72rem;
+        display: inline-block;
+        margin: .05rem 0 0 .15rem;
+      }
+    }
+    .question-title {
+      float: left;
+      font-weight: 400;
+      font-size: .16rem;
+      line-height: .35rem;
+      color: #333;
+      margin-left: .1rem;
+    }
+  }
+  .question-body {
+    @include layout(.35rem, 0, 0, 0);
+    overflow-y: auto;
+    .question-answer-ul {
+      width: 100%;
+      .question-answer-wrap {
+        border-bottom: 1px rgba(238, 238, 238, 1) solid;
+        .question-wrap {
+          margin: .1rem .1rem 0 .1rem;
+          padding: .1rem;
+          box-sizing: border-box;
+          border-bottom: 1px rgba(238, 238, 238, 1) solid;
+          .question-name {
+            @include ellipsis();
+            width: 100%;
+            font-weight: 400;
+            font-size: .12rem;
+            color: #666666;
+          }
+          .self {
+            color: rgba(15, 151, 229, 1);
+          }
+          .question-content {
+            @include word-break();
+            width: 100%;
+            margin-top: .15rem;
+            font-size: .13rem;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            line-height: .2rem;
+          }
+        }
+        .anwser-wrap {
+          box-sizing: border-box;
+          margin: .13rem .2rem .1rem .2rem;
+          .anwser-arrows {
+            @include width-height(.12rem, .12rem);
+            background-image: url(~assets/images/live-icons2.png);
+            background-repeat: no-repeat;
+            background-position: 0 -260px;
+            display: inline-block;
+            float: left;
+          }
+          .anwser-box {
+            padding-left: .2rem;
+            .anwser-name {
+              font-size: .12rem;
+              font-weight: 400;
+              color: #03990B;
+              @include ellipsis();
+            }
+            .anwser-content {
+              font-size: .13rem;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+              margin-top: .09rem;
+              @include word-break();
+              line-height: .2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

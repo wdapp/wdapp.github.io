@@ -1,0 +1,15 @@
+@import '~reset-css';
+@import "~assets/styles/mixin.scss";
+
+html {
+  font-size: 100px;
+}
+
+body {
+  font-size: .14em;
+}
+
+body, html {
+  position: relative;
+  @include width-height-full();
+}
