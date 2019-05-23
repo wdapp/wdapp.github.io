@@ -6,6 +6,7 @@
   min-width: 5.2rem;
   .left {
     width: 2.6rem;
+    overflow: hidden;
     @include layout(0, unset, 0, 0);
     .left-bar {
       width: .12rem;
@@ -72,6 +73,7 @@
   }
   .right {
     width: 2.6rem;
+    overflow: hidden;
     @include layout(0, 0, 0, unset);
     .right-bar {
       width: .12rem;

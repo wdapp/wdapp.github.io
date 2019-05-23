@@ -87,10 +87,10 @@ class Chat extends Component {
     `
     let chatMessageWrap = this.getNode('chatMessageWrap')
     this.appendChild(chatMessageWrap, mesageTemplate)
-    this.scrollToMessage(chatMessageWrap)
+    this.scrollTopMessage(chatMessageWrap)
   }
 
-  scrollToMessage() {
+  scrollTopMessage() {
     if (!this.isScroll) {
       return false
     }

@@ -53,7 +53,7 @@
       .buffer {
         position: absolute;
         height: 100%;
-        width: 50%;
+        width: 0%;
         background-color: #999999;
       }
     }
@@ -211,6 +211,9 @@
             .thumbnail-list-btn:hover {
               background: url(~assets/images/icon-playbar.png) -93px -125px no-repeat;
             }
+            .active {
+              background: url(~assets/images/icon-playbar.png) -93px -125px no-repeat !important;
+            }
           }
           .play-rate-wrap {
             width: .48rem;
@@ -230,7 +233,7 @@
               display: none;
               position: absolute;
               top: -1.85rem;
-              right: .86rem;
+              right: .93rem;
               background: rgba(22, 22, 22, 0.8);
               border: 1px solid rgba(102, 102, 102, 0.50);
               border-radius: .04rem;
@@ -253,6 +256,10 @@
             }
           }
           .play-rate-wrap:hover {
+            color: #ff920a;
+            border: 1px solid #ff920a;
+          }
+          .select {
             color: #ff920a;
             border: 1px solid #ff920a;
           }

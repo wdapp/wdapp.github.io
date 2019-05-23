@@ -10,7 +10,7 @@ import Chat from 'components/replay/chat/chat'
 import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
 //显示log信息
-window.debug = true
+window.debug = false
 //配置自定义组件
 hd.components({
   Player,
@@ -24,8 +24,9 @@ hd.components({
 let ui = new UserInterface()
 //获取登录参数
 let params = Utils.parseUrl(localStorage.address)
+console.log(params)
 //隐藏播放器控制器
-// hd.isShowControl(false)
+hd.isShowControl(false)
 //登录
 hd.login({
   userId: params.userid || 'B27039502337407C',
@@ -34,10 +35,10 @@ hd.login({
   // userId: params.userid || '920022FE264A70C1',
   // roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
   // recordId: params.recordid || 'D606FBAFE0000829',
-  viewerName: '抖音再看回放',
-  viewerToken: '',
-  isH5play: true,
-  fastMode: true,
+  viewerName: params.username || '关羽',
+  viewerToken: params.viewertoken || '',
+  isH5play: params.isH5play,
+  fastMode: params.fastMode,
   success: function (result) {
     Utils.log('登录成功', result)
     //开启极速文档自适应模式

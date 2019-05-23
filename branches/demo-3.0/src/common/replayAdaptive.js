@@ -389,6 +389,49 @@ class ReplayAdaptive extends EventEmitter {
   }
 
   /**
+   * @function on_cc_callback_page_change
+   * @description 翻页回调
+   * @param {Object} datas 当翻页时，同步返回翻页信息对象
+   * @property {String} datas.docId 文档ID
+   * @property {String} datas.docName 文档名称
+   * @property {String} datas.docTotalPage 总页数
+   * @property {String} datas.encryptDocId 文档加密ID
+   * @property {String} datas.height 图片高度
+   * @property {String} datas.width 图片宽度
+   * @property {String} datas.pageNum 当前页码
+   * @property {String} datas.pageTitle 文档标题
+   * @property {String} datas.time 图片相对开始直播时翻到当前页的时间
+   * @property {String} datas.url 图片地址
+   * @property {String} datas.mode
+   * @property {String} datas.useSDK
+   * @property {String} datas.serverTime
+   * @example
+   * window.on_cc_callback_pages = (datas) => {
+   * datas = {
+   *      docId: '0D1252DB6778DB1C9C33DC5901307461',
+   *      docName: '关于CC视频.pptx',
+   *      docTotalPage: 40,
+   *      encryptDocId: '0D1252DB6778DB1C9C33DC5901307461',
+   *      height: 540,
+   *      mode: 1,
+   *      pageNum: 0,
+   *      pageTitle: '',
+   *      serverTime: 1550216077371,
+   *      time: 337,
+   *      url: 'http://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/0D1252DB6778DB1C9C33DC5901307461/0.jpg',
+   *      useSDK: true,
+   *      width: 960
+   *    }
+   * }
+   */
+
+  onChangePageSync(callback) {
+    window.on_cc_callback_page_change = (data) => {
+      callback && callback(data)
+    }
+  }
+
+  /**
    * @function on_cc_live_player_load
    * @description 播放器加载完成，仅支持pc端
    * @example

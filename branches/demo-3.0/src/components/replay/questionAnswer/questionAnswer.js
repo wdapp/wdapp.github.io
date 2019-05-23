@@ -45,7 +45,7 @@ class QuestionAnswer extends Component {
     `
     let questionAnswerWrap = this.getNode('questionAnswerWrap')
     this.appendChild(questionAnswerWrap, questionTemplate)
-    this.scrollToQuestionAnswer()
+    this.scrollTopQuestionAnswer()
   }
 
   addAnswers(data) {
@@ -60,10 +60,10 @@ class QuestionAnswer extends Component {
     `
     let questionNode = this.getNode(data.questionId)
     this.appendChild(questionNode, answerTemplate)
-    this.scrollToQuestionAnswer()
+    this.scrollTopQuestionAnswer()
   }
 
-  scrollToQuestionAnswer() {
+  scrollTopQuestionAnswer() {
     if (!this.isScroll) {
       return false
     }

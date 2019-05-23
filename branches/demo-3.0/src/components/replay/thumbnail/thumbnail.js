@@ -5,6 +5,7 @@ import Utils from 'common/utils'
 
 class Thumbnail extends Component {
   index = 0
+  delaySeek = 0
 
   constructor() {
     super()
@@ -14,41 +15,81 @@ class Thumbnail extends Component {
   }
 
   init() {
+    let once = true
+    let thumbnailListGroup = this.getNode('thumbnailListGroup')
+    let thumbnailScrollWrap = this.getNode('thumbnailScrollWrap')
+    let thumbnailList = []
+    let thumbnailListTime = []
+
     hd.onAllPages((pages) => {
       Utils.log(pages)
       for (let page of pages) {
-        this.addThumbnail(page.url, page.time)
+        this.addThumbnail(thumbnailListGroup, page.url, page.time, once)
+        once && (once = false)
       }
-      this.addEvents()
+      thumbnailList = this.handleClick()
+      thumbnailListTime = [...document.getElementsByClassName('thumbnail-list-time')]
+    })
+    hd.onChangePageSync((page) => {
+      Utils.log('onChangePageSync', page)
+      this.updateThumbnailList(page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
     })
   }
 
-  addThumbnail(url, time) {
+  addThumbnail(parent, url, time, once) {
     let template = `
-      <li class="thumbnail-list">
+      <li class="thumbnail-list ${once ? 'active' : ''}">
         <img class="thumbnail-list-img"
              src="${url}"
              alt="">
-        <span class="thumbnail-list-time">${Utils.formatSeconds(time)}</span>
+        <span class="thumbnail-list-time" time="${time}">${Utils.formatSeconds(time)}</span>
       </li>
     `
-    let thumbnailListGroup = this.getNode('thumbnailListGroup')
-    this.appendChild(thumbnailListGroup, template)
+    this.appendChild(parent, template)
   }
 
-  addEvents() {
+  handleClick() {
     let self = this
     let thumbnailList = document.getElementsByClassName('thumbnail-list')
+
     for (var i = 0; i < thumbnailList.length; i++) {
       let thumbnail = thumbnailList[i]
-      thumbnail.value = i
       this.bind(thumbnail, 'click', function () {
-        self.removeClass(thumbnailList[self.index], 'active')
-        self.addClass(this, 'active')
-        self.index = this.value
+        let time = this.getElementsByTagName('span')[0].getAttribute('time')
+        self.onSeek(time)
       })
     }
+
+    return thumbnailList
   }
+
+  updateThumbnailList(page, thumbnailListTime, thumbnailList, thumbnailScrollWrap) {
+    thumbnailListTime.forEach((element, index) => {
+      if (element.getAttribute('time') == page.time) {
+        this.removeClass(thumbnailList[this.index], 'active')
+        this.index = index
+        this.addClass(thumbnailList[this.index], 'active')
+        this.scrollTopThumbnailList(thumbnailScrollWrap, this.index)
+      }
+    })
+  }
+
+  scrollTopThumbnailList(scrollTopWrap, index) {
+    let scrollHeight = (index * 74) + 5
+    scrollTopWrap.scrollTop = scrollHeight
+  }
+
+  onSeek(time) {
+    if (isNaN(time)) {
+      return false
+    }
+    this.delaySeek && clearTimeout(this.delaySeek)
+    this.delaySeek = setTimeout(() => {
+      hd.seek(time)
+    }, 500)
+    return true
+  }
+
 }
 
 export default Thumbnail

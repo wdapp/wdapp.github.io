@@ -81,6 +81,39 @@ class UserInterface extends Render {
     return $('#modal')
   }
 
+  hideLeft(callback) {
+    let left = this.getNode('left')
+    let center = this.getNode('center')
+    Velocity(left, {width: 0,}, {easing: 'ease-out'})
+    Velocity(center, {
+      left: 0,
+      complete: () => {
+        callback && callback()
+      }
+    }, {easing: 'ease-out'})
+  }
+
+  showLeft() {
+    let left = this.getNode('left')
+    let center = this.getNode('center')
+    Velocity(left, {width: '2.6rem',}, {easing: 'ease-in'})
+    Velocity(center, {
+      left: '2.6rem',
+      complete: () => {
+        callback && callback()
+      }
+    }, {easing: 'ease-in'})
+  }
+
+  hideRight() {
+    let right = this.getNode('right')
+    let center = this.getNode('center')
+  }
+
+  showRight() {
+    let right = this.getNode('right')
+    let center = this.getNode('center')
+  }
 }
 
 export default UserInterface

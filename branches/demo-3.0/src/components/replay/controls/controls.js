@@ -14,7 +14,9 @@ class Controls extends Component {
   playState = false
   durationTime = 0
   currentTime = 0
-  isThumbnailList = false
+  formatCurrentTime = 0
+  isShowThumbnailList = false
+  isShowRate = false
 
   constructor() {
     super()
@@ -25,6 +27,8 @@ class Controls extends Component {
 
   init() {
     this.ui = new UserInterface()
+    this.leftBar = this.getNode('leftBar')
+    this.rightBar = this.getNode('rightBar')
     this.playButton = this.getNode('playButton')
     this.playButtonIcon = this.getNode('playButtonIcon')
     this.playTimeDuration = this.getNode('playTimeDuration')
@@ -34,10 +38,20 @@ class Controls extends Component {
     this.quitButton = this.getNode('quitButton')
     this.thumbnailListButton = this.getNode('thumbnailListButton')
     this.thumbnailWrapper = this.getNode('thumbnailWrapper')
+    this.switchBtnWrap = this.getNode('switchBtnWrap')
+    this.playRateWrap = this.getNode('playRateWrap')
+    this.playRateList = this.getNode('playRateList')
+    this.playRateBtn = this.getNode('playRateBtn')
+    this.playRateNumber = [...document.getElementsByClassName('play-rate-number')]
 
+    this.bind(this.leftBar, 'click', this.bindLeftBar.bind(this))
+    this.bind(this.rightBar, 'click', this.bindRightBar.bind(this))
     this.bind(this.playButton, 'click', this.bindPlay.bind(this))
     this.bind(this.quitButton, 'click', this.bindQuit.bind(this))
-    this.bind(this.thumbnailListButton, 'click', this.togglethumbnailList.bind(this))
+    this.bind(this.switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
+    this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
+    this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
+    this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
 
     this.initHD()
 
@@ -50,6 +64,7 @@ class Controls extends Component {
       this.updateVolume()
       this.setDurationTime()
       Utils.log('onPlayerLoad', this.isPlayerLoad)
+      this.updateCurrentTime()
     })
     hd.onPlayerStart(() => {
       this.playState = true
@@ -70,14 +85,15 @@ class Controls extends Component {
       this.playState = false
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerEnd', this.playState)
+      this.updateCurrentTime()
     })
   }
 
   initSlider() {
     this.playerSlider = new Slider('#playerSlider', {
       precision: 2,
-      formatter: function (value) {
-        return Utils.formatSeconds(value)
+      formatter: (value) => {
+        return this.formatCurrentTime
       }
     })
     this.playerSlider.on('slideStop', (value) => {
@@ -88,6 +104,46 @@ class Controls extends Component {
     this.voiceSlider.on('slideStop', (value) => {
       this.setVolume(value)
     })
+  }
+
+  bindLeftBar() {
+    // this.ui.hideLeft()
+  }
+
+  bindRightBar() {
+
+  }
+
+  bindSwitchBtnWrap() {
+    let playbackPlayer = this.getNode('playbackPlayer')
+    let drawPanel = this.getNode('draw_panel')
+    let video = playbackPlayer.firstElementChild
+    let iframe = drawPanel.firstElementChild
+    playbackPlayer.appendChild(iframe)
+    drawPanel.appendChild(video)
+  }
+
+  bindPlayRateList(e) {
+    this.playRateNumber.forEach((element) => {
+      this.removeClass(element, 'active')
+    })
+    let option = e.target
+    this.addClass(option, 'active')
+    let rateLabel = option.innerHTML
+    let rate = rateLabel.substring(0, rateLabel.length - 1)
+    hd.rate = rate
+    this.playRateBtn.innerHTML = rateLabel
+  }
+
+  bindPlayRateWrap() {
+    if (this.isShowRate) {
+      this.playRateList.style.display = 'none'
+      this.removeClass(this.playRateWrap, 'select')
+    } else {
+      this.playRateList.style.display = 'block'
+      this.addClass(this.playRateWrap, 'select')
+    }
+    this.isShowRate = !this.isShowRate
   }
 
   onPlayStateChange(playState) {
@@ -101,13 +157,15 @@ class Controls extends Component {
     }
   }
 
-  togglethumbnailList() {
-    if (this.isThumbnailList) {
+  toggleThumbnailList() {
+    if (this.isShowThumbnailList) {
       this.thumbnailWrapper.style.display = 'none'
+      this.removeClass(this.thumbnailListButton.getElementsByTagName('span')[0], 'active')
     } else {
+      this.addClass(this.thumbnailListButton.getElementsByTagName('span')[0], 'active')
       this.thumbnailWrapper.style.display = 'block'
     }
-    this.isThumbnailList = !this.isThumbnailList
+    this.isShowThumbnailList = !this.isShowThumbnailList
   }
 
   bindQuit() {
@@ -157,8 +215,12 @@ class Controls extends Component {
   }
 
   updateCurrentTime() {
-    this.currentTime = hd.currentTime
-    this.palyTimeCurrent.innerText = Utils.formatSeconds(this.currentTime)
+    this.currentTime = Math.ceil(hd.currentTime)
+    if (this.currentTime > this.durationTime) {
+      this.currentTime = this.durationTime
+    }
+    this.formatCurrentTime = Utils.formatSeconds(this.currentTime)
+    this.palyTimeCurrent.innerText = this.formatCurrentTime
     this.updatePlayerSliderValue()
   }
 
@@ -189,8 +251,9 @@ class Controls extends Component {
   }
 
   onSeek(value) {
-    clearTimeout(this.delaySeek)
+    this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
+      this.stopTimer()
       hd.seek(value)
     }, 500)
   }
