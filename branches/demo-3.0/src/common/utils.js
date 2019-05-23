@@ -8,15 +8,16 @@ class Utils {
   }
 
   static get PATH() {
-    // let host = '192.168.200.33:8080'
-    let host = '//github.wdapp.top/branches/demo-3.0/dist'
+    let host = '192.168.200.33:8080'
+    // let path = '192.168.200.33:8080'
+    let path = '//github.wdapp.top/branches/demo-3.0/dist'
     return {
       HOST: `${host}`,
-      INDEX: `//${host}/index.html`,
-      LIVE: `//${host}/live.html`,
-      REPLAY: `//${host}/replay.html`,
-      MOBILELIVE: `//${host}/live-mobile.html`,
-      MOBILEREPLAY: `//${host}/replay-mobile.html`,
+      INDEX: `//${path}/index.html`,
+      LIVE: `//${path}/live.html`,
+      REPLAY: `//${path}/replay.html`,
+      MOBILELIVE: `//${path}/live-mobile.html`,
+      MOBILEREPLAY: `//${path}/replay-mobile.html`,
     }
   }
 

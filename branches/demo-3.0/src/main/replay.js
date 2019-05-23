@@ -10,7 +10,7 @@ import Chat from 'components/replay/chat/chat'
 import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
 //显示log信息
-window.debug = true
+window.debug = false
 //配置自定义组件
 hd.components({
   Player,

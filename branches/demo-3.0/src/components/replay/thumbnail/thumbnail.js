@@ -2,7 +2,8 @@ import Component from 'common/component'
 import template from './thumbnail.html'
 import './thumbnail.scss'
 import Utils from 'common/utils'
-// import Lazyload from 'lazyloadjs'
+import lazyload from 'jquery-lazyload'
+
 
 class Thumbnail extends Component {
   index = 0
@@ -24,15 +25,14 @@ class Thumbnail extends Component {
     let thumbnailScrollWrap = this.getNode('thumbnailScrollWrap')
     let thumbnailList = []
     let thumbnailListTime = []
-    
-    // console.log(Lazyload)
-    
+
     hd.onAllPages((pages) => {
       Utils.log(pages)
       for (let page of pages) {
         this.addThumbnail(thumbnailListGroup, page.url, page.time, once)
         once && (once = false)
       }
+      this.lazyload()
       thumbnailList = this.handleClick()
       thumbnailListTime = [...document.getElementsByClassName('thumbnail-list-time')]
     })
@@ -62,13 +62,21 @@ class Thumbnail extends Component {
   addThumbnail(parent, url, time, once) {
     let template = `
       <li class="thumbnail-list ${once ? 'active' : ''}">
-        <img lazy class="thumbnail-list-img"
-             src="${url}"
+        <img class="thumbnail-list-img lazy"
+             data-original="${url}"
              alt="">
         <span class="thumbnail-list-time" time="${time}">${Utils.formatSeconds(time)}</span>
       </li>
     `
     this.appendChild(parent, template)
+  }
+
+  lazyload() {
+    $('img.lazy').lazyload({
+      container: $('#thumbnailScrollWrap'),
+      effect: 'fadeIn',
+      threshold: 5,
+    })
   }
 
   handleClick() {
