@@ -2,10 +2,14 @@ import Component from 'common/component'
 import template from './thumbnail.html'
 import './thumbnail.scss'
 import Utils from 'common/utils'
+// import Lazyload from 'lazyloadjs'
 
 class Thumbnail extends Component {
   index = 0
   delaySeek = 0
+  isPlayerLoad = false
+  isScroll = true
+  page = {}
 
   constructor() {
     super()
@@ -20,7 +24,9 @@ class Thumbnail extends Component {
     let thumbnailScrollWrap = this.getNode('thumbnailScrollWrap')
     let thumbnailList = []
     let thumbnailListTime = []
-
+    
+    // console.log(Lazyload)
+    
     hd.onAllPages((pages) => {
       Utils.log(pages)
       for (let page of pages) {
@@ -32,14 +38,31 @@ class Thumbnail extends Component {
     })
     hd.onChangePageSync((page) => {
       Utils.log('onChangePageSync', page)
+      this.page = page
       this.updateThumbnailList(page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
+    })
+    hd.once('isPlayerLoad', (isPlayerLoad) => {
+      this.isPlayerLoad = isPlayerLoad
+    })
+    hd.on('showThumbnailList', () => {
+      if (!Utils.isEmptyObject(this.page)) {
+        Utils.log(`updateThumbnailList fail await page load!`)
+        return false
+      }
+      this.updateThumbnailList(this.page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
+    })
+    this.bind(thumbnailScrollWrap, 'mouseleave', () => {
+      this.isScroll = true
+    })
+    this.bind(thumbnailScrollWrap, 'mouseenter', () => {
+      this.isScroll = false
     })
   }
 
   addThumbnail(parent, url, time, once) {
     let template = `
       <li class="thumbnail-list ${once ? 'active' : ''}">
-        <img class="thumbnail-list-img"
+        <img lazy class="thumbnail-list-img"
              src="${url}"
              alt="">
         <span class="thumbnail-list-time" time="${time}">${Utils.formatSeconds(time)}</span>
@@ -75,11 +98,18 @@ class Thumbnail extends Component {
   }
 
   scrollTopThumbnailList(scrollTopWrap, index) {
+    if (!this.isScroll) {
+      return false
+    }
     let scrollHeight = (index * 74) + 5
     scrollTopWrap.scrollTop = scrollHeight
+    return true
   }
 
   onSeek(time) {
+    if (!this.checkout('onSeek')) {
+      return false
+    }
     if (isNaN(time)) {
       return false
     }
@@ -87,6 +117,14 @@ class Thumbnail extends Component {
     this.delaySeek = setTimeout(() => {
       hd.seek(time)
     }, 500)
+    return true
+  }
+
+  checkout(message) {
+    if (!this.isPlayerLoad) {
+      Utils.log(`${message} fail await player load!`)
+      return false
+    }
     return true
   }
 

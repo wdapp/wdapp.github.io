@@ -92,7 +92,9 @@
         color: #666;
         font-size: .14rem;
         .play-time-duration {
+          text-align: left;
           max-width: 1rem;
+          min-width: .56rem;
           display: inline-block;
           @include ellipsis();
         }
@@ -100,7 +102,9 @@
           vertical-align: top;
         }
         .paly-time-current {
+          text-align: right;
           max-width: 1rem;
+          min-width: .56rem;
           display: inline-block;
           @include ellipsis();
         }

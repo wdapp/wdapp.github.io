@@ -34,7 +34,7 @@ module.exports = {
   },
 
   devServer: {
-    // host: "192.168.200.33",
+    host: "192.168.200.33",
     //设置为true，当源文件改变时会自动刷新页面
     inline: false,
     //本地服务器所加载的页面所在的目录
@@ -164,9 +164,9 @@ module.exports = {
       template: './src/replay-mobile.html',
       chunks: ['replayMobile']
     }),
-    // new UglifyJsPlugin({
-    //   sourceMap: true,
-    //   parallel: true
-    // })
+    new UglifyJsPlugin({
+      sourceMap: true,
+      parallel: true
+    })
   ]
 }

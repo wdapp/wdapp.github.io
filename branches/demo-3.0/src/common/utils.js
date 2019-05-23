@@ -11,7 +11,7 @@ class Utils {
     // let host = '192.168.200.33:8080'
     let host = '//github.wdapp.top/branches/demo-3.0/dist'
     return {
-      HOST: `//${host}/`,
+      HOST: `${host}`,
       INDEX: `//${host}/index.html`,
       LIVE: `//${host}/live.html`,
       REPLAY: `//${host}/replay.html`,

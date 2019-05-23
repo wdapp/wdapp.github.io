@@ -2,9 +2,9 @@
 
 .player {
   @include width-height-full();
+  background-color: #333333;
   #playbackPlayer {
     @include width-height-full();
-    background-color: #000000;
     video{
       width: 100%;
       height: 100%;

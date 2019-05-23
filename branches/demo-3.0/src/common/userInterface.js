@@ -83,36 +83,99 @@ class UserInterface extends Render {
 
   hideLeft(callback) {
     let left = this.getNode('left')
+    let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
-    Velocity(left, {width: 0,}, {easing: 'ease-out'})
+    Velocity(left, {
+      width: '0rem',
+    }, {
+      complete: () => {
+        this.addClass(leftBar, 'active')
+      }
+    }, {
+      easing: 'ease-out'
+    })
     Velocity(center, {
       left: 0,
+    }, {
       complete: () => {
         callback && callback()
       }
-    }, {easing: 'ease-out'})
+    }, {
+      easing: 'ease-out'
+    })
   }
 
-  showLeft() {
+  showLeft(callback) {
     let left = this.getNode('left')
+    let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
-    Velocity(left, {width: '2.6rem',}, {easing: 'ease-in'})
+    Velocity(left, {
+      width: '2.6rem',
+    }, {
+      complete: () => {
+        this.removeClass(leftBar, 'active')
+      }
+    }, {
+      easing: 'easeInSine'
+    })
     Velocity(center, {
       left: '2.6rem',
+    }, {
       complete: () => {
         callback && callback()
       }
-    }, {easing: 'ease-in'})
+    }, {
+      easing: 'easeInSine'
+    })
   }
 
-  hideRight() {
+  hideRight(callback) {
     let right = this.getNode('right')
+    let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
+    Velocity(right, {
+      width: '0rem',
+    }, {
+      complete: () => {
+        this.addClass(rightBar, 'active')
+      }
+    }, {
+      easing: 'ease-out'
+    })
+    Velocity(center, {
+      right: 0,
+    }, {
+      complete: () => {
+        callback && callback()
+      }
+    }, {
+      easing: 'ease-out'
+    })
   }
 
-  showRight() {
+  showRight(callback) {
     let right = this.getNode('right')
+    let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
+    Velocity(right, {
+      width: '2.6rem',
+
+    }, {
+      complete: () => {
+        this.removeClass(rightBar, 'active')
+      }
+    }, {
+      easing: 'easeInSine'
+    })
+    Velocity(center, {
+      right: '2.6rem',
+    }, {
+      complete: () => {
+        callback && callback()
+      }
+    }, {
+      easing: 'easeInSine'
+    })
   }
 }
 

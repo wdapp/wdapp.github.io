@@ -9,6 +9,7 @@ import UserInterface from 'common/userInterface'
 class Controls extends Component {
 
   timer = 0
+  interval = 999
   delaySeek = 0
   isPlayerLoad = false
   playState = false
@@ -17,6 +18,10 @@ class Controls extends Component {
   formatCurrentTime = 0
   isShowThumbnailList = false
   isShowRate = false
+  isShowLeft = true
+  isShowRight = true
+  isMute = false
+  volume = 0
 
   constructor() {
     super()
@@ -44,18 +49,11 @@ class Controls extends Component {
     this.playRateBtn = this.getNode('playRateBtn')
     this.playRateNumber = [...document.getElementsByClassName('play-rate-number')]
 
-    this.bind(this.leftBar, 'click', this.bindLeftBar.bind(this))
-    this.bind(this.rightBar, 'click', this.bindRightBar.bind(this))
-    this.bind(this.playButton, 'click', this.bindPlay.bind(this))
-    this.bind(this.quitButton, 'click', this.bindQuit.bind(this))
-    this.bind(this.switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
-    this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
-    this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
-    this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
-
     this.initHD()
 
     this.initSlider()
+
+    this.handleClick()
   }
 
   initHD() {
@@ -63,8 +61,9 @@ class Controls extends Component {
       this.isPlayerLoad = true
       this.updateVolume()
       this.setDurationTime()
-      Utils.log('onPlayerLoad', this.isPlayerLoad)
       this.updateCurrentTime()
+      hd.emit('isPlayerLoad', this.isPlayerLoad)
+      Utils.log('onPlayerLoad', this.isPlayerLoad)
     })
     hd.onPlayerStart(() => {
       this.playState = true
@@ -83,9 +82,9 @@ class Controls extends Component {
     })
     hd.onPlayerEnd(() => {
       this.playState = false
+      this.updateCurrentTime()
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerEnd', this.playState)
-      this.updateCurrentTime()
     })
   }
 
@@ -106,24 +105,67 @@ class Controls extends Component {
     })
   }
 
+  handleClick() {
+    this.bind(this.leftBar, 'click', this.bindLeftBar.bind(this))
+    this.bind(this.rightBar, 'click', this.bindRightBar.bind(this))
+    this.bind(this.playButton, 'click', this.bindPlay.bind(this))
+    this.bind(this.voiceButton, 'click', this.toggleMute.bind(this))
+    this.bind(this.quitButton, 'click', this.bindQuit.bind(this))
+    this.bind(this.switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
+    this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
+    this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
+    this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
+  }
+
   bindLeftBar() {
-    // this.ui.hideLeft()
+    if (this.isShowLeft) {
+      this.ui.hideLeft(() => {
+        Utils.log('hideLeft')
+      })
+    } else {
+      this.ui.showLeft(() => {
+        Utils.log('showLeft')
+      })
+    }
+    this.isShowLeft = !this.isShowLeft
   }
 
   bindRightBar() {
-
+    if (this.isShowRight) {
+      this.ui.hideRight(() => {
+        Utils.log('hideRight')
+      })
+    } else {
+      this.ui.showRight(() => {
+        Utils.log('showRight')
+      })
+    }
+    this.isShowRight = !this.isShowRight
   }
 
   bindSwitchBtnWrap() {
-    let playbackPlayer = this.getNode('playbackPlayer')
-    let drawPanel = this.getNode('draw_panel')
-    let video = playbackPlayer.firstElementChild
-    let iframe = drawPanel.firstElementChild
-    playbackPlayer.appendChild(iframe)
-    drawPanel.appendChild(video)
+    if (!this.checkout('bindSwitchBtnWrap')) {
+      return false
+    }
+    let player = this.getNode('player')
+    let document = this.getNode('document')
+    let video = player.firstElementChild
+    let iframe = document.firstElementChild
+    player.appendChild(iframe)
+    document.appendChild(video)
+
+    // let playbackPlayer = this.getNode('playbackPlayer')
+    // let drawPanel = this.getNode('draw_panel')
+    // let video = playbackPlayer.firstElementChild
+    // let iframe = drawPanel.firstElementChild
+    // playbackPlayer.appendChild(iframe)
+    // drawPanel.appendChild(video)
   }
 
   bindPlayRateList(e) {
+    if (!this.checkout('bindPlayRateList')) {
+      return false
+    }
     this.playRateNumber.forEach((element) => {
       this.removeClass(element, 'active')
     })
@@ -132,7 +174,11 @@ class Controls extends Component {
     let rateLabel = option.innerHTML
     let rate = rateLabel.substring(0, rateLabel.length - 1)
     hd.rate = rate
+    Utils.log('rate', rate)
     this.playRateBtn.innerHTML = rateLabel
+    this.interval = Math.floor(999 / rate)
+    Utils.log('interval', this.interval)
+    this.startTimer()
   }
 
   bindPlayRateWrap() {
@@ -164,6 +210,7 @@ class Controls extends Component {
     } else {
       this.addClass(this.thumbnailListButton.getElementsByTagName('span')[0], 'active')
       this.thumbnailWrapper.style.display = 'block'
+      hd.emit('showThumbnailList')
     }
     this.isShowThumbnailList = !this.isShowThumbnailList
   }
@@ -188,7 +235,7 @@ class Controls extends Component {
   }
 
   bindPlay() {
-    if (!this.isPlayerLoad) {
+    if (!this.checkout('bindPlay')) {
       return false
     }
     hd.togglePlay()
@@ -199,8 +246,8 @@ class Controls extends Component {
   }
 
   startTimer() {
-    this.stopTimer()
-    this.timer = setInterval(this.bindTimerUpdate.bind(this), 999)
+    this.timer && this.stopTimer()
+    this.timer = setInterval(this.bindTimerUpdate.bind(this), this.interval)
   }
 
   bindTimerUpdate() {
@@ -225,24 +272,48 @@ class Controls extends Component {
   }
 
   updateVolume() {
-    this.voiceSlider.setValue(hd.volume)
-    Utils.log('getValue volume', this.voiceSlider.getValue())
+    this.volume = hd.volume
+    this.voiceSlider.setValue(this.volume)
+    this.updateMute(this.volume)
+    Utils.log('updateVolume volume', this.volume)
   }
 
   setVolume(volume) {
-    if (!this.isPlayerLoad) {
+    if (!this.checkout('setVolume')) {
       return false
     }
     hd.volume = volume
-    Utils.log('hd.volume', hd.volume)
-    this.setMute(hd.volume)
+    this.volume = hd.volume
+    this.updateMute(this.volume)
+    Utils.log('setVolume volume', this.volume)
   }
 
-  setMute(volume) {
+  toggleMute() {
+    if (!this.checkout('toggleMute')) {
+      return false
+    }
+    if (this.isMute) {
+      if (!this.volume) {
+        this.volume = 1
+      }
+      hd.volume = this.volume
+    } else {
+      hd.volume = 0
+    }
+    this.updateMute(hd.volume)
+    this.voiceSlider.setValue(hd.volume)
+    Utils.log('toggleMute volume', hd.volume)
+  }
+
+  updateMute(volume) {
     if (volume == 0) {
       this.addClass(this.voiceButton, 'mute')
+      this.isMute = true
+      Utils.log('updateMute', this.isMute)
     } else {
+      this.isMute = false
       this.removeClass(this.voiceButton, 'mute')
+      Utils.log('updateMute', this.isMute)
     }
   }
 
@@ -251,11 +322,15 @@ class Controls extends Component {
   }
 
   onSeek(value) {
+    if (!this.checkout('onSeek')) {
+      return false
+    }
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
       this.stopTimer()
       hd.seek(value)
     }, 500)
+    return true
   }
 
   updatePlayerSliderValue() {
@@ -281,6 +356,13 @@ class Controls extends Component {
     // }
   }
 
+  checkout(message) {
+    if (!this.isPlayerLoad) {
+      Utils.log(`${message} fail await player load!`)
+      return false
+    }
+    return true
+  }
 }
 
 export default Controls

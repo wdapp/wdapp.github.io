@@ -8,20 +8,6 @@
     width: 2.6rem;
     overflow: hidden;
     @include layout(0, unset, 0, 0);
-    .left-bar {
-      width: .12rem;
-      @include layout(0, 0, 0, unset);
-      background-color: #F2FAFF;
-      display: none;
-      z-index: 1;
-      .left-bar-swith {
-        background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
-        @include width-height(.12rem, .46rem);
-        position: absolute;
-        left: 0;
-        top: 50%;
-      }
-    }
     .video-wrapper {
       @include width-height(2.6rem, 1.96rem);
       #player {
@@ -30,44 +16,93 @@
     }
     .question-wrapper {
       @include layout(1.96rem, 0, 0, 0);
+      min-width: 2.6rem;
       #questionAnswer {
         @include width-height-full();
       }
     }
   }
-  .left:hover .left-bar {
-    display: block;
-  }
   .center {
     @include layout(0, 2.6rem, 0, 2.6rem);
     border-left: 1px solid rgba(241, 241, 241, 1);
     border-right: 1px solid rgba(241, 241, 241, 1);
-    overflow-x: auto;
-    .center-wrapper {
+    .left-bar {
+      opacity: 0;
+      width: .12rem;
+      background-color: #F2FAFF;
+      @include layout(0, unset, 0, -.12rem);
+      z-index: 1;
+      .left-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
+        @include width-height(.12rem, .46rem);
+        position: absolute;
+        left: 0;
+        top: 45%;
+      }
+    }
+    .left-bar:hover {
+      opacity: 1;
+    }
+    .active {
+      opacity: 1;
+      left: 0;
+      .left-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
+      }
+    }
+    .center-scorll {
       @include layout(0, 0, 0, 0);
-      min-width: 7.1rem;
-      overflow: hidden;
-      .document-wrapper {
-        @include layout(0, 0, .4rem, 0);
-        #document {
-          @include width-height-full();
+      overflow-x: auto;
+      .center-wrapper {
+        @include layout(0, 0, 0, 0);
+        min-width: 7.1rem;
+        overflow: hidden;
+        .document-wrapper {
+          @include layout(0, 0, .4rem, 0);
+          #document {
+            @include width-height-full();
+          }
+        }
+        .thumbnail-wrapper {
+          display: none;
+          @include layout(0, 0, .4rem, unset);
+          width: 1.6rem;
+          #thumbnail {
+            @include width-height-full();
+          }
+        }
+        .controls-wrapper {
+          @include layout(unset, 0, 0, 0);
+          height: .4rem;
+          z-index: 1;
+          #controls {
+            @include width-height-full();
+          }
         }
       }
-      .thumbnail-wrapper {
-        display: none;
-        @include layout(0, 0, .4rem, unset);
-        width: 1.6rem;
-        #thumbnail {
-          @include width-height-full();
-        }
+    }
+    .right-bar {
+      opacity: 0;
+      width: .12rem;
+      @include layout(0, -.12rem, 0, unset);
+      background-color: #F2FAFF;
+      z-index: 1;
+      .right-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
+        @include width-height(.12rem, .46rem);
+        position: absolute;
+        left: 0;
+        top: 45%;
       }
-      .controls-wrapper {
-        @include layout(unset, 0, 0, 0);
-        height: .4rem;
-        z-index: 1;
-        #controls {
-          @include width-height-full();
-        }
+    }
+    .right-bar:hover {
+      opacity: 1;
+    }
+    .active {
+      opacity: 1;
+      right: 0;
+      .right-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
       }
     }
   }
@@ -75,29 +110,13 @@
     width: 2.6rem;
     overflow: hidden;
     @include layout(0, 0, 0, unset);
-    .right-bar {
-      width: .12rem;
-      @include layout(0, unset, 0, 0);
-      background-color: #F2FAFF;
-      display: none;
-      z-index: 1;
-      .right-bar-swith {
-        background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
-        @include width-height(.12rem, .46rem);
-        position: absolute;
-        left: 0;
-        top: 50%;
-      }
-    }
     .chat-wrapper {
       @include layout(0, 0, 0, 0);
+      min-width: 2.6rem;
       #chat {
         @include width-height-full();
       }
     }
-  }
-  .right:hover .right-bar {
-    display: block;
   }
 }
 
