@@ -5,8 +5,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 //压缩javascript插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-//单独打包文件
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   mode: 'development',//development production
@@ -110,16 +108,6 @@ module.exports = {
         }, 'sass-loader']
       },
 
-      //单独打包css
-
-      // {
-      //   test: /\.css$/,
-      //   use: ExtractTextPlugin.extract({
-      //     fallback: 'style-loader',
-      //     use: 'css-loader'
-      //   })
-      // },
-
       //压缩图片、字体
 
       {
@@ -179,7 +167,6 @@ module.exports = {
     // new UglifyJsPlugin({
     //   sourceMap: true,
     //   parallel: true
-    // }),
-    // new ExtractTextPlugin('css/main.css')
+    // })
   ]
 }
