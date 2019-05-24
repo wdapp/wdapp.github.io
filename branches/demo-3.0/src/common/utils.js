@@ -37,7 +37,7 @@ class Utils {
   }
 
   static log(...info) {
-    if (window.debug && console.log) {
+    if (window.debug && window.console && typeof console.log === 'function') {
       console.log(...info)
     }
   }

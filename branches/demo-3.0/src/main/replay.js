@@ -10,7 +10,8 @@ import Chat from 'components/replay/chat/chat'
 import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
 //显示log信息
-window.debug = false
+window.debug = true
+
 //配置自定义组件
 hd.components({
   Player,
@@ -22,11 +23,14 @@ hd.components({
 })
 //创建UI组件
 let ui = new UserInterface()
+
 //获取登录参数
 let params = Utils.parseUrl(localStorage.address)
 Utils.log('params', params)
+
 //隐藏播放器控制器
 hd.isShowControl(false)
+
 //登录
 hd.login({
   userId: params.userid || 'B27039502337407C',
@@ -37,8 +41,8 @@ hd.login({
   // recordId: params.recordid || 'D606FBAFE0000829',
   viewerName: params.username || '关羽',
   viewerToken: params.viewertoken || '',
-  // isH5play: params.isH5play,
-  // fastMode: params.fastMode,
+  isH5play: params.isH5play,
+  fastMode: params.fastMode,
   // isH5play: false,
   // fastMode: false,
   success: function (result) {

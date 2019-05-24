@@ -1,4 +1,6 @@
 import 'common/hd'//提供Web SDK 观看回放事件、方法、属性
+import UserInterface from 'common/userInterface'//UI库
+import Utils from 'common/utils'//公共方法库
 import fastClick from 'fastclick'//解决移动端点击延迟问题
 import flexible from '@wdapp/flexible'//引入rem布局配置文件
 import Swiper from 'swiper'//解决移动端点击延迟问题
@@ -14,41 +16,71 @@ import Intro from 'components/replayMobile/intro/intro'
 
 window.debug = true
 
-window.onload = function () {
+fastClick.attach(document.body)
 
-  let swiper = new Swiper('.swiper-container', {
-    direction: 'horizontal',
-    initialSlide: 2
-  })
+flexible.init(750, 750)
 
-  new Player()
+let swiper = new Swiper('.swiper-container', {
+  direction: 'horizontal',
+  initialSlide: 0,
+  on: {
+    slideChangeTransitionStart: function () {
+      hd.emit('activeIndex', this.activeIndex)
+    }
+  }
+})
 
-  new Document()
+hd.on('navigationIndex', (index) => {
+  swiper.slideTo(index)
+})
 
-  new Navigation()
+//配置自定义组件
+hd.components({
+  Player,
+  Document,
+  Navigation,
+  Chat,
+  QuestionAnswer,
+  Intro
+})
 
-  new Chat()
+//创建UI组件
+let ui = new UserInterface()
+//获取登录参数
+let params = Utils.parseUrl(localStorage.address)
+Utils.log('params', params)
+//登录
+hd.login({
+  userId: params.userid || 'B27039502337407C',
+  roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
+  recordId: params.recordid || '96C0454B9E3CE464',
+  // userId: params.userid || '920022FE264A70C1',
+  // roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
+  // recordId: params.recordid || 'D606FBAFE0000829',
+  viewerName: params.username || '移动的关羽',
+  viewerToken: params.viewertoken || '',
+  // isH5play: params.isH5play,
+  // fastMode: params.fastMode,
+  // isH5play: false,
+  // fastMode: false,
+  success: function (result) {
+    Utils.log('登录成功', result)
+    //开启极速文档自适应模式
+    hd.documentAdaptive(true)
+    ui.alert({
+      content: '登录成功'
+    })
+  },
+  fail: function (error) {
+    Utils.log('登录失败', error)
+    ui.alert({
+      type: 'danger',
+      content: '登录失败'
+    })
+  }
+})
 
-  new QuestionAnswer()
 
-  new Intro()
-
-  fastClick.attach(document.body)
-
-  flexible.init(750, 750)
-
-  $.DW.config({
-    userId: 'B27039502337407C',
-    roomId: '3115C441D8B66A719C33DC5901307461',
-    recordId: '96C0454B9E3CE464',
-    groupId: '',
-    viewername: 'haha',
-    viewertoken: '',
-    isH5play: true,
-    fastMode: true,
-  })
-
-}
 
 
 

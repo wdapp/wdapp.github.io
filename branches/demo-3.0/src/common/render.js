@@ -109,9 +109,11 @@ class Render {
       let template = child
       let div = this.creatNode('div')
       div.innerHTML = template
-      let firstElementChild = div.firstElementChild
-      node.appendChild(firstElementChild)
-      return firstElementChild
+      let children = [...div.children]
+      children.forEach(function (child) {
+        node.appendChild(child)
+      })
+      return children
     }
     return false
   }

@@ -77,6 +77,9 @@ class Thumbnail extends Component {
       effect: 'fadeIn',
       threshold: 5,
     })
+    $('img').on('mousedown', (event) => {
+      event.preventDefault()
+    })
   }
 
   handleClick() {

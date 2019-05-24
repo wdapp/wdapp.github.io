@@ -2177,7 +2177,7 @@
             var vidTest = document.createElement("video");
             var oggTest = vidTest.canPlayType("video/ogg; codecs=\"theora, vorbis\"");
             if (!oggTest) {
-                h264Test = vidTest.canPlayType("video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"");
+               var h264Test = vidTest.canPlayType("video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"");
                 if (!h264Test) {
                     return false;
                 }

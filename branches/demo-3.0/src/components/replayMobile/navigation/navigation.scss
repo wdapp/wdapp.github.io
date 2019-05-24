@@ -15,18 +15,20 @@
       @include width-height-full();
       @include flex(row, center, space-around);
       li {
+        width: 100%;
+        height: 100%;
         font-size: .3rem;
         color: rgba(51, 51, 51, 1);
+        line-height: .8rem;
+        text-align: center;
       }
-      .active:after {
-        content: '';
-        display: block;
-        position: relative;
-        top: .22rem;
-        left: -.22rem;
-        width: 1rem;
-        border: .02rem solid rgba(61, 150, 245, 1);
-      }
+    }
+    .select {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1rem;
+      border: .02rem solid rgba(61, 150, 245, 1);
     }
   }
 }

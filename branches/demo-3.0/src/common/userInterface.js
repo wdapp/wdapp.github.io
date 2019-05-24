@@ -159,7 +159,6 @@ class UserInterface extends Render {
     let center = this.getNode('center')
     Velocity(right, {
       width: '2.6rem',
-
     }, {
       complete: () => {
         this.removeClass(rightBar, 'active')
@@ -169,6 +168,18 @@ class UserInterface extends Render {
     })
     Velocity(center, {
       right: '2.6rem',
+    }, {
+      complete: () => {
+        callback && callback()
+      }
+    }, {
+      easing: 'easeInSine'
+    })
+  }
+
+  moveX(node, left, callback) {
+    Velocity(node, {
+      left: left + 'px',
     }, {
       complete: () => {
         callback && callback()
