@@ -52,6 +52,7 @@ hd.login({
     Utils.log('登录成功', result)
     //开启极速文档自适应模式
     hd.documentAdaptive(true)
+    hd.emit('loginSuccess', result)
     ui.alert({
       content: '登录成功'
     })

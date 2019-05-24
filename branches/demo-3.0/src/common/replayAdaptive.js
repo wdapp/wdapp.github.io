@@ -8,8 +8,8 @@ import EventEmitter from 'onfire.js'
 
 class ReplayAdaptive extends EventEmitter {
 
-  viewerId = ''
-  groupId = ''
+  viewerId = ''//viewerId
+  groupId = ''//分组ID
 
   constructor() {
     super()
@@ -60,11 +60,17 @@ class ReplayAdaptive extends EventEmitter {
      * @function on_cc_login_success
      * @description 登录成功回调
      * @param {Array} result 登录成功返回信息
-     * @property {Object} result[0].template 直播间模板信息
-     * @property {Object} result[0].viewer 用户信息
+     * @property {Object} result.room 直播间信息
+     * @property {Object} result.viewer 用户信息
+     * @property {Object} result.template 直播间模板信息
      * @example
      * window.on_cc_login_success = (datas) => {
      *    datas ={
+     *      room: {
+     *         desc: '<p>&nbsp; &nbsp; &nbsp;直播间描述简介</p>',
+     *         liveStartTime: '2018-06-06 01:50:41.0',
+     *         name: '直播间标题'
+     *       },
      *       template: {
      *          desc: '视频，文档，聊天，问答',
      *          name: '模板五',

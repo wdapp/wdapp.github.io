@@ -586,7 +586,7 @@
                     var logInfo=data.datas;
                     var tmp = {"type":logInfo.template.type,"desc":logInfo.template.desc,"name":logInfo.template.name};
                     var viewer = {"name":logInfo.viewer.name,"id":logInfo.viewer.id,"groupId":logInfo.viewer.groupId};
-                    var room = {desc:logInfo.room.desc,liveStartTime:logInfo.room.liveStartTime}
+                    var room = {desc:logInfo.room.desc,liveStartTime:logInfo.room.liveStartTime,name:logInfo.room.name}
                     window.on_cc_login_success({"template":tmp,"viewer":viewer,"room":room});
                 }
 
