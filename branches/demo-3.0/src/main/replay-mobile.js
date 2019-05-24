@@ -56,8 +56,7 @@ hd.login({
   // roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
   // recordId: params.recordid || 'D606FBAFE0000829',
   viewerName: params.username || '移动的关羽',
-  // viewerToken: params.viewertoken || '',
-  viewerToken: 111,
+  viewerToken: params.viewertoken || '',
   success: function (result) {
     Utils.log('登录成功', result)
     hd.documentAdaptive(true)
