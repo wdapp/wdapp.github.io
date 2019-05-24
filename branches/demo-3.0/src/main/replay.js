@@ -9,8 +9,18 @@ import QuestionAnswer from 'components/replay/questionAnswer/questionAnswer'
 import Chat from 'components/replay/chat/chat'
 import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
+
 //显示log信息
 window.debug = true
+
+Utils.log({
+  debug: window.debug,
+  PATH: Utils.PATH,
+  useragent: Utils.useragent,
+  version: Utils.version,
+  timestamp: Utils.timestamp,
+  tag: Utils.tag,
+})
 
 //配置自定义组件
 hd.components({
@@ -34,8 +44,10 @@ hd.isShowControl(false)
 //登录
 hd.login({
   userId: params.userid || 'B27039502337407C',
-  roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
-  recordId: params.recordid || '96C0454B9E3CE464',
+  // roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
+  // recordId: params.recordid || '96C0454B9E3CE464',
+  roomId: params.roomid || '4E817009A54A9DC49C33DC5901307461',
+  recordId: params.recordid || '1EDC2FF131B30BC9',
   // userId: params.userid || '920022FE264A70C1',
   // roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
   // recordId: params.recordid || 'D606FBAFE0000829',

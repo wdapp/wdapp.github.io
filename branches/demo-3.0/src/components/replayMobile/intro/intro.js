@@ -13,8 +13,8 @@ class Intro extends Component {
   }
 
   init() {
-    hd.on('loginSuccess', (result) => {
-      this.addIntro(result.room.desc)
+    hd.on('roomDesc', (desc) => {
+      this.addIntro(desc)
     })
   }
 

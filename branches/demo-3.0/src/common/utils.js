@@ -21,6 +21,25 @@ class Utils {
     }
   }
 
+  static get version() {
+    let _version = '1.0.0'
+    return _version
+  }
+
+  static get tag() {
+    let _tag = '1.0.0'
+    return _tag
+  }
+
+  static get timestamp() {
+    let _timestamp = '1.0.0'
+    return _timestamp
+  }
+
+  static get useragent() {
+    return navigator.userAgent
+  }
+
   static stringToJSON(d) {
     if (!d) {
       return {}
@@ -61,15 +80,11 @@ class Utils {
   }
 
   static isMobile() {
-    return /iPad|iPhone|Android|Windows Phone/ig.test(this.getUserAgent())
+    return /iPad|iPhone|Android|Windows Phone/ig.test(this.useragent())
   }
 
   static isReaply(address = '') {
     return /recordid|liveid/.test(address) && /callback/.test(address)
-  }
-
-  static getUserAgent() {
-    return navigator.userAgent
   }
 
   static parseUrl(url = '') {

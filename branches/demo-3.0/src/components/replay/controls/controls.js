@@ -22,6 +22,7 @@ class Controls extends Component {
   isShowRight = true
   isMute = false
   volume = 0
+  isFullScreen = false
 
   constructor() {
     super()
@@ -47,6 +48,8 @@ class Controls extends Component {
     this.playRateWrap = this.getNode('playRateWrap')
     this.playRateList = this.getNode('playRateList')
     this.playRateBtn = this.getNode('playRateBtn')
+    this.fullScreenButtonWrap = this.getNode('fullScreenButtonWrap')
+    this.fullScreenButton = this.fullScreenButtonWrap.getElementsByClassName('full-screen-btn')[0]
     this.playRateNumber = [...document.getElementsByClassName('play-rate-number')]
 
     this.initHD()
@@ -115,6 +118,28 @@ class Controls extends Component {
     this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
     this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
     this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
+    this.bind(this.fullScreenButtonWrap, 'click', this.bindfullScreen.bind(this))
+  }
+
+  bindfullScreen() {
+    if (this.isFullScreen) {
+      this.ui.showLeft()
+      this.ui.showRight()
+      this.isShowLeft = true
+      this.isShowRight = true
+    } else {
+      this.ui.hideLeft()
+      this.ui.hideRight()
+      this.isShowRight = false
+      this.isShowLeft = false
+    }
+    this.isFullScreen = !this.isFullScreen
+  }
+
+  updateFullScreenState() {
+    if (this.isShowLeft == this.isShowRight) {
+      this.isFullScreen = !this.isShowLeft
+    }
   }
 
   bindLeftBar() {
@@ -128,6 +153,7 @@ class Controls extends Component {
       })
     }
     this.isShowLeft = !this.isShowLeft
+    this.updateFullScreenState()
   }
 
   bindRightBar() {
@@ -141,6 +167,7 @@ class Controls extends Component {
       })
     }
     this.isShowRight = !this.isShowRight
+    this.updateFullScreenState()
   }
 
   bindSwitchBtnWrap() {
