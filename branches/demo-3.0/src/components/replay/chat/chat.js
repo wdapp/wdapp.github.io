@@ -19,6 +19,12 @@ class Chat extends Component {
       this.filterChatMessage(message)
     })
 
+    // this.testAutoSendMessage()
+
+    window.showMsgImage = function (event) {
+      Utils.log('showMsgImage', event)
+    }
+
     let chatMessageScrollWrap = this.getNode('chatMessageScrollWrap')
 
     this.bind(chatMessageScrollWrap, 'mouseleave', () => {
@@ -27,6 +33,26 @@ class Chat extends Component {
     this.bind(chatMessageScrollWrap, 'mouseenter', () => {
       this.isScroll = false
     })
+  }
+
+  testAutoSendMessage() {
+    let message = {
+      chatId: '77380773',
+      groupId: '',
+      msg: '这是一段测试信息 1234567890 abcdefg hello world' + Math.random() + (new Date()),
+      role: 2,
+      status: '0',
+      time: 151,
+      userRole: 'student',
+      useravatar: '',
+      usercustommark: '',
+      userid: '754eb8f9faac4102a75b5c3497675557',
+      username: '李白'
+    }
+    setInterval(() => {
+      message.msg = '这是一段测试信息 1234567890 abcdefg hello world' + Math.random() + (new Date())
+      this.filterChatMessage(message)
+    }, 1000)
   }
 
   filterChatMessage(message) {
@@ -77,16 +103,16 @@ class Chat extends Component {
   }
 
   addMessage(message) {
-    let mesageTemplate = `
+    let messageTemplate = `
        <li class="chat-content-wrap" style="display: ${message.status == '0' ? 'block' : 'none'}">
-        <p class="chat-name ${message.userRole !== 'student' ? 'teacher' : ''}">${message.username}</p>
+        <p class="chat-name ${message.userRole !== 'student' ? 'teacher' : ''}">${message.username}：</p>
         <div class="chat-message">
           ${Utils.showEm(message.msg)}
         </div>
       </li>
     `
     let chatMessageWrap = this.getNode('chatMessageWrap')
-    this.appendChild(chatMessageWrap, mesageTemplate)
+    this.appendChild(chatMessageWrap, messageTemplate)
     this.scrollTopMessage(chatMessageWrap)
   }
 

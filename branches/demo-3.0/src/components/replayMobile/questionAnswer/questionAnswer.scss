@@ -20,7 +20,7 @@
             @include ellipsis();
             display: inline-block;
             max-width: 2rem;
-            vertical-align: middle;
+            vertical-align: baseline;
           }
           .question-tip {
             margin-left: .1rem;

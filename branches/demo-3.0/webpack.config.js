@@ -165,9 +165,9 @@ module.exports = {
       template: './src/replay-mobile.html',
       chunks: ['replayMobile']
     }),
-    new UglifyJsPlugin({
-      sourceMap: true,
-      parallel: true
-    })
+    // new UglifyJsPlugin({
+    //   sourceMap: true,
+    //   parallel: true
+    // })
   ]
 }

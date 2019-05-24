@@ -36,6 +36,14 @@
           line-height: .34rem;
           margin-top: .2rem;
           @include word-break();
+          img {
+            width: .48rem;
+            margin: 0 2px;
+            box-sizing: content-box;
+          }
+        }
+        .chatImage {
+          max-width: 70%;
         }
         .self {
           color: #3D96F5

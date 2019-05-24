@@ -2,6 +2,7 @@ import Component from 'common/component'
 import template from './navigation.html'
 import './navigation.scss'
 import Utils from 'common/utils'
+import Swiper from 'swiper'//解决移动端点击延迟问题
 import UserInterface from 'common/userInterface'
 
 class Navigation extends Component {
@@ -19,19 +20,34 @@ class Navigation extends Component {
   }
 
   init() {
+    //初始化导航
     Utils.log('navigation options', this.options)
     this.select = this.getNode('select')
     this.navigationOptions = this.getNode('navigationOptions')
     this.addOptions(this.navigationOptions, this.options, () => {
       this.eventEntrust()
     })
-    this.ui = new UserInterface()
-    this.updateSelect(this.index)
-    hd.on('activeIndex', (index) => {
-      this.index = index
-      this.updateSelect(this.index)
-      Utils.log('Swiper', this.index)
+
+    //配置Swiper
+    let self = this
+    this.swiper = new Swiper('.swiper-container', {
+      direction: 'horizontal',
+      initialSlide: 0,
+      speed: 600,
+      on: {
+        slideChangeTransitionStart: function () {
+          self.index = this.activeIndex
+          self.updateSelect(self.index)
+          Utils.log('Swiper', self.index)
+        }
+      }
     })
+
+    //创建ui对象
+    this.ui = new UserInterface()
+
+    //更新select位置
+    this.updateSelect(this.index)
   }
 
   addOptions(parent, options, callback) {
@@ -49,9 +65,9 @@ class Navigation extends Component {
       let target = event.target
       let index = target.getAttribute('index')
       this.index = parseInt(index)
-      this.updateSelect(this.index)
-      hd.emit('navigationIndex', this.index)
-      Utils.log('Swiper', this.index)
+      if (this.isChangeSelect) {
+        this.swiper.slideTo(this.index)
+      }
     })
   }
 
@@ -65,7 +81,6 @@ class Navigation extends Component {
     let width = this.select.clientWidth
     let left = (section / 2) - (width / 2)
     let _index = parseInt(index)
-    // this.select.style.left = _index * 80 + left + 'px'
     let value = _index * section + left
     this.ui.moveX(this.select, value, () => {
       this.isChangeSelect = true

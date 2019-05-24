@@ -1,9 +1,8 @@
 import 'common/hd'//提供Web SDK 观看回放事件、方法、属性
-import UserInterface from 'common/userInterface'//UI库
 import Utils from 'common/utils'//公共方法库
-import fastClick from 'fastclick'//解决移动端点击延迟问题
 import flexible from '@wdapp/flexible'//引入rem布局配置文件
-import Swiper from 'swiper'//解决移动端点击延迟问题
+import fastClick from 'fastclick'//解决移动端点击延迟问题
+import UserInterface from 'common/userInterface'//UI库
 import './styles/replay-mobile.scss'//移动端回放私有样式
 
 //自定义组件
@@ -19,20 +18,6 @@ window.debug = true
 fastClick.attach(document.body)
 
 flexible.init(750, 750)
-
-let swiper = new Swiper('.swiper-container', {
-  direction: 'horizontal',
-  initialSlide: 0,
-  on: {
-    slideChangeTransitionStart: function () {
-      hd.emit('activeIndex', this.activeIndex)
-    }
-  }
-})
-
-hd.on('navigationIndex', (index) => {
-  swiper.slideTo(index)
-})
 
 //配置自定义组件
 hd.components({

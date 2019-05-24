@@ -4,7 +4,6 @@ import './questionAnswer.scss'
 import Utils from 'common/utils'
 
 class QuestionAnswer extends Component {
-
   isScroll = true
 
   constructor() {
