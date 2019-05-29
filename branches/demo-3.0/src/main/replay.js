@@ -10,18 +10,6 @@ import Chat from 'components/replay/chat/chat'
 import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
 
-//显示log信息
-window.debug = true
-
-Utils.log({
-  debug: window.debug,
-  PATH: Utils.PATH,
-  useragent: Utils.useragent,
-  version: Utils.version,
-  timestamp: Utils.timestamp,
-  tag: Utils.tag,
-})
-
 //配置自定义组件
 hd.components({
   Player,
@@ -57,7 +45,7 @@ hd.login({
   fastMode: params.fastMode,
   // isH5play: false,
   // fastMode: false,
-  success: function (result) {
+  success (result) {
     Utils.log('登录成功', result)
     //开启极速文档自适应模式
     hd.documentAdaptive(true)
@@ -65,7 +53,7 @@ hd.login({
       content: '登录成功'
     })
   },
-  fail: function (error) {
+  fail (error) {
     Utils.log('登录失败', error)
     ui.alert({
       type: 'danger',
