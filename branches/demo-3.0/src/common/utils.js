@@ -29,7 +29,7 @@ class Utils {
   }
 
   static get tag() {
-    let _tag = '1.0.0'
+    let _tag = '1.0.1'
     return _tag
   }
 

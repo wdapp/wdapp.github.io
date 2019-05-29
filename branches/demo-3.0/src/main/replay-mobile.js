@@ -48,6 +48,8 @@ hd.login({
   // recordId: params.recordid || 'D606FBAFE0000829',
   viewerName: params.username || '移动的关羽',
   viewerToken: params.viewertoken || '',
+  isH5play: params.isH5play,
+  fastMode: params.fastMode,
   success (result) {
     Utils.log('登录成功', result)
     hd.documentAdaptive(true)
