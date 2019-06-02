@@ -1,6 +1,7 @@
 import Component from 'common/component'
 import template from './player.html'
 import './player.scss'
+import './orientation'
 
 class Player extends Component {
   constructor() {

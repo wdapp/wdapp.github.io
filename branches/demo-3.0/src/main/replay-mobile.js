@@ -64,26 +64,6 @@ hd.login({
 })
 
 
-window.addEventListener('orientationchange', function () {
-  rotation()
-}, false)
-
-rotation()
-
-function rotation() {
-  let top = document.getElementById('top')
-  let bottom = document.getElementById('bottom')
-  if (window.orientation == 0) {
-    top.style.height = '4.22rem'
-    bottom.style.bottom = '0'
-    bottom.style.overflow = 'unset'
-  } else {
-    top.style.height = '100%'
-    bottom.style.bottom = 'unset'
-    bottom.style.overflow = 'hidden'
-  }
-}
-
 
 
 
