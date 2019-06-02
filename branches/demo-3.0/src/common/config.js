@@ -8,5 +8,5 @@ module.exports = {
   // path: '192.168.200.33:8080',
   version: '1.0.0',
   timestamp: (new Date()),
-  tag: '1.0.1'
+  tag: '1.0.2'
 }
