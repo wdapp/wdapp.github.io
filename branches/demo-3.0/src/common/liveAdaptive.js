@@ -21,7 +21,7 @@ class LiveAdaptive {
       viewercustomua: params.viewerCustomua || '',
       language: params.language || '',
       viewercustominfo: params.viewerCustominfo || '',
-      fastMode: params.fastMode || true,
+      fastMode: params.fastMode,
     })
 
     this.addAPIFunction()
@@ -33,11 +33,25 @@ class LiveAdaptive {
     this.liveInterface.on(this.liveInterface.ONLOGINSUCCESS, (result) => {
       this.param.success && this.param.success(result)
       LiveInfo.loginInfo = LiveInfo.parseLoginInfo(result)
+      hdScience.alert('登录成功')
       hdScience.dispatch(hdScience.OnLoginSuccess)
     })
+    //直播开始
+    this.liveInterface.on(this.liveInterface.ONLIVESTART,()=>{
+      hdScience.dispatch(hdScience.OnLiveStart)
+    })
 
+    //直播结束
+    this.liveInterface.on(this.liveInterface.ONLIVEEND,()=>{
+      hdScience.dispatch(hdScience.OnLiveEnd)
+    })
+    this.liveInterface.on(this.liveInterface.ONUSERCOUNTMESSAGE,(result)=>{
+      LiveInfo.userCount = result[0]
+      hdScience.dispatch(hdScience.OnUserCountMessage)
+    })
     //监听登录失败后的回调
     this.liveInterface.on(this.liveInterface.ONLOGINERROR, (result) => {
+      hdScience.alert('登录失败', 'danger')
       this.param.success && this.param.fail(result)
     })
     //问答接收回答接收回答
@@ -57,17 +71,42 @@ class LiveAdaptive {
     })
     //收到公聊天
     this.liveInterface.on(this.liveInterface.ONPUBLICCHATMESSAGE, (result) => {
-      LiveInfo.publicChatMsgInfo = LiveInfo.parsePublicChatMsg(result);
+      LiveInfo.publicChatMsgInfo = LiveInfo.parsePublicChatMsg(result)
       hdScience.dispatch(hdScience.OnPublishChatMsg)
     })
     //收到私聊信息
     this.liveInterface.on(this.liveInterface.ONPRIVATECHATMESSAGE, (result) => {
-
-    })
-    this.liveInterface.on(this.liveInterface.ONPRIVATEANSWER,(result)=>{
+      // LiveInfo.privateChatMsg = LiveInfo.parsePrivateChat(result)
+      // hdScience.dispatch(hdScience.OnPrivateChat);
       LiveInfo.privateChatMsgInfo = LiveInfo.parsePrivateChatMsg(result)
       hdScience.dispatch(hdScience.OnPrivateChatMsg)
     })
+    //收到私聊回复
+    this.liveInterface.on(this.liveInterface.ONPRIVATEANSWER, (result) => {
+      LiveInfo.privateChatMsgInfo = LiveInfo.parsePrivateChatMsg(result, true)
+      hdScience.dispatch(hdScience.OnPrivateChatMsg)
+    })
+    //在线的老师数量
+    this.liveInterface.on(this.liveInterface.ONONLINETEACHERS, (result) => {
+      LiveInfo.onLineTeachers = LiveInfo.parseOnLineTeachers(result)
+      hdScience.dispatch(hdScience.OnLineTeachers)
+    })
+    //显示公告
+    this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTSHOW, (result) => {
+      LiveInfo.onAnnounceInfo = LiveInfo.parseAnnounceInfo(result)
+      hdScience.dispatch(hdScience.OnANnounceShow)
+    })
+    this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTRELEASE, (result) => {
+      console.log('发布公告' + result)
+    })
+    //简介
+    this.liveInterface.on(this.liveInterface.ONLIVEDESC, (result) => {
+      console.log('简介信息---》' + result)
+      LiveInfo.onLiveDesc = result[0]
+      hdScience.dispatch(hdScience.OnLiveDesc)
+    })
+
+
   }
 
 }

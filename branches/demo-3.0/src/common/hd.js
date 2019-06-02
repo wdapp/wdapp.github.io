@@ -5,11 +5,14 @@
 import 'babel-polyfill'//IE 9 兼容 ECMAScript 6
 import ReplayAdaptive from 'common/replayAdaptive'
 import Utils from 'common/utils'
+import config from 'common/config'
 
 class HDScience extends ReplayAdaptive {
 
   constructor() {
     super()
+    window.debug = config.debug
+
     Utils.log({
       debug: window.debug,
       PATH: Utils.PATH,

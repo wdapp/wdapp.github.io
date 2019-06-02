@@ -1,8 +1,13 @@
 <div class="controls">
-  <div class="slider-player-wrap">
-    <div class="slider-player">
-      <input id="playerSlider" type="text" data-slider-value="0" data-slider-min="0" data-slider-max="100"/>
+  <div class="slider-player-wrap" id="playerSliderWrap">
+    <div class="slider-player" id="sliderPlayer">
+      <input id="playerSlider" type="text" data-slider-tooltip="hide" data-slider-value="0" data-slider-min="0"
+             data-slider-max="100"/>
     </div>
+    <span class="slider-tooltip" id="sliderTooltip">
+      <div class="slider-tooltip-arrow"></div>
+      <div class="slider-tooltip-inner">00:00</div>
+    </span>
   </div>
   <div class="controls-wrap">
     <div class="controls-left">
@@ -17,7 +22,8 @@
       <div class="slider-voice-wrap">
         <span id="voiceButton" class="slider-voice-icon"></span>
         <div class="slider-voice">
-          <input id="voiceSlider" type="text" data-slider-value="1" data-slider-step="0.1" data-slider-min="0"
+          <input id="voiceSlider" type="text" data-slider-tooltip="hide" data-slider-value="1" data-slider-step="0.1"
+                 data-slider-min="0"
                  data-slider-max="1"/>
         </div>
       </div>
@@ -29,7 +35,7 @@
             <span class="quit-btn"></span>
           </div>
         </li>
-        <li class="item">
+        <li class="item" id="bulletsScreen">
           <div class="bullets-screen-btn-wrap">
             <span class="bullets-screen-btn bullets-screen-close"></span>
           </div>

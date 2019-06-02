@@ -6,6 +6,7 @@ class Document extends Component {
   constructor() {
     super()
 
+    this.name = 'document'
     this.render('document', template, () => {
 
     })

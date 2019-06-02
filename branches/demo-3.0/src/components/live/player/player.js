@@ -7,6 +7,7 @@ class Player extends Component {
   constructor() {
     super()
 
+    this.name = 'player'
     this.render('player', template, () => {
       FlashTip.init()
     })

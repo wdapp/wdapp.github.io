@@ -22,7 +22,7 @@ class Question extends Render {
 
   //创建node节点
   create(info) {
-    let qli = this.creatNode('li')
+    let qli = this.createNode('li')
     qli.className = 'question-answer-wrap'
     qli.id = info.id
     qli.questionId = info.questionId

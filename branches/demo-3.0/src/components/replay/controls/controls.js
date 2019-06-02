@@ -1,10 +1,11 @@
 import Component from 'common/component'
 import template from './controls.html'
 import './controls.scss'
-import 'bootstrap-slider/dist/css/bootstrap-slider.css'
-import Slider from 'bootstrap-slider'
+import LoadBar from './loadBar'
 import Utils from 'common/utils'
+import Slider from 'bootstrap-slider'
 import UserInterface from 'common/userInterface'
+import 'bootstrap-slider/dist/css/bootstrap-slider.css'
 
 class Controls extends Component {
 
@@ -36,6 +37,7 @@ class Controls extends Component {
     this.leftBar = this.getNode('leftBar')
     this.rightBar = this.getNode('rightBar')
     this.playButton = this.getNode('playButton')
+    this.bulletsScreen = this.getNode('bulletsScreen')
     this.playButtonIcon = this.getNode('playButtonIcon')
     this.playTimeDuration = this.getNode('playTimeDuration')
     this.palyTimeCurrent = this.getNode('palyTimeCurrent')
@@ -52,19 +54,20 @@ class Controls extends Component {
     this.fullScreenButton = this.fullScreenButtonWrap.getElementsByClassName('full-screen-btn')[0]
     this.playRateNumber = [...document.getElementsByClassName('play-rate-number')]
 
-    this.initHD()
+    this.onEvents()
 
     this.initSlider()
 
     this.handleClick()
   }
 
-  initHD() {
+  onEvents() {
     hd.onPlayerLoad(() => {
       this.isPlayerLoad = true
       this.updateVolume()
       this.setDurationTime()
       this.updateCurrentTime()
+      hd.emit('initLoadBar', this.durationTime)
       hd.emit('isPlayerLoad', this.isPlayerLoad)
       Utils.log('onPlayerLoad', this.isPlayerLoad)
     })
@@ -89,19 +92,37 @@ class Controls extends Component {
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerEnd', this.playState)
     })
+    hd.on('barrage', (barrage) => {
+      Utils.log('barrage', barrage)
+      this.bulletsScreen.style.display = barrage == 1 ? 'blcok' : 'none'
+    })
   }
 
   initSlider() {
     this.playerSlider = new Slider('#playerSlider', {
       precision: 2,
-      formatter: (value) => {
+      formatter: () => {
         return this.formatCurrentTime
       }
+    })
+    this.initTooltip()
+    hd.once('initLoadBar', (durationTime) => {
+      this.loadBar = new LoadBar({
+        element: 'playerSliderWrap',
+        durationTime: durationTime
+      })
     })
     this.playerSlider.on('slideStop', (value) => {
       this.onSeek(value)
     })
-    this.buffer = this.addBuffer()
+    this.playerSlider.on('change', (value) => {
+      if (value.newValue == 0) {
+        this.loadBar && this.loadBar.loadBarRegress()
+      } else {
+        this.loadBar && this.loadBar.loadBarGrayToOrange()
+      }
+    })
+
     this.voiceSlider = new Slider('#voiceSlider', {})
     this.voiceSlider.on('slideStop', (value) => {
       this.setVolume(value)
@@ -118,20 +139,64 @@ class Controls extends Component {
     this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
     this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
     this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
-    this.bind(this.fullScreenButtonWrap, 'click', this.bindfullScreen.bind(this))
+    this.bind(this.fullScreenButtonWrap, 'click', this.bindFullScreen.bind(this))
   }
 
-  bindfullScreen() {
+  initTooltip() {
+    let sliderTooltip = document.getElementById('sliderTooltip')
+    let toolTipWidth = 0
+    let sliderTooltipInner = sliderTooltip.getElementsByClassName('slider-tooltip-inner')[0]
+    let playerSliderWrap = document.getElementById('playerSliderWrap')
+    let playerSlider = document.getElementById('sliderPlayer')
+    let centerOffsetLeft = document.getElementById('center').offsetLeft + 10
+    let playerSliderWidth = playerSlider.clientWidth
+    let clientX = 0
+    let left = 0
+    let seconds = 0
+    let percent = 0
+    playerSlider.onmousemove = (e) => {
+      clientX = e.clientX
+      left = clientX - centerOffsetLeft
+      if (left < -10) {
+        left = 0
+      }
+      toolTipWidth = sliderTooltip.clientWidth
+      sliderTooltip.style.left = left + 10 - (toolTipWidth / 2) + 'px'
+      percent = (left / playerSliderWidth)
+      if (percent > 1) {
+        percent = 1
+      }
+      if (percent < 0) {
+        percent = 0
+      }
+      seconds = percent * this.durationTime
+      sliderTooltipInner.innerText = Utils.formatSeconds(seconds)
+    }
+    playerSliderWrap.onmouseenter = (e) => {
+      sliderTooltip.style.opacity = '1'
+    }
+    playerSliderWrap.onmouseleave = () => {
+      sliderTooltip.style.opacity = '0'
+    }
+  }
+
+  bindFullScreen() {
     if (this.isFullScreen) {
       this.ui.showLeft()
-      this.ui.showRight()
+      this.ui.showRight(() => {
+        this.initTooltip()
+      })
       this.isShowLeft = true
       this.isShowRight = true
+      this.removeClass(this.fullScreenButton, 'active')
     } else {
       this.ui.hideLeft()
-      this.ui.hideRight()
+      this.ui.hideRight(() => {
+        this.initTooltip()
+      })
       this.isShowRight = false
       this.isShowLeft = false
+      this.addClass(this.fullScreenButton, 'active')
     }
     this.isFullScreen = !this.isFullScreen
   }
@@ -145,10 +210,12 @@ class Controls extends Component {
   bindLeftBar() {
     if (this.isShowLeft) {
       this.ui.hideLeft(() => {
+        this.initTooltip()
         Utils.log('hideLeft')
       })
     } else {
       this.ui.showLeft(() => {
+        this.initTooltip()
         Utils.log('showLeft')
       })
     }
@@ -159,10 +226,12 @@ class Controls extends Component {
   bindRightBar() {
     if (this.isShowRight) {
       this.ui.hideRight(() => {
+        this.initTooltip()
         Utils.log('hideRight')
       })
     } else {
       this.ui.showRight(() => {
+        this.initTooltip()
         Utils.log('showRight')
       })
     }
@@ -279,7 +348,6 @@ class Controls extends Component {
 
   bindTimerUpdate() {
     this.updateCurrentTime()
-    this.updateBuffer()
   }
 
   setDurationTime() {
@@ -296,6 +364,11 @@ class Controls extends Component {
     this.formatCurrentTime = Utils.formatSeconds(this.currentTime)
     this.palyTimeCurrent.innerText = this.formatCurrentTime
     this.updatePlayerSliderValue()
+    if (this.currentTime > 0) {
+      this.loadBar && this.loadBar.loadBarGrayToOrange()
+    } else {
+      this.loadBar && this.loadBar.loadBarRegress()
+    }
   }
 
   updateVolume() {
@@ -362,25 +435,6 @@ class Controls extends Component {
 
   updatePlayerSliderValue() {
     this.playerSlider.setValue(this.currentTime)
-  }
-
-  addBuffer() {
-    let sliderTrack = this.getNodeByClass('slider-track')
-    let div = this.creatNode('div')
-    div.id = 'buffer'
-    div.className = 'buffer'
-    sliderTrack.insertBefore(div, sliderTrack.childNodes[0])
-  }
-
-  updateBuffer() {
-    // if (!this.isPlayerLoad) {
-    //   return false
-    // }
-    // let buffer = (hd.buffer / this.durationTime) * 100
-    // console.log(buffer)
-    // if (buffer <= 100) {
-    //   this.buffer.style.width = buffer + '%'
-    // }
   }
 
   checkout(message) {

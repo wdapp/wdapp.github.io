@@ -11,10 +11,12 @@ class Utils {
   }
 
   static get PATH() {
-    let host = config.host
+    let host = config.host || 'localhost'
+    let port = config.port || '8080'
     let path = config.path
     return {
       HOST: `${host}`,
+      PORT: `${port}`,
       INDEX: `//${path}/index.html`,
       LIVE: `//${path}/live.html`,
       REPLAY: `//${path}/replay.html`,
@@ -24,17 +26,17 @@ class Utils {
   }
 
   static get version() {
-    let _version = '1.0.0'
+    let _version = config.version
     return _version
   }
 
   static get tag() {
-    let _tag = '1.0.1'
+    let _tag = config.tag
     return _tag
   }
 
   static get timestamp() {
-    let _timestamp = '1.0.0'
+    let _timestamp = config.timestamp
     return _timestamp
   }
 
@@ -82,7 +84,7 @@ class Utils {
   }
 
   static isMobile() {
-    return /iPad|iPhone|Android|Windows Phone/ig.test(this.useragent())
+    return /iPad|iPhone|Android|Windows Phone/ig.test(this.useragent)
   }
 
   static isReaply(address = '') {

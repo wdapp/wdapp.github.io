@@ -23,7 +23,7 @@ class UI extends Render {
 
   setUserCount(l) {
     let userCount = this.getNodeByClass('controls-online-number')
-    this.innerHTML(userCount, l)
+    this.innerHTML(userCount, l.toString())
   }
 
   setViewName(name) {

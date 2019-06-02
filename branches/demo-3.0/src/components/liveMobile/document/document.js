@@ -9,6 +9,7 @@ class Document extends Component {
     this.render('document', template, () => {
 
     })
+    this.name = 'document'
   }
 }
 

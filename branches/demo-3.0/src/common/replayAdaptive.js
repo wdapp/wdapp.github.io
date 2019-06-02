@@ -69,7 +69,8 @@ class ReplayAdaptive extends EventEmitter {
      *      room: {
      *         desc: '<p>&nbsp; &nbsp; &nbsp;直播间描述简介</p>',
      *         liveStartTime: '2018-06-06 01:50:41.0',
-     *         name: '直播间标题'
+     *         name: '直播间标题',
+     *         barrage: '是否启用弹幕功能'
      *       },
      *       template: {
      *          desc: '视频，文档，聊天，问答',

@@ -10,7 +10,6 @@
     "bootstrap-slider": "^10.6.1",
     "border-1px.css": "^1.0.0",
     "fastclick": "^1.0.6",
-    "javascript-state-machine": "^3.1.0",
     "jquery": "^3.4.0",
     "jquery-lazyload": "^1.9.7",
     "onfire.js": "^2.0.1",
@@ -39,12 +38,15 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-server": "^3.3.1",
+    "webpack-merge": "^4.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --progress --colors",
-    "build": "webpack --mode=production --devtool=none"
+    "test": "webpack --mode=production --devtool=none",
+    "serve": "webpack-dev-server --inline --progress",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "start": "npm run dev",
+    "build": "node build/webpack.prod.conf.js"
   },
   "author": "ada",
   "license": "ISC"

@@ -9,6 +9,7 @@ class QuestionAnswer extends Component {
 
   constructor() {
     super()
+    this.name = 'qa'
     this.render('questionAnswer', template, () => {
     })
     this.qaMap = {}

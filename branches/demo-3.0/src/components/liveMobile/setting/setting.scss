@@ -18,7 +18,7 @@
   .model-full {
     @include width-height-full();
     background-color: white;
-    display: none;
+    //display: none;
     .announcement-wrap {
       .header {
         height: .8rem;
@@ -56,7 +56,7 @@
     @include layout(.81rem, 0, 0, 0);
     background-color: white;
     overflow-y: auto;
-    display: none;
+    //display: none;
     .setting-options-wrap {
       box-sizing: border-box;
       padding: .2rem 0rem;

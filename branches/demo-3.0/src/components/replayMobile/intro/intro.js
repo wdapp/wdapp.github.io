@@ -13,7 +13,7 @@ class Intro extends Component {
   }
 
   init() {
-    hd.on('roomDesc', (desc) => {
+    hd.on('desc', (desc) => {
       this.addIntro(desc)
     })
   }

@@ -282,7 +282,7 @@
             line-height: .2rem;
             border: 1px solid #dddddd;
             background-color: #ffffff;
-            .option {
+            .li-opt {
               @include ellipsis();
               padding-left: .08rem;
               box-sizing: border-box;
@@ -292,10 +292,11 @@
               color: #333333;
               cursor: default;
             }
-            .active {
+            .li-opt:hover {
               background-color: #55baf9;
               color: #ffffff;
             }
+
           }
         }
         .active {

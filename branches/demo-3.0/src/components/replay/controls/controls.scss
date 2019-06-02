@@ -16,8 +16,53 @@
     height: 4px;
     width: 100%;
     background-color: #757575;
-    //background-color: #999999;
-    //background-color: #ff920a;
+    .slider-tooltip{
+      opacity: 0;
+      left: 0;
+      margin-top: -36px;
+      pointer-events: none;
+      padding: 5px 0;
+      position: absolute;
+      display: block;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.42857143;
+      line-break: auto;
+      text-align: left;
+      text-align: start;
+      text-decoration: none;
+      text-shadow: none;
+      text-transform: none;
+      letter-spacing: normal;
+      word-break: normal;
+      word-spacing: normal;
+      word-wrap: normal;
+      white-space: normal;
+      font-size: 12px;
+      filter: alpha(opacity=0);
+      .slider-tooltip-arrow{
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        bottom: 0;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px 5px 0;
+        border-top-color: #000;
+      }
+      .slider-tooltip-inner{
+        white-space: nowrap;
+        max-width: none;
+        padding: 3px 8px;
+        color: #fff;
+        text-align: center;
+        background-color: #000;
+        border-radius: 4px;
+      }
+    }
     .slider-player {
       @include layout(0, 0, 0, .1rem);
       .slider {
@@ -289,6 +334,12 @@
             }
             .full-screen-btn:hover {
               background: url(~assets/images/icon-playbar.png) no-repeat -294px -124px;
+            }
+            .active {
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -223px;
+            }
+            .active:hover {
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -173px;
             }
           }
         }

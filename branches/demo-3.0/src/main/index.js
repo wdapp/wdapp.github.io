@@ -4,17 +4,6 @@ import 'reset-css'//重置样式
 
 import Login from 'components/login/login'
 
-import Utils from 'common/utils'//公共方法库
-
-Utils.log({
-  debug: window.debug,
-  PATH: Utils.PATH,
-  useragent: Utils.useragent,
-  version: Utils.version,
-  timestamp: Utils.timestamp,
-  tag: Utils.tag,
-})
-
 flexible.init(750, 750)
 
 new Login()

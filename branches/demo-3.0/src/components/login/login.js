@@ -3,6 +3,7 @@ import Utils from 'common/utils'
 import Model from './model'
 import template from './login.html'
 import './login.scss'
+import UserInterface from 'common/userInterface'//UI库
 
 class Login extends Component {
 
@@ -24,7 +25,13 @@ class Login extends Component {
   }
 
   init() {
+    this.ui = new UserInterface()
+
     this._address = document.getElementById('address') || {}
+    this._viewername = document.getElementById('viewername') || ''
+    this._viewertoken = document.getElementById('viewertoken') || ''
+    this._isH5play = document.getElementById('isH5play')
+    this._fastMode = document.getElementById('fastMode')
     this._enterRoom = document.getElementById('enterRoom') || {}
     this._liveButton = document.getElementById('liveButton') || {}
     this._replayButton = document.getElementById('replayButton') || {}
@@ -66,11 +73,11 @@ class Login extends Component {
   bindLiveClick(e = {}) {
     Utils.log('bindLiveClick', e)
     if (!this.setLocalStorage()) {
-      alert('观看地址不能为空')
+      this.ui.alert({content: '观看地址不能为空', type: 'warning'})
       return false
     }
     if (!this.checkoutAddress()) {
-      alert('请输入正确的观看地址')
+      this.ui.alert({content: '请输入正确的观看地址', type: 'warning'})
       return false
     }
     location.href = Utils.PATH.LIVE
@@ -79,11 +86,11 @@ class Login extends Component {
   bindReplayClick(e = {}) {
     Utils.log('bindReplayClick', e)
     if (!this.setLocalStorage()) {
-      alert('观看地址不能为空')
+      this.ui.alert({content: '观看地址不能为空', type: 'warning'})
       return false
     }
     if (!this.checkoutAddress()) {
-      alert('请输入正确的观看地址')
+      this.ui.alert({content: '请输入正确的观看地址', type: 'warning'})
       return false
     }
     location.href = Utils.PATH.REPLAY
@@ -92,11 +99,11 @@ class Login extends Component {
   bindMobileLiveClick(e = {}) {
     Utils.log('bindMobileLiveClick', e)
     if (!this.setLocalStorage()) {
-      alert('观看地址不能为空')
+      this.ui.alert({content: '观看地址不能为空', type: 'warning'})
       return false
     }
     if (!this.checkoutAddress()) {
-      alert('请输入正确的观看地址')
+      this.ui.alert({content: '请输入正确的观看地址', type: 'warning'})
       return false
     }
     location.href = Utils.PATH.MOBILELIVE
@@ -105,11 +112,11 @@ class Login extends Component {
   bindMobileReplayClick(e = {}) {
     Utils.log('bindMobileReplayClick', e)
     if (!this.setLocalStorage()) {
-      alert('观看地址不能为空')
+      this.ui.alert({content: '观看地址不能为空', type: 'warning'})
       return false
     }
     if (!this.checkoutAddress()) {
-      alert('请输入正确的观看地址')
+      this.ui.alert({content: '请输入正确的观看地址', type: 'warning'})
       return false
     }
     location.href = Utils.PATH.MOBILEREPLAY
@@ -120,7 +127,7 @@ class Login extends Component {
       return false
     }
     var model = new Model()
-    model.address = this._address.value
+    model.address = this._address.value + `&viewername=${this._viewername.value}&viewertoken=${this._viewertoken.value}&fastMode=${this._isH5play.checked}&isH5play=${this._fastMode.checked}`
     if (!model.address) {
       return false
     }

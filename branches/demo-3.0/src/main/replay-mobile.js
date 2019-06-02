@@ -13,8 +13,6 @@ import Chat from 'components/replayMobile/chat/chat'
 import QuestionAnswer from 'components/replayMobile/questionAnswer/questionAnswer'
 import Intro from 'components/replayMobile/intro/intro'
 
-window.debug = true
-
 fastClick.attach(document.body)
 
 flexible.init(750, 750)
@@ -46,19 +44,17 @@ hd.login({
   // userId: params.userid || '920022FE264A70C1',
   // roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
   // recordId: params.recordid || 'D606FBAFE0000829',
-  viewerName: params.username || '移动的关羽',
+  viewerName: params.viewername || '移动的关羽',
   viewerToken: params.viewertoken || '',
-  isH5play: params.isH5play,
-  fastMode: params.fastMode,
-  success (result) {
+  success(result) {
     Utils.log('登录成功', result)
     hd.documentAdaptive(true)
-    hd.emit('roomDesc', result.room.desc)
+    hd.emit('desc', result.room.desc)
     ui.alert({
       content: '登录成功'
     })
   },
-  fail (error) {
+  fail(error) {
     Utils.log('登录失败', error)
     ui.alert({
       type: 'danger',
@@ -67,6 +63,26 @@ hd.login({
   }
 })
 
+
+window.addEventListener('orientationchange', function () {
+  rotation()
+}, false)
+
+rotation()
+
+function rotation() {
+  let top = document.getElementById('top')
+  let bottom = document.getElementById('bottom')
+  if (window.orientation == 0) {
+    top.style.height = '4.22rem'
+    bottom.style.bottom = '0'
+    bottom.style.overflow = 'unset'
+  } else {
+    top.style.height = '100%'
+    bottom.style.bottom = 'unset'
+    bottom.style.overflow = 'hidden'
+  }
+}
 
 
 

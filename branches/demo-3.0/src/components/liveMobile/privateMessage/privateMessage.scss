@@ -23,7 +23,7 @@
       @include width-height-same(.56rem);
       background: url(~assets/images/icon-back.png) center no-repeat;
       background-size: 30%;
-      //display: none;
+      display: none;
     }
     .private-message-close {
       display: inline-block;
@@ -36,7 +36,7 @@
   .private-message-body {
     @include layout(.8rem, 0, 0, 0);
     .private-message-list-wrap {
-      display: none;
+      //display: none;
       @include width-height-full();
       padding: 0 .3rem;
       box-sizing: border-box;
@@ -73,7 +73,7 @@
       }
     }
     .private-message-content-wrap {
-      //display: none;
+      display: none;
       @include layout(0, 0, .9rem, 0);
       padding: 0 .3rem;
       box-sizing: border-box;
@@ -104,7 +104,7 @@
       box-sizing: border-box;
       padding: 0 .1rem;
       height: .9rem;
-      //display: none;
+      display: none;
       .gift-button-wrap {
         .gift-button {
 
@@ -162,7 +162,7 @@
           background-size: 100%;
         }
         .emoji-table {
-          //display: none;
+          display: none;
           border: 1px solid #ccc;
           position: absolute;
           top: -1.36rem;

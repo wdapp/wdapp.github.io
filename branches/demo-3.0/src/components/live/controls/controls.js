@@ -12,6 +12,7 @@ class Controls extends Component {
 
   constructor() {
     super()
+    this.name = 'controls'
     this.render('controls', template, () => {
     })
     this.init()
@@ -24,17 +25,16 @@ class Controls extends Component {
   }
 
   addSDKEvent() {
-
-    // var userCount = this.liveSDK.on(this.liveSDK.ONUSERCOUNTMESSAGE)
-    // userCount.then((j)=>{
-    //   this.ui.setUserCount(j)
-    // })
   }
 
   addEvents() {
     hdScience.addEvent(hdScience.OnLoginSuccess, () => {
-      this.liveSdk=hdScience.getObjectForName(hdScience.LiveInterface)
+      this.liveSdk = hdScience.getObjectForName(hdScience.LiveInterface)
       this.initUserInfo()
+    })
+    hdScience.addEvent(hdScience.OnUserCountMessage,()=>{
+
+      this.ui.setUserCount( parseInt(LiveInfo.userCount));
     })
 
   }

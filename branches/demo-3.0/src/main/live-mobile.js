@@ -1,13 +1,8 @@
-import 'common/HDScience'//直播核心对象
-import './styles/live-mobile.scss'//移动端观看直播私有样式
-import Swiper from 'swiper'//解决移动端点击延迟问题
-import fastClick from 'fastclick'//解决移动端点击延迟问题
-import flexible from '@wdapp/flexible'//引入rem布局配置文件
-
-import LiveAdaptive from 'common/liveAdaptive'
-import Utils from 'common/utils'//公共方法库
-import UserInterface from 'common/userInterface'
-
+import 'common/HDScience' //直播核心对象
+import './styles/live-mobile.scss' //移动端观看直播私有样式
+import fastClick from 'fastclick' //解决移动端点击延迟问题
+import flexible from '@wdapp/flexible' //引入rem布局配置文件
+import Utils from 'common/utils' //公共方法库
 //自定义组件
 import Player from 'components/liveMobile/player/player'
 import Document from 'components/liveMobile/document/document'
@@ -20,57 +15,20 @@ import QuestionAnswer from 'components/liveMobile/questionAnswer/questionAnswer'
 import Intro from 'components/liveMobile/intro/intro'
 
 window.debug = true
-
-window.onload = function () {
-
-  fastClick.attach(document.body)
-  flexible.init(750, 750)
-
-  let swiper = new Swiper('.swiper-container', {
-    direction: 'horizontal',
-    initialSlide: 0
-  })
-
-  new Player()
-
-  new Document()
-
-  new Controls()
-
-  new Navigation()
-
-  new Setting()
-
-  new Chat()
-
-  new PrivateMessage()
-
-  new QuestionAnswer()
-
-  new Intro()
-
-  let params = Utils.parseUrl(localStorage.address)
-
-  var liveAdaptive = new LiveAdaptive()
-
-  liveAdaptive.init({
-    userId: params.userid || 'B27039502337407C',
-    roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
-    viewerName: params.viewername || '抖音BGM',
-    viewerToken: '',
-    groupId: '',
-    viewerCustominfo: '',
-    viewerCustomua: 'web',
-    language: 'en',
-    fastMode: true,
-    success: function (result) {
-      Utils.log(result)
+fastClick.attach(document.body)
+flexible.init(750, 750)
+let params = Utils.parseUrl(localStorage.address)
+hdScience.register({
+    modules: [Player, Document, Controls, Navigation, Setting, Chat, PrivateMessage, QuestionAnswer, Intro],
+    config: params,
+    success: function (data) {
+      console.log('neirong' + data)
     },
-    fail: function (error) {
-      Utils.log(error)
+    fail: function (data) {
+      console.log('ddd' + data)
     }
-  })
+  }
+)
 
-}
 
 

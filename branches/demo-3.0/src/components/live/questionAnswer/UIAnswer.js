@@ -14,7 +14,7 @@ class Answer extends Render {
   }
 
   create() {
-    let answerNode = this.creatNode('div')
+    let answerNode = this.createNode('div')
     answerNode.className = 'anwser-wrap'
     this.innerHTML(answerNode, this.nodeAnswerHtml)
     this.appendChild(this.parentQNodeId, answerNode)

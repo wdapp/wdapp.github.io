@@ -90,38 +90,68 @@ class LiveInfo {
     }
     return publishs
   }
+
   //解析公共聊天数据
-  static parsePublicChatMsg(d){
-    if(!d)return {}
-    let data = Utils.stringToJSON(d);
-    let viewerId = LiveInfo.getLoginInfoData('viewer', 'id');
-    let  obj={
-      userId:data.userid,
-      userName:data.username,
-      userRole:data.userrole,//是否是学生
-      groupId:data.groupId,
-      msg:data.msg,
-      time:data.time,
-      chatId:data.chatId,
-      status:data.status,
-      self:(data.userid === viewerId)
+  static parsePublicChatMsg(d) {
+    if (!d) return {}
+    let data = Utils.stringToJSON(d)
+    let viewerId = LiveInfo.getLoginInfoData('viewer', 'id')
+    let obj = {
+      userId: data.userid,
+      userName: data.username,
+      userRole: data.userrole,//是否是学生
+      groupId: data.groupId,
+      msg: data.msg,
+      time: data.time,
+      chatId: data.chatId,
+      status: data.status,
+      self: (data.userid === viewerId)
     }
     return obj
   }
-  static parsePrivateChatMsg(d){
-    if(!d)return {}
-    let  data =Utils.stringToJSON(d);
-    let  obj = {
-      fromUserId:data.fromuserid,
-      fromUserName:data.fromusername,
-      fromUserRole:data.fromuserrole,
-      msg:data.msg,
-      time:data.time,
-      toUserId:data.touserid,
-      toUserName:data.tousername,
+
+  static parsePrivateChatMsg(d, l = false) {
+    if (!d) return {}
+    let data = Utils.stringToJSON(d)
+    let viewerId = LiveInfo.getLoginInfoData('viewer', 'id')
+    let obj = {
+      fromUserId: data.fromuserid,
+      fromUserName: data.fromusername,
+      fromUserRole: data.fromuserrole,
+      msg: data.msg,
+      time: data.time,
+      toUserId: data.touserid,
+      toUserName: data.tousername,
+      fSelf: (data.fromuserid === viewerId),
+      tSelf: (data.touserid === viewerId),
+      left: l
     }
-    return obj;
+    return obj
   }
+
+  static parseOnLineTeachers(d) {
+    if (!d) return {}
+    let dd = d[0]
+    let data = dd.teachers
+    let teachers = []
+    for (let i = 0; i < data.length; i++) {
+      var obj = {
+        id: data[i].id,
+        name: data[i].name,
+        ip: data[i].ip,
+        role: data[i].role
+      }
+      teachers.push(obj)
+    }
+    return teachers
+  }
+
+  static parseAnnounceInfo(d) {
+    if (!d) return {}
+    let dd = d[0]
+    return dd
+  }
+
 
 }
 

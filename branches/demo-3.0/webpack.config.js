@@ -5,6 +5,8 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 //压缩javascript插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+//配置文件
+const config = require('./src/common/config')
 
 module.exports = {
   mode: 'development',//development production
@@ -34,8 +36,7 @@ module.exports = {
   },
 
   devServer: {
-    host: '192.168.200.33',
-    // host: '192.168.199.137',
+    host: config.host,
     //设置为true，当源文件改变时会自动刷新页面
     inline: false,
     //本地服务器所加载的页面所在的目录
@@ -43,7 +44,7 @@ module.exports = {
     //禁止跳转
     historyApiFallback: true,
     //端口
-    port: 8080
+    port: config.port
   },
 
   performance: {
@@ -58,7 +59,7 @@ module.exports = {
 
       {
         test: /\.(html)$/,
-        include: path.join(__dirname, '/src/components'),
+        include: path.join(__dirname, 'src/components'),
         use: {
           loader: 'html-loader',
           options: {

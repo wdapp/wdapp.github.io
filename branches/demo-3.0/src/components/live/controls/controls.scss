@@ -12,6 +12,7 @@
   .controls-wrap {
     @include width-height-full();
     box-sizing: border-box;
+    min-width: 3.7rem;
     background: rgba(241, 241, 241, 1);
     padding: .15rem .15rem 0 .2rem;
     .controls-left-wrap {

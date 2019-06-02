@@ -26,6 +26,7 @@ class Render {
   }
 
   innerHTML(node = {}, template = '') {
+    // console.log("当前在线人数" + template)
     Utils.isEmptyString(template) && this.isEmptyNode(node) && (node.innerHTML = template)
   }
 
@@ -33,15 +34,28 @@ class Render {
     if (!node || typeof node !== 'object') {
       return false
     }
-    return node.nodeType > 0 ? true : false
+    if (node.nodeType) {
+      return node.nodeType > 0 ? true : false
+    }
+    return false
   }
 
   deleteNode(node = {}) {
-    if (!this.isEmptyNode(node)) {
-      return false
+    if (node.length > 0) {
+      node.forEach((element, index) => {
+        if (!this.isEmptyNode(element)) {
+          return false
+        }
+        this.getRoot().removeChild(element)
+      })
+      return true
+    } else {
+      if (!this.isEmptyNode(node)) {
+        return false
+      }
+      this.getRoot().removeChild(node)
+      return true
     }
-    this.getRoot().removeChild(node)
-    return true
   }
 
   deleteNodes(nodes = []) {
@@ -55,7 +69,7 @@ class Render {
     }
   }
 
-  creatNode(node = 'div') {
+  createNode(node = 'div') {
     return document.createElement(node)
   }
 
@@ -82,8 +96,9 @@ class Render {
       return false
     }
     if (childNodeId.length < 1) {
-      var children = node.children
-      for (let i = 0; i < children.length; i++) {
+      let children = node.children
+      let length = children.length
+      for (let i = length - 1; i >= 0; i--) {
         node.removeChild(children[i])
       }
     } else {
@@ -107,7 +122,7 @@ class Render {
     }
     if (this.isEmptyNode(node) && Utils.isEmptyString(child)) {
       let template = child
-      let div = this.creatNode('div')
+      let div = this.createNode('div')
       div.innerHTML = template
       let children = [...div.children]
       children.forEach(function (child) {
@@ -118,11 +133,27 @@ class Render {
     return false
   }
 
+  appendHtml(node, html = '') {
+    if (!node) return
+
+    if (this.isEmptyNode(node)) {
+      let h = node.innerHTML
+      let content = h + html
+      node.innerHTML = content
+    }
+    if (Utils.isEmptyString(node)) {
+      let n = this.getNode(node)
+      let h = n.innerHTML
+      let content = h + html
+      n.innerHTML = content
+    }
+  }
+
   getChildNode(id = '', index = 0) {
     if (!id) {
       return false
     }
-    let element = this.getNode(node)
+    let element = this.getNode(id)
     return element.children[index]
     return true
   }
@@ -165,10 +196,17 @@ class Render {
   //------
 
   setStyle(node, style) {
-    let element = this.getNode(node)
-    if (this.isEmptyNode(element)) {
-      element.style = style
+    let element
+    if (this.isEmptyNode(node)) {
+      element = node
+    } else {
+      element = this.getNode(node)
     }
+    if (!element) return
+    for (let str in style) {
+      element.style[str] = style[str]
+    }
+
   }
 
   getAttr(node, attr) {
