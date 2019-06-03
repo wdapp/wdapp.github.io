@@ -44,9 +44,10 @@
   "scripts": {
     "test": "webpack --mode=production --devtool=none",
     "serve": "webpack-dev-server --inline --progress",
+    "prod": "webpack-dev-server --inline --progress --config build/webpack.prod.conf.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/webpack.prod.conf.js"
+    "build": "node build/build.js"
   },
   "author": "ada",
   "license": "ISC"

@@ -1,4 +1,3 @@
-const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -14,5 +13,5 @@ const webpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
-webpack(webpackConfig, (err, stats) => {
-})
+module.exports = webpackConfig
+

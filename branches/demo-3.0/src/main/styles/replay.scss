@@ -43,7 +43,7 @@
     .left-bar:hover {
       opacity: 1;
     }
-    .active {
+    .left-bar-active {
       opacity: 1;
       left: 0;
       .left-bar-swith {
@@ -98,7 +98,7 @@
     .right-bar:hover {
       opacity: 1;
     }
-    .active {
+    .right-bar-active {
       opacity: 1;
       right: 0;
       .right-bar-swith {

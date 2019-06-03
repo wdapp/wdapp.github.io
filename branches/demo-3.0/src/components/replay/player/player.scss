@@ -3,11 +3,17 @@
 .player {
   @include width-height-full();
   background-color: #333333;
-  #playbackPlayer {
+  .live-player {
     @include width-height-full();
+    .video-tip{
+      @include width-height-full();
+      color: #eeeeee;
+      text-align: center;
+      line-height: 1.96rem;
+      display: inline-block;
+    }
     video {
-      width: 100%;
-      height: 100%;
+      @include width-height-full();
     }
   }
 }

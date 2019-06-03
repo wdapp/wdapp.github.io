@@ -112,6 +112,24 @@ class Utils {
       params[key] = value
     })
 
+    if (typeof params.isH5play != 'undefined') {
+      if (params.isH5play == 'false') {
+        params.isH5play = false
+      }
+      if (params.isH5play == 'true') {
+        params.isH5play = true
+      }
+    }
+
+    if (typeof params.fastMode != 'undefined') {
+      if (params.fastMode == 'false') {
+        params.fastMode = false
+      }
+      if (params.fastMode == 'true') {
+        params.fastMode = true
+      }
+    }
+
     return params
   }
 

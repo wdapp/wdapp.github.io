@@ -1,7 +1,7 @@
 import Component from 'common/component'
 import template from './controls.html'
 import './controls.scss'
-import LoadBar from './loadBar'
+import LoadBar from './loadbar'
 import Utils from 'common/utils'
 import Slider from 'bootstrap-slider'
 import UserInterface from 'common/userInterface'

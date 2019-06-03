@@ -90,6 +90,9 @@ class ReplayAdaptive extends EventEmitter {
       this.viewerId = result.viewer.id
       this.groupId = result.viewer.groupId
       params.success && params.success(result)
+      result.isH5play = isH5play
+      result.fastMode = fastMode
+      hd.emit('loginSuccess', result)
     }
 
     /**
@@ -105,6 +108,16 @@ class ReplayAdaptive extends EventEmitter {
       params.fail && params.fail(error)
     }
     return true
+  }
+
+  onPlayerMode(callback) {
+    hd.on('loginSuccess', (result) => {
+      let _result = {
+        mode: result.isH5play ? 'video' : 'flash',
+        isH5play: result.isH5play
+      }
+      callback(_result)
+    })
   }
 
   /**

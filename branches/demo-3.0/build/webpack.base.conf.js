@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const config = require('../src/common/config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -16,6 +17,14 @@ module.exports = {
     path: path.join(__dirname, '..', 'dist'),
     filename: 'js/[name].js?hash=[hash]',
     // publicPath:"//static.csslcloud.net"
+  },
+
+  devServer: {
+    host: (config.host || 'localhost'),
+    inline: false,
+    contentBase: path.join(__dirname, '..', '/dist'),
+    historyApiFallback: true,
+    port: (config.port || '8080')
   },
 
   resolve: {

@@ -1,13 +1,13 @@
 /**
- * 获得场景视频观看回放对象
+ * 获得场景视频观看直播对象
  * 提供观看回放相关事件、方法、属性、公共方法
  * */
 import 'babel-polyfill'//IE 9 兼容 ECMAScript 6
-import ReplayAdaptive from 'common/replayAdaptive'
+import LiveAdaptive from 'common/liveAdaptive'
 import Utils from 'common/utils'
 import config from 'common/config'
 
-class HDScience extends ReplayAdaptive {
+class HDScience extends LiveAdaptive {
 
   constructor() {
     super()

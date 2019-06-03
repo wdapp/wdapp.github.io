@@ -2,14 +2,14 @@
 
 .player {
   @include width-height-full();
+  background-color: #333333;
   .live-player {
     @include width-height-full();
     video {
-
+      @include width-height-full();
     }
   }
   .video-tip {
-    display: none;
     position: absolute;
     top: 0;
     height: 4.22rem;

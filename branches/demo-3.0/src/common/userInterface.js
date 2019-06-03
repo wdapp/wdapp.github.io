@@ -89,7 +89,7 @@ class UserInterface extends Render {
       width: '0rem',
     }, {
       complete: () => {
-        this.addClass(leftBar, 'active')
+        this.addClass(leftBar, 'left-bar-active')
       }
     }, {
       easing: 'ease-out'
@@ -113,7 +113,7 @@ class UserInterface extends Render {
       width: '2.6rem',
     }, {
       complete: () => {
-        this.removeClass(leftBar, 'active')
+        this.removeClass(leftBar, 'left-bar-active')
       }
     }, {
       easing: 'easeInSine'
@@ -137,7 +137,7 @@ class UserInterface extends Render {
       width: '0rem',
     }, {
       complete: () => {
-        this.addClass(rightBar, 'active')
+        this.addClass(rightBar, 'right-bar-active')
       }
     }, {
       easing: 'ease-out'
@@ -161,7 +161,7 @@ class UserInterface extends Render {
       width: '2.6rem',
     }, {
       complete: () => {
-        this.removeClass(rightBar, 'active')
+        this.removeClass(rightBar, 'right-bar-active')
       }
     }, {
       easing: 'easeInSine'
