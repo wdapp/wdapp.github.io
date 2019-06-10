@@ -6,6 +6,7 @@ import LiveInfo from 'common/liveinfo'
 import ChatMsg from './ChatMsg'
 import PrivateChatMsg from './PrivateChatMsg'
 import Announce from './announcement'
+import Utils from 'common/utils'
 
 class Chat extends Component {
 
@@ -27,18 +28,25 @@ class Chat extends Component {
   }
 
   addEvents() {
-    hdScience.addEvent(hdScience.OnPublishChatMsg, () => {
+    HDScence.addEvent(HDScence.OnPublishChatMsg, () => {
       let msgInfo = LiveInfo.publicChatMsgInfo
-      let chatMsg = new ChatMsg()
-      chatMsg.info = msgInfo
-      this.chatMap[msgInfo.chatId] = chatMsg
+      if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
+        let chatMsg = new ChatMsg()
+        msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
+        chatMsg.info = msgInfo
+
+        this.chatMap[msgInfo.chatId] = chatMsg
+      }
+
+      this.uiChat.updateScroll()
     })
-    hdScience.addEvent(hdScience.OnPrivateChatMsg, () => {
+    HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
       let msgInfo = LiveInfo.privateChatMsgInfo
       let chatMsg = new PrivateChatMsg()
       chatMsg.info = msgInfo
+      this.uiChat.updateScroll()
     })
-    hdScience.addEvent(hdScience.OnLineTeachers, () => {
+    HDScence.addEvent(HDScence.OnLineTeachers, () => {
       let teachers = LiveInfo.onLineTeachers
       for (let i = 0; i < teachers.length; i++) {
         if (!this.teachers[teachers[i].id]) {
@@ -48,8 +56,13 @@ class Chat extends Component {
         }
       }
     })
-    hdScience.addEvent(hdScience.OnANnounceShow, () => {
+    HDScence.addEvent(HDScence.OnAnnounceShow, () => {
       this.announce.content = LiveInfo.onAnnounceInfo
+      this.announce.isShowPanel = true
+    })
+    HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
+      this.announce.content = '暂无公告'
+      this.announce.isShowPanel = false
     })
   }
 
@@ -62,6 +75,23 @@ class Chat extends Component {
     let sendMsg = this.getNode('send-chat')//发送聊天按钮
     let annouBtn = this.getNode('announcement_btn') //点击公告按钮
     let annouCloseBtn = this.getNodeByClass('announcement-close')//关闭公告按钮
+    let sendInput = this.getNode('send-chat-content')//聊天输入框
+    let chatContainer = this.getNode('chat-container')//
+    this.bind(chatContainer, 'mouseover', () => {
+
+      this.uiChat.isAutoScroll = false
+    })
+    this.bind(chatContainer, 'mouseout', () => {
+
+      this.uiChat.isAutoScroll = true
+    })
+    this.bind(sendInput, 'keydown', (e) => {
+      switch (e.keyCode.toString()) {
+        case '13':
+          sendMsgInfo()
+          break
+      }
+    })
     this.bind(annouBtn, 'click', (e) => {
       this.announce.isShowPanel = true
     })
@@ -76,7 +106,6 @@ class Chat extends Component {
 
     })
     this.bind(chatSelect, 'click', () => {
-      // console.log("dia")
       this.uiChat.isShowChatSelect = !this.uiChat.isShowChatSelect
     })
     this.bind(chatOption, 'click', (e) => {
@@ -86,7 +115,6 @@ class Chat extends Component {
         this.selectedteacherName = selected.innerHTML
         this.uiChat.selectName = this.selectedteacherName
       }
-      console.log('dangqian选择的id' + this.selectedTeacher)
     })
     this.bind(smilesList, 'click', (e) => {
       let select = e.target.parentNode
@@ -98,16 +126,46 @@ class Chat extends Component {
       }
 
     })
+    let isCanSend = true
+    let timeOutId = -1
+
+    let t = this
     this.bind(sendMsg, 'click', (e) => {
-      this.sdk = hdScience.getObjectForName(hdScience.LiveInterface)
-      if (this.selectedTeacher === 'all') {
-        this.sdk.call(this.sdk.SENDPUBLICMSG, this.uiChat.msg)
-      } else {
-        this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedteacherName, this.uiChat.msg)
-      }
-      this.uiChat.msg = ''
+      sendMsgInfo()
     })
+
+    function sendMsgInfo() {
+      if (!isCanSend) {
+        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        return
+      }
+      let msg = Utils.trim(t.uiChat.msg)
+      console.log('neirong->' + msg)
+      if (msg.length > 300) {
+        HDScence.alert('发送消息字数不能超过300', 'warning')
+        return
+      }
+      if (!msg) {
+        HDScence.alert('请输入内容', 'warning')
+        return
+      }
+      isCanSend = false
+      t.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
+      if (t.selectedTeacher === 'all') {
+        t.sdk.call(t.sdk.SENDPUBLICMSG, msg)
+      } else {
+        t.sdk.call(t.sdk.SENDPRIVATEMSG, t.selectedTeacher, t.selectedteacherName, msg)
+      }
+      t.uiChat.updateScroll()
+      t.uiChat.msg = ''
+      timeOutId = setTimeout(() => {
+        isCanSend = true
+        clearTimeout(timeOutId)
+      }, 2000)
+    }
+
   }
+
 }
 
 export default Chat

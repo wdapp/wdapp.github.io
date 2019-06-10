@@ -18,9 +18,9 @@ class QuestionAnswer extends Component {
   }
 
   bindEvent() {
-    hdScience.addEvent(hdScience.OnQuestion, this.addQuestion.bind(this))
-    hdScience.addEvent(hdScience.OnAnswer, this.addAnswer.bind(this))
-    hdScience.addEvent(hdScience.OnQAPublish, this.addQuestionPublish.bind(this))
+    HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
+    HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
+    HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
   }
 
   addQuestionPublish() {
@@ -38,12 +38,23 @@ class QuestionAnswer extends Component {
   }
 
   sendControl() {
+    let isCanSend = true
+    let timeOutId = -1
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
+      if (!isCanSend) {
+        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        return
+      }
       let sendMsg = this.getNode('sendQaMsg').value
-      let liveAPI = hdScience.getObjectForName(hdScience.LiveInterface)
+      let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
       //发送问答
       liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
       this.getNode('sendQaMsg').value = ''
+      isCanSend = false
+      timeOutId = setTimeout(() => {
+        isCanSend = true
+        clearTimeout(timeOutId)
+      }, 10000)
     })
     let selected = false
     this.bind(this.getNode('onlySelfQuestionCheckbox'), 'click', () => {
@@ -66,6 +77,7 @@ class QuestionAnswer extends Component {
       }
       selected = !selected
     })
+    this.updateScroll()
   }
 
   addQuestion() {
@@ -78,6 +90,7 @@ class QuestionAnswer extends Component {
         uiquestion.visible = false
       }
     }
+    this.updateScroll()
   }
 
   addAnswer() {
@@ -93,7 +106,16 @@ class QuestionAnswer extends Component {
       }
       let uianswer = new UIAnswer()
       uianswer.setInfo(aInfo)
+      qustion.visible = true
     }
+    this.updateScroll()
+  }
+
+  updateScroll() {
+    let container = this.getNode('question-answer')
+    let h = container.offsetHeight
+    let scrollBody = this.getNodeByClass('question-answer-list-wrap')
+    scrollBody.scrollTo(0, h)
   }
 }
 

@@ -36,7 +36,7 @@
   .private-message-body {
     @include layout(.8rem, 0, 0, 0);
     .private-message-list-wrap {
-      //display: none;
+      display: none;
       @include width-height-full();
       padding: 0 .3rem;
       box-sizing: border-box;
@@ -102,7 +102,6 @@
       @include layout(unset, 0, 0, 0);
       @include flex(row, center, space-around);
       box-sizing: border-box;
-      padding: 0 .1rem;
       height: .9rem;
       display: none;
       .gift-button-wrap {
@@ -111,6 +110,7 @@
         }
       }
       .private-message-button-wrap {
+        margin-left: .1rem;
         .private-message-button {
           left: .1rem;
           top: .09rem;
@@ -123,7 +123,7 @@
           background: url(~assets/images/icon05.png) no-repeat;
           background-size: 100%;
         }
-        .tip:after {
+        .tip::after {
           content: '';
           display: inline-block;
           width: .12rem;
@@ -137,6 +137,7 @@
         }
       }
       .send-private-message-input-wrap {
+        position: relative;
         width: 4.3rem;
         .send-private-message-input {
           width: 100%;
@@ -145,12 +146,12 @@
           font-size: .26rem;
         }
       }
-      .send-private-message-input-wrap:after {
-        content: '';
+      .send-private-message-input-border {
         display: inline-block;
         position: absolute;
         width: 5.1rem;
-        top: .75rem;
+        bottom: -7px;
+        left: 0;
         height: 1px;
         border-bottom: 1px solid #e8e8e8;
       }
@@ -162,7 +163,7 @@
           background-size: 100%;
         }
         .emoji-table {
-          display: none;
+          //display: none;
           border: 1px solid #ccc;
           position: absolute;
           top: -1.36rem;
@@ -183,9 +184,13 @@
         }
       }
       .send-private-message-button-wrap {
+        margin-right: .1rem;
+        width: 1rem;
+        height: .64rem;
         .send-private-message-button {
-          width: 1rem;
-          height: .64rem;
+          @include width-height-full();
+          line-height: .64rem;
+          text-align: center;
           background: rgba(249, 249, 249, 1);
           border-radius: .04rem;
           border: 1px solid rgba(221, 221, 221, 1);

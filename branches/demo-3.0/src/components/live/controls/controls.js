@@ -19,22 +19,34 @@ class Controls extends Component {
   }
 
   init() {
+    this.addShowBarActive()
     this.addInteractive()
     this.addEvents()
     this.addSDKEvent()
+  }
+
+  addShowBarActive() {
+    this.leftBar = this.getNode('leftBar')
+    this.rightBar = this.getNode('rightBar')
+    this.bind(this.leftBar, 'click', () => {
+      this.ui.bindLeftBar()
+    })
+    this.bind(this.rightBar, 'click', () => {
+      this.ui.bindRightBar()
+    })
   }
 
   addSDKEvent() {
   }
 
   addEvents() {
-    hdScience.addEvent(hdScience.OnLoginSuccess, () => {
-      this.liveSdk = hdScience.getObjectForName(hdScience.LiveInterface)
+    HDScence.addEvent(HDScence.OnLoginSuccess, () => {
+      this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
       this.initUserInfo()
     })
-    hdScience.addEvent(hdScience.OnUserCountMessage,()=>{
+    HDScence.addEvent(HDScence.OnUserCountMessage, () => {
 
-      this.ui.setUserCount( parseInt(LiveInfo.userCount));
+      this.ui.setUserCount(parseInt(LiveInfo.userCount))
     })
 
   }
@@ -55,12 +67,26 @@ class Controls extends Component {
     let btn_out = this.getNodeByClass('controls-quit')//获取退出按钮
     //事件监听
     this.bind(btn_out, 'click', (e) => {
-      this.liveSdk.call(this.liveSdk.LOGOUT, {
-        success: () => {
-          Utils.log('退出成功')
-          this.ui.logoutWindow()
-        }, error: () => {
-          Utils.log('退出失败')
+      this.ui.ui.modal({
+        titile: '退出',
+        content: '您确定要退出吗？',
+        cancelText: '取消',
+        confirmText: '确定',
+        cancel: () => {
+
+        },
+        confirm: () => {
+          this.liveSdk.call(this.liveSdk.LOGOUT, {
+            success: () => {
+              Utils.log('退出成功')
+              this.ui.logoutWindow()
+            }, error: () => {
+              Utils.log('退出失败')
+            }
+          })
+        },
+        complete: () => {
+
         }
       })
     })

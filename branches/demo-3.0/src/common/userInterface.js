@@ -5,10 +5,10 @@ import Render from 'common/render'//公共方法
 import Utils from 'common/utils'//公共方法
 import Velocity from 'velocity-animate'//JavaScript动画库
 import 'bootstrap'
-import 'assets/styles/ui.css'
-import 'bootstrap/dist/css/bootstrap.css'//bootstrap.css
 
 class UserInterface extends Render {
+  alertIndex = 0
+
   constructor() {
     super()
   }
@@ -17,22 +17,19 @@ class UserInterface extends Render {
     if (!Utils.isEmptyObject(options)) {
       return false
     }
-
     // type primary secondary success danger warning info light dark
-    let {content = '', type = 'success', time = 2000} = options
-
-    let template = `<div class='alert alert-${type}' role='alert'>${content}</div>`
-
+    let {content = '', type = 'success', time = 2500} = options
+    let template = `<div class="alert alert-${type ? type : 'success'}" role="alert" style="top:${(this.alertIndex < 5 ? this.alertIndex : 5) * 58}px">${content}</div>`
     let root = this.getRoot()
-
     var element = this.appendChild(root, template)
-
+    this.alertIndex++
     if (time) {
       Velocity(element, 'fadeOut', {
         delay: time,
         duration: 500,
         complete: (elements) => {
           this.deleteNodes(elements)
+          this.alertIndex--
         }
       })
     }

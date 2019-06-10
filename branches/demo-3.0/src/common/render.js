@@ -1,5 +1,5 @@
 /**
- * 组件渲染类
+ * 渲染类
  * */
 import Utils from 'common/utils'
 
@@ -26,7 +26,6 @@ class Render {
   }
 
   innerHTML(node = {}, template = '') {
-    // console.log("当前在线人数" + template)
     Utils.isEmptyString(template) && this.isEmptyNode(node) && (node.innerHTML = template)
   }
 
@@ -36,6 +35,9 @@ class Render {
     }
     if (node.nodeType) {
       return node.nodeType > 0 ? true : false
+    }
+    if (node == window) {
+      return true
     }
     return false
   }

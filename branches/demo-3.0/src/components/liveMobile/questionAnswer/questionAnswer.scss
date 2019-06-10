@@ -6,7 +6,8 @@
     @include layout(0, 0, .8rem, 0);
     overflow-y: auto;
     .question-answer-list {
-      @include width-height-full();
+      width: 100%;
+      overflow: hidden;
       box-sizing: border-box;
       padding: 0 .4rem;
       .question {
@@ -86,16 +87,16 @@
   }
   .send-question-wrap {
     @include layout(unset, 0, 0, 0);
-    height: .8rem;
+    height: .9rem;
     box-shadow: 0px -3px 10px 0px rgba(181, 183, 190, 0.2), inset 0px 1px 0px 0px #e8e9eb;
     @include flex(row, center, space-around);
-    padding: .15rem;
-    box-sizing: border-box;
     .send-question-only-self-wrap {
+      width: .46rem;
+      height: .42rem;
+      margin-left: .1rem;
       .send-question-only-self {
+        @include width-height-full();
         display: inline-block;
-        width: .46rem;
-        height: .42rem;
         background: url(~assets/images/icon-ask.png) no-repeat;
         background-size: 100%;
       }
@@ -105,28 +106,46 @@
       }
     }
     .send-question-input-wrap {
-      height: .56rem;
+      position: relative;
+      outline: none;
+      border: none;
+      font-size: .26rem;
       width: 5rem;
-      margin: 0 .05rem;
-      line-height: .56rem;
-      box-sizing: border-box;
+      height: .6rem;
       .send-question-input {
+        @include width-height-full();
+        line-height: .6rem;
+        font-size: .26rem;
+        padding: 0;
         outline: none;
         border: none;
         color: #1e1f21;
-        font-size: .24rem;
       }
-      border-bottom: 1px solid #e8e8e8;
+      .send-question-input-border {
+        display: inline-block;
+        position: absolute;
+        width: 5rem;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        border-bottom: 1px solid #e8e8e8;
+      }
     }
     .send-question-input-button-wrap {
+      width: 1rem;
+      height: .64rem;
+      margin-right: .1rem;
       .send-question-input-button {
-        width: 1rem;
-        height: .6rem;
+        @include width-height-full();
+        line-height: .64rem;
         text-align: center;
-        color: #38404b;
-        background: #f9f9f9;
-        border: 1px solid #dddddd;
-        border-radius: 2px;
+        background: rgba(249, 249, 249, 1);
+        border-radius: .04rem;
+        border: 1px solid rgba(221, 221, 221, 1);
+        outline: none;
+        font-size: .28rem;
+        font-weight: 400;
+        color: rgba(56, 64, 75, 1);
       }
     }
   }

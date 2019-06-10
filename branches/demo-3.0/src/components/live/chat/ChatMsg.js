@@ -26,12 +26,24 @@ class ChatMsg extends Render {
     this.appendMsg()
   }
 
+  set visible(v) {
+    let show = v ? 'block' : 'none'
+    if (this.node) {
+      this.setStyle(this.node, {display: show})
+    }
+  }
+
   appendMsg() {
-    let chat = this.createNode('li')
-    chat.className = `chat-content-wrap ${this.self ? 'chat-content-right' : ''}`
-    this.innerHTML(chat, this.HtmlContent)
-    this.appendChild('chat-container', chat)
+    this.node = this.createNode('li')
+    this.node.className = `chat-content-wrap ${this.self ? 'chat-content-right' : ''}`
+    this.innerHTML(this.node, this.HtmlContent)
+    this.appendChild('chat-container', this.node)
     this.getNode('chat-container').scrollTo(0, 0)
+    if (this.status === '0') {
+      this.visible = true
+    } else {
+      this.visible = false
+    }
   }
 
   get HtmlContent() {

@@ -1,4 +1,5 @@
 import Render from 'common/render'
+import Utils from 'common/utils'
 
 class UI extends Render {
   _isMainVideo = false
@@ -18,7 +19,7 @@ class UI extends Render {
   }
 
   logoutWindow() {
-    window.location.href = './index.html'
+    location.href = Utils.PATH.INDEX
   }
 
   setUserCount(l) {
@@ -35,13 +36,18 @@ class UI extends Render {
   switchPanel() {
     this.deleteChild('document')
     this.deleteChild('player')
+    let playerNode = this.getNode('player')
+    let h = playerNode.offsetHeight + 'px'
     if (this.isMainVideo) {
       this.appendChild('document', this.dpNode)
       this.appendChild('player', this.videoNode)
+      this.setStyle('document', {height: ''})
     } else {
       this.appendChild('document', this.videoNode)
       this.appendChild('player', this.dpNode)
+      this.setStyle('document', {height: h})
     }
+
     this._isMainVideo = !this._isMainVideo
   }
 

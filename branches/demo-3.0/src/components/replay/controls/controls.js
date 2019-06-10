@@ -24,6 +24,7 @@ class Controls extends Component {
   isMute = false
   volume = 0
   isFullScreen = false
+  isPlayerSliderAutoChange = true
 
   constructor() {
     super()
@@ -62,51 +63,45 @@ class Controls extends Component {
   }
 
   onEvents() {
-    hd.onPlayerLoad(() => {
+    HDScence.onPlayerLoad(() => {
       this.isPlayerLoad = true
       this.updateVolume()
       this.setDurationTime()
       this.updateCurrentTime()
-      hd.emit('initLoadBar', this.durationTime)
-      hd.emit('isPlayerLoad', this.isPlayerLoad)
+      HDScence.emit('initLoadBar', this.durationTime)
+      HDScence.emit('isPlayerLoad', this.isPlayerLoad)
       Utils.log('onPlayerLoad', this.isPlayerLoad)
     })
-    hd.onPlayerStart(() => {
+    HDScence.onPlayerStart(() => {
       this.playState = true
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerStart', this.playState)
     })
-    hd.onPlayerPause(() => {
+    HDScence.onPlayerPause(() => {
       this.playState = false
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerPause', this.playState)
     })
-    hd.onPlayerResume(() => {
+    HDScence.onPlayerResume(() => {
       this.playState = true
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerResume', this.playState)
     })
-    hd.onPlayerEnd(() => {
+    HDScence.onPlayerEnd(() => {
       this.playState = false
       this.updateCurrentTime()
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerEnd', this.playState)
     })
-    hd.on('barrage', (barrage) => {
-      Utils.log('barrage', barrage)
-      this.bulletsScreen.style.display = barrage == 1 ? 'blcok' : 'none'
+    HDScence.onBarrageInfo((data) => {
+      Utils.log('barrage', data)
+      this.bulletsScreen.style.display = data.isBarrage == 1 ? 'blcok' : 'none'
     })
   }
 
   initSlider() {
-    this.playerSlider = new Slider('#playerSlider', {
-      precision: 2,
-      formatter: () => {
-        return this.formatCurrentTime
-      }
-    })
-    this.initTooltip()
-    hd.once('initLoadBar', (durationTime) => {
+    this.playerSlider = new Slider('#playerSlider', {})
+    HDScence.once('initLoadBar', (durationTime) => {
       this.loadBar = new LoadBar({
         element: 'playerSliderWrap',
         durationTime: durationTime
@@ -122,6 +117,12 @@ class Controls extends Component {
         this.loadBar && this.loadBar.loadBarGrayToOrange()
       }
     })
+    let playerSliderWrap = document.getElementById('playerSliderWrap')
+    playerSliderWrap.onclick = (event) => {
+      if (event.target.id == 'playerSliderWrap') {
+        this.onSeek(0)
+      }
+    }
 
     this.voiceSlider = new Slider('#voiceSlider', {})
     this.voiceSlider.on('slideStop', (value) => {
@@ -142,49 +143,11 @@ class Controls extends Component {
     this.bind(this.fullScreenButtonWrap, 'click', this.bindFullScreen.bind(this))
   }
 
-  initTooltip() {
-    let sliderTooltip = document.getElementById('sliderTooltip')
-    let toolTipWidth = 0
-    let sliderTooltipInner = sliderTooltip.getElementsByClassName('slider-tooltip-inner')[0]
-    let playerSliderWrap = document.getElementById('playerSliderWrap')
-    let playerSlider = document.getElementById('sliderPlayer')
-    let centerOffsetLeft = document.getElementById('center').offsetLeft + 10
-    let playerSliderWidth = playerSlider.clientWidth
-    let clientX = 0
-    let left = 0
-    let seconds = 0
-    let percent = 0
-    playerSlider.onmousemove = (e) => {
-      clientX = e.clientX
-      left = clientX - centerOffsetLeft
-      if (left < -10) {
-        left = 0
-      }
-      toolTipWidth = sliderTooltip.clientWidth
-      sliderTooltip.style.left = left + 10 - (toolTipWidth / 2) + 'px'
-      percent = (left / playerSliderWidth)
-      if (percent > 1) {
-        percent = 1
-      }
-      if (percent < 0) {
-        percent = 0
-      }
-      seconds = percent * this.durationTime
-      sliderTooltipInner.innerText = Utils.formatSeconds(seconds)
-    }
-    playerSliderWrap.onmouseenter = (e) => {
-      sliderTooltip.style.opacity = '1'
-    }
-    playerSliderWrap.onmouseleave = () => {
-      sliderTooltip.style.opacity = '0'
-    }
-  }
-
   bindFullScreen() {
     if (this.isFullScreen) {
       this.ui.showLeft()
       this.ui.showRight(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
       })
       this.isShowLeft = true
       this.isShowRight = true
@@ -192,7 +155,7 @@ class Controls extends Component {
     } else {
       this.ui.hideLeft()
       this.ui.hideRight(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
       })
       this.isShowRight = false
       this.isShowLeft = false
@@ -210,12 +173,12 @@ class Controls extends Component {
   bindLeftBar() {
     if (this.isShowLeft) {
       this.ui.hideLeft(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
         Utils.log('hideLeft')
       })
     } else {
       this.ui.showLeft(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
         Utils.log('showLeft')
       })
     }
@@ -226,12 +189,12 @@ class Controls extends Component {
   bindRightBar() {
     if (this.isShowRight) {
       this.ui.hideRight(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
         Utils.log('hideRight')
       })
     } else {
       this.ui.showRight(() => {
-        this.initTooltip()
+        this.loadBar.initTooltip()
         Utils.log('showRight')
       })
     }
@@ -269,7 +232,7 @@ class Controls extends Component {
     this.addClass(option, 'active')
     let rateLabel = option.innerHTML
     let rate = rateLabel.substring(0, rateLabel.length - 1)
-    hd.rate = rate
+    HDScence.rate = rate
     Utils.log('rate', rate)
     this.playRateBtn.innerHTML = rateLabel
     this.interval = Math.floor(999 / rate)
@@ -306,7 +269,7 @@ class Controls extends Component {
     } else {
       this.addClass(this.thumbnailListButton.getElementsByTagName('span')[0], 'active')
       this.thumbnailWrapper.style.display = 'block'
-      hd.emit('showThumbnailList')
+      HDScence.emit('showThumbnailList')
     }
     this.isShowThumbnailList = !this.isShowThumbnailList
   }
@@ -321,7 +284,7 @@ class Controls extends Component {
 
       },
       confirm: () => {
-        hd.logout()
+        HDScence.logout()
         location.href = Utils.PATH.INDEX
       },
       complete: () => {
@@ -334,7 +297,7 @@ class Controls extends Component {
     if (!this.checkout('bindPlay')) {
       return false
     }
-    hd.togglePlay()
+    HDScence.togglePlay()
   }
 
   stopTimer() {
@@ -351,13 +314,13 @@ class Controls extends Component {
   }
 
   setDurationTime() {
-    this.durationTime = hd.durationTime
+    this.durationTime = HDScence.durationTime
     this.playTimeDuration.innerText = Utils.formatSeconds(this.durationTime)
     this.setPlayerSliderMax()
   }
 
   updateCurrentTime() {
-    this.currentTime = Math.ceil(hd.currentTime)
+    this.currentTime = Math.ceil(HDScence.currentTime)
     if (this.currentTime > this.durationTime) {
       this.currentTime = this.durationTime
     }
@@ -372,7 +335,7 @@ class Controls extends Component {
   }
 
   updateVolume() {
-    this.volume = hd.volume
+    this.volume = HDScence.volume
     this.voiceSlider.setValue(this.volume)
     this.updateMute(this.volume)
     Utils.log('updateVolume volume', this.volume)
@@ -382,8 +345,8 @@ class Controls extends Component {
     if (!this.checkout('setVolume')) {
       return false
     }
-    hd.volume = volume
-    this.volume = hd.volume
+    HDScence.volume = volume
+    this.volume = HDScence.volume
     this.updateMute(this.volume)
     Utils.log('setVolume volume', this.volume)
   }
@@ -396,13 +359,13 @@ class Controls extends Component {
       if (!this.volume) {
         this.volume = 1
       }
-      hd.volume = this.volume
+      HDScence.volume = this.volume
     } else {
-      hd.volume = 0
+      HDScence.volume = 0
     }
-    this.updateMute(hd.volume)
-    this.voiceSlider.setValue(hd.volume)
-    Utils.log('toggleMute volume', hd.volume)
+    this.updateMute(HDScence.volume)
+    this.voiceSlider.setValue(HDScence.volume)
+    Utils.log('toggleMute volume', HDScence.volume)
   }
 
   updateMute(volume) {
@@ -425,16 +388,22 @@ class Controls extends Component {
     if (!this.checkout('onSeek')) {
       return false
     }
+    this.isPlayerSliderAutoChange = false
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
       this.stopTimer()
-      hd.seek(value)
+      HDScence.seek(value)
+      this.isPlayerSliderAutoChange = true
     }, 500)
     return true
   }
 
   updatePlayerSliderValue() {
+    if (!this.isPlayerSliderAutoChange) {
+      return false
+    }
     this.playerSlider.setValue(this.currentTime)
+    return true
   }
 
   checkout(message) {

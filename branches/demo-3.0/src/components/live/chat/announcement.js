@@ -3,7 +3,7 @@ import Render from 'common/render'
 class Announcement extends Render {
   constructor() {
     super()
-    this._isShow = false
+    // this._isShow = false
 
   }
 

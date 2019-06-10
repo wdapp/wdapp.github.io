@@ -1,5 +1,6 @@
+@import "~assets/styles/mixin.scss";
+
 .drawPanel {
-  width: 100%;
-  height: 100%;
+  @include width-height-full();
   overflow-y: auto;
 }

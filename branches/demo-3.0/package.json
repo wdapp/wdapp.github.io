@@ -4,7 +4,6 @@
   "description": "websdk-demo-3.0",
   "main": "main.js",
   "dependencies": {
-    "@wdapp/flexible": "^1.0.5",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.4.1",
     "bootstrap-slider": "^10.6.1",

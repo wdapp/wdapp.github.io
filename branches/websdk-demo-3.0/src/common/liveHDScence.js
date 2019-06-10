@@ -5,16 +5,13 @@
 import 'babel-polyfill'//IE 9 兼容 ECMAScript 6
 import LiveAdaptive from 'common/liveAdaptive'
 import Utils from 'common/utils'
-import config from 'common/config'
 
-class HDScience extends LiveAdaptive {
+class HDScence extends LiveAdaptive {
 
   constructor() {
     super()
-    window.debug = config.debug
-
     Utils.log({
-      debug: window.debug,
+      debug: Utils.debug,
       PATH: Utils.PATH,
       useragent: Utils.useragent,
       version: Utils.version,
@@ -41,7 +38,7 @@ let HD = (function () {
   let _instance = null
   return function () {
     if (!_instance) {
-      _instance = new HDScience()
+      _instance = new HDScence()
     }
     return _instance
   }

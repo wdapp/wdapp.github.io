@@ -15,11 +15,11 @@ class QuestionAnswer extends Component {
   }
 
   init() {
-    hd.onQuestions((data) => {
+    HDScence.onQuestions((data) => {
       this.addQuestions(data)
       Utils.log('onQuestions', data)
     })
-    hd.onAnswers((data) => {
+    HDScence.onAnswers((data) => {
       this.addAnswers(data)
       Utils.log('onAnswers', data)
     })

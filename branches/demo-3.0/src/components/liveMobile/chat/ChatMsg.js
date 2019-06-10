@@ -23,20 +23,34 @@ class ChatMsg extends Render {
     this.userRole = v.userRole
     this.status = v.status
     this.self = v.self
+    this.time = v.time
+    this.groupId = v.groupId
     this.appendMsg()
   }
 
+  set visible(v) {
+    let show = v ? 'block' : 'none'
+    if (this.node) {
+      this.setStyle(this.node, {display: show})
+    }
+  }
+
   appendMsg() {
-    let chat = this.createNode('li')
-    chat.className = `chat-message-wrap`
-    this.innerHTML(chat, this.HtmlContent)
-    this.appendChild('chat-container', chat)
+    this.node = this.createNode('li')
+    this.node.className = `chat-message-wrap`
+    this.innerHTML(this.node, this.HtmlContent)
+    this.appendChild('chat-container', this.node)
+    if (this.status === '0') {
+      this.visible = true
+    } else {
+      this.visible = false
+    }
     // this.getNode('chat-container').scrollTo(0, 0)
   }
 
   get HtmlContent() {
     return `<span class="chat-message-name ${this.self ? 'self' : 'teacher'}">${this.userName}</span>
-            <span class="chat-message-time">298:37:20</span>
+            <span class="chat-message-time">${this.time}</span>
             <p class="chat-message-content">${Utils.showEm(this.msg)}</p>`
   }
 }

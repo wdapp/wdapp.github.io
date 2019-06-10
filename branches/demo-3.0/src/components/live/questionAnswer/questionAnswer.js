@@ -4,6 +4,7 @@ import './questionAnswer.scss'
 import UIQuestion from './UIQuestion'
 import UIAnswer from './UIAnswer'
 import LiveInfo from 'common/liveinfo'
+import Utils from 'common/utils'
 
 class QuestionAnswer extends Component {
 
@@ -12,15 +13,16 @@ class QuestionAnswer extends Component {
     this.name = 'qa'
     this.render('questionAnswer', template, () => {
     })
+
     this.qaMap = {}
     this.sendControl()
     this.bindEvent()
   }
 
   bindEvent() {
-    hdScience.addEvent(hdScience.OnQuestion, this.addQuestion.bind(this))
-    hdScience.addEvent(hdScience.OnAnswer, this.addAnswer.bind(this))
-    hdScience.addEvent(hdScience.OnQAPublish, this.addQuestionPublish.bind(this))
+    HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
+    HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
+    HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
   }
 
   addQuestionPublish() {
@@ -38,13 +40,51 @@ class QuestionAnswer extends Component {
   }
 
   sendControl() {
+    let isCanSend = true
+    let timeOutId = -1
+    let t = this
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
-      let sendMsg = this.getNode('sendQaMsg').value
-      let liveAPI = hdScience.getObjectForName(hdScience.LiveInterface)
+      sendQAMsg()
+    })
+    let msgInput = this.getNode('sendQaMsg')
+    this.bind(msgInput, 'keydown', (e) => {
+      console.log('anjian' + e.keyCode)
+      switch (e.keyCode.toString()) {
+        case '13':
+          sendQAMsg()
+          break
+      }
+    })
+
+    function sendQAMsg() {
+      let sendMsg = Utils.trim(msgInput.value)
+      if (!sendMsg) {
+        HDScence.alert('发送内容不能为空', 'warning')
+        return
+      }
+      if (!isCanSend) {
+        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        return
+      }
+      if (sendMsg.length > 300) {
+        HDScence.alert('发送内容不能超过300字符', 'warning')
+        return
+      }
+      let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
       //发送问答
       liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
-      this.getNode('sendQaMsg').value = ''
-    })
+      msgInput.value = ''
+      isCanSend = false
+      timeOutId = setTimeout(() => {
+        isCanSend = true
+        clearTimeout(timeOutId)
+      }, 10000)
+    }
+
+
+
+
+    let selected = false
     this.bind(this.getNode('onlySelfQuestionCheckbox'), 'click', () => {
       let checkbox = this.getNode('onlySelfQuestionCheckbox')
       if (checkbox.checked) {
@@ -64,6 +104,7 @@ class QuestionAnswer extends Component {
 
       }
     })
+    this.updateScroll()
   }
 
   addQuestion() {
@@ -76,6 +117,7 @@ class QuestionAnswer extends Component {
         uiquestion.visible = false
       }
     }
+    this.updateScroll()
   }
 
   addAnswer() {
@@ -91,7 +133,16 @@ class QuestionAnswer extends Component {
       }
       let uianswer = new UIAnswer()
       uianswer.setInfo(aInfo)
+      qustion.visible = true
     }
+    this.updateScroll()
+  }
+
+  updateScroll() {
+    let container = this.getNode('question-answer')
+    let h = container.offsetHeight
+    let scrollBody = this.getNodeByClass('question-body')
+    scrollBody.scrollTo(0, h)
   }
 }
 

@@ -6,390 +6,390 @@
 
   // 直播播放器信息
   var CallbackPlayer = function (opts) {
-    this.isReady = false;
-    this.isPublishing = 0;
-    this.id = opts.callbackPlayer.id;
+    this.isReady = false
+    this.isPublishing = 0
+    this.id = opts.callbackPlayer.id
 
-    var swfUrl = "//player.csslcloud.net/platform/live/CallbackPlayer.swf";
+    var swfUrl = '//player.csslcloud.net/platform/live/CallbackPlayer.swf'
     var flashvars = {
-      "userid": opts.userId,
-      "videoid": opts.videoId,
-      "recordid": opts.recordId,
-      "isShowBar": opts.isShowBar,
-      "upid": opts.upId,
-      "viewerid": opts.viewerId,
-      "roomid": opts.roomId,
-      "ua": "1"
-    };
+      'userid': opts.userId,
+      'videoid': opts.videoId,
+      'recordid': opts.recordId,
+      'isShowBar': opts.isShowBar,
+      'upid': opts.upId,
+      'viewerid': opts.viewerId,
+      'roomid': opts.roomId,
+      'ua': '1'
+    }
     var params = {
-      allowFullscreen: "true",
-      allowScriptAccess: "always",
-      wmode: "transparent"
-    };
+      allowFullscreen: 'true',
+      allowScriptAccess: 'always',
+      wmode: 'transparent'
+    }
 
     this.flashPlayerInit = function () {
-      swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, "10.0.0",
-        "/flash/expressInstall.swf", flashvars, params);
-      if (MobileLive.isMobile() != "isMobile") {
-        var report = new ReportLog(opts, 0, 1, null, false);
+      swfobject.embedSWF(swfUrl, opts.callbackPlayer.id, opts.callbackPlayer.width, opts.callbackPlayer.height, '10.0.0',
+        '/flash/expressInstall.swf', flashvars, params)
+      if (MobileLive.isMobile() != 'isMobile') {
+        var report = new ReportLog(opts, 0, 1, null, false)
       }
-    };
+    }
 
     if (!DW.isH5play) {
-      this.flashPlayerInit();
+      this.flashPlayerInit()
     }
 
     this.getFlash = function () {
-      return swfobject.getObjectById(this.id);
-    };
+      return swfobject.getObjectById(this.id)
+    }
 
     this.playbackRate = function (t) {
-      if (!DW.isH5play && MobileLive.isMobile() !== "isMobile") {
-        return;
+      if (!DW.isH5play && MobileLive.isMobile() !== 'isMobile') {
+        return
       }
-      var t = parseFloat(t);
-      this.getH5player().playbackRate = t;
-    };
+      var t = parseFloat(t)
+      this.getH5player().playbackRate = t
+    }
 
     this.seek = function (t) {
       if (t < 0) {
-        return;
+        return
       }
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-        this.getH5player().currentTime = t;
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+        this.getH5player().currentTime = t
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        swf.seek(t);
+        swf.seek(t)
       }
-    };
+    }
 
     this.getFlash = function () {
-      return swfobject.getObjectById(this.id);
-    };
+      return swfobject.getObjectById(this.id)
+    }
 
     this.getH5player = function () {
-      return $("#playbackVideo")[0];
-    };
+      return $('#playbackVideo')[0]
+    }
 
     this.getPlayerTime = function () {
       if (!this.isReady) {
-        return 0;
+        return 0
       }
-      var t;
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-        t = this.getH5player().currentTime;
+      var t
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+        t = this.getH5player().currentTime
       } else {
-        t = parseInt(this.getFlash().getPosition(), 10);
+        t = parseInt(this.getFlash().getPosition(), 10)
       }
       if (isNaN(t) || t < 0) {
-        return 0;
+        return 0
       }
 
-      return t;
-    };
+      return t
+    }
 
     this.getDuration = function () {
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-        return this.getH5player().duration;
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+        return this.getH5player().duration
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        return swf.getDuration();
+        return swf.getDuration()
       }
-    };
+    }
 
     this.getBuffer = function () {
 
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         if (!this.getH5player() || !this.getH5player().buffered || !this.getH5player().buffered.end(0)) {
-          return 0;
+          return 0
         }
-        var buffer = 0;
-        var buffered = this.getH5player().buffered;
+        var buffer = 0
+        var buffered = this.getH5player().buffered
         for (var i = 0; i < buffered.length; i++) {
-          buffer+= buffered.end(i) - buffered.start(i);
+          buffer += buffered.end(i) - buffered.start(i)
         }
-        return buffer;
+        return buffer
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        return swf.getBufferLength();
+        return swf.getBufferLength()
       }
 
-    };
+    }
 
     this.setVolume = function (n) {
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-        this.getH5player().volume = parseFloat(n);
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+        this.getH5player().volume = parseFloat(n)
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        return swf.setVolume(n);
+        return swf.setVolume(n)
       }
-    };
+    }
 
     this.getVolume = function () {
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
-        return this.getH5player().volume;
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
+        return this.getH5player().volume
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        return swf.getVolume();
+        return swf.getVolume()
       }
-    };
+    }
 
     this.play = function () {
-      if (DW.isH5play || MobileLive.isMobile() == "isMobile") {
+      if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         if (MobileLive.pauseState) {
-          this.getH5player().play();
+          this.getH5player().play()
         } else {
-          this.getH5player().pause();
+          this.getH5player().pause()
         }
       } else {
-        var swf = this.getFlash();
+        var swf = this.getFlash()
         if (!swf) {
-          return;
+          return
         }
-        return swf.isPlay();
+        return swf.isPlay()
       }
-    };
+    }
 
     this.setZScale = function (s) {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      return swf.setZScale(s);
-    };
+      return swf.setZScale(s)
+    }
 
     this.getZScale = function () {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      return swf.getZScale();
-    };
+      return swf.getZScale()
+    }
 
     this.setScale = function (s) {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      return swf.setScale(s);
-    };
+      return swf.setScale(s)
+    }
 
     this.getScale = function () {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      return swf.getScale();
-    };
+      return swf.getScale()
+    }
 
     this.openSettingPanel = function () {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      return swf.openSettingPanel();
-    };
-  };
+      return swf.openSettingPanel()
+    }
+  }
 
 
   var Socket = function (opts) {
 
-    var isHttps = window.location.protocol === "https:";
-    var host = opts.chat.host;
-    if (isHttps && host && host.indexOf(":")) {
-      var s = host.split(":");
+    var isHttps = window.location.protocol === 'https:'
+    var host = opts.chat.host
+    if (isHttps && host && host.indexOf(':')) {
+      var s = host.split(':')
       if (s.length == 2) {
-        var port = parseInt(s[1]);
+        var port = parseInt(s[1])
         if (!isNaN(port)) {
-          var httpsPort = port + 400;
-          host = s[0] + ":" + httpsPort;
+          var httpsPort = port + 400
+          host = s[0] + ':' + httpsPort
         }
       }
     }
 
-    var terminal = 0;
-    if (MobileLive.isMobile() == "isMobile") {
-      terminal = 1;
+    var terminal = 0
+    if (MobileLive.isMobile() == 'isMobile') {
+      terminal = 1
     }
 
     if (!DW.forceNew) {
-      var socket = io.connect(document.location.protocol + "//" + host + "/replay", {
+      var socket = io.connect(document.location.protocol + '//' + host + '/replay', {
         query: {
           roomid: opts.roomId,
           sessionid: opts.viewer.sessionId,
           platform: 1,
           terminal: terminal
         }
-      });
-      util.log("{forceNew: false}");
+      })
+      util.log('{forceNew: false}')
     } else {
-      var socket = io.connect(document.location.protocol + "//" + host + "/replay?roomid=" + opts.roomId + "&sessionid=" + opts.viewer.sessionId + "&platform=" + 1 + "&terminal=" + terminal, {forceNew: true});
-      util.log("{forceNew: true}");
+      var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true})
+      util.log('{forceNew: true}')
     }
-  };
+  }
 
   var DrawPanel = function (opts, callbackPlayer) {
-    this.isReady = false;
+    this.isReady = false
 
-    var swfUrl = "//zeus.csslcloud.net/flash/Player.swf";
+    var swfUrl = '//zeus.csslcloud.net/flash/Player.swf'
 
     var flashvars = {
-      "type": "drawpanel"
-    };
+      'type': 'drawpanel'
+    }
     var params = {
-      allowFullscreen: "true",
-      allowScriptAccess: "always",
-      wmode: "transparent"
-    };
-    var attributes = {};
+      allowFullscreen: 'true',
+      allowScriptAccess: 'always',
+      wmode: 'transparent'
+    }
+    var attributes = {}
 
     if (!DWDpc.fastMode) {
       swfobject.embedSWF(swfUrl, opts.drawPanel.id, opts.drawPanel.width, opts.drawPanel.height,
-        "10.0.0", "/flash/expressInstall.swf", flashvars, params, attributes);
+        '10.0.0', '/flash/expressInstall.swf', flashvars, params, attributes)
     }
 
     this.getFlash = function () {
       if (!this.isReady) {
-        return;
+        return
       }
 
-      return swfobject.getObjectById(opts.drawPanel.id);
-    };
+      return swfobject.getObjectById(opts.drawPanel.id)
+    }
 
     this.clear = function () {
-      DWDpc.clear();
-      var swf = this.getFlash();
+      DWDpc.clear()
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
-      swf.clear();
-    };
+      swf.clear()
+    }
 
     // 画图
     this.draw = function (j) {
-      DWDpc.draw(j);
+      DWDpc.draw(j)
 
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
 
-      swf.draw(j);
-    };
+      swf.draw(j)
+    }
 
     this.draws = function (js) {
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
 
       (function (jstr) {
         setTimeout(function () {
-          swf.drawList(jstr);
-        });
-      })(js);
-    };
+          swf.drawList(jstr)
+        })
+      })(js)
+    }
 
 
     // 翻页
     this.filp = function (j) {
-      DWDpc.pageChange(j);
+      DWDpc.pageChange(j)
 
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
 
-      var jj = JSON.parse(j);
-      var u = jj.url;
-      var isHttps = window.location.protocol === "https:";
+      var jj = JSON.parse(j)
+      var u = jj.url
+      var isHttps = window.location.protocol === 'https:'
       if (isHttps) {
-        jj.url = u.replace(/http:/g, "https:");
+        jj.url = u.replace(/http:/g, 'https:')
       }
 
       if (options.adapt) {
-        swf.filp(JSON.stringify(jj), "auto");
+        swf.filp(JSON.stringify(jj), 'auto')
       } else {
-        swf.filp(JSON.stringify(jj));
+        swf.filp(JSON.stringify(jj))
       }
-    };
+    }
 
     // 动画
     this.animation = function (j) {
-      DWDpc.animationChange(j);
+      DWDpc.animationChange(j)
 
-      var swf = this.getFlash();
+      var swf = this.getFlash()
       if (!swf) {
-        return;
+        return
       }
 
-      swf.animation(j);
-    };
+      swf.animation(j)
+    }
 
-    this.intervalNum = 0;
+    this.intervalNum = 0
 
     // 循环更新翻页和画板信息
     this.interval = function () {
 
-      var ft = 0;
+      var ft = 0
       try {
-        ft = callback.callbackPlayer.getPlayerTime();
+        ft = callback.callbackPlayer.getPlayerTime()
       } catch (e) {
       }
       if (ft < 0) {
-        return;
+        return
       }
 
       if (isCustomSeek) {
-        nextTime = ft;
+        nextTime = ft
         if (Math.abs(nextTime - beforeTime) >= 2.5) {
-          seekComplete && seekComplete();
+          seekComplete && seekComplete()
         }
-        beforeTime = ft;
+        beforeTime = ft
       }
 
       if (callback.isRequestDraws) {
         callback.drawsInfoRequestPool.isHttpRequestCurrentDraws(ft, function (data) {
-          callback.draws = data;
-        });
+          callback.draws = data
+        })
       }
 
       try {
         if (callback.animations && callback.animations.length > 0) {
           if (callback.animationIndex < callback.animations.length) {
-            var pidex = callback.pageChangeIndex;
+            var pidex = callback.pageChangeIndex
             if (pidex >= 0) {
-              var pc = callback.pageChanges[pidex];
-              var a = callback.animations[callback.animationIndex + 1];
+              var pc = callback.pageChanges[pidex]
+              var a = callback.animations[callback.animationIndex + 1]
               if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
                 if (DWDpc.fastMode) {
-                  this.animation(a);
+                  this.animation(a)
                 } else {
                   this.animation(JSON.stringify({
-                    "fileName": a.docName,
-                    "totalPage": a.docTotalPage,
-                    "docid": a.encryptDocId,
-                    "url": a.url,
-                    "page": a.pageNum,
-                    "step": a.step
-                  }));
+                    'fileName': a.docName,
+                    'totalPage': a.docTotalPage,
+                    'docid': a.encryptDocId,
+                    'url': a.url,
+                    'page': a.pageNum,
+                    'step': a.step
+                  }))
                 }
-                callback.animationIndex = callback.animationIndex + 1;
+                callback.animationIndex = callback.animationIndex + 1
               }
             }
           }
@@ -400,38 +400,38 @@
       try {
         if (callback.pageChanges && callback.pageChanges.length > 0) {
           if (callback.pageChangeIndex < callback.pageChanges.length) {
-            var pc = callback.pageChanges[callback.pageChangeIndex + 1];
+            var pc = callback.pageChanges[callback.pageChangeIndex + 1]
             if (ft >= pc.time) {
-              if (typeof window.on_cc_callback_page_change === "function") {
-                window.on_cc_callback_page_change(pc);
+              if (typeof window.on_cc_callback_page_change === 'function') {
+                window.on_cc_callback_page_change(pc)
               }
-              if (typeof window.on_cc_request_snapshoot === "function") {
-                window.on_cc_request_snapshoot(pc);
+              if (typeof window.on_cc_request_snapshoot === 'function') {
+                window.on_cc_request_snapshoot(pc)
               }
               if (DWDpc.fastMode) {
-                this.filp(pc);
+                this.filp(pc)
               } else {
                 this.filp(JSON.stringify({
-                  "fileName": pc.docName,
-                  "totalPage": pc.docTotalPage,
-                  "docid": pc.encryptDocId,
-                  "url": pc.url,
-                  "page": pc.pageNum,
-                  "useSDK": pc.useSDK
-                }));
+                  'fileName': pc.docName,
+                  'totalPage': pc.docTotalPage,
+                  'docid': pc.encryptDocId,
+                  'url': pc.url,
+                  'page': pc.pageNum,
+                  'useSDK': pc.useSDK
+                }))
               }
 
-              callback.pageChangeIndex = callback.pageChangeIndex + 1;
+              callback.pageChangeIndex = callback.pageChangeIndex + 1
 
               //翻页信息回掉
-              var obj = {};
-              obj.docId = pc.docId;
-              obj.docName = pc.docName;
-              obj.docTotalPage = pc.docTotalPage;
-              obj.pageNum = pc.pageNum;
+              var obj = {}
+              obj.docId = pc.docId
+              obj.docName = pc.docName
+              obj.docTotalPage = pc.docTotalPage
+              obj.pageNum = pc.pageNum
 
-              if (typeof window.on_cc_callback_pagechange === "function") {
-                window.on_cc_callback_pagechange(obj);
+              if (typeof window.on_cc_callback_pagechange === 'function') {
+                window.on_cc_callback_pagechange(obj)
               }
 
             }
@@ -443,24 +443,24 @@
       try {
         if (callback.animations && callback.animations.length > 0) {
           if (callback.animationIndex < callback.animations.length) {
-            var pidex = callback.pageChangeIndex;
+            var pidex = callback.pageChangeIndex
             if (pidex >= 0) {
-              var pc = callback.pageChanges[pidex];
-              var a = callback.animations[callback.animationIndex + 1];
+              var pc = callback.pageChanges[pidex]
+              var a = callback.animations[callback.animationIndex + 1]
               if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
                 if (DWDpc.fastMode) {
-                  this.animation(a);
+                  this.animation(a)
                 } else {
                   this.animation(JSON.stringify({
-                    "fileName": a.docName,
-                    "totalPage": a.docTotalPage,
-                    "docid": a.encryptDocId,
-                    "url": a.url,
-                    "page": a.pageNum,
-                    "step": a.step
-                  }));
+                    'fileName': a.docName,
+                    'totalPage': a.docTotalPage,
+                    'docid': a.encryptDocId,
+                    'url': a.url,
+                    'page': a.pageNum,
+                    'step': a.step
+                  }))
                 }
-                callback.animationIndex = callback.animationIndex + 1;
+                callback.animationIndex = callback.animationIndex + 1
               }
             }
           }
@@ -473,57 +473,57 @@
         if (callback.draws && callback.draws.length > 0) {
           // 画图逻辑
           if (callback.drawIndex < callback.draws.length) {
-            var dc = callback.draws[callback.drawIndex + 1];
+            var dc = callback.draws[callback.drawIndex + 1]
             while (ft >= dc.time) {
               if (DWDpc.fastMode) {
-                this.draw(dc);
+                this.draw(dc)
               } else {
-                this.draw(dc.data);
+                this.draw(dc.data)
               }
 
-              callback.drawIndex = callback.drawIndex + 1;
-              dc = callback.draws[callback.drawIndex + 1];
+              callback.drawIndex = callback.drawIndex + 1
+              dc = callback.draws[callback.drawIndex + 1]
             }
           }
         }
       } catch (e) {
       }
-    };
+    }
 
     this.intervalPainting = function (callback) {
       callback.drawPanel.intervalNum = setInterval(function () {
-        callback.drawPanel.interval(callback);
-      }, 1000);
-    };
-  };
+        callback.drawPanel.interval(callback)
+      }, 1000)
+    }
+  }
 
   //优化meta数据
   var substepRequest = function (opts) {
     $.ajax({
       url: opts.url,
-      type: "GET",
+      type: 'GET',
       data: opts.data,
       tryCount: 0,
       retryLimit: 3,
       timeout: 5000,
-      dataType: "jsonp",
+      dataType: 'jsonp',
       success: function (data) {
-        opts.done(data);
+        opts.done(data)
       },
       error: function (xhr, textStatus, errorThrown) {
-        if (textStatus == "timeout") {
-          this.tryCount++;
+        if (textStatus == 'timeout') {
+          this.tryCount++
           if (this.tryCount < this.retryLimit) {
             //try again
-            $.ajax(this);
-            return;
+            $.ajax(this)
+            return
           } else {
-            if (typeof opts.fn === "function") {
-              opts.fn(textStatus);
+            if (typeof opts.fn === 'function') {
+              opts.fn(textStatus)
             }
-            return;
+            return
           }
-          return;
+          return
         }
         if (xhr.status == 500) {
           //handle error
@@ -531,8 +531,8 @@
           //handle error
         }
       }
-    });
-  };
+    })
+  }
 
   var substepRequestHistoryData = function (opts, fn) {
     var param = {
@@ -545,7 +545,7 @@
       viewertoken: opts.viewertoken,
       viewername: opts.viewername,
       forcibly: opts.forcibly
-    };
+    }
 
     var sub = {
       globalData: {},
@@ -554,176 +554,194 @@
       requestDrawData: false,
       requestChatqaData: false,
       allRequests: 0,
-    };
+    }
 
     // 登录
     substepRequest({
-      url: "//view.csslcloud.net/api/room/replay/login",
+      url: '//view.csslcloud.net/api/room/replay/login',
       data: param,
       fn: window.on_cc_login_error,
       done: function (data) {
         if (!checkout(data, window.on_cc_login_error)) {
-          return false;
+          return false
         }
         if (data.success) {
-          options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1;
-          window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000);
+          options.drawRequestTime = parseInt(data.datas.drawRequestTime) || 1
+          window.TIMEOUT = window.TIMEOUT + (options.drawRequestTime * 1000)
           // options.drawRequestTime = (parseInt(data.datas.drawRequestTime) || 1) * 2;
           // options.drawRequestTime = 25;
           if (!DWDpc.fastMode) {
-            options.drawRequestTime = "";
+            options.drawRequestTime = ''
           }
-          util.log("options", options);
+          util.log('options', options)
 
-          callback.state = new StateMachine();
-          var snapshoot = new StateMachine();
-          callback.drawsInfoRequestPool = new DrawsInfoRequestPool(callback.state, snapshoot);
+          callback.state = new StateMachine()
+          var snapshoot = new StateMachine()
+          callback.drawsInfoRequestPool = new DrawsInfoRequestPool(callback.state, snapshoot)
         }
-        concatMeta(sub.globalData, data);
-        sub.requestLoginData = true;
-        sub.requestInfoData = false;
-        sub.requestDrawData = false;
-        sub.requestChatqaData = false;
-        sub.allRequests++;
-        success(sub);
+        concatMeta(sub.globalData, data)
+        sub.requestLoginData = true
+        sub.requestInfoData = false
+        sub.requestDrawData = false
+        sub.requestChatqaData = false
+        sub.allRequests++
+        success(sub)
         //登录成功
-        if (typeof  window.on_cc_login_success === "function") {
-          var logInfo=data.datas;
-          var tmp = {"type":logInfo.template.type,"desc":logInfo.template.desc,"name":logInfo.template.name};
-          var viewer = {"name":logInfo.viewer.name,"id":logInfo.viewer.id,"groupId":logInfo.viewer.groupId};
-          var room = {desc:logInfo.room.desc,liveStartTime:logInfo.room.liveStartTime,name:logInfo.room.name,barrage:logInfo.room.barrage}
-          window.on_cc_login_success({"template":tmp,"viewer":viewer,"room":room});
+        if (typeof  window.on_cc_login_success === 'function') {
+          var logInfo = data.datas
+          var tmp = {
+            'type': logInfo.template.type,
+            'desc': logInfo.template.desc,
+            'name': logInfo.template.name
+          }
+          var viewer = {
+            'name': logInfo.viewer.name,
+            'id': logInfo.viewer.id,
+            'groupId': logInfo.viewer.groupId
+          }
+          var room = {
+            'desc': logInfo.room.desc,
+            'liveStartTime': logInfo.room.liveStartTime,
+            'name': logInfo.room.name,
+            'documentDisplayMode': logInfo.room.documentDisplayMode,
+            'barrage': logInfo.room.barrage
+          }
+          var live = {
+            'startTime': logInfo.live.endTime,
+            'endTime': logInfo.live.endTime
+          }
+          window.on_cc_login_success({'template': tmp, 'viewer': viewer, 'room': room, 'live': live})
         }
 
 
         if (!options.drawRequestTime) {
           // 请求画笔数据
           substepRequest({
-            url: "//view.csslcloud.net/api/view/replay/draw/info",
+            url: '//view.csslcloud.net/api/view/replay/draw/info',
             data: param,
             fn: window.on_cc_request_draw_error,
             done: function (data) {
               if (!checkout(data)) {
-                return false;
+                return false
               }
-              concatMeta(sub.globalData, data);
-              sub.requestLoginData = false;
-              sub.requestInfoData = false;
-              sub.requestDrawData = true;
-              sub.requestChatqaData = false;
-              sub.allRequests++;
-              success(sub);
+              concatMeta(sub.globalData, data)
+              sub.requestLoginData = false
+              sub.requestInfoData = false
+              sub.requestDrawData = true
+              sub.requestChatqaData = false
+              sub.allRequests++
+              success(sub)
             }
-          });
+          })
         }
 
         // 请求聊天和问答数据
         substepRequest({
-          url: "//view.csslcloud.net/api/view/replay/v2/chatqa/info",
+          url: '//view.csslcloud.net/api/view/replay/v2/chatqa/info',
           data: param,
           fn: window.on_cc_request_chatqa_error,
           done: function (data) {
             if (!checkout(data, window.on_cc_request_chatqa_error)) {
-              return false;
+              return false
             }
-            concatMeta(sub.globalData, data);
-            sub.requestLoginData = false;
-            sub.requestInfoData = false;
-            sub.requestDrawData = false;
-            sub.requestChatqaData = true;
-            sub.allRequests++;
-            success(sub);
+            concatMeta(sub.globalData, data)
+            sub.requestLoginData = false
+            sub.requestInfoData = false
+            sub.requestDrawData = false
+            sub.requestChatqaData = true
+            sub.allRequests++
+            success(sub)
           }
-        });
+        })
 
         // 广播，翻页，animation及后续新增数据
         substepRequest({
-          url: "//view.csslcloud.net/api/view/replay/v2/info",
+          url: '//view.csslcloud.net/api/view/replay/v2/info',
           data: param,
           fn: window.on_cc_request_info_error,
           done: function (data) {
             if (!checkout(data, window.on_cc_request_info_error)) {
-              return false;
+              return false
             }
-            concatMeta(sub.globalData, data);
-            sub.requestLoginData = false;
-            sub.requestInfoData = true;
-            sub.requestDrawData = false;
-            sub.requestChatqaData = false;
-            sub.allRequests++;
-            success(sub);
+            concatMeta(sub.globalData, data)
+            sub.requestLoginData = false
+            sub.requestInfoData = true
+            sub.requestDrawData = false
+            sub.requestChatqaData = false
+            sub.allRequests++
+            success(sub)
           }
-        });
+        })
 
       }
-    });
+    })
 
 
     var checkout = function (data, fn) {
       if (!data.success) {
-        if (typeof fn === "function") {
-          fn(data);
+        if (typeof fn === 'function') {
+          fn(data)
         }
-        return false;
+        return false
       }
 
       if (!data.datas) {
-        return false;
+        return false
       }
 
-      return true;
-    };
+      return true
+    }
 
     var concatMeta = function (d1, d2) {
-      extend(d1, d2);
+      extend(d1, d2)
       if (!d1.datas.meta) {
-        d1.datas.meta = {};
+        d1.datas.meta = {}
       }
-      extend(d1.datas.meta, d2.datas.meta);
-    };
+      extend(d1.datas.meta, d2.datas.meta)
+    }
 
     var extend = function (o, n) {
       for (var p in n) {
         if (n.hasOwnProperty(p) && (!o.hasOwnProperty(p) ))
-          o[p] = n[p];
+          o[p] = n[p]
       }
-    };
+    }
 
     var success = function (sub) {
-      fn(sub);
-    };
+      fn(sub)
+    }
 
-  };
+  }
 
   //优化meta数据 画笔数据--------------------
 
   //状态机
   var StateMachine = function () {
 
-    this.requestState = false;
-    this.result = 0;
-    this.startTime = 0;
-    this.endTime = 0;
-    this.key = 0;//key 为每一个状态机块的索引， id 或 index。
-    this.index = 0;//自动排列 key
-    this.ajax = {};
-    this.states = [];
-    this.snapshoot = [];
-    this.drawsAlready = 0;
+    this.requestState = false
+    this.result = 0
+    this.startTime = 0
+    this.endTime = 0
+    this.key = 0//key 为每一个状态机块的索引， id 或 index。
+    this.index = 0//自动排列 key
+    this.ajax = {}
+    this.states = []
+    this.snapshoot = []
+    this.drawsAlready = 0
 
-    this.roomId = options.roomId;
-    this.userId = options.userId;
-    this.recordId = options.recordId;
-    this.liveId = options.liveId;
-    this.drawRequestTime = options.drawRequestTime;
+    this.roomId = options.roomId
+    this.userId = options.userId
+    this.recordId = options.recordId
+    this.liveId = options.liveId
+    this.drawRequestTime = options.drawRequestTime
 
     this.setSnapshoot = function (docId, data) {
-      this.snapshoot[docId] = data;
-    };
+      this.snapshoot[docId] = data
+    }
 
     this.getSnapshoot = function () {
-      return this.snapshoot;
-    };
+      return this.snapshoot
+    }
 
     //初始化状态机
     this.init = function (options) {
@@ -736,49 +754,49 @@
           startTime: options.startTime,
           endTime: options.endTime,
           key: i
-        };
+        }
 
-        options.startTime = options.startTime + options.blockTime;
-        options.endTime = options.startTime + options.blockTime;
-        this.setState(s);
+        options.startTime = options.startTime + options.blockTime
+        options.endTime = options.startTime + options.blockTime
+        this.setState(s)
       }
-    };
+    }
 
     this.httpRequest = function (options, callback) {
-      var self = this;
-      self.requestState = true;
+      var self = this
+      self.requestState = true
 
       this.ajax = $.ajax({
         url: options.url,
-        type: "GET",
+        type: 'GET',
         data: options.param,
         tryCount: 0,
         retryLimit: 3,
         timeout: window.TIMEOUT,//20秒超时
-        dataType: "jsonp",
+        dataType: 'jsonp',
         success: function (data) {
-          self.result = data;
+          self.result = data
           if (!data.success) {
-            util.log("data.success", data.success);
-            return;
+            util.log('data.success', data.success)
+            return
           }
-          callback(data);
-          self.requestState = false;
+          callback(data)
+          self.requestState = false
         },
         error: function (xhr, textStatus, errorThrown) {
-          if (textStatus == "timeout") {
-            this.tryCount++;
+          if (textStatus == 'timeout') {
+            this.tryCount++
             if (this.tryCount < this.retryLimit) {
               //try again
-              $.ajax(this);
-              util.log("ajax[" + self.key + "] try again tryCount", this.tryCount);
-              return;
+              $.ajax(this)
+              util.log('ajax[' + self.key + '] try again tryCount', this.tryCount)
+              return
             } else {
-              util.log("数据请求失败且重试多次");
-              self.requestState = false;
-              return;
+              util.log('数据请求失败且重试多次')
+              self.requestState = false
+              return
             }
-            return;
+            return
           }
           if (xhr.status == 500) {
             //handle error
@@ -786,108 +804,108 @@
             //handle error
           }
         }
-      });
-    };
+      })
+    }
 
     this.abort = function () {
       //模拟中断http请求
-      this.ajax.abort();
-      this.requestState = false;
-    };
+      this.ajax.abort()
+      this.requestState = false
+    }
 
     this.setState = function (options) {
-      if (typeof options !== "object") {
-        return;
+      if (typeof options !== 'object') {
+        return
       }
       //key 为每一个状态机块的索引， id 或 index。
-      var key = (options.key || this.index++);
+      var key = (options.key || this.index++)
       if (options.key && !isNaN(options.key)) {
-        this.index = parseInt(options.key) + 1;
+        this.index = parseInt(options.key) + 1
       }
-      var state = new StateMachine();
-      state.requestState = options.requestState || this.requestState;
-      state.result = options.result || this.result;
-      state.startTime = options.startTime || this.startTime;
-      state.endTime = options.endTime || this.endTime;
-      state.ajax = options.ajax || this.ajax;
-      state.snapshoot = options.snapshoot || this.snapshoot;
-      state.key = key;
-      this.states[key] = state;
-    };
+      var state = new StateMachine()
+      state.requestState = options.requestState || this.requestState
+      state.result = options.result || this.result
+      state.startTime = options.startTime || this.startTime
+      state.endTime = options.endTime || this.endTime
+      state.ajax = options.ajax || this.ajax
+      state.snapshoot = options.snapshoot || this.snapshoot
+      state.key = key
+      this.states[key] = state
+    }
 
     this.getState = function (key) {
-      return this.states[key];
-    };
+      return this.states[key]
+    }
 
     this.getStates = function () {
-      return this.states;
-    };
+      return this.states
+    }
 
     this.getCurrentStateIndex = function (currentTime) {
-      var index = 0;
+      var index = 0
       for (var i = 0; i < this.states.length; i++) {
         if (currentTime > this.states[i].startTime && currentTime <= this.states[i].endTime) {
-          index = i;
-          break;
+          index = i
+          break
         }
       }
-      return index;
-    };
+      return index
+    }
 
     this.isDrawsAlready = function () {
-      return parseInt(this.drawRequestTime, 10) === parseInt(this.drawsAlready, 10);
-    };
-  };
+      return parseInt(this.drawRequestTime, 10) === parseInt(this.drawsAlready, 10)
+    }
+  }
 
   //画笔信息请求池管理
   var DrawsInfoRequestPool = function (state, snapshoot) {
-    this.state = state;
-    this.requestNumber = 2;
-    this.httpRequestPool = [];
-    this.draws = [];
-    this.preState = {};
+    this.state = state
+    this.requestNumber = 2
+    this.httpRequestPool = []
+    this.draws = []
+    this.preState = {}
 
     this.isHttpRequestCurrentDraws = function (currentTime, fn) {
       if (!state.drawRequestTime) {
-        return;
+        return
       }
-      var drawsAlready = state.isDrawsAlready();
+      var drawsAlready = state.isDrawsAlready()
       if (drawsAlready) {
-        util.log("画笔数据加载完毕，不在预加载某一段数据");
-        return;
+        util.log('画笔数据加载完毕，不在预加载某一段数据')
+        return
       }
 
-      var states = state.getStates();
-      var index = state.getCurrentStateIndex(currentTime);
-      var _state = states[index];
+      var states = state.getStates()
+      var index = state.getCurrentStateIndex(currentTime)
+      var _state = states[index]
 
       if (this.preState != _state && this.preState.requestState) {
-        util.log("发现新的预加载请求，中断上一个预加载请求;index=" + this.preState.key);
-        this.preState.abort();
+        util.log('发现新的预加载请求，中断上一个预加载请求;index=' + this.preState.key)
+        this.preState.abort()
       }
-      this.preState = _state;
+      this.preState = _state
 
       //请求数据
       if (!drawsAlready && !_state.result && !_state.requestState) {
-        util.log("预加载数据", index);
+        util.log('预加载数据', index)
         var options = {
           index: index,
           states: states
-        };
-        this.httpRequestCurrentDraws(options, fn);
+        }
+        this.httpRequestCurrentDraws(options, fn)
       } else {
-        util.log("预加载过这段数据或已有数据;index=" + index);
+        util.log('预加载过这段数据或已有数据;index=' + index)
       }
-    };
+    }
 
     this.httpRequestCurrentDraws = function (options, fn) {
-      var self = this;
-      var states = options.states;
-      var index = options.index;
-      var _state = states[index];
+      var self = this
+      var states = options.states
+      var index = options.index
+      var _state = states[index]
 
       var param = {
-        url: "//view.csslcloud.net/api/view/replay/v2/draw/range",
+        url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
         param: {
           starttime: _state.startTime,
           endtime: _state.endTime,
@@ -895,49 +913,49 @@
           recordid: _state.recordId,
           liveid: _state.liveId,
         }
-      };
+      }
       _state.httpRequest(param, function (data) {
-        var draw = data.datas.meta.draw;
-        util.log("*** 预加载成功 callback.draws[" + index + "] ***", draw);
-        self.draws = distinct(self.draws, draw);
+        var draw = data.datas.meta.draw
+        util.log('*** 预加载成功 callback.draws[' + index + '] ***', draw)
+        self.draws = distinct(self.draws, draw)
         self.draws.sort(function (p1, p2) {
-          return parseInt(p1.time) - parseInt(p2.time);
-        });
-        fn(self.draws);
-        callback.state.drawsAlready++;
-      });
-    };
+          return parseInt(p1.time) - parseInt(p2.time)
+        })
+        fn(self.draws)
+        callback.state.drawsAlready++
+      })
+    }
 
     this.httpRequestStream = function (fn) {
-      var self = this;
-      var drawsAlready = self.state.isDrawsAlready();
+      var self = this
+      var drawsAlready = self.state.isDrawsAlready()
       if (drawsAlready) {
-        util.log("httpRequestStream draws already", self.draws);
-        util.log("callback.state", callback.state);
-        util.log("snapshoot", snapshoot);
-        return;
+        util.log('httpRequestStream draws already', self.draws)
+        util.log('callback.state', callback.state)
+        util.log('snapshoot', snapshoot)
+        return
       }
-      var states = self.state.getStates();
+      var states = self.state.getStates()
 
       //获取符合条件的请求
       for (var i = 0; i < states.length; i++) {
-        var state = states[i];
+        var state = states[i]
         if (!state.result && !state.requestState) {
           if (self.httpRequestPool.length < self.requestNumber) {
-            self.httpRequestPool.push(state);
+            self.httpRequestPool.push(state)
           } else {
-            break;
+            break
           }
         }
       }
 
       //处理请求池，发起请求
       for (var j = 0; j < self.httpRequestPool.length; j++) {
-        var state = self.httpRequestPool[j];
+        var state = self.httpRequestPool[j]
         if (!state.result && !state.requestState) {
           (function (state) {
             var options = {
-              url: "//view.csslcloud.net/api/view/replay/v2/draw/range",
+              url: '//view.csslcloud.net/api/view/replay/v2/draw/range',
               param: {
                 starttime: state.startTime,
                 endtime: state.endTime,
@@ -945,705 +963,705 @@
                 recordid: state.recordId,
                 liveid: state.liveId,
               }
-            };
+            }
             state.httpRequest(options, function (data) {
-              var draw = data.datas.meta.draw;
-              util.log("请求流 draw[" + state.key + "]", draw);
+              var draw = data.datas.meta.draw
+              util.log('请求流 draw[' + state.key + ']', draw)
               //合并分段请求返回的画笔数据
               if (callback.isRequestDraws) {
-                self.draws = distinct(self.draws, draw);
+                self.draws = distinct(self.draws, draw)
               } else {
-                self.draws = self.draws.concat(draw);
+                self.draws = self.draws.concat(draw)
               }
 
               //排序
               self.draws.sort(function (p1, p2) {
-                return parseInt(p1.time) - parseInt(p2.time);
-              });
+                return parseInt(p1.time) - parseInt(p2.time)
+              })
               //回调画笔数据
-              fn(self.draws);
+              fn(self.draws)
               //请求池管理，删除已完成的请求
               for (var k = 0; k < self.httpRequestPool.length; k++) {
                 if (self.httpRequestPool[k].key == state.key) {
-                  self.httpRequestPool.splice(k, 1);
-                  break;
+                  self.httpRequestPool.splice(k, 1)
+                  break
                 }
               }
               //继续监测请求池中符合请求条件的请求，发起请求
-              callback.state.drawsAlready++;
-              self.httpRequestStream(fn);
-            });
-          })(state);
+              callback.state.drawsAlready++
+              self.httpRequestStream(fn)
+            })
+          })(state)
         }
       }
-    };
+    }
 
     this.httpRequestSnapshoot = function (e, currentTime, fn) {
-      var self = this;
-      var drawsAlready = state.isDrawsAlready();
+      var self = this
+      var drawsAlready = state.isDrawsAlready()
       if (drawsAlready) {
-        util.log("画笔数据请求完整，不在请求快照数据");
-        return;
+        util.log('画笔数据请求完整，不在请求快照数据')
+        return
       }
 
-      var states = state.getStates();
-      var currentTime = currentTime;
-      var index = state.getCurrentStateIndex(currentTime);
-      var _state = states[index];
+      var states = state.getStates()
+      var currentTime = currentTime
+      var index = state.getCurrentStateIndex(currentTime)
+      var _state = states[index]
 
       if (!_state) {
-        return;
+        return
       }
 
-      var _snapshoot = snapshoot.getSnapshoot();
-      var _isSnapshoot = _snapshoot[e.docId + "_" + e.pageNum + "_" + e.url];
+      var _snapshoot = snapshoot.getSnapshoot()
+      var _isSnapshoot = _snapshoot[e.docId + '_' + e.pageNum + '_' + e.url]
 
       //请求快照
       if (!_state.result && !_isSnapshoot) {//当前时间段是否有数据 && 当前页是否存在快照
-        util.log("_snapshoot.getSnapshoot()", _snapshoot);
+        util.log('_snapshoot.getSnapshoot()', _snapshoot)
         //中断没有请求完的快照，快照只能存在一个请求
         if (snapshoot.requestState) {
-          snapshoot.abort();
+          snapshoot.abort()
         }
 
         var options = {
-          url: "//view.csslcloud.net/api/view/replay/v2/draw/snapshot",
+          url: '//view.csslcloud.net/api/view/replay/v2/draw/snapshot',
           param: {
             docid: e.docId,
             currentpage: e.pageNum,
             userid: snapshoot.userId,
             recordid: snapshoot.recordId,
           }
-        };
+        }
         snapshoot.httpRequest(options, function (data) {
           //缓存快照数据
-          snapshoot.setSnapshoot(e.docId + "_" + e.pageNum + "_" + e.url, data);
+          snapshoot.setSnapshoot(e.docId + '_' + e.pageNum + '_' + e.url, data)
 
           if (!_state.result) {
-            callback.isRequestDraws = true;
-            var draw = data.datas.meta.draw;
-            util.log("*** 快照 callback.draws[" + e.docId + "_" + e.pageNum + "_" + e.url + "] ***", draw);
-            self.draws = distinct(self.draws, draw);
+            callback.isRequestDraws = true
+            var draw = data.datas.meta.draw
+            util.log('*** 快照 callback.draws[' + e.docId + '_' + e.pageNum + '_' + e.url + '] ***', draw)
+            self.draws = distinct(self.draws, draw)
             self.draws.sort(function (p1, p2) {
-              return parseInt(p1.time) - parseInt(p2.time);
-            });
-            fn(self.draws);
+              return parseInt(p1.time) - parseInt(p2.time)
+            })
+            fn(self.draws)
           } else {
-            util.log("快照请求成功，当前时间段数据存在，丢弃快照" + index + "");
+            util.log('快照请求成功，当前时间段数据存在，丢弃快照' + index + '')
           }
-        });
+        })
       } else {
-        util.log("当前时间段存在数据或存在快照", index + "");
+        util.log('当前时间段存在数据或存在快照', index + '')
       }
-    };
+    }
 
     function distinct(a, b) {
       // 数组去重
-      var arr = a.concat(b);
-      var result = [];
-      var obj = {};
+      var arr = a.concat(b)
+      var result = []
+      var obj = {}
       for (var i in arr) {
         if (!obj[JSON.stringify(arr[i])]) {
-          result.push(arr[i]);
-          obj[JSON.stringify(arr[i])] = 1;
+          result.push(arr[i])
+          obj[JSON.stringify(arr[i])] = 1
         }
       }
-      return result;
+      return result
     }
 
     function unique(oldDraws, newDraws) {
       //分段数据与快照合并
-      var _oldDraws = oldDraws;
-      var _newDraws = newDraws;
-      var draws = [];
+      var _oldDraws = oldDraws
+      var _newDraws = newDraws
+      var draws = []
       for (var i = 0; i < _newDraws.length; i++) {
-        var newDraw = _newDraws[i];
+        var newDraw = _newDraws[i]
         for (var j = 0; j < _oldDraws.length; j++) {
-          var oldDraw = _oldDraws[j];
+          var oldDraw = _oldDraws[j]
           if (isObjectValueEqual(oldDraw, newDraw)) {
-            _oldDraws.splice(j, 1);
-            break;
+            _oldDraws.splice(j, 1)
+            break
           }
         }
       }
-      draws = _oldDraws.concat(_newDraws);
-      return draws;
+      draws = _oldDraws.concat(_newDraws)
+      return draws
     }
 
     function isObjectValueEqual(a, b) {
       // Of course, we can do it use for in
       // Create arrays of property names
-      var aProps = Object.getOwnPropertyNames(a);
-      var bProps = Object.getOwnPropertyNames(b);
+      var aProps = Object.getOwnPropertyNames(a)
+      var bProps = Object.getOwnPropertyNames(b)
 
       // If number of properties is different,
       // objects are not equivalent
       if (aProps.length != bProps.length) {
-        return false;
+        return false
       }
 
       for (var i = 0; i < aProps.length; i++) {
-        var propName = aProps[i];
+        var propName = aProps[i]
 
         // If values of same property are not equal,
         // objects are not equivalent
         if (a[propName] !== b[propName]) {
-          return false;
+          return false
         }
       }
 
       // If we made it this far, objects
       // are considered equivalent
-      return true;
+      return true
     }
 
-  };
+  }
 
   //防止获取不到duration
   window.ListenerDuration = function () {
     if (!on_cc_limit_request_draws) {
-      return;
+      return
     }
     var t = setInterval(function () {
-      var duration = parseInt(callback.callbackPlayer.getDuration());
+      var duration = parseInt(callback.callbackPlayer.getDuration())
       if (duration) {
-        util.log("ListenerDuration");
-        on_cc_limit_request_draws && on_cc_limit_request_draws();
-        clearInterval(t);
+        util.log('ListenerDuration')
+        on_cc_limit_request_draws && on_cc_limit_request_draws()
+        clearInterval(t)
       }
-    }, 50);
-    window.ListenerDuration = null;
-  };
+    }, 50)
+    window.ListenerDuration = null
+  }
 
   window.on_cc_limit_request_draws = function () {
     if (!options.drawRequestTime) {
-      return;
+      return
     }
 
-    util.log("分页请求画笔数据", options.drawRequestTime);
-    var duration = (callback.callbackPlayer.getDuration()) + 1;
-    util.log("duration", duration + "");
+    util.log('分页请求画笔数据', options.drawRequestTime)
+    var duration = (callback.callbackPlayer.getDuration()) + 1
+    util.log('duration', duration + '')
     //请求数据左包含，右不包含，duration+1秒，防止最后一秒数据无法请求到。
-    var blockTime = Math.ceil(duration / options.drawRequestTime);
-    var startTime = 0;
-    var endTime = startTime + blockTime;
+    var blockTime = Math.ceil(duration / options.drawRequestTime)
+    var startTime = 0
+    var endTime = startTime + blockTime
 
     var blockDuration = {
       blockTime: blockTime,
       startTime: startTime,
       endTime: endTime
-    };
-    callback.state.init(blockDuration);
+    }
+    callback.state.init(blockDuration)
 
-    util.log("callback.state", callback.state);
+    util.log('callback.state', callback.state)
 
     callback.drawsInfoRequestPool.httpRequestStream(function (data) {
-      callback.draws = data;
-      callback.isHistoryReady = true;
-      callback.drawPanel.isReady = true;
-    });
+      callback.draws = data
+      callback.isHistoryReady = true
+      callback.drawPanel.isReady = true
+    })
 
     setTimeout(function () {
-      initDrawPanelInfo();
-    }, 1500);
+      initDrawPanelInfo()
+    }, 1500)
 
-    window.on_cc_limit_request_draws = null;
-  };
+    window.on_cc_limit_request_draws = null
+  }
 
   window.on_cc_request_snapshoot = function (pageChange) {
     if (!options.drawRequestTime) {
-      return;
+      return
     }
-    util.log("pageChange", pageChange);
-    var currentTime = callback.callbackPlayer.getPlayerTime();
+    util.log('pageChange', pageChange)
+    var currentTime = callback.callbackPlayer.getPlayerTime()
     callback.drawsInfoRequestPool.httpRequestSnapshoot(pageChange, currentTime, function (data) {
-      callback.draws = data;
-      callback.isHistoryReady = true;
-      callback.drawPanel.isReady = true;
-    });
-  };
+      callback.draws = data
+      callback.isHistoryReady = true
+      callback.drawPanel.isReady = true
+    })
+  }
 
   // 历史数据
   var History = function (opts, callback) {
 
-    substepRequestHistoryData(opts, success);
+    substepRequestHistoryData(opts, success)
 
     //canplay
-    var onCCH5PlayerLoad = false;
+    var onCCH5PlayerLoad = false
 
     function success(sub) {
 
-      var data = sub.globalData;
+      var data = sub.globalData
 
       if (sub.requestLoginData) {
 
         if (DWDpc.fastMode) {
-          $("#documentDisplayMode").val(data.datas.room.documentDisplayMode);
-          DWDpc.appendDrawPanel();
-          DWDpc.init();
+          $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
+          DWDpc.appendDrawPanel()
+          DWDpc.init()
         }
 
         opts.chat = {
           host: data.datas.pusherNode.primary
-        };
-        opts.viewer.sessionId = data.datas.sessionId;
-        opts.liveId = data.datas.encryptLiveId;
-        opts.upId = data.datas.upId;
-        opts.viewerId = data.datas.viewer.id;
-        callback.socket = new Socket(opts);
-        $.DW.groupId = data.datas.viewer.groupId;
-        if (typeof window.on_cc_callback_player === "function") {
-          window.on_cc_callback_player(data.datas);
+        }
+        opts.viewer.sessionId = data.datas.sessionId
+        opts.liveId = data.datas.encryptLiveId
+        opts.upId = data.datas.upId
+        opts.viewerId = data.datas.viewer.id
+        callback.socket = new Socket(opts)
+        $.DW.groupId = data.datas.viewer.groupId
+        if (typeof window.on_cc_callback_player === 'function') {
+          window.on_cc_callback_player(data.datas)
         }
 
         //encryptRecordId
-        if(!opts.recordId){
-          opts.recordId = data.datas.encryptRecordId;
+        if (!opts.recordId) {
+          opts.recordId = data.datas.encryptRecordId
         }
 
         if (DW.isH5play) {
-          MobileLive.init(opts);
-        } else if (MobileLive.isMobile() == "isMobile") {
-          MobileLive.init(opts);
+          MobileLive.init(opts)
+        } else if (MobileLive.isMobile() == 'isMobile') {
+          MobileLive.init(opts)
         }
       }
 
-      var datas = data.datas;
-      var meta = datas.meta;
+      var datas = data.datas
+      var meta = datas.meta
       if (!meta) {
-        return;
+        return
       }
 
       if (sub.requestInfoData) {
-        var pages = meta.pageChange;
+        var pages = meta.pageChange
         if (pages) {
           for (var i = 0; i < pages.length; i++) {
-            var imgUrl = pages[i].url;
-            var isHttps = window.location.protocol === "https:";
-            if (imgUrl.indexOf("//") > 0 && isHttps) {
-              imgUrl = imgUrl.replace("http:", "https:");
-              pages[i].url = imgUrl;
+            var imgUrl = pages[i].url
+            var isHttps = window.location.protocol === 'https:'
+            if (imgUrl.indexOf('//') > 0 && isHttps) {
+              imgUrl = imgUrl.replace('http:', 'https:')
+              pages[i].url = imgUrl
             }
           }
 
-          if (typeof window.on_cc_callback_pages === "function") {
-            window.on_cc_callback_pages(pages);
+          if (typeof window.on_cc_callback_pages === 'function') {
+            window.on_cc_callback_pages(pages)
           }
         }
 
-        var pageChanges = meta.pageChange;
+        var pageChanges = meta.pageChange
         if (pageChanges && pageChanges.length) {
           pageChanges.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
-          callback.pageChanges = pageChanges;
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
+          callback.pageChanges = pageChanges
         }
 
-        var animations = meta.animation;
+        var animations = meta.animation
         if (animations && animations.length) {
           animations.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
-          callback.animations = animations;
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
+          callback.animations = animations
         }
 
         //广播
-        var broadcasts = meta.broadcast;
-        window.chatLogs = meta.broadcast;
+        var broadcasts = meta.broadcast
+        window.chatLogs = meta.broadcast
         if (broadcasts && broadcasts.length) {
           broadcasts.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
           for (var i = 0; i < broadcasts.length; i++) {
-            var broadcast = broadcasts[i];
-            if (typeof window.on_cc_live_broadcast_msg == "function") {
+            var broadcast = broadcasts[i]
+            if (typeof window.on_cc_live_broadcast_msg == 'function') {
               window.on_cc_live_broadcast_msg({
                 content: broadcast.content,
                 time: broadcast.time
-              });
+              })
             }
           }
-          callback.broadcasts = broadcasts;
+          callback.broadcasts = broadcasts
         }
       }
 
       if (sub.requestChatqaData) {
-        var questions = meta.question;
+        var questions = meta.question
         if (questions && questions.length) {
           questions.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
-          callback.questions = questions;
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
+          callback.questions = questions
           for (var i = 0; i < callback.questions.length; i++) {
-            var question = questions[i];
+            var question = questions[i]
 
-            if (typeof window.on_cc_live_qa_question === "function") {
+            if (typeof window.on_cc_live_qa_question === 'function') {
               window.on_cc_live_qa_question({
-                "action": "question",
-                "value": {
-                  "id": question.encryptId,
-                  "content": question.content,
-                  "groupId": question.groupId,
-                  "userId": question.questionUserId,
-                  "userName": question.questionUserName,
-                  "userAvatar": question.questionUserAvatar,
-                  "isPublish": question.isPublish
+                'action': 'question',
+                'value': {
+                  'id': question.encryptId,
+                  'content': question.content,
+                  'groupId': question.groupId,
+                  'userId': question.questionUserId,
+                  'userName': question.questionUserName,
+                  'userAvatar': question.questionUserAvatar,
+                  'isPublish': question.isPublish
                 }
-              });
+              })
             }
           }
         }
 
-        var answers = meta.answer;
+        var answers = meta.answer
         if (answers && answers.length) {
           answers.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
-          callback.answers = answers;
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
+          callback.answers = answers
 
           for (var i = 0; i < callback.answers.length; i++) {
-            var answer = answers[i];
+            var answer = answers[i]
 
-            if (typeof window.on_cc_live_qa_answer === "function") {
+            if (typeof window.on_cc_live_qa_answer === 'function') {
               window.on_cc_live_qa_answer({
-                "action": "answer",
-                "value": {
-                  "questionId": answer.encryptId,
-                  "content": answer.content,
-                  "userId": answer.answerUserId,
-                  "isPrivate": answer.isPrivate,
-                  "groupId": answer.groupId,
-                  "userName": answer.answerUserName,
-                  "userAvatar": answer.answerUserAvatar,
-                  "userRole": answer.answerUserRole
+                'action': 'answer',
+                'value': {
+                  'questionId': answer.encryptId,
+                  'content': answer.content,
+                  'userId': answer.answerUserId,
+                  'isPrivate': answer.isPrivate,
+                  'groupId': answer.groupId,
+                  'userName': answer.answerUserName,
+                  'userAvatar': answer.answerUserAvatar,
+                  'userRole': answer.answerUserRole
                 }
-              });
+              })
             }
           }
         }
 
-        var chatLogs = meta.chatLog;
-        window.chatLogs = meta.chatLog;
+        var chatLogs = meta.chatLog
+        window.chatLogs = meta.chatLog
         if (chatLogs && chatLogs.length) {
           chatLogs.sort(function (p1, p2) {
-            return parseInt(p1.time) - parseInt(p2.time);
-          });
+            return parseInt(p1.time) - parseInt(p2.time)
+          })
           for (var i = 0; i < chatLogs.length; i++) {
-            var chatLog = chatLogs[i];
-            if (typeof window.on_cc_live_chat_msg === "function") {
+            var chatLog = chatLogs[i]
+            if (typeof window.on_cc_live_chat_msg === 'function') {
               window.on_cc_live_chat_msg({
                 userid: chatLog.userId,
                 username: chatLog.userName,
                 time: chatLog.time,
                 msg: chatLog.content,
                 groupId: chatLog.groupId,
-                chatId:chatLog.chatId,
-                status:chatLog.status,
+                chatId: chatLog.chatId,
+                status: chatLog.status,
                 useravatar: chatLog.userAvatar,
                 userRole: chatLog.userRole,
                 usercustommark: chatLog.userCustomMark,
                 role: chatLog.role
-              });
+              })
             }
           }
-          callback.chatLogs = chatLogs;
+          callback.chatLogs = chatLogs
         }
 
         if (window.chatLogs && window.chatLogs.length) {
-          window.CHATLOGS = window.chatLogs;
-          cc_live_callback_chat_interval();
+          window.CHATLOGS = window.chatLogs
+          cc_live_callback_chat_interval()
         }
 
         if (window.broadcasts && window.broadcasts.length) {
           //广播
-          window.BROADCASTS = window.broadcasts;
-          cc_live_callback_broadcasts_interval();
+          window.BROADCASTS = window.broadcasts
+          cc_live_callback_broadcasts_interval()
         }
       }
 
       if (sub.requestDrawData) {
-        var draws = meta.draw;
+        var draws = meta.draw
         if (draws && draws.length) {
-          callback.draws = draws;
+          callback.draws = draws
         }
 
-        callback.isHistoryReady = true;
+        callback.isHistoryReady = true
 
-        callback.drawPanel.isReady = true;
+        callback.drawPanel.isReady = true
         setTimeout(function () {
-          initDrawPanelInfo();
-        }, 1500);
+          initDrawPanelInfo()
+        }, 1500)
       }
 
       window.on_cc_h5_player_load = function () {
-        callback.callbackPlayer.isReady = true;
+        callback.callbackPlayer.isReady = true
         if (onCCH5PlayerLoad) {
-          return;
+          return
         }
-        onCCH5PlayerLoad = true;
+        onCCH5PlayerLoad = true
 
-        var playbackPanel = document.getElementById("drawPanel");
+        var playbackPanel = document.getElementById('drawPanel')
         if (playbackPanel) {
-          $.Callback.config({playerId: "playbackVideo"}, meta);
+          $.Callback.config({playerId: 'playbackVideo'}, meta)
         }
 
-      };
+      }
 
     }
 
-  };
+  }
 
   //广播
   var BroadcastCache = function () {
-    this.cache = [];
-    this.lastTimeRefresh = new Date().getTime();
+    this.cache = []
+    this.lastTimeRefresh = new Date().getTime()
 
     this.INTERVAL_TIME = setInterval(function () {
-      callback.broadcastCache.refresh();
-    }, 80);
+      callback.broadcastCache.refresh()
+    }, 80)
 
     //
     this.push = function (data) {
       // 缓存中超过5000条数据，则丢弃
       if (this.cache.length > 5000) {
-        return;
+        return
       }
-      this.cache.push(data);
-    };
+      this.cache.push(data)
+    }
 
     this.ableRefresh = function () {
-      var n = new Date().getTime();
+      var n = new Date().getTime()
 
       if (this.cache.length == 0) {
-        return false;
+        return false
       }
 
       if ((n - this.lastTimeRefresh) >= 80) {
-        return true;
+        return true
       }
-      return false;
-    };
+      return false
+    }
 
     this.refresh = function () {
       if (!this.ableRefresh()) {
-        return;
+        return
       }
 
-      clearInterval(this.INTERVAL_TIME);
+      clearInterval(this.INTERVAL_TIME)
 
-      var d = [];
-      var l = Math.min(this.cache.length, 10);
+      var d = []
+      var l = Math.min(this.cache.length, 10)
       for (var i = 0; i < l; i++) {
-        d.push(this.cache.shift());
+        d.push(this.cache.shift())
       }
 
-      if (typeof window.on_cc_live_broadcast_msg_sync === "function") {
-        window.on_cc_live_broadcast_msg_sync(d);
+      if (typeof window.on_cc_live_broadcast_msg_sync === 'function') {
+        window.on_cc_live_broadcast_msg_sync(d)
       }
 
-      this.lastTimeRefresh = new Date().getTime();
+      this.lastTimeRefresh = new Date().getTime()
 
       this.INTERVAL_TIME = setInterval(function () {
-        callback.broadcastCache.refresh();
-      }, 80);
-    };
-  };
+        callback.broadcastCache.refresh()
+      }, 80)
+    }
+  }
 
   var ChatMessageCache = function () {
-    this.cache = [];
-    this.lastTimeRefresh = new Date().getTime();
+    this.cache = []
+    this.lastTimeRefresh = new Date().getTime()
 
     this.INTERVAL_TIME = setInterval(function () {
-      callback.chatMessageCache.refresh();
-    }, 80);
+      callback.chatMessageCache.refresh()
+    }, 80)
 
     //
     this.push = function (data) {
       // 缓存中超过5000条数据，则丢弃
       if (this.cache.length > 5000) {
-        return;
+        return
       }
-      this.cache.push(data);
-    };
+      this.cache.push(data)
+    }
 
     this.ableRefresh = function () {
-      var n = new Date().getTime();
+      var n = new Date().getTime()
 
       if (this.cache.length == 0) {
-        return false;
+        return false
       }
 
       if ((n - this.lastTimeRefresh) >= 80) {
-        return true;
+        return true
       }
-      return false;
-    };
+      return false
+    }
 
     this.refresh = function () {
       if (!this.ableRefresh()) {
-        return;
+        return
       }
 
-      clearInterval(this.INTERVAL_TIME);
+      clearInterval(this.INTERVAL_TIME)
 
-      var d = [];
-      var l = Math.min(this.cache.length, 10);
+      var d = []
+      var l = Math.min(this.cache.length, 10)
       for (var i = 0; i < l; i++) {
-        d.push(this.cache.shift());
+        d.push(this.cache.shift())
       }
 
-      if (typeof window.on_cc_live_chat_msg_sync === "function") {
-        window.on_cc_live_chat_msg_sync(d);
+      if (typeof window.on_cc_live_chat_msg_sync === 'function') {
+        window.on_cc_live_chat_msg_sync(d)
       }
 
-      this.lastTimeRefresh = new Date().getTime();
+      this.lastTimeRefresh = new Date().getTime()
 
       this.INTERVAL_TIME = setInterval(function () {
-        callback.chatMessageCache.refresh();
-      }, 80);
-    };
-  };
+        callback.chatMessageCache.refresh()
+      }, 80)
+    }
+  }
 
   var Callback = function (opts) {
-    this.chatLogs = [];
-    this.broadcasts = [];
-    this.draws = [];
-    this.pageChanges = [];
+    this.chatLogs = []
+    this.broadcasts = []
+    this.draws = []
+    this.pageChanges = []
     // 获取历史数据成功
-    this.isHistoryReady = false;
-    this.questions = [];
-    this.answers = [];
-    this.pageChanges = [];
-    this.draws = [];
-    this.animations = [];
-    this.pageChangeIndex = -1;
-    this.drawIndex = -1;
-    this.animationIndex = -1;
-    this.isRequestDraws = false;
+    this.isHistoryReady = false
+    this.questions = []
+    this.answers = []
+    this.pageChanges = []
+    this.draws = []
+    this.animations = []
+    this.pageChangeIndex = -1
+    this.drawIndex = -1
+    this.animationIndex = -1
+    this.isRequestDraws = false
 
     //this.callbackPlayer = new CallbackPlayer(opts);
     //this.socket = new Socket(opts);
-    this.drawPanel = new DrawPanel(opts, this);
-    this.history = new History(opts, this);
-    this.chatMessageCache = new ChatMessageCache();
+    this.drawPanel = new DrawPanel(opts, this)
+    this.history = new History(opts, this)
+    this.chatMessageCache = new ChatMessageCache()
     //广播
-    this.broadcastCache = new BroadcastCache();
-  };
+    this.broadcastCache = new BroadcastCache()
+  }
 
-  var callback = {};
+  var callback = {}
 
-  window.DEBUG = false;
+  window.DEBUG = false
   var util = {
     DEBUG: window.DEBUG,
     log: function (arg1, arg2) {
       if (window.DEBUG) {
         if (arg2) {
-          console.log(arg1 + " => ", arg2);
+          console.log(arg1 + ' => ', arg2)
         } else {
-          console.log(arg1);
+          console.log(arg1)
         }
       }
     }
-  };
+  }
 
-  window.TIMEOUT = 5000;
+  window.TIMEOUT = 5000
 
   var options = {
-    userId: $("#userId").val(),
-    roomId: $("#roomId").val(),
-    liveId: $("#liveId").val(),
-    recordId: $("#recordId").val(),
-    videoId: $("#videoId").val(),
+    userId: $('#userId').val(),
+    roomId: $('#roomId').val(),
+    liveId: $('#liveId').val(),
+    recordId: $('#recordId').val(),
+    videoId: $('#videoId').val(),
     adapt: false,
     isShowBar: 0,
-    viewerId: $("#viewerId").val(),
-    upId: $("#upId").val(),
+    viewerId: $('#viewerId').val(),
+    upId: $('#upId').val(),
     // 观看者用户信息
     viewer: {
-      id: $("#viewerId").val(),
-      name: $("#viewerName").val(),
-      role: $("#viewerRole").val(),
-      sessionId: $("#sessionId").val()
+      id: $('#viewerId').val(),
+      name: $('#viewerName').val(),
+      role: $('#viewerRole').val(),
+      sessionId: $('#sessionId').val()
     },
 
     // 直播播放器信息
     callbackPlayer: {
-      id: "playbackPlayer",
-      width: "100%",
-      height: "100%"
+      id: 'playbackPlayer',
+      width: '100%',
+      height: '100%'
     },
 
     // 画板信息
     drawPanel: {
-      id: "playbackPanel",
-      width: "100%",
-      height: "100%"
+      id: 'playbackPanel',
+      width: '100%',
+      height: '100%'
     }
-  };
+  }
 
   //极速文档模式
   var DWDpc = {
     dpc: {},
     fastMode: false,
     init: function () {
-      this.dpc = new Dpc();
+      this.dpc = new Dpc()
     },
     appendDrawPanel: function () {
-      var dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;\"></iframe>";
-      if (MobileLive.isMobile() == "isMobile") {
-        dp = "<iframe id=\"dpa\" allow-scripts allowfullscreen allowusermedia frameborder=\"0\" style=\"width: 100%;height:100%;pointer-events: none;\"></iframe>";
+      var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>'
+      if (MobileLive.isMobile() == 'isMobile') {
+        dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>'
       }
-      $("#playbackPanel").parent().append(dp);
-      $("div#playbackPanel").remove();
+      $('#playbackPanel').parent().append(dp)
+      $('div#playbackPanel').remove()
 
-      if (typeof window.on_cc_live_db_flip === "function") {
-        window.on_cc_live_db_flip();
+      if (typeof window.on_cc_live_db_flip === 'function') {
+        window.on_cc_live_db_flip()
       }
     },
     pageChange: function (pc) {
       if (!this.fastMode) {
-        return;
+        return
       }
-      this.dpc.pageChange(pc);
+      this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
       if (!this.fastMode) {
-        return;
+        return
       }
-      this.dpc.animationChange(ac);
+      this.dpc.animationChange(ac)
     },
     history: function (h) {
       if (!this.fastMode) {
-        return;
+        return
       }
-      this.dpc.history(h);
+      this.dpc.history(h)
     },
     draw: function (d) {
       if (!this.fastMode) {
-        return;
+        return
       }
-      this.dpc.draw(d);
+      this.dpc.draw(d)
     },
     clear: function () {
       if (!this.fastMode) {
-        return;
+        return
       }
-      this.dpc.clear();
+      this.dpc.clear()
     },
-    docAdapt:function (t) {
-      if(!this.fastMode){
-        return;
+    docAdapt: function (t) {
+      if (!this.fastMode) {
+        return
       }
-      var displayMode = t ? '1':'2';
-      this.dpc.setDisplayMode(displayMode);
+      var displayMode = t ? '1' : '2'
+      this.dpc.setDisplayMode(displayMode)
     }
-  };
+  }
 
   function init(opts) {
-    options.viewerId = opts.viewerid;
-    options = $.extend(options, opts);
+    options.viewerId = opts.viewerid
+    options = $.extend(options, opts)
 
-    callback = new Callback(options);
+    callback = new Callback(options)
   }
 
   var DW = {
@@ -1651,69 +1669,69 @@
     fastMode: false,
     forceNew: false,
     setFastMode: function (opts) {
-      if (typeof opts.fastMode == "string") {
-        if (opts.fastMode === "false") {
-          this.fastMode = false;
+      if (typeof opts.fastMode == 'string') {
+        if (opts.fastMode === 'false') {
+          this.fastMode = false
         } else {
-          this.fastMode = true;
+          this.fastMode = true
         }
-      } else if (typeof opts.fastMode == "boolean") {
-        this.fastMode = opts.fastMode;
+      } else if (typeof opts.fastMode == 'boolean') {
+        this.fastMode = opts.fastMode
       } else {
-        this.fastMode = false;
+        this.fastMode = false
       }
     },
     // 初始化DW对象
     config: function (opts) {
-      window.$ = window.jQuery = $;
+      window.$ = window.jQuery = $
 
       if (checkVideo()) {
-        if(opts.isH5play + "" === "true"){
-          this.isH5play = true;
-        }else{
-          this.isH5play = false;
+        if (opts.isH5play + '' === 'true') {
+          this.isH5play = true
+        } else {
+          this.isH5play = false
         }
       }
 
-      this.setFastMode(opts);
-      DWDpc.fastMode = this.fastMode;
+      this.setFastMode(opts)
+      DWDpc.fastMode = this.fastMode
 
       var scriptArray = [
 
-        "//static.csslcloud.net/js/socket.io.js",
-        "//static.csslcloud.net/js/swfobject.js",
-        "//image.csslcloud.net/js/dpc.js?v=20180121",
-        "//static.csslcloud.net/js/json3.min.js",
-        "//static.csslcloud.net/js/module/drawingBoard-2.0.0.js",
-        "//static.csslcloud.net/js/module/drawingBoardPlayback.js",
-        "//static.csslcloud.net/js/report.js"
-      ];
+        '//static.csslcloud.net/js/socket.io.js',
+        '//static.csslcloud.net/js/swfobject.js',
+        '//image.csslcloud.net/js/dpc.js?v=20180121',
+        '//static.csslcloud.net/js/json3.min.js',
+        '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
+        '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
+        '//static.csslcloud.net/js/report.js'
+      ]
       if (DWDpc.fastMode) {
-        scriptArray.splice(3, 2);
+        scriptArray.splice(3, 2)
       }
 
       this.loadScript(scriptArray, function () {
-        init(opts);
-        if (MobileLive.isMobile() == "isMobile" && $.DrawingBoard && !DWDpc.fastMode) {
-          DW.appendDrawPanel();
+        init(opts)
+        if (MobileLive.isMobile() == 'isMobile' && $.DrawingBoard && !DWDpc.fastMode) {
+          DW.appendDrawPanel()
         }
-      });
+      })
 
-      if (typeof opts.forceNew === "boolean") {
-        this.forceNew = opts.forceNew;
+      if (typeof opts.forceNew === 'boolean') {
+        this.forceNew = opts.forceNew
       }
     },
     appendDrawPanel: function () {
-      var dp = "<canvas id=\"drawPanel\" width=\"1200\" height=\"1200\" style=\"position: absolute;z-index:2;top:0;left: 0\"></canvas>"
-        + "<iframe id=\"dpa\" src=\"\" frameborder=\"0\" style=\"position: absolute;top:0;left: 0\"></iframe>";
-      $("#playbackPanel").parent().append(dp);
-      $("div#playbackPanel").remove();
+      var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
+        + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>'
+      $('#playbackPanel').parent().append(dp)
+      $('div#playbackPanel').remove()
     },
     logout: function () {
       $.ajax({
-        url: "//view.csslcloud.net/api/callback/logout",
-        type: "GET",
-        dataType: "json",
+        url: '//view.csslcloud.net/api/callback/logout',
+        type: 'GET',
+        dataType: 'json',
         timeout: 5000,
         xhrFields: {
           withCredentials: true
@@ -1722,129 +1740,129 @@
         },
         error: function (xhr, status, error) {
         }
-      });
+      })
     },
 
     getScript: function (url, success) {
 
       var readyState = false,
-        script = document.createElement("script");
-      script.src = url;
+        script = document.createElement('script')
+      script.src = url
 
       script.onload = script.onreadystatechange = function () {
-        if (!readyState && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
-          readyState = true;
-          success && success();
+        if (!readyState && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+          readyState = true
+          success && success()
         }
-      };
-      document.body.appendChild(script);
+      }
+      document.body.appendChild(script)
 
     },
 
     loadScript: function (res, callback) {
 
-      if (typeof res === "string") {
-        var _res = res;
-        res = [];
-        res.push(_res);
+      if (typeof res === 'string') {
+        var _res = res
+        res = []
+        res.push(_res)
       }
       var _this = this,
         queue = function (fs, cb) {
           _this.getScript(fs.shift(), function () {
-            fs.length ? queue(fs, cb) : cb && cb();
-          });
-        };
+            fs.length ? queue(fs, cb) : cb && cb()
+          })
+        }
 
-      queue(res, callback);
+      queue(res, callback)
 
     },
 
     playbackRate: function (t) {
-      callback.callbackPlayer.playbackRate(t);
+      callback.callbackPlayer.playbackRate(t)
     },
 
     seek: function (t) {
-      clearInterval(callback.drawPanel.intervalNum);
-      callback.callbackPlayer.seek(t);
+      clearInterval(callback.drawPanel.intervalNum)
+      callback.callbackPlayer.seek(t)
     },
 
     getPlayerTime: function () {
 
-      return callback.callbackPlayer.getPlayerTime();
+      return callback.callbackPlayer.getPlayerTime()
 
     },
 
     getDuration: function () {
       if (DW.isH5play) {
-        return MobileLive.getDuration();
-      } else if (MobileLive.isMobile() == "isMobile") {
-        return MobileLive.getDuration();
+        return MobileLive.getDuration()
+      } else if (MobileLive.isMobile() == 'isMobile') {
+        return MobileLive.getDuration()
       } else {
-        return callback.callbackPlayer.getDuration();
+        return callback.callbackPlayer.getDuration()
       }
     },
 
     docAdapt: function (t) {
-      if(DWDpc.fastMode){
-        DWDpc.docAdapt(t);
+      if (DWDpc.fastMode) {
+        DWDpc.docAdapt(t)
       }
-      options.adapt = t;
+      options.adapt = t
     },
 
     isShowBar: function (n) {
-      options.isShowBar = n;
+      options.isShowBar = n
     },
 
     getBuffer: function () {
-      return callback.callbackPlayer.getBuffer();
+      return callback.callbackPlayer.getBuffer()
     },
 
     setVolume: function (n) {
-      return callback.callbackPlayer.setVolume(n);
+      return callback.callbackPlayer.setVolume(n)
     },
 
     getVolume: function () {
-      return callback.callbackPlayer.getVolume();
+      return callback.callbackPlayer.getVolume()
     },
 
     play: function () {
-      return callback.callbackPlayer.play();
+      return callback.callbackPlayer.play()
     },
 
     setZScale: function (s) {
-      return callback.callbackPlayer.setZScale(s);
+      return callback.callbackPlayer.setZScale(s)
     },
 
     getZScale: function () {
-      return callback.callbackPlayer.getZScale();
+      return callback.callbackPlayer.getZScale()
     },
 
     setScale: function (s) {
-      return callback.callbackPlayer.setScale(s);
+      return callback.callbackPlayer.setScale(s)
     },
 
     getScale: function () {
-      return callback.callbackPlayer.getScale();
+      return callback.callbackPlayer.getScale()
     },
 
     openSettingPanel: function () {
-      return callback.callbackPlayer.openSettingPanel();
+      return callback.callbackPlayer.openSettingPanel()
     }
 
-  };
+  }
 
   $.extend({
     DW: DW
-  });
+  })
 
   function isLivePlayerReady() {
     if (!callback.callbackPlayer.isReady) {
       setTimeout(function () {
-        isLivePlayerReady();
-      }, 500);
-      return;
+        isLivePlayerReady()
+      }, 500)
+      return
     }
-    callback.drawPanel.intervalPainting(callback);
+    callback.drawPanel.intervalPainting(callback)
   }
 
   // 初始化画板数据
@@ -1852,44 +1870,44 @@
     // 等待历史数据加载成功
     if (!callback.isHistoryReady) {
       setTimeout(function () {
-        initDrawPanelInfo();
-      }, 300);
-      return;
+        initDrawPanelInfo()
+      }, 300)
+      return
     }
-    isLivePlayerReady();
+    isLivePlayerReady()
   }
 
   window.on_cc_callback_player = function (data) {
-    options.videoId = data.live.encryptRecordvideoId;
-    options.recordId = data.encryptRecordId;
-    callback.callbackPlayer = new CallbackPlayer(options);
-  };
+    options.videoId = data.live.encryptRecordvideoId
+    options.recordId = data.encryptRecordId
+    callback.callbackPlayer = new CallbackPlayer(options)
+  }
 
   // 播放器加载完成，开始播放
   window.on_cc_live_player_init = function () {
-    callback.callbackPlayer.isReady = true;
+    callback.callbackPlayer.isReady = true
     try {
-      callback.callbackPlayer.getFlash().start();
+      callback.callbackPlayer.getFlash().start()
     } catch (e) {
     }
     // 同时开始实时显示聊天信息
     setInterval(function () {
-      var ft = 0;
+      var ft = 0
       try {
-        ft = callback.callbackPlayer.getPlayerTime();
+        ft = callback.callbackPlayer.getPlayerTime()
       } catch (e) {
       }
       if (ft <= 0) {
-        return;
+        return
       }
 
       if (!callback.chatLogs.length) {
-        return;
+        return
       }
 
-      var chatLog = callback.chatLogs[0];
+      var chatLog = callback.chatLogs[0]
       while (chatLog.time <= ft) {
-        chatLog = callback.chatLogs.shift();
+        chatLog = callback.chatLogs.shift()
 
         callback.chatMessageCache.push({
           userid: chatLog.userId,
@@ -1897,88 +1915,88 @@
           time: chatLog.time,
           msg: chatLog.content,
           groupId: chatLog.groupId,
-          chatId:chatLog.chatId,
-          status:chatLog.status,
+          chatId: chatLog.chatId,
+          status: chatLog.status,
           useravatar: chatLog.userAvatar,
           userRole: chatLog.userRole,
           usercustommark: chatLog.userCustomMark,
           role: chatLog.role,
-        });
+        })
 
         if (!callback.chatLogs.length) {
-          break;
+          break
         }
 
-        chatLog = callback.chatLogs[0];
+        chatLog = callback.chatLogs[0]
       }
-    }, 1000);
+    }, 1000)
 
     // 同时开始实时显示广播
     setInterval(function () {
-      var ft = 0;
+      var ft = 0
       try {
-        ft = callback.callbackPlayer.getPlayerTime();
+        ft = callback.callbackPlayer.getPlayerTime()
       } catch (e) {
       }
       if (ft <= 0) {
-        return;
+        return
       }
 
       if (!callback.broadcasts.length) {
-        return;
+        return
       }
 
-      var broadcast = callback.broadcasts[0];
+      var broadcast = callback.broadcasts[0]
       while (broadcast.time <= ft) {
-        broadcast = callback.broadcasts.shift();
+        broadcast = callback.broadcasts.shift()
 
         callback.broadcastCache.push({
           content: broadcast.content,
           time: broadcast.time
-        });
+        })
 
         if (!callback.broadcasts.length) {
-          break;
+          break
         }
 
-        broadcast = callback.broadcasts[0];
+        broadcast = callback.broadcasts[0]
       }
-    }, 1000);
+    }, 1000)
 
-    if (typeof window.on_cc_live_player_load === "function") {
-      window.on_cc_live_player_load();
+    if (typeof window.on_cc_live_player_load === 'function') {
+      window.on_cc_live_player_load()
     }
 
     if (on_cc_limit_request_draws) {
-      var duration = parseInt(callback.callbackPlayer.getDuration());
+      var duration = parseInt(callback.callbackPlayer.getDuration())
       if (duration) {
-        on_cc_limit_request_draws && on_cc_limit_request_draws();
+        on_cc_limit_request_draws && on_cc_limit_request_draws()
       } else {
-        ListenerDuration && ListenerDuration();
+        ListenerDuration && ListenerDuration()
       }
     }
 
-  };
+  }
 
   function cc_live_callback_chat_interval() {
     setInterval(function () {
-      var ft = 0;
+      var ft = 0
       try {
-        ft = parseInt($("#playbackVideo")[0].currentTime, 10);
+        ft = parseInt($('#playbackVideo')[0].currentTime, 10)
       } catch (e) {
       }
       if (ft <= 0) {
-        return;
+        return
       }
 
       if (!window.CHATLOGS.length) {
-        return;
+        return
       }
 
-      var chatLog = window.CHATLOGS[0];
+      var chatLog = window.CHATLOGS[0]
 
       while (chatLog.time <= ft) {
-        var cl = window.CHATLOGS.shift();
+        var cl = window.CHATLOGS.shift()
         callback.chatMessageCache.push({
           userid: cl.userId,
           username: cl.userName,
@@ -1987,141 +2005,141 @@
           groupId: cl.groupId,
           useravatar: cl.userAvatar,
           userRole: cl.userRole,
-          chatId:chatLog.chatId,
-          status:chatLog.status,
+          chatId: chatLog.chatId,
+          status: chatLog.status,
           usercustommark: cl.userCustomMark,
           role: cl.role
-        });
+        })
         if (!window.CHATLOGS.length) {
-          break;
+          break
         }
-        chatLog = window.CHATLOGS[0];
+        chatLog = window.CHATLOGS[0]
       }
 
-    }, 1000);
+    }, 1000)
   }
 
   function cc_live_callback_broadcasts_interval() {
     setInterval(function () {
-      var ft = 0;
+      var ft = 0
       try {
-        ft = parseInt($("#playbackVideo")[0].currentTime, 10);
+        ft = parseInt($('#playbackVideo')[0].currentTime, 10)
       } catch (e) {
       }
       if (ft <= 0) {
-        return;
+        return
       }
 
       //广播
       if (!window.BROADCASTS.length) {
-        return;
+        return
       }
 
-      var broadcast = window.BROADCASTS[0];
+      var broadcast = window.BROADCASTS[0]
 
       while (broadcast.time <= ft) {
-        var bc = window.BROADCASTS.shift();
+        var bc = window.BROADCASTS.shift()
         callback.broadcastCache.push({
           content: bc.content,
           time: bc.time
-        });
+        })
 
         if (!window.BROADCASTS.length) {
-          break;
+          break
         }
-        broadcast = window.BROADCASTS[0];
+        broadcast = window.BROADCASTS[0]
       }
 
-    }, 1000);
+    }, 1000)
   }
 
   // 画板Flash加载完成回调
   window.on_drampanel_ready = function () {
-    callback.drawPanel.isReady = true;
+    callback.drawPanel.isReady = true
 
     setTimeout(function () {
-      initDrawPanelInfo();
-    }, 1500);
-  };
+      initDrawPanelInfo()
+    }, 1500)
+  }
 
   window.seekStart = function () {
-    clearInterval(callback.drawPanel.intervalNum);
-  };
+    clearInterval(callback.drawPanel.intervalNum)
+  }
 
   // 拖动时间轴或跳动播放成功后回调函数
   window.seekComplete = function () {
-    callback.drawPanel.clear();
+    callback.drawPanel.clear()
     //clearInterval(callback.drawPanel.intervalNum);
 
-    var ft = callback.callbackPlayer.getPlayerTime();
+    var ft = callback.callbackPlayer.getPlayerTime()
     if (ft < 0) {
-      ft = 0;
+      ft = 0
     }
 
-    callback.pageChangeIndex = -1;
-    callback.drawIndex = -1;
-    callback.animationIndex = -1;
+    callback.pageChangeIndex = -1
+    callback.drawIndex = -1
+    callback.animationIndex = -1
 
     var meta = {
       pageChange: [],
       animation: [],
       draw: []
-    };
+    }
 
     if (callback.pageChanges && callback.pageChanges.length > 0) {
       for (var i = 0; i < callback.pageChanges.length; i++) {
-        var pc = callback.pageChanges[i];
+        var pc = callback.pageChanges[i]
         if (ft >= pc.time) {
-          callback.pageChangeIndex = i;
+          callback.pageChangeIndex = i
         }
       }
 
       if (callback.pageChangeIndex >= 0) {
-        var pc = callback.pageChanges[callback.pageChangeIndex];
-        if (typeof window.on_cc_callback_page_change === "function") {
-          window.on_cc_callback_page_change(pc);
+        var pc = callback.pageChanges[callback.pageChangeIndex]
+        if (typeof window.on_cc_callback_page_change === 'function') {
+          window.on_cc_callback_page_change(pc)
         }
-        if (typeof window.on_cc_request_snapshoot === "function") {
-          window.on_cc_request_snapshoot(pc);
+        if (typeof window.on_cc_request_snapshoot === 'function') {
+          window.on_cc_request_snapshoot(pc)
         }
         callback.drawPanel.filp(JSON.stringify({
-          "fileName": pc.docName,
-          "totalPage": pc.docTotalPage,
-          "docid": pc.encryptDocId,
-          "url": pc.url,
-          "page": pc.pageNum,
-          "useSDK": pc.useSDK
-        }));
+          'fileName': pc.docName,
+          'totalPage': pc.docTotalPage,
+          'docid': pc.encryptDocId,
+          'url': pc.url,
+          'page': pc.pageNum,
+          'useSDK': pc.useSDK
+        }))
 
-        meta.pageChange.push(pc);
+        meta.pageChange.push(pc)
       }
     }
 
     if (callback.animations && callback.animations.length > 0) {
       for (var i = 0; i < callback.animations.length; i++) {
-        var a = callback.animations[i];
+        var a = callback.animations[i]
         if (ft >= a.time) {
-          callback.animationIndex = i;
+          callback.animationIndex = i
         }
       }
 
       if (callback.animationIndex >= 0) {
-        var pidex = callback.pageChangeIndex;
+        var pidex = callback.pageChangeIndex
         if (pidex >= 0) {
-          var pc = callback.pageChanges[pidex];
-          var a = callback.animations[callback.animationIndex];
+          var pc = callback.pageChanges[pidex]
+          var a = callback.animations[callback.animationIndex]
 
           if (!!pc && !!a && pc.encryptDocId == a.encryptDocId && ft >= a.time && pc.time <= a.time) {
             callback.drawPanel.animation(JSON.stringify({
-              "fileName": a.docName,
-              "totalPage": a.docTotalPage,
-              "docid": a.encryptDocId,
-              "url": a.url,
-              "page": a.pageNum,
-              "step": a.step
-            }));
+              'fileName': a.docName,
+              'totalPage': a.docTotalPage,
+              'docid': a.encryptDocId,
+              'url': a.url,
+              'page': a.pageNum,
+              'step': a.step
+            }))
 
-            meta.animation.push(a);
+            meta.animation.push(a)
 
           }
         }
@@ -2130,234 +2148,234 @@
 
     if (callback.draws && callback.draws.length > 0) {
       for (var i = 0; i < callback.draws.length; i++) {
-        var dc = callback.draws[i];
-        if(dc){
+        var dc = callback.draws[i]
+        if (dc) {
           if (ft >= dc.time) {
             //callback.drawPanel.draw(dc.data);
-            callback.drawIndex = i;
+            callback.drawIndex = i
           }
         }
 
       }
 
-      var ds = callback.draws.slice(0, (callback.drawIndex + 1));
+      var ds = callback.draws.slice(0, (callback.drawIndex + 1))
       if (ds.length > 0) {
-        var dcdatas = [];
+        var dcdatas = []
         for (var i = 0; i < ds.length; i++) {
-          var dc = ds[i];
-          dcdatas.push(dc.data);
-          meta.draw.push(dc);
+          var dc = ds[i]
+          dcdatas.push(dc.data)
+          meta.draw.push(dc)
         }
-        callback.drawPanel.draws(dcdatas);
+        callback.drawPanel.draws(dcdatas)
       }
     }
 
-    DWDpc.history(meta);
+    DWDpc.history(meta)
 
     callback.drawPanel.intervalNum = setInterval(function () {
-      callback.drawPanel.interval();
-    }, 1000);
-  };
+      callback.drawPanel.interval()
+    }, 1000)
+  }
 
   //事件兼容处理
-  var Event = {};
+  var Event = {}
   Event.addEvents = function (target, eventType, handle) {
     if (document.addEventListener) {
       Event.addEvents = function (target, eventType, handle) {
-        target.addEventListener(eventType, handle, false);
-      };
+        target.addEventListener(eventType, handle, false)
+      }
     } else {
       Event.addEvents = function (target, eventType, handle) {
-        target.attachEvent("on" + eventType, function () {
-          handle.call(target, arguments);
-        });
-      };
+        target.attachEvent('on' + eventType, function () {
+          handle.call(target, arguments)
+        })
+      }
     }
-    ;
-    Event.addEvents(target, eventType, handle);
-  };
+
+    Event.addEvents(target, eventType, handle)
+  }
 
   //video兼容处理
   function checkVideo() {
-    if (!!document.createElement("video").canPlayType) {
-      var vidTest = document.createElement("video");
-      var oggTest = vidTest.canPlayType("video/ogg; codecs=\"theora, vorbis\"");
+    if (!!document.createElement('video').canPlayType) {
+      var vidTest = document.createElement('video')
+      var oggTest = vidTest.canPlayType('video/ogg; codecs="theora, vorbis"')
       if (!oggTest) {
-        var h264Test = vidTest.canPlayType("video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"");
+        var h264Test = vidTest.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
         if (!h264Test) {
-          return false;
+          return false
         }
         else {
-          if (h264Test == "probably") {
-            return true;
+          if (h264Test == 'probably') {
+            return true
           }
           else {
-            return false;
+            return false
           }
         }
       }
       else {
-        if (oggTest == "probably") {
-          return true;
+        if (oggTest == 'probably') {
+          return true
         }
         else {
-          return false;
+          return false
         }
       }
     }
     else {
-      return false;
+      return false
     }
   }
 
-  var beforeTime = 0;
-  var nextTime = 0;
+  var beforeTime = 0
+  var nextTime = 0
   // var skipOnceSeek = false;
-  var isCustomSeek = true;
+  var isCustomSeek = true
 
   var MobileLive = {
     pauseState: false,
     init: function (opts) {
-      var _this = this;
+      var _this = this
       $.ajax({
-        url: "//view.csslcloud.net/api/vod/v2/play/h5",
-        type: "GET",
-        dataType: "jsonp",
+        url: '//view.csslcloud.net/api/vod/v2/play/h5',
+        type: 'GET',
+        dataType: 'jsonp',
         data: {
           userid: opts.userId,
           roomid: opts.roomId,
           recordid: opts.recordId
         },
         success: function (data) {
-          var pvdefault = data.video[0];
+          var pvdefault = data.video[0]
 
-          var playurl = pvdefault.playurl;
-          var secureplayurl = pvdefault.secureplayurl;
+          var playurl = pvdefault.playurl
+          var secureplayurl = pvdefault.secureplayurl
 
-          var isHttps = window.location.protocol === "https:";
+          var isHttps = window.location.protocol === 'https:'
           if (isHttps && !!secureplayurl) {
-            playurl = secureplayurl;
+            playurl = secureplayurl
           }
 
-          _this.appendVideo(playurl, opts);
+          _this.appendVideo(playurl, opts)
         }
-      });
+      })
     },
 
     appendVideo: function (s, opts) {
-      var _this = this;
+      var _this = this
 
-      var v = "<video id=\"playbackVideo\" webkit-playsinline playsinline controls autoplay x-webkit-airplay=\"deny\" x5-playsinline width=\"100%\" height=\"100%\" src=\"" + s + "\"></video>";
-      $("#" + playbackPlayer.id).html(v);
-      var video = document.getElementById("playbackVideo");
+      var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      $('#' + playbackPlayer.id).html(v)
+      var video = document.getElementById('playbackVideo')
       if (opts.isShowBar) {
-        video.removeAttribute("controls");
+        video.removeAttribute('controls')
       }
 
-      var isMobie = 0;
-      var ua = 1;
-      if (MobileLive.isMobile() == "isMobile") {
-        isMobie = 1;
-        ua = 11;
+      var isMobie = 0
+      var ua = 1
+      if (MobileLive.isMobile() == 'isMobile') {
+        isMobie = 1
+        ua = 11
       }
-      var report = new ReportLog(opts, isMobie, ua, video, false);
+      var report = new ReportLog(opts, isMobie, ua, video, false)
       if (!this.isAndroid()) {
-        this.pauseState = true;
+        this.pauseState = true
       }
 
-      Event.addEvents(video, "canplay", function () {
-        if (MobileLive.isMobile() == "isMobile") {
-          window.on_cc_live_player_load && window.on_cc_live_player_load();
-          window.on_cc_h5_player_load && window.on_cc_h5_player_load();
+      Event.addEvents(video, 'canplay', function () {
+        if (MobileLive.isMobile() == 'isMobile') {
+          window.on_cc_live_player_load && window.on_cc_live_player_load()
+          window.on_cc_h5_player_load && window.on_cc_h5_player_load()
         } else if (DW.isH5play) {
-          window.on_cc_live_player_init && window.on_cc_live_player_init();
+          window.on_cc_live_player_init && window.on_cc_live_player_init()
         }
 
         if (on_cc_limit_request_draws) {
-          var duration = parseInt(callback.callbackPlayer.getDuration());
+          var duration = parseInt(callback.callbackPlayer.getDuration())
           if (duration) {
-            on_cc_limit_request_draws && on_cc_limit_request_draws();
+            on_cc_limit_request_draws && on_cc_limit_request_draws()
           } else {
-            ListenerDuration && ListenerDuration();
+            ListenerDuration && ListenerDuration()
           }
         }
 
-      }, false);
+      }, false)
 
-      Event.addEvents(video, "playing", function () {
-        _this.pauseState = false;
-        window.on_player_start && on_player_start();
-        window.on_spark_player_resume && on_spark_player_resume();
-      }, false);
+      Event.addEvents(video, 'playing', function () {
+        _this.pauseState = false
+        window.on_player_start && on_player_start()
+        window.on_spark_player_resume && on_spark_player_resume()
+      }, false)
 
-      Event.addEvents(video, "pause", function () {
-        _this.pauseState = true;
-        window.on_spark_player_pause && on_spark_player_pause();
-      }, false);
+      Event.addEvents(video, 'pause', function () {
+        _this.pauseState = true
+        window.on_spark_player_pause && on_spark_player_pause()
+      }, false)
 
-      Event.addEvents(video, "ended", function () {
-        window.on_spark_player_end && on_spark_player_end();
-      }, false);
+      Event.addEvents(video, 'ended', function () {
+        window.on_spark_player_end && on_spark_player_end()
+      }, false)
 
-      Event.addEvents(video, "seeking", function () {
-        isCustomSeek = false;
-        seekStart && seekStart();
-      }, false);
+      Event.addEvents(video, 'seeking', function () {
+        isCustomSeek = false
+        seekStart && seekStart()
+      }, false)
 
-      Event.addEvents(video, "seeked", function () {
-        isCustomSeek = false;
-        seekComplete && seekComplete();
-      }, false);
+      Event.addEvents(video, 'seeked', function () {
+        isCustomSeek = false
+        seekComplete && seekComplete()
+      }, false)
     },
 
     getDuration: function () {
-      var v = document.getElementById("playbackVideo");
+      var v = document.getElementById('playbackVideo')
       if (!v) {
-        return;
+        return
       }
-      return Math.floor(v.duration);
+      return Math.floor(v.duration)
     },
 
     getPlayerTime: function () {
-      var v = document.getElementById("playbackVideo");
+      var v = document.getElementById('playbackVideo')
       if (!v) {
-        return;
+        return
       }
-      return Math.floor(v.currentTime);
+      return Math.floor(v.currentTime)
     },
 
     end: function () {
-      $("#" + playbackPlayer.id).html("end");
+      $('#' + playbackPlayer.id).html('end')
     },
 
     appendDoc: function (s) {
-      var img = "<img src=\"" + s + "\" />";
-      $("#" + playbackPanel.id).append(img);
+      var img = '<img src="' + s + '" />'
+      $('#' + playbackPanel.id).append(img)
     },
 
     isMobile: function () {
       if (this.isIPad() || this.isIPhone() || this.isAndroid() || this.isWindowsPhone()) {
-        return "isMobile";
+        return 'isMobile'
       }
     },
 
     isIPad: function () {
-      return navigator.userAgent.match(/iPad/i) != null;
+      return navigator.userAgent.match(/iPad/i) != null
     },
 
     isIPhone: function () {
-      return navigator.userAgent.match(/iPhone/i) != null;
+      return navigator.userAgent.match(/iPhone/i) != null
     },
 
     isAndroid: function () {
-      return navigator.userAgent.match(/Android/i) != null;
+      return navigator.userAgent.match(/Android/i) != null
     },
 
     isWindowsPhone: function () {
-      return navigator.userAgent.match(/Windows Phone/i) != null;
+      return navigator.userAgent.match(/Windows Phone/i) != null
     }
 
-  };
+  }
 
 
-})(jQuery, window, document, undefined);
+})(jQuery, window, document, undefined)

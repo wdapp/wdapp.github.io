@@ -55,14 +55,14 @@ class Login extends Component {
     Utils.log('bindEnterRoomClick', e)
     if (Utils.isMobile()) {
       //移动端
-      if (Utils.isReaply(this._address.value)) {
+      if (Utils.isReplay(this._address.value)) {
         this.bindMobileReplayClick()
       } else {
         this.bindMobileLiveClick()
       }
     } else {
       //PC端
-      if (Utils.isReaply(this._address.value)) {
+      if (Utils.isReplay(this._address.value)) {
         this.bindReplayClick()
       } else {
         this.bindLiveClick()
@@ -127,7 +127,7 @@ class Login extends Component {
       return false
     }
     var model = new Model()
-    model.address = this._address.value + `&viewername=${this._viewername.value}&viewertoken=${this._viewertoken.value}&fastMode=${this._isH5play.checked}&isH5play=${this._fastMode.checked}`
+    model.address = this._address.value + `&viewername=${this._viewername.value}&viewertoken=${this._viewertoken.value}&isH5play=${this._isH5play.checked}&fastMode=${this._fastMode.checked}`
     if (!model.address) {
       return false
     }

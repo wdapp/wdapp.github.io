@@ -2225,7 +2225,7 @@
 
   var MobileLive = {
     pauseState: false,
-    useHls:true,
+    useHls:false,
     init: function (ots) {
       var _this = this
       function getInfo(opts) {
@@ -2261,24 +2261,29 @@
         })
       }
       var isMp4 = 0
-      if (DW.isH5play && !MobileLive.isMobile()) {
-        if(util.isIE9()){
-          isMp4 = 1;
-          this.useHls=false
-          // DW.getH5src(opts);
-          getInfo(ots)
-        }else{
-          isMp4=0
-          this.useHls=true;
-          var script = document.createElement("script");
-          script.src ="//static.csslcloud.net/js/hls.js?v="+parseInt(Math.random()*2000,10)
-          script.onload=function () {
-            // DW.getH5src(opts);
-            getInfo(ots)
-          }
-          document.body.appendChild(script)
+      if ( !MobileLive.isMobile()) {
+        if(DW.isH5play ){
+            if(util.isIE9()){
+                isMp4 = 1;
+                this.useHls=false
+                // DW.getH5src(opts);
+                getInfo(ots)
+                return
+            }else{
+                isMp4=0
+                this.useHls=true;
+                var script = document.createElement("script");
+                script.src ="//static.csslcloud.net/js/hls.js?v="+parseInt(Math.random()*2000,10)
+                script.onload=function () {
+                    // DW.getH5src(opts);
+                    getInfo(ots)
+                }
+                document.body.appendChild(script)
+                return
+            }
         }
       }
+      getInfo(ots);
     },
 
     appendVideo: function (src, opts) {

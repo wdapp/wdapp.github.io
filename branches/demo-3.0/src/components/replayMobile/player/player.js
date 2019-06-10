@@ -1,7 +1,7 @@
 import Component from 'common/component'
 import template from './player.html'
 import './player.scss'
-import Orientation from './orientation'
+import Orientation from 'common/public/orientation'
 import VideoTip from './videotip'
 
 class Player extends Component {

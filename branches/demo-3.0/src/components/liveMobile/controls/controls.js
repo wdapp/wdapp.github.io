@@ -15,25 +15,31 @@ class Controls extends Component {
     super()
     this.name = 'control'
     this.render('controls', template, () => {
-      let controls = new Swiper('.swiper-container-controls', {
-        direction: 'horizontal',
-        loop: true,
-        // autoplay: {
-        //   delay: 5000,
-        // },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }
-      })
+
     })
     this.init()
   }
 
   init() {
+    // this.initSlider()
     this.addInteractive()
     this.addEvents()
     this.addSDKEvent()
+  }
+
+  initSlider(){
+    let controls = new Swiper('.swiper-container-controls', {
+      direction: 'horizontal',
+      loop: true,
+      // autoplay: {
+      //   delay: 5000,
+      // },
+      hiddenClass: 'swiper-button-prev',
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }
+    })
   }
 
   addSDKEvent() {
@@ -45,13 +51,13 @@ class Controls extends Component {
   }
 
   addEvents() {
-    hdScience.addEvent(hdScience.OnLoginSuccess, () => {
-      this.liveSdk = hdScience.getObjectForName(hdScience.LiveInterface)
+    HDScence.addEvent(HDScence.OnLoginSuccess, () => {
+      this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
       this.initUserInfo()
     })
-    hdScience.addEvent(hdScience.OnUserCountMessage,()=>{
+    HDScence.addEvent(HDScence.OnUserCountMessage, () => {
 
-      this.ui.setUserCount( parseInt(LiveInfo.userCount));
+      this.ui.setUserCount(parseInt(LiveInfo.userCount))
     })
 
   }

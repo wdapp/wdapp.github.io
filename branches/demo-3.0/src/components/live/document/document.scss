@@ -1,4 +1,8 @@
+@import "~assets/styles/mixin.scss";
+
 .document {
-  width: 100%;
-  height: 100%;
+  @include width-height-full();
+  .draw-panel{
+    @include width-height-full();
+  }
 }

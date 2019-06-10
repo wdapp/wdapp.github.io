@@ -13,8 +13,8 @@ class Intro extends Component {
   }
 
   init() {
-    hd.on('desc', (desc) => {
-      this.addIntro(desc)
+    HDScence.onDescInfo((data) => {
+      this.addIntro(data.desc)
     })
   }
 

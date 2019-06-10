@@ -1,7 +1,7 @@
 import Component from 'common/component'
 import template from './player.html'
 import './player.scss'
-import FlashTip from './flashtip'
+import FlashTip from 'common/public/flashtip'
 
 class Player extends Component {
   constructor() {
@@ -17,12 +17,12 @@ class Player extends Component {
   }
 
   config() {
-    hd.onPlayerMode((data) => {
+    //隐藏播放器控制器
+    HDScence.isShowControl(false)
+    //初始化flash播放器
+    HDScence.onPlayerMode((data) => {
       if (!data.isH5play) {
-        FlashTip.init()
-      } else {
-        let videoTip = new VideoTip()
-        videoTip.init('视频正在加载中...')
+        FlashTip.init('player')
       }
     })
   }

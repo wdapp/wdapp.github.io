@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const config = require('../src/common/config')
+const config = require('./config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -29,6 +29,7 @@ module.exports = {
 
   resolve: {
     alias: {
+      'build': path.resolve(__dirname, '..', 'build'),
       '@': path.resolve(__dirname, '..', 'src'),
       'assets': path.resolve(__dirname, '..', 'src/assets'),
       'common': path.resolve(__dirname, '..', 'src/common'),

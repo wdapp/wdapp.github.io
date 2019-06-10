@@ -1,12 +1,44 @@
 import Render from 'common/render'
+import UserInterface from 'common/userInterface'
+import Utils from 'common/utils'
 
 class UI extends Render {
   _isMainVideo = false
+  isShowLeft = true
+  isShowRight = true
 
   constructor() {
     super()
+    this.ui = new UserInterface()
+
     this.videoNode = this.getChildNode('player')
     this.dpNode = this.getChildNode('document')
+  }
+
+  bindLeftBar() {
+    if (this.isShowLeft) {
+      this.ui.hideLeft(() => {
+        Utils.log('hideLeft')
+      })
+    } else {
+      this.ui.showLeft(() => {
+        Utils.log('showLeft')
+      })
+    }
+    this.isShowLeft = !this.isShowLeft
+  }
+
+  bindRightBar() {
+    if (this.isShowRight) {
+      this.ui.hideRight(() => {
+        Utils.log('hideRight')
+      })
+    } else {
+      this.ui.showRight(() => {
+        Utils.log('showRight')
+      })
+    }
+    this.isShowRight = !this.isShowRight
   }
 
   get isMainVideo() {
@@ -18,7 +50,7 @@ class UI extends Render {
   }
 
   logoutWindow() {
-    window.location.href = './index.html'
+    location.href = Utils.PATH.INDEX
   }
 
   setUserCount(l) {

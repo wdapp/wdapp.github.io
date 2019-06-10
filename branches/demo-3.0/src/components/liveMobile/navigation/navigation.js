@@ -22,7 +22,6 @@ class Navigation extends Component {
     let intro = this.getNode('intro-btn')
     let setting = this.getNode('setting-btn')
     this.bind(doc, 'click', () => {
-      // console.log("dianji")
       this.ui.swiperChangeIndex = 0
     })
     this.bind(chat, 'click', () => {

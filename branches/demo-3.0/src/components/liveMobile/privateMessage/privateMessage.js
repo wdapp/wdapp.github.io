@@ -19,7 +19,7 @@ class PrivateMessage extends Component {
     this.ui = new UIPrivate()
     this.chatInfo = {}
     this.selectedTeacher = ';'
-    hdScience.addEvent(hdScience.OnLineTeachers, () => {
+    HDScence.addEvent(HDScence.OnLineTeachers, () => {
       let teachers = LiveInfo.onLineTeachers
       for (let i = 0; i < teachers.length; i++) {
         if (!this.teachers[teachers[i].id]) {
@@ -31,7 +31,7 @@ class PrivateMessage extends Component {
         }
       }
     })
-    hdScience.addEvent(hdScience.OnPrivateChatMsg, () => {
+    HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
       let msgInfo = LiveInfo.privateChatMsgInfo
       if (msgInfo.fSelf) {
         if (!this.chatInfo[msgInfo.toUserId]) {
@@ -62,7 +62,6 @@ class PrivateMessage extends Component {
     // let privateInput=this.getNode("private_input")//私聊输入框
     let privateSend = this.getNode('private_send')//发送私聊
     this.bind(plist, 'click', (e) => {
-      // console.log("e"+e.target.id)
       if (this.chatInfo[e.target.id]) {
         this.chatInfo[e.target.id].appendNodes()
       } else {
@@ -81,7 +80,7 @@ class PrivateMessage extends Component {
       this.ui.isPrivatePanelShow = false
     })
     this.bind(privateSend, 'click', () => {
-      this.sdk = hdScience.getObjectForName(hdScience.LiveInterface)
+      this.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
       let value = this.ui.privateValue
       this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedTeacherName, value)
     })

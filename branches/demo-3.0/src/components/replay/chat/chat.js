@@ -14,7 +14,7 @@ class Chat extends Component {
   }
 
   init() {
-    hd.onChatMessageSync((message) => {
+    HDScence.onChatMessageSync((message) => {
       Utils.log('addMessage', message)
       this.filterChatMessage(message)
     })
@@ -63,7 +63,7 @@ class Chat extends Component {
     }
 
     //聊天审核
-    if (message.userid === hd.viewerId) {
+    if (message.userid === HDScence.viewerId) {
       message.status = 0
     }
 
@@ -95,7 +95,7 @@ class Chat extends Component {
       return true
     }
 
-    if (hd.groupId && hd.groupId !== groupId) {
+    if (HDScence.groupId && HDScence.groupId !== groupId) {
       return false
     }
 

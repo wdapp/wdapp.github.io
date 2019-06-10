@@ -5,7 +5,7 @@
   background-color: #333333;
   .live-player {
     @include width-height-full();
-    .video-tip{
+    .video-tip {
       @include width-height-full();
       color: #eeeeee;
       text-align: center;

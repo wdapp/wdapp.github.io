@@ -2,7 +2,7 @@
  * 公共方法
  * */
 
-import config from 'common/config'
+import config from 'build/config'
 
 class Utils {
 
@@ -13,7 +13,7 @@ class Utils {
   static get PATH() {
     let host = config.host || 'localhost'
     let port = config.port || '8080'
-    let path = config.path
+    let path = config.path || `${host}:${port}`
     return {
       HOST: `${host}`,
       PORT: `${port}`,
@@ -23,6 +23,14 @@ class Utils {
       MOBILELIVE: `//${path}/live-mobile.html`,
       MOBILEREPLAY: `//${path}/replay-mobile.html`,
     }
+  }
+
+  static get debug() {
+    if (typeof config.debug !== 'boolean') {
+      config.debug = true
+    }
+    window.debug = config.debug
+    return window.debug
   }
 
   static get version() {
@@ -87,7 +95,19 @@ class Utils {
     return /iPad|iPhone|Android|Windows Phone/ig.test(this.useragent)
   }
 
-  static isReaply(address = '') {
+  static isIOS() {
+    return /iPad|iPhone/ig.test(this.useragent)
+  }
+
+  static isAndroid() {
+    return /Android/ig.test(this.useragent)
+  }
+
+  static isWeiXin() {
+    return /MicroMessenger/ig.test(this.useragent)
+  }
+
+  static isReplay(address = '') {
     return /recordid|liveid/.test(address) && /callback/.test(address)
   }
 
@@ -200,6 +220,45 @@ class Utils {
       result = '' + hourTime + ':' + result
     }
     return result
+  }
+
+  static formatTime(d, t) {
+    let times = d.split(' ')[1]
+    let dHours = parseInt(times.split(':')[0], 10)
+    let dMinutes = parseInt(times.split(':')[1], 10)
+    let dSecond = parseInt(times.split(':')[2], 10)
+    // console.log(dHours,dMinutes,dSecond)
+    let currentS = ( dSecond + t) % 60
+    let currentM = (Math.floor((dSecond + t) / 60) + dMinutes) % 60
+    let currentH = (Math.floor((dSecond + t) / 3600) + dHours) % 24
+    let H = '00'
+    let M = '00'
+    let S = '00'
+    if (currentH < 10) {
+      H = '0' + currentH
+    }
+    else {
+      H = currentH
+    }
+    if (currentM < 10) {
+      M = '0' + currentM
+    }
+    else {
+      M = currentM
+    }
+    if (currentS < 10) {
+      S = '0' + currentS
+    }
+    else {
+      S = currentS
+    }
+    return H + ':' + M + ':' + S
+  }
+
+  //去头尾的空格
+  static trim(str) {
+    let reg = /(^\s*)|(\s*$)/g
+    return str.replace(reg, '')
   }
 
 }

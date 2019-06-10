@@ -8,8 +8,10 @@ import EventEmitter from 'onfire.js'
 
 class ReplayAdaptive extends EventEmitter {
 
-  viewerId = ''//viewerId
-  groupId = ''//分组ID
+  viewerId = ''
+  groupId = ''
+  isH5play = true
+  fastMode = true
 
   constructor() {
     super()
@@ -26,7 +28,7 @@ class ReplayAdaptive extends EventEmitter {
    * @property {String} params.viewertoken 用户密码，免密码验证可省略
    * @property {String} params.groupId 分组ID
    * @property {Boolean} params.isH5play PC端观看回放使用video播放器
-   * @property {Boolean} params.fastMode 是否开启极速文档
+   * @property {Boolean} params.fastMode 是否开启极速文档，默认开启
    * @example
    * $.DW.config({
    *     userId: 'userId',
@@ -56,48 +58,56 @@ class ReplayAdaptive extends EventEmitter {
       fastMode: fastMode,
     })
 
+    let _property = {
+      isH5play: isH5play,
+      fastMode: fastMode
+    }
+    this.initPropertySync(_property)
+
     /**
      * @function on_cc_login_success
-     * @description 登录成功回调
+     * @description 观看回放登录成功回调
      * @param {Array} result 登录成功返回信息
+     * @property {Object} result.live 直播开始时间信息
      * @property {Object} result.room 直播间信息
      * @property {Object} result.viewer 用户信息
      * @property {Object} result.template 直播间模板信息
      * @example
      * window.on_cc_login_success = (datas) => {
      *    datas ={
+     *      live: {
+     *        endTime: "2019-02-15 15:46:01.0",//直播结束绝对时间
+     *        startTime: "2019-02-15 15:28:59.0"//直播开始的绝对时间
+     *      },
      *      room: {
-     *         desc: '<p>&nbsp; &nbsp; &nbsp;直播间描述简介</p>',
-     *         liveStartTime: '2018-06-06 01:50:41.0',
-     *         name: '直播间标题',
-     *         barrage: '是否启用弹幕功能'
+     *         desc: '<p>&nbsp; &nbsp; &nbsp;直播间描述简介</p>',//直播间简介
+     *         liveStartTime: '2018-06-06 01:50:41.0',//直播开始时间（倒计时）
+     *         name: '直播间标题',//直播间标题
+     *         barrage: 1,//是否启用弹幕功能
+     *         documentDisplayMode:1//是否开启文档自适应
      *       },
      *       template: {
-     *          desc: '视频，文档，聊天，问答',
-     *          name: '模板五',
-     *          type: 5
+     *          desc: '视频，文档，聊天，问答',//直播间模板
+     *          name: '模板五',//模板类型
+     *          type: 5//模板类型
      *       },
      *       viewer: {
-     *          groupId: '',
-     *          id: '408cc50a3b1842169720aa2a4cb28de9',
-     *          name: '抖音再看回放'
+     *          groupId: '',//分组id
+     *          id: '408cc50a3b1842169720aa2a4cb28de9',//服务器生成用户唯一标识id
+     *          name: '抖音再看回放'//用户昵称
      *       }
      *    }
      *  }
      */
 
     window.on_cc_login_success = (result) => {
-      this.viewerId = result.viewer.id
-      this.groupId = result.viewer.groupId
       params.success && params.success(result)
-      result.isH5play = isH5play
-      result.fastMode = fastMode
-      hd.emit('loginSuccess', result)
+      this.initReplayInfoAync(result)
     }
 
     /**
      * @function on_cc_login_error
-     * @description 登录失败回调
+     * @description 观看回放登录失败回调
      * @param {Object} error 登录失败信息
      * @example
      window.on_cc_login_error = (error) => {
@@ -110,13 +120,97 @@ class ReplayAdaptive extends EventEmitter {
     return true
   }
 
-  onPlayerMode(callback) {
-    hd.on('loginSuccess', (result) => {
-      let _result = {
-        mode: result.isH5play ? 'video' : 'flash',
-        isH5play: result.isH5play
+  // 同步属性
+
+  initPropertySync(data) {
+    this.fastMode = data.fastMode
+    this.isH5play = data.isH5play
+    this.emitPropertySync()
+  }
+
+  emitPropertySync() {
+    this.emit('documentMode', this.fastMode)
+    this.emit('playerMode', this.isH5play)
+  }
+
+  onDocumentMode(callback) {
+    this.on('documentMode', (data) => {
+      let mode = {
+        mode: data ? 'iframe' : 'flash',
+        fastMode: data
       }
-      callback(_result)
+      callback(mode)
+    })
+  }
+
+  onPlayerMode(callback) {
+    this.on('playerMode', (data) => {
+      let mode = {
+        mode: data ? 'video' : 'flash',
+        isH5play: data
+      }
+      callback(mode)
+    })
+  }
+
+  //异步数据
+
+  initReplayInfoAync(data) {
+    this.viewerId = data.viewer.id
+    this.groupId = data.viewer.groupId
+    this.emitReplayInfoAync(data)
+  }
+
+  emitReplayInfoAync(data) {
+    this.emit('viewerId', this.viewerId)
+    this.emit('groupId', this.groupId)
+    this.emit('desc', data.room.desc)
+    this.emit('barrage', data.room.barrage)
+    this.emit('documentDisplayMode', data.room.documentDisplayMode)
+  }
+
+  onViewerId(callback) {
+    this.on('viewerId', (data) => {
+      let _data = {
+        viewerId: data
+      }
+      callback(_data)
+    })
+  }
+
+  onGroupId(callback) {
+    this.on('groupId', (data) => {
+      let _data = {
+        groupId: data
+      }
+      callback(_data)
+    })
+  }
+
+  onDescInfo(callback) {
+    this.on('desc', (data) => {
+      let desc = {
+        desc: data
+      }
+      callback(desc)
+    })
+  }
+
+  onBarrageInfo(callback) {
+    this.on('barrage', (data) => {
+      let barrage = {
+        isBarrage: data
+      }
+      callback(barrage)
+    })
+  }
+
+  onDocumentDisplayMode(callback) {
+    this.on('documentDisplayMode', (data) => {
+      let mode = {
+        documentDisplayMode: data == 1 ? true : false
+      }
+      callback(mode)
     })
   }
 
@@ -141,21 +235,6 @@ class ReplayAdaptive extends EventEmitter {
 
   seek(time) {
     $.DW.seek(time)
-  }
-
-  /**
-   * @method playbackRate
-   * @description 设置倍速播放
-   * @param {Number} number 倍速播放值,默认1.0 正常速度，倍速设置范围0.5～2倍速，仅支持H5播放器
-   * @example
-   * $.DW.playbackRate(1.5)
-   */
-
-  set rate(number) {
-    if (isNaN(number)) {
-      return false
-    }
-    $.DW.playbackRate(number)
   }
 
   /**
@@ -216,6 +295,21 @@ class ReplayAdaptive extends EventEmitter {
     }
     $.DW.setVolume(number)
     return true
+  }
+
+  /**
+   * @method playbackRate
+   * @description 设置倍速播放
+   * @param {Number} number 倍速播放值,默认1.0 正常速度，倍速设置范围0.5～2倍速，仅支持H5播放器
+   * @example
+   * $.DW.playbackRate(1.5)
+   */
+
+  set rate(number) {
+    if (isNaN(number)) {
+      return false
+    }
+    $.DW.playbackRate(number)
   }
 
   /**
@@ -453,7 +547,7 @@ class ReplayAdaptive extends EventEmitter {
 
   /**
    * @function on_cc_live_player_load
-   * @description 播放器加载完成，仅支持pc端
+   * @description 回放播放器加载完成事件，完全支持flash播放器和部分现代浏览器中的video播放器
    * @example
    * window.on_cc_live_player_load = () => {
    * }

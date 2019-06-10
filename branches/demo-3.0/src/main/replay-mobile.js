@@ -1,9 +1,9 @@
-import 'common/hd'//提供Web SDK 观看回放事件、方法、属性
-import Utils from 'common/utils'//公共方法库
-import flexible from '@wdapp/flexible'//引入rem布局配置文件
-import fastClick from 'fastclick'//解决移动端点击延迟问题
-import UserInterface from 'common/userInterface'//UI库
+import 'common/replayHDScence'//提供Web SDK 观看回放事件、方法、属性
 import './styles/replay-mobile.scss'//移动端回放私有样式
+import Utils from 'common/utils'//公共方法库
+import fastClick from 'fastclick'//解决移动端点击延迟问题
+import flexible from 'common/public/flexible'//引入rem布局配置文件
+import UserInterface from 'common/userInterface'//UI库
 
 //自定义组件
 import Player from 'components/replayMobile/player/player'
@@ -13,15 +13,14 @@ import Chat from 'components/replayMobile/chat/chat'
 import QuestionAnswer from 'components/replayMobile/questionAnswer/questionAnswer'
 import Intro from 'components/replayMobile/intro/intro'
 
-hd.ready(() => {
+HDScence.ready(() => {
+  //配置rem布局
+  flexible.init(750, 750)
   //解决移动端click点击300ms延迟问题
   fastClick.attach(document.body)
 
-  //配置rem布局
-  flexible.init(750, 750)
-
   //配置自定义组件
-  hd.components({
+  HDScence.components({
     Player,
     Document,
     Navigation,
@@ -38,7 +37,7 @@ hd.ready(() => {
   Utils.log('params', params)
 
   //登录
-  hd.login({
+  HDScence.login({
     userId: params.userid || 'B27039502337407C',
     roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
     recordId: params.recordid || '96C0454B9E3CE464',
@@ -51,18 +50,11 @@ hd.ready(() => {
     viewerToken: params.viewertoken || '',
     success(result) {
       Utils.log('登录成功', result)
-      hd.documentAdaptive(true)
-      hd.emit('desc', result.room.desc)
-      ui.alert({
-        content: '登录成功'
-      })
+      ui.alert({content: '登录成功'})
     },
     fail(error) {
       Utils.log('登录失败', error)
-      ui.alert({
-        type: 'danger',
-        content: '登录失败'
-      })
+      ui.alert({type: 'danger', content: '登录失败'})
     }
   })
 

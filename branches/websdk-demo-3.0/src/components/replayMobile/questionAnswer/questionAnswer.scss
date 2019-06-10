@@ -1,0 +1,69 @@
+@import "~assets/styles/mixin.scss";
+
+.question-answer {
+  background-color: #f7f7f7;
+  @include width-height-full();
+  .question-answer-list-wrap {
+    @include layout(0, 0, 0, 0);
+    overflow-y: auto;
+    .question-answer-list {
+      @include width-height-full();
+      .question {
+        box-sizing: border-box;
+        padding: .2rem;
+        margin-bottom: .4rem;
+        background-color: #F1F1F1;
+        .question-wrap {
+          .question-name {
+            font-size: .24rem;
+            color: #F60;
+            @include ellipsis();
+            display: inline-block;
+            max-width: 2rem;
+            vertical-align: baseline;
+          }
+          .question-tip {
+            margin-left: .1rem;
+            font-size: .24rem;
+            color: #F60;
+          }
+          .question-content {
+            font-size: .26rem;
+            color: #F60;
+            padding: .2rem 0;
+            box-sizing: border-box;
+            line-height: .36rem;
+            width: 100%;
+            @include word-break();
+          }
+          .answer-list {
+            padding-top: .2rem;
+            .answer {
+              padding-bottom: .1rem;
+              box-sizing: border-box;
+              .answer-wrap {
+                .answer-name {
+                  font-size: .24rem;
+                  @include ellipsis();
+                  max-width: 2rem;
+                  display: inline-block;
+                  vertical-align: middle;
+                }
+                .answer-tip {
+                  font-size: .24rem;
+                  margin-left: .1rem;
+                }
+                .answer-content {
+                  margin-top: .2rem;
+                  font-size: .26rem;
+                  line-height: .36rem;
+                  @include word-break();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

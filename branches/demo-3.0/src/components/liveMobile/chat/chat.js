@@ -6,6 +6,7 @@ import LiveInfo from 'common/liveinfo'
 import ChatMsg from './ChatMsg'
 import Announce from './announcement'
 
+
 class Chat extends Component {
 
   constructor() {
@@ -26,15 +27,29 @@ class Chat extends Component {
   }
 
   addEvents() {
-    hdScience.addEvent(hdScience.OnPublishChatMsg, () => {
+    HDScence.addEvent(HDScence.OnPublishChatMsg, () => {
       let msgInfo = LiveInfo.publicChatMsgInfo
-      let chatMsg = new ChatMsg()
-      chatMsg.info = msgInfo
-      this.chatMap[msgInfo.chatId] = chatMsg
+      if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
+        let chatMsg = new ChatMsg()
+        chatMsg.info = msgInfo
+        this.chatMap[msgInfo.chatId] = chatMsg
+      }
+      this.uiChat.updateScroll()
     })
+    // HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
+    //   let msgInfo = LiveInfo.privateChatMsgInfo
+    //   let chatMsg = new PrivateChatMsg()
+    //   chatMsg.info = msgInfo
+    //   this.uiChat.updateScroll();
+    // })
 
-    hdScience.addEvent(hdScience.OnANnounceShow, () => {
+    HDScence.addEvent(HDScence.OnAnnounceShow, () => {
       this.announce.content = LiveInfo.onAnnounceInfo
+      this.announce.isShowPanel = true
+    })
+    HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
+      this.announce.content = '暂无公告'
+      this.announce.isShowPanel = false
     })
   }
 
@@ -58,14 +73,13 @@ class Chat extends Component {
       this.uiChat.isShowChatSmileList = !this.uiChat.isShowChatSmileList
 
     })
-    this.bind(privateChat, 'click', () => {
-      this.uiChat.isShowPrivateChat = true
-    })
+    // this.bind(privateChat, 'click', () => {
+    //   this.uiChat.isShowPrivateChat = true
+    // })
     // this.bind(chatSwitch, 'click', (e) => {
     //
     // })
     this.bind(chatSelect, 'click', () => {
-      // console.log("dia")
       this.uiChat.isShowChatSelect = !this.uiChat.isShowChatSelect
     })
     this.bind(chatOption, 'click', (e) => {
@@ -75,7 +89,6 @@ class Chat extends Component {
         this.selectedteacherName = selected.innerHTML
         this.uiChat.selectName = this.selectedteacherName
       }
-      console.log('dangqian选择的id' + this.selectedTeacher)
     })
     this.bind(smilesList, 'click', (e) => {
       let select = e.target.parentNode
@@ -87,14 +100,31 @@ class Chat extends Component {
       }
 
     })
+    let isCanSend = true
+    let timeOutId = -1
     this.bind(sendMsg, 'click', (e) => {
-      this.sdk = hdScience.getObjectForName(hdScience.LiveInterface)
+      if (this.uiChat.msg.length > 300) {
+        HDScence.alert('发送聊天字数不应超过300字', 'warning')
+        return
+      }
+      if (!isCanSend) {
+        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        return
+      }
+      isCanSend = false
+      this.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
+
       if (this.selectedTeacher === 'all') {
         this.sdk.call(this.sdk.SENDPUBLICMSG, this.uiChat.msg)
       } else {
         this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedteacherName, this.uiChat.msg)
       }
+      this.uiChat.updateScroll()
       this.uiChat.msg = ''
+      timeOutId = setTimeout(() => {
+        isCanSend = true
+        clearTimeout(timeOutId)
+      }, 2000)
     })
   }
 }

@@ -6,6 +6,7 @@ class UIChat extends Render {
     this.isSelectedChatSmile = false
     this._isShowChatSelect = false
     this.isShowChatSmileList = false
+    this._isAutoScroll = true
   }
 
   //设置表情列表是否显示
@@ -56,6 +57,25 @@ class UIChat extends Render {
   set selectName(v) {
     let selectNameNode = this.getNode('select-name')
     this.innerHTML(selectNameNode, v)
+  }
+
+  set isAutoScroll(v) {
+
+    this._isAutoScroll = v
+  }
+
+  get isAutoScroll() {
+    return this._isAutoScroll
+  }
+
+  updateScroll() {
+    if (!this.isAutoScroll) {
+      return
+    }
+    let chatContainer = this.getNodeByClass('chat-body')
+    let h = this.getNode('chat-container').offsetHeight
+    // console.log(h)
+    chatContainer.scrollTo(0, h)
   }
 
 }

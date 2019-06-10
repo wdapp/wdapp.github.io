@@ -8,12 +8,8 @@
   <title>WEB端观看直播</title>
 </head>
 <body>
-
 <div class="app" id="app">
-  <div class="left">
-    <div class="left-bar">
-      <span class="left-bar-swith"></span>
-    </div>
+  <div class="left" id="left">
     <div class="video-wrapper">
       <div id="player"></div>
     </div>
@@ -21,22 +17,29 @@
       <div id="questionAnswer"></div>
     </div>
   </div>
-  <div class="center">
-    <div class="center-wrapper">
-      <div id="document"></div>
-      <div class="controls-wrapper">
-        <div id="controls"></div>
+  <div class="center" id="center">
+    <div class="left-bar" id="leftBar">
+      <span class="left-bar-swith"></span>
+    </div>
+    <div class="center-scorll">
+      <div class="center-wrapper">
+        <div class="document-wrapper">
+          <div id="document"></div>
+        </div>
+        <div class="controls-wrapper">
+          <div id="controls"></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="right">
-    <div class="right-bar">
+    <div class="right-bar" id="rightBar">
       <span class="right-bar-swith"></span>
     </div>
+  </div>
+  <div class="right" id="right">
     <div class="chat-wrapper">
       <div id="chat"></div>
     </div>
   </div>
 </div>
-<script type="text/javascript" src="js/live.js?hash=d7c5a6864d99f507706e"></script></body>
+<script type="text/javascript" src="js/live.js?hash=5acfb128294c4eb22dbe"></script></body>
 </html>

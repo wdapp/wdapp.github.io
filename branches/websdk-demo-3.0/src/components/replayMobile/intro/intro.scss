@@ -1,0 +1,19 @@
+@import "~assets/styles/mixin.scss";
+
+.intro {
+  background-color: #f7f7f7;
+  @include width-height-full();
+  padding: 0 .3rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  .intro-body {
+    padding: .2rem 0;
+    box-sizing: border-box;
+    .intro-content {
+      font-size: .28rem;
+      line-height: .38rem;
+      color: #79808b;
+      @include word-break();
+    }
+  }
+}

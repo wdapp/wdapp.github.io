@@ -10,7 +10,7 @@ class Intro extends Component {
 
     this.render('intro', template, () => {
       this.ui = new UIintro()
-      hdScience.addEvent(hdScience.OnLiveDesc, () => {
+      HDScence.addEvent(HDScence.OnLiveDesc, () => {
         this.ui.content = LiveInfo.onLiveDesc
       })
     })
