@@ -15,7 +15,11 @@ class Document extends Component {
   }
 
   init() {
-    FlashTip.init()
+    HDScence.onDocumentMode((data) => {
+      if (!data.fastMode) {
+        FlashTip.init('document')
+      }
+    })
 
     HDScence.onDocumentDisplayMode((data) => {
       Utils.log('onDocumentDisplayMode', data)

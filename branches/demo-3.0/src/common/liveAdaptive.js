@@ -56,15 +56,12 @@ class LiveAdaptive extends EventEmitter {
       viewercustomua: params.viewerCustomua || '',
       language: params.language || '',
       viewercustominfo: params.viewerCustominfo || '',
-      fastMode: params.fastMode
+      fastMode: params.fastMode,
+      language:"zh"
     })
-    this.emitInfoSync(params)
     this.addAPIFunction()
   }
 
-  emitInfoSync(data) {
-    this.emit('documentMode', data.fastMode)
-  }
 
   onDocumentMode(callback) {
     this.on('documentMode', (data) => {
@@ -126,9 +123,8 @@ class LiveAdaptive extends EventEmitter {
       this.param.success && this.param.success(result)
       LiveInfo.loginInfo = LiveInfo.parseLoginInfo(result)
       d.success && d.success(result)
-      HDScence.dispatch(HDScence.OnLoginSuccess)
+      this.dispatch(this.OnLoginSuccess)
       this.alert('登录成功')
-      this.emitInfoAync()
     })
 
     //监听登录失败后的回调
@@ -140,20 +136,8 @@ class LiveAdaptive extends EventEmitter {
 
   }
 
-  //登录返回异步数据
-
-  emitInfoAync() {
-    this.emit('barrage', DWLive.isBarrage)
-    this.emit('documentDisplayMode', DWLive.documentDisplayMode)
-  }
-
-  onBarrageInfo(callback) {
-    this.on('barrage', (data) => {
-      let barrage = {
-        isBarrage: data
-      }
-      callback(barrage)
-    })
+  getLive(){
+    return this.liveInterface.LiveMain
   }
 
   onDocumentDisplayMode(callback) {
@@ -180,6 +164,7 @@ class LiveAdaptive extends EventEmitter {
       this.dispatch(this.OnLiveStarting)
       d.living && d.living()
     })
+
     //直播结束
     this.liveInterface.on(this.liveInterface.ONLIVEEND, () => {
       this.dispatch(this.OnLiveEnd)
@@ -262,7 +247,6 @@ class LiveAdaptive extends EventEmitter {
       d.callback && d.callback(LiveInfo.privateChatMsgInfo)
     })
   }
-
   /**
    *
    * 接收私聊回复

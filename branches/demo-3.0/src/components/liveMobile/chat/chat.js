@@ -5,6 +5,7 @@ import UIChat from './UIChat'
 import LiveInfo from 'common/liveinfo'
 import ChatMsg from './ChatMsg'
 import Announce from './announcement'
+import Utils from "common/utils"
 
 
 class Chat extends Component {
@@ -103,7 +104,8 @@ class Chat extends Component {
     let isCanSend = true
     let timeOutId = -1
     this.bind(sendMsg, 'click', (e) => {
-      if (this.uiChat.msg.length > 300) {
+      let  msg = Utils.trim(this.uiChat.msg);
+      if (msg.length > 300) {
         HDScence.alert('发送聊天字数不应超过300字', 'warning')
         return
       }
@@ -111,13 +113,18 @@ class Chat extends Component {
         HDScence.alert('发送过于频繁，请稍后', 'warning')
         return
       }
+      if(!msg){
+          HDScence.alert('聊天信息不能为空', 'warning')
+          return
+      }
+
       isCanSend = false
       this.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
 
       if (this.selectedTeacher === 'all') {
-        this.sdk.call(this.sdk.SENDPUBLICMSG, this.uiChat.msg)
+        this.sdk.call(this.sdk.SENDPUBLICMSG, msg)
       } else {
-        this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedteacherName, this.uiChat.msg)
+        this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedteacherName, msg)
       }
       this.uiChat.updateScroll()
       this.uiChat.msg = ''

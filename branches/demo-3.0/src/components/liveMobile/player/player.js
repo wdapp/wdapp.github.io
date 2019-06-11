@@ -29,6 +29,21 @@ class Player extends Component {
   init() {
     let orientation = new Orientation()
     orientation.init()
+
+
+    // if (livePlayer) {
+      this.bind(document, 'WeixinJSBridgeReady',  ()=> {
+        console.log(111)
+        let livePlayer = this.getNode('player_live')
+        console.log(livePlayer)
+        this.bind(livePlayer, 'canplay',  ()=> {
+          livePlayer.play()
+        }, false)
+      }, false)
+    //
+
+    // }
+
   }
 }
 

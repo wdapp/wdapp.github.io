@@ -99,7 +99,7 @@ let HD = function () {
           viewerCustominfo: '',
           viewerCustomua: 'web',
           language: 'en',
-          fastMode: (Utils.isMobile() ? true : params.fastMode) || true,
+          fastMode: (Utils.isMobile() ? true : params.fastMode),
           success: function (result) {
             if (typeof data.success === 'function') {
               data.success.apply(null, result)

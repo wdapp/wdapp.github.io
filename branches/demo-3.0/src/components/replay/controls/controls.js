@@ -152,6 +152,7 @@ class Controls extends Component {
       this.isShowLeft = true
       this.isShowRight = true
       this.removeClass(this.fullScreenButton, 'active')
+      this.quitButton.style.display = 'block'
     } else {
       this.ui.hideLeft()
       this.ui.hideRight(() => {
@@ -160,6 +161,7 @@ class Controls extends Component {
       this.isShowRight = false
       this.isShowLeft = false
       this.addClass(this.fullScreenButton, 'active')
+      this.quitButton.style.display = 'none'
     }
     this.isFullScreen = !this.isFullScreen
   }

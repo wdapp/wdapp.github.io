@@ -115,7 +115,7 @@ class QuestionAnswer extends Component {
     let container = this.getNode('question-answer')
     let h = container.offsetHeight
     let scrollBody = this.getNodeByClass('question-answer-list-wrap')
-    scrollBody.scrollTo(0, h)
+    //scrollBody.scrollTo(0, h)
   }
 }
 

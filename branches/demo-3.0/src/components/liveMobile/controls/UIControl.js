@@ -31,6 +31,10 @@ class UI extends Render {
     let viewerNode = this.getNodeByClass('controls-user')
     this.innerHTML(viewerNode, name)
   }
+  set showBarrage(v){
+    let barrageBtn = this.getNodeByClass("barrage");
+    this.setStyle(barrageBtn,{display:(v?"block":"none")});
+  }
 
   //切换视频为主文档为主
   switchPanel() {

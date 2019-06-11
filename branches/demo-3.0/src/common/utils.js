@@ -223,6 +223,9 @@ class Utils {
   }
 
   static formatTime(d, t) {
+    if (!this.isEmptyString(d) || !this.isEmptyString(t)) {
+      return false
+    }
     let times = d.split(' ')[1]
     let dHours = parseInt(times.split(':')[0], 10)
     let dMinutes = parseInt(times.split(':')[1], 10)

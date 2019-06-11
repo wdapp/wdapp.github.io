@@ -1,9 +1,9 @@
 @import "~assets/styles/header.scss";
-
 .app {
   position: absolute;
   @include width-height-full();
-  min-width: 5.2rem;
+  overflow-x: auto;
+  min-width: 11.5rem;
   .left {
     width: 2.6rem;
     overflow: hidden;
@@ -50,34 +50,28 @@
         background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
       }
     }
-    .center-scorll {
+    .center-wrapper {
       @include layout(0, 0, 0, 0);
-      overflow-x: auto;
-      .center-wrapper {
-        @include layout(0, 0, 0, 0);
-        min-width: 7.1rem;
-        overflow: hidden;
-        .document-wrapper {
-          @include layout(0, 0, .4rem, 0);
-          #document {
-            @include width-height-full();
-          }
+      .document-wrapper {
+        @include layout(0, 0, .4rem, 0);
+        #document {
+          @include width-height-full();
         }
-        .thumbnail-wrapper {
-          display: none;
-          @include layout(0, 0, .4rem, unset);
-          width: 1.6rem;
-          #thumbnail {
-            @include width-height-full();
-          }
+      }
+      .thumbnail-wrapper {
+        display: none;
+        @include layout(0, 0, .4rem, unset);
+        width: 1.6rem;
+        #thumbnail {
+          @include width-height-full();
         }
-        .controls-wrapper {
-          @include layout(unset, 0, 0, 0);
-          height: .4rem;
-          z-index: 2;
-          #controls {
-            @include width-height-full();
-          }
+      }
+      .controls-wrapper {
+        @include layout(unset, 0, 0, 0);
+        height: .4rem;
+        z-index: 2;
+        #controls {
+          @include width-height-full();
         }
       }
     }

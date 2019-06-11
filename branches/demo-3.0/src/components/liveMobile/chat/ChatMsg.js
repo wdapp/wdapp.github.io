@@ -25,6 +25,10 @@ class ChatMsg extends Render {
     this.self = v.self
     this.time = v.time
     this.groupId = v.groupId
+    let r = /^\+?[1-9][0-9]*$/;
+    if(r.test(v.time)){
+        this.time = Utils.formatTime(v.time)
+    }
     this.appendMsg()
   }
 

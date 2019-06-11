@@ -53,6 +53,7 @@ class Controls extends Component {
   addEvents() {
     HDScence.addEvent(HDScence.OnLoginSuccess, () => {
       this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
+      this.ui.showBarrage = (HDScence.getLive().isBarrage == 1);
       this.initUserInfo()
     })
     HDScence.addEvent(HDScence.OnUserCountMessage, () => {

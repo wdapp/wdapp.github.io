@@ -43,8 +43,8 @@ HDScence.ready(() => {
     viewerToken: params.viewertoken || '',
     isH5play: params.isH5play,
     fastMode: params.fastMode,
-    isH5play: false,
-    fastMode: false,
+    // isH5play: false,
+    // fastMode: false,
     success(result) {
       Utils.log('登录成功', result)
       ui.alert({content: '登录成功'})
