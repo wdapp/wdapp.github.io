@@ -36,8 +36,12 @@ class Player extends Component {
         console.log(111)
         let livePlayer = this.getNode('player_live')
         console.log(livePlayer)
+        setTimeout(()=>{
+          livePlayer.play()
+        },1000)
         this.bind(livePlayer, 'canplay',  ()=> {
           livePlayer.play()
+          alert(111)
         }, false)
       }, false)
     //
