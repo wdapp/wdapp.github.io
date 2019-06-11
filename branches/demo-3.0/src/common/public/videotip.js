@@ -4,7 +4,7 @@ class VideoTip {
 
   }
 
-  init(info = 'loading...') {
+  init(info = 'loading...', id = '') {
     let tempelate = `
     <div class="waiting-layer">
       <p class="waiting-text">${info}</p>
@@ -13,7 +13,7 @@ class VideoTip {
     let div = document.createElement('div')
     div.className = 'video-tip'
     div.innerHTML = tempelate
-    let callbackPlayer = document.getElementById('playbackPlayer')
+    let callbackPlayer = document.getElementById(id)
     callbackPlayer && callbackPlayer.appendChild(div)
   }
 }

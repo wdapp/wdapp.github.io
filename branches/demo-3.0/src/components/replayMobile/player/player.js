@@ -2,7 +2,9 @@ import Component from 'common/component'
 import template from './player.html'
 import './player.scss'
 import Orientation from 'common/public/orientation'
-import VideoTip from './videotip'
+import VideoTip from 'common/public/videotip'
+import Utils from 'common/utils'
+import WX from 'common/public/wx'
 
 class Player extends Component {
   constructor() {
@@ -16,8 +18,14 @@ class Player extends Component {
   init() {
     let orientation = new Orientation()
     orientation.init()
+
     let videoTip = new VideoTip()
-    videoTip.init('视频正在加载中...')
+    videoTip.init('视频正在加载中...', 'playbackPlayer')
+
+    if (Utils.isIOS && Utils.isWeiXin()) {
+      let wx = new WX()
+      wx.WeiXinVideoAutoPlayer('player_live')
+    }
   }
 
 }
