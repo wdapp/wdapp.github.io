@@ -3,6 +3,8 @@ import template from './player.html'
 import './player.scss'
 import UIPlayer from './UIPlayer'
 import Orientation from 'common/public/orientation'
+import Utils from 'common/utils'
+import WX from 'common/public/wx'
 
 class Player extends Component {
   constructor() {
@@ -30,24 +32,10 @@ class Player extends Component {
     let orientation = new Orientation()
     orientation.init()
 
-    let canPlayOnce = true
-    // if (livePlayer) {
-      this.bind(document, 'WeixinJSBridgeReady',  ()=> {
-        let livePlayer = this.getNode('player_live')
-        // setTimeout(()=>{
-        //   livePlayer.play()
-        // },1000)
-        this.bind(livePlayer, 'canplay',  ()=> {
-          if(canPlayOnce){
-            livePlayer.play()
-            canPlayOnce = false
-          }
-        }, false)
-      }, false)
-    //
-
-    // }
-
+    if (Utils.isIOS && Utils.isWeiXin()) {
+      let wx = new WX()
+      wx.WeiXinVideoAutoPlayer('player_live')
+    }
   }
 }
 
