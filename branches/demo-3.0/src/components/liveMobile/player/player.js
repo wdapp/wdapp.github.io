@@ -30,7 +30,7 @@ class Player extends Component {
     let orientation = new Orientation()
     orientation.init()
 
-
+    let canPlayOnce = true
     // if (livePlayer) {
       this.bind(document, 'WeixinJSBridgeReady',  ()=> {
         let livePlayer = this.getNode('player_live')
@@ -38,7 +38,10 @@ class Player extends Component {
         //   livePlayer.play()
         // },1000)
         this.bind(livePlayer, 'canplay',  ()=> {
-          livePlayer.play()
+          if(canPlayOnce){
+            livePlayer.play()
+            canPlayOnce = false
+          }
         }, false)
       }, false)
     //
