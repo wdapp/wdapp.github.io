@@ -24,7 +24,7 @@ class Player extends Component {
 
     if (Utils.isIOS && Utils.isWeiXin()) {
       let wx = new WX()
-      wx.WeiXinVideoAutoPlayer('player_live')
+      wx.WeiXinVideoAutoPlayer('playbackVideo')
     }
   }
 
