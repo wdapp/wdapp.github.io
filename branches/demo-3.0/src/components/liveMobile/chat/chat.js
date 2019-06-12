@@ -5,7 +5,7 @@ import UIChat from './UIChat'
 import LiveInfo from 'common/liveinfo'
 import ChatMsg from './ChatMsg'
 import Announce from './announcement'
-import Utils from "common/utils"
+import Utils from 'common/utils'
 
 
 class Chat extends Component {
@@ -32,6 +32,7 @@ class Chat extends Component {
       let msgInfo = LiveInfo.publicChatMsgInfo
       if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
         let chatMsg = new ChatMsg()
+        msgInfo.liveStart = LiveInfo.getLoginInfoData('live', 'liveStartTime')
         chatMsg.info = msgInfo
         this.chatMap[msgInfo.chatId] = chatMsg
       }
@@ -72,7 +73,6 @@ class Chat extends Component {
     })
     this.bind(chatSmile, 'click', (e) => {
       this.uiChat.isShowChatSmileList = !this.uiChat.isShowChatSmileList
-
     })
     // this.bind(privateChat, 'click', () => {
     //   this.uiChat.isShowPrivateChat = true
@@ -104,7 +104,7 @@ class Chat extends Component {
     let isCanSend = true
     let timeOutId = -1
     this.bind(sendMsg, 'click', (e) => {
-      let  msg = Utils.trim(this.uiChat.msg);
+      let msg = Utils.trim(this.uiChat.msg)
       if (msg.length > 300) {
         HDScence.alert('发送聊天字数不应超过300字', 'warning')
         return
@@ -113,9 +113,9 @@ class Chat extends Component {
         HDScence.alert('发送过于频繁，请稍后', 'warning')
         return
       }
-      if(!msg){
-          HDScence.alert('聊天信息不能为空', 'warning')
-          return
+      if (!msg) {
+        HDScence.alert('聊天信息不能为空', 'warning')
+        return
       }
 
       isCanSend = false

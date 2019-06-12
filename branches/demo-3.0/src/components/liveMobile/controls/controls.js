@@ -10,6 +10,8 @@ import Swiper from 'swiper'
 class Controls extends Component {
 
   _ui = null
+  _swtchTimer = 0
+  _toggleSwitch = true
 
   constructor() {
     super()
@@ -27,7 +29,7 @@ class Controls extends Component {
     this.addSDKEvent()
   }
 
-  initSlider(){
+  initSlider() {
     let controls = new Swiper('.swiper-container-controls', {
       direction: 'horizontal',
       loop: true,
@@ -53,7 +55,7 @@ class Controls extends Component {
   addEvents() {
     HDScence.addEvent(HDScence.OnLoginSuccess, () => {
       this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
-      this.ui.showBarrage = (HDScence.getLive().isBarrage == 1);
+      this.ui.barrageShow = (HDScence.getLive().isBarrage == 1)
       this.initUserInfo()
     })
     HDScence.addEvent(HDScence.OnUserCountMessage, () => {
@@ -89,14 +91,19 @@ class Controls extends Component {
       })
     })
     this.bind(btn_swtch, 'click', (e) => {
-      this.ui.switchPanel()
+      if (this._toggleSwitch) {
+        this.ui.switchPanel()
+        this._toggleSwitch = false
+      }
+      this._swtchTimer && clearTimeout(this._swtchTimer)
+      this._swtchTimer = setTimeout(() => {
+        this._toggleSwitch = true
+      }, 500)
     })
-
   }
 
   initData(obj) {
     if (!obj) return
-
   }
 
   get ui() {

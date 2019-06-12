@@ -63,7 +63,7 @@ class UInavigation extends Render {
 
   set swiperChangeIndex(v) {
     this.index = v
-    if(this.isChangeSelect){
+    if (this.isChangeSelect) {
       this.swiper.slideTo(v)
     }
     this.active = v

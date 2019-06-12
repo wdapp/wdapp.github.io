@@ -4,8 +4,9 @@ import Utils from 'common/utils'
 
 class UI extends Render {
   _isMainVideo = false
-  isShowLeft = true
-  isShowRight = true
+  _isShowLeft = true
+  _isShowRight = true
+  _isSwitch = true
 
   constructor() {
     super()
@@ -16,7 +17,7 @@ class UI extends Render {
   }
 
   bindLeftBar() {
-    if (this.isShowLeft) {
+    if (this._isShowLeft) {
       this.ui.hideLeft(() => {
         Utils.log('hideLeft')
       })
@@ -25,11 +26,11 @@ class UI extends Render {
         Utils.log('showLeft')
       })
     }
-    this.isShowLeft = !this.isShowLeft
+    this._isShowLeft = !this._isShowLeft
   }
 
   bindRightBar() {
-    if (this.isShowRight) {
+    if (this._isShowRight) {
       this.ui.hideRight(() => {
         Utils.log('hideRight')
       })
@@ -38,7 +39,7 @@ class UI extends Render {
         Utils.log('showRight')
       })
     }
-    this.isShowRight = !this.isShowRight
+    this._isShowRight = !this._isShowRight
   }
 
   get isMainVideo() {
@@ -65,16 +66,34 @@ class UI extends Render {
 
   //切换视频为主文档为主
   switchPanel() {
-    this.deleteChild('document')
-    this.deleteChild('player')
-    if (this.isMainVideo) {
-      this.appendChild('document', this.dpNode)
-      this.appendChild('player', this.videoNode)
-    } else {
-      this.appendChild('document', this.videoNode)
-      this.appendChild('player', this.dpNode)
+    if (!this._isSwitch) {
+      return false
     }
-    this._isMainVideo = !this._isMainVideo
+    this._isSwitch = false
+
+    this.ui.fadeOut({
+      node: [this.dpNode, this.videoNode],
+      complete: () => {
+
+        this.deleteChild('document')
+        this.deleteChild('player')
+        if (this.isMainVideo) {
+          this.appendChild('document', this.dpNode)
+          this.appendChild('player', this.videoNode)
+        } else {
+          this.appendChild('document', this.videoNode)
+          this.appendChild('player', this.dpNode)
+        }
+        this._isMainVideo = !this._isMainVideo
+
+        this.ui.fadeIn({
+          node: [this.dpNode, this.videoNode],
+          complete: () => {
+            this._isSwitch = true
+          }
+        })
+      }
+    })
   }
 
 }

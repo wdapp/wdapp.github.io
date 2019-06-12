@@ -64,7 +64,19 @@ class Controls extends Component {
   //退出登录
   addInteractive() {
     let btn_swtch = this.getNodeByClass('controls-switch')//切换视频为主文档为主按钮
+    let btn_line = this.getNodeByClass('controls-line')//切换视频为主文档为主按钮
     let btn_out = this.getNodeByClass('controls-quit')//获取退出按钮
+    let line = `
+                <div class="line-wrap">
+                  <p class="line-title">以下可以选择的网络途径：</p>
+                  <div class="radio-wrapp">
+                    <input class="line-radio" type="radio" checked name="line" id="line_1"><label class="line-label" for="line_1">线路1</label>
+                  </div>
+                  <div class="radio-wrapp">
+                    <input class="line-radio" type="radio" name="line" id="line_2"><label class="line-label" for="line_2">线路2</label>
+                  </div>
+                </div>
+                 `
     //事件监听
     this.bind(btn_out, 'click', (e) => {
       this.ui.ui.modal({
@@ -91,7 +103,27 @@ class Controls extends Component {
       })
     })
     this.bind(btn_swtch, 'click', (e) => {
-      this.ui.switchPanel()
+        this.ui.switchPanel()
+    })
+    this.bind(btn_line, 'click', (e) => {
+      this.ui.ui.modal({
+        titile: '选择网络',
+        content: line,
+        cancelText: '取消',
+        confirmText: '确定',
+        cancel: () => {
+
+        },
+        confirm: () => {
+          let lineRadio = document.getElementsByClassName('line-radio')
+          Utils.log('获取线路', lineRadio)
+          Utils.log('获取线路', this.getNode('line_1').checked)
+          Utils.log('获取线路', this.getNode('line_2').checked)
+        },
+        complete: () => {
+
+        }
+      })
     })
 
   }

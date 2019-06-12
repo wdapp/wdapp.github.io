@@ -1,4 +1,5 @@
 @import "~assets/styles/header.scss";
+
 .app {
   position: absolute;
   @include width-height-full();
@@ -45,7 +46,6 @@
     }
     .left-bar-active {
       opacity: 1;
-      left: 0;
       .left-bar-swith {
         background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
       }
@@ -94,7 +94,6 @@
     }
     .right-bar-active {
       opacity: 1;
-      right: 0;
       .right-bar-swith {
         background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
       }

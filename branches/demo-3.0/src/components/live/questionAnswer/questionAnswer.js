@@ -48,7 +48,6 @@ class QuestionAnswer extends Component {
     })
     let msgInput = this.getNode('sendQaMsg')
     this.bind(msgInput, 'keydown', (e) => {
-      console.log('anjian' + e.keyCode)
       switch (e.keyCode.toString()) {
         case '13':
           sendQAMsg()
@@ -70,6 +69,10 @@ class QuestionAnswer extends Component {
         HDScence.alert('发送内容不能超过300字符', 'warning')
         return
       }
+      if (!HDScence.isLive) {
+        HDScence.alert('直播未开始，不能发送问答', 'warning')
+        return
+      }
       let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
       //发送问答
       liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
@@ -80,8 +83,6 @@ class QuestionAnswer extends Component {
         clearTimeout(timeOutId)
       }, 10000)
     }
-
-
 
 
     let selected = false
@@ -97,7 +98,7 @@ class QuestionAnswer extends Component {
       } else {
         for (let str in this.qaMap) {
           let uiquestion = this.qaMap[str]
-          if (!uiquestion.self) {
+          if (!uiquestion.self && uiquestion.isPublish) {
             uiquestion.visible = true
           }
         }

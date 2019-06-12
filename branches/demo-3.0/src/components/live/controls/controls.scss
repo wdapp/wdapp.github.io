@@ -63,9 +63,12 @@
               height: .12rem;
             }
             .controls-online-number {
+              max-width: 1rem;
               font-size: .12rem;
               color: rgba(102, 102, 102, 1);
               vertical-align: top;
+              display: inline-block;
+              @include ellipsis();
             }
             .controls-online-unit {
               font-size: .12rem;
@@ -81,9 +84,9 @@
             border-left: 1px #BBBBBB solid;
             padding-left: .15rem;
             height: .14rem;
-            max-width: 1rem;
+            max-width: 2rem;
             display: inline-block;
-            @include ellipsis()
+            @include ellipsis();
           }
           .controls-quit {
             display: inline-block;
@@ -97,4 +100,20 @@
       }
     }
   }
+}
+
+.line-label {
+  margin-left: .1rem;
+}
+
+.line-wrap {
+  color: #333333;
+}
+
+.line-title{
+  margin-bottom: .1rem;
+}
+
+.radio-wrapp{
+  margin-bottom: .1rem;
 }

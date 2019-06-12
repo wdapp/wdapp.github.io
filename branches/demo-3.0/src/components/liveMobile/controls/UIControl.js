@@ -31,30 +31,28 @@ class UI extends Render {
     let viewerNode = this.getNodeByClass('controls-user')
     this.innerHTML(viewerNode, name)
   }
-  set showBarrage(v){
-    let barrageBtn = this.getNodeByClass("barrage");
-    this.setStyle(barrageBtn,{display:(v?"block":"none")});
+
+  set showBarrage(v) {
+    let barrageBtn = this.getNodeByClass('barrage')
+    this.setStyle(barrageBtn, {display: (v ? 'block' : 'none')})
   }
 
   //切换视频为主文档为主
   switchPanel() {
-    this.deleteChild('document')
-    this.deleteChild('player')
-    let playerNode = this.getNode('player')
-    let h = playerNode.offsetHeight + 'px'
     if (this.isMainVideo) {
       this.appendChild('document', this.dpNode)
       this.appendChild('player', this.videoNode)
-      this.setStyle('document', {height: ''})
     } else {
       this.appendChild('document', this.videoNode)
       this.appendChild('player', this.dpNode)
-      this.setStyle('document', {height: h})
     }
-
     this._isMainVideo = !this._isMainVideo
+    this.updateNavigation(this._isMainVideo)
   }
 
+  updateNavigation(isMainVideo) {
+    HDScence.emit('isMainVideo', isMainVideo)
+  }
 }
 
 export default UI

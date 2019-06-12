@@ -2,7 +2,7 @@
 
 .document {
   @include width-height-full();
-  .draw-panel{
+  .draw-panel {
     @include width-height-full();
   }
 }

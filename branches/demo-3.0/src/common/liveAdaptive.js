@@ -57,20 +57,10 @@ class LiveAdaptive extends EventEmitter {
       language: params.language || '',
       viewercustominfo: params.viewerCustominfo || '',
       fastMode: params.fastMode,
-      language:"zh"
+      language: 'zh'
     })
+    this.isLive = false
     this.addAPIFunction()
-  }
-
-
-  onDocumentMode(callback) {
-    this.on('documentMode', (data) => {
-      let mode = {
-        mode: data ? 'iframe' : 'flash',
-        fastMode: data
-      }
-      callback(mode)
-    })
   }
 
   alert(content, type = '') {
@@ -116,6 +106,18 @@ class LiveAdaptive extends EventEmitter {
   }
 
   /**
+   * 设置文档自适应模式
+   */
+  documentAdaptive(boolean) {
+    if (typeof boolean !== 'boolean') {
+      return false
+    }
+    //简介
+    this.liveInterface.call(this.liveInterface.DOCADAPT, boolean)
+    return false
+  }
+
+  /**
    *登录状态监听
    * */
   onLogin(d = {}) {
@@ -136,18 +138,10 @@ class LiveAdaptive extends EventEmitter {
 
   }
 
-  getLive(){
+  getLive() {
     return this.liveInterface.LiveMain
   }
 
-  onDocumentDisplayMode(callback) {
-    this.on('documentDisplayMode', (data) => {
-      let mode = {
-        documentDisplayMode: data == 1 ? true : false
-      }
-      callback(mode)
-    })
-  }
 
   /**
    *
@@ -158,17 +152,20 @@ class LiveAdaptive extends EventEmitter {
     this.liveInterface.on(this.liveInterface.ONLIVESTART, () => {
       this.dispatch(this.OnLiveStart)
       d.liveStart && d.liveStart()
+      this.isLive = true
     })
 
     this.liveInterface.on(this.liveInterface.ONLIVESTARTING, () => {
       this.dispatch(this.OnLiveStarting)
       d.living && d.living()
+      this.isLive = true
     })
 
     //直播结束
     this.liveInterface.on(this.liveInterface.ONLIVEEND, () => {
       this.dispatch(this.OnLiveEnd)
       d.liveEnd && d.liveEnd()
+      this.isLive = false
     })
   }
 
@@ -247,6 +244,7 @@ class LiveAdaptive extends EventEmitter {
       d.callback && d.callback(LiveInfo.privateChatMsgInfo)
     })
   }
+
   /**
    *
    * 接收私聊回复

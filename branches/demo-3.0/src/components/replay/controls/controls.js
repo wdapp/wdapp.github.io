@@ -6,6 +6,7 @@ import Utils from 'common/utils'
 import Slider from 'bootstrap-slider'
 import UserInterface from 'common/userInterface'
 import 'bootstrap-slider/dist/css/bootstrap-slider.css'
+import FullScreen from './fullscreen'
 
 class Controls extends Component {
 
@@ -19,12 +20,10 @@ class Controls extends Component {
   formatCurrentTime = 0
   isShowThumbnailList = false
   isShowRate = false
-  isShowLeft = true
-  isShowRight = true
   isMute = false
   volume = 0
-  isFullScreen = false
   isPlayerSliderAutoChange = true
+  isSwitch = true
 
   constructor() {
     super()
@@ -35,8 +34,7 @@ class Controls extends Component {
 
   init() {
     this.ui = new UserInterface()
-    this.leftBar = this.getNode('leftBar')
-    this.rightBar = this.getNode('rightBar')
+    this.fullScreen = new FullScreen()
     this.playButton = this.getNode('playButton')
     this.bulletsScreen = this.getNode('bulletsScreen')
     this.playButtonIcon = this.getNode('playButtonIcon')
@@ -47,12 +45,9 @@ class Controls extends Component {
     this.quitButton = this.getNode('quitButton')
     this.thumbnailListButton = this.getNode('thumbnailListButton')
     this.thumbnailWrapper = this.getNode('thumbnailWrapper')
-    this.switchBtnWrap = this.getNode('switchBtnWrap')
     this.playRateWrap = this.getNode('playRateWrap')
     this.playRateList = this.getNode('playRateList')
     this.playRateBtn = this.getNode('playRateBtn')
-    this.fullScreenButtonWrap = this.getNode('fullScreenButtonWrap')
-    this.fullScreenButton = this.fullScreenButtonWrap.getElementsByClassName('full-screen-btn')[0]
     this.playRateNumber = [...document.getElementsByClassName('play-rate-number')]
 
     this.onEvents()
@@ -131,96 +126,67 @@ class Controls extends Component {
   }
 
   handleClick() {
-    this.bind(this.leftBar, 'click', this.bindLeftBar.bind(this))
-    this.bind(this.rightBar, 'click', this.bindRightBar.bind(this))
+    let leftBar = this.getNode('leftBar')
+    let rightBar = this.getNode('rightBar')
+    let switchBtnWrap = this.getNode('switchBtnWrap')
+    let fullScreenButtonWrap = this.getNode('fullScreenButtonWrap')
+
+    this.bind(leftBar, 'click', this.bindLeftBar.bind(this))
+    this.bind(rightBar, 'click', this.bindRightBar.bind(this))
+    this.bind(fullScreenButtonWrap, 'click', this.bindFullScreen.bind(this))
+    this.bind(switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
+
     this.bind(this.playButton, 'click', this.bindPlay.bind(this))
     this.bind(this.voiceButton, 'click', this.toggleMute.bind(this))
     this.bind(this.quitButton, 'click', this.bindQuit.bind(this))
-    this.bind(this.switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
     this.bind(this.playRateWrap, 'click', this.bindPlayRateWrap.bind(this))
     this.bind(this.playRateList, 'click', this.bindPlayRateList.bind(this))
     this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
-    this.bind(this.fullScreenButtonWrap, 'click', this.bindFullScreen.bind(this))
   }
 
   bindFullScreen() {
-    if (this.isFullScreen) {
-      this.ui.showLeft()
-      this.ui.showRight(() => {
-        this.loadBar.initTooltip()
-      })
-      this.isShowLeft = true
-      this.isShowRight = true
-      this.removeClass(this.fullScreenButton, 'active')
-      this.quitButton.style.display = 'block'
-    } else {
-      this.ui.hideLeft()
-      this.ui.hideRight(() => {
-        this.loadBar.initTooltip()
-      })
-      this.isShowRight = false
-      this.isShowLeft = false
-      this.addClass(this.fullScreenButton, 'active')
-      this.quitButton.style.display = 'none'
-    }
-    this.isFullScreen = !this.isFullScreen
-  }
-
-  updateFullScreenState() {
-    if (this.isShowLeft == this.isShowRight) {
-      this.isFullScreen = !this.isShowLeft
-    }
+    this.fullScreen.toggleFullScreen((isFullScreen) => {
+      this.loadBar.initTooltip()
+      if (isFullScreen) {
+        this.quitButton.style.display = 'none'
+      }
+    })
   }
 
   bindLeftBar() {
-    if (this.isShowLeft) {
-      this.ui.hideLeft(() => {
-        this.loadBar.initTooltip()
-        Utils.log('hideLeft')
-      })
-    } else {
-      this.ui.showLeft(() => {
-        this.loadBar.initTooltip()
-        Utils.log('showLeft')
-      })
-    }
-    this.isShowLeft = !this.isShowLeft
-    this.updateFullScreenState()
+    this.fullScreen.toggleLeftBar(() => {
+      this.loadBar.initTooltip()
+    })
   }
 
   bindRightBar() {
-    if (this.isShowRight) {
-      this.ui.hideRight(() => {
-        this.loadBar.initTooltip()
-        Utils.log('hideRight')
-      })
-    } else {
-      this.ui.showRight(() => {
-        this.loadBar.initTooltip()
-        Utils.log('showRight')
-      })
-    }
-    this.isShowRight = !this.isShowRight
-    this.updateFullScreenState()
+    this.fullScreen.toggleRightBar(() => {
+      this.loadBar.initTooltip()
+    })
   }
 
   bindSwitchBtnWrap() {
-    if (!this.checkout('bindSwitchBtnWrap')) {
+    if (!this.isSwitch || !this.checkout('bindSwitchBtnWrap')) {
       return false
     }
+    this.isSwitch = false
     let player = this.getNode('player')
-    let document = this.getNode('document')
-    let video = player.firstElementChild
-    let iframe = document.firstElementChild
-    player.appendChild(iframe)
-    document.appendChild(video)
-
-    // let playbackPlayer = this.getNode('playbackPlayer')
-    // let drawPanel = this.getNode('draw_panel')
-    // let video = playbackPlayer.firstElementChild
-    // let iframe = drawPanel.firstElementChild
-    // playbackPlayer.appendChild(iframe)
-    // drawPanel.appendChild(video)
+    let drawPanel = this.getNode('document')
+    let playerChildren = player.firstElementChild
+    let drawPanelChildren = drawPanel.firstElementChild
+    this.ui.fadeOut({
+      node: [playerChildren, drawPanelChildren],
+      complete: () => {
+        player.appendChild(drawPanelChildren)
+        drawPanel.appendChild(playerChildren)
+        this.ui.fadeIn({
+          node: [playerChildren, drawPanelChildren],
+          complete: () => {
+            this.isSwitch = true
+          }
+        })
+      }
+    })
   }
 
   bindPlayRateList(e) {
@@ -258,9 +224,11 @@ class Controls extends Component {
     if (_playState) {
       this.startTimer()
       this.addClass(this.playButtonIcon, 'pause')
+      this.playButtonIcon.title = '暂停'
     } else {
       this.stopTimer()
       this.removeClass(this.playButtonIcon, 'pause')
+      this.playButtonIcon.title = '播放'
     }
   }
 

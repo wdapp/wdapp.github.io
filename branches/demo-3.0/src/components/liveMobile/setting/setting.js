@@ -27,6 +27,7 @@ class Setting extends Component {
     })
     this.bind(this.announceBtn, 'click', () => {
 
+
     })
   }
 }

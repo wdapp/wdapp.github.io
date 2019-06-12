@@ -36,6 +36,9 @@ class Navigation extends Component {
     this.bind(setting, 'click', () => {
       this.ui.settingpanel = true
     })
+    HDScence.on('isMainVideo', (isMainVideo) => {
+      doc.innerText = isMainVideo ? '视频' : '文档'
+    })
   }
 
 }

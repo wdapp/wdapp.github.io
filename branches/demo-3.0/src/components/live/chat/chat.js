@@ -140,7 +140,6 @@ class Chat extends Component {
         return
       }
       let msg = Utils.trim(t.uiChat.msg)
-      console.log('neirong->' + msg)
       if (msg.length > 300) {
         HDScence.alert('发送消息字数不能超过300', 'warning')
         return

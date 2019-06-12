@@ -17,9 +17,11 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.onDocumentDisplayMode((data) => {
-      Utils.log('onDocumentDisplayMode', data)
-      if (data.documentDisplayMode) {
+    HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
+
+      Utils.log('onDocumentDisplayMode', HDScence.getLive().documentDisplayMode)
+      let docType = HDScence.getLive().documentDisplayMode
+      if (docType == 1) {
         //开启极速文档适合窗口
         HDScence.documentAdaptive(true)
       } else {
@@ -27,9 +29,11 @@ class Document extends Component {
         HDScence.documentAdaptive(false)
         //兼容iOS屏幕旋转导致文档变大问题
         if (Utils.isIOS()) {
-          HDScence.onRotateScreenChange((orientation) => {
-            this.updateOrientation(orientation)
-          })
+          if (Utils.isIOS()) {
+            HDScence.onRotateScreenChange((orientation) => {
+              this.updateOrientation(orientation)
+            })
+          }
         }
       }
     })

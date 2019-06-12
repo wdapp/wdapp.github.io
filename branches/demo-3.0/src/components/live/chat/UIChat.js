@@ -74,7 +74,6 @@ class UIChat extends Render {
     }
     let chatContainer = this.getNodeByClass('chat-body')
     let h = this.getNode('chat-container').offsetHeight
-    // console.log(h)
     chatContainer.scrollTo(0, h)
   }
 

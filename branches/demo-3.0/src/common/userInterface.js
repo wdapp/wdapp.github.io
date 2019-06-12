@@ -8,6 +8,7 @@ import 'bootstrap'
 
 class UserInterface extends Render {
   alertIndex = 0
+  _interval = 300
 
   constructor() {
     super()
@@ -78,13 +79,14 @@ class UserInterface extends Render {
     return $('#modal')
   }
 
-  hideLeft(callback) {
+  hideLeft(callback, interval = 300) {
     let left = this.getNode('left')
     let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
     Velocity(left, {
       width: '0rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         this.addClass(leftBar, 'left-bar-active')
       }
@@ -92,8 +94,9 @@ class UserInterface extends Render {
       easing: 'ease-out'
     })
     Velocity(center, {
-      left: 0,
+      left: '.12rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         callback && callback()
       }
@@ -102,13 +105,14 @@ class UserInterface extends Render {
     })
   }
 
-  showLeft(callback) {
+  showLeft(callback, interval = 300) {
     let left = this.getNode('left')
     let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
     Velocity(left, {
       width: '2.6rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         this.removeClass(leftBar, 'left-bar-active')
       }
@@ -118,6 +122,7 @@ class UserInterface extends Render {
     Velocity(center, {
       left: '2.6rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         callback && callback()
       }
@@ -126,13 +131,14 @@ class UserInterface extends Render {
     })
   }
 
-  hideRight(callback) {
+  hideRight(callback, interval = 300) {
     let right = this.getNode('right')
     let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
     Velocity(right, {
       width: '0rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         this.addClass(rightBar, 'right-bar-active')
       }
@@ -140,8 +146,9 @@ class UserInterface extends Render {
       easing: 'ease-out'
     })
     Velocity(center, {
-      right: 0,
+      right: '.12rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         callback && callback()
       }
@@ -150,13 +157,14 @@ class UserInterface extends Render {
     })
   }
 
-  showRight(callback) {
+  showRight(callback, interval = 300) {
     let right = this.getNode('right')
     let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
     Velocity(right, {
       width: '2.6rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         this.removeClass(rightBar, 'right-bar-active')
       }
@@ -166,6 +174,7 @@ class UserInterface extends Render {
     Velocity(center, {
       right: '2.6rem',
     }, {
+      duration: (interval >= 0 ? interval : this._interval),
       complete: () => {
         callback && callback()
       }
@@ -183,6 +192,24 @@ class UserInterface extends Render {
       }
     }, {
       easing: 'easeInSine'
+    })
+  }
+
+  fadeIn(options) {
+    Velocity(options.node, 'fadeIn', {
+      duration: options.time || 600,
+      complete: () => {
+        options.complete && options.complete()
+      }
+    })
+  }
+
+  fadeOut(options) {
+    Velocity(options.node, 'fadeOut', {
+      duration: options.time || 300,
+      complete: () => {
+        options.complete && options.complete()
+      }
     })
   }
 }

@@ -62,7 +62,7 @@
         if (!swf) {
           return
         }
-        swf.seek(t)
+        swf.seek && swf.seek(t)
       }
     }
 
@@ -82,7 +82,9 @@
       if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         t = this.getH5player().currentTime
       } else {
-        t = parseInt(this.getFlash().getPosition(), 10)
+        if (this.getFlash() && this.getFlash().getPosition) {
+          t = parseInt(this.getFlash().getPosition(), 10)
+        }
       }
       if (isNaN(t) || t < 0) {
         return 0
@@ -96,7 +98,7 @@
         return this.getH5player().duration
       } else {
         var swf = this.getFlash()
-        if (!swf) {
+        if (!swf || !swf.getDuration) {
           return
         }
         return swf.getDuration()
@@ -117,7 +119,7 @@
         return buffer
       } else {
         var swf = this.getFlash()
-        if (!swf) {
+        if (!swf || !swf.getBufferLength) {
           return
         }
         return swf.getBufferLength()
@@ -130,7 +132,7 @@
         this.getH5player().volume = parseFloat(n)
       } else {
         var swf = this.getFlash()
-        if (!swf) {
+        if (!swf || !swf.setVolume) {
           return
         }
         return swf.setVolume(n)
@@ -142,7 +144,7 @@
         return this.getH5player().volume
       } else {
         var swf = this.getFlash()
-        if (!swf) {
+        if (!swf || !swf.getVolume) {
           return
         }
         return swf.getVolume()
@@ -158,7 +160,7 @@
         }
       } else {
         var swf = this.getFlash()
-        if (!swf) {
+        if (!swf || !swf.isPlay) {
           return
         }
         return swf.isPlay()
@@ -167,7 +169,7 @@
 
     this.setZScale = function (s) {
       var swf = this.getFlash()
-      if (!swf) {
+      if (!swf || !swf.setZScale) {
         return
       }
       return swf.setZScale(s)
@@ -175,7 +177,7 @@
 
     this.getZScale = function () {
       var swf = this.getFlash()
-      if (!swf) {
+      if (!swf || !swf.getZScale) {
         return
       }
       return swf.getZScale()
@@ -183,7 +185,7 @@
 
     this.setScale = function (s) {
       var swf = this.getFlash()
-      if (!swf) {
+      if (!swf || !swf.setScale) {
         return
       }
       return swf.setScale(s)
@@ -191,7 +193,7 @@
 
     this.getScale = function () {
       var swf = this.getFlash()
-      if (!swf) {
+      if (!swf || !swf.getScale) {
         return
       }
       return swf.getScale()
@@ -199,7 +201,7 @@
 
     this.openSettingPanel = function () {
       var swf = this.getFlash()
-      if (!swf) {
+      if (!swf || !swf.openSettingPanel) {
         return
       }
       return swf.openSettingPanel()
@@ -277,7 +279,7 @@
       if (!swf) {
         return
       }
-      swf.clear()
+      swf.clear && swf.clear()
     }
 
     // 画图
@@ -289,7 +291,7 @@
         return
       }
 
-      swf.draw(j)
+      swf.draw && swf.draw(j)
     }
 
     this.draws = function (js) {
@@ -300,7 +302,7 @@
 
       (function (jstr) {
         setTimeout(function () {
-          swf.drawList(jstr)
+          swf.drawList && swf.drawList(jstr)
         })
       })(js)
     }
@@ -322,10 +324,10 @@
         jj.url = u.replace(/http:/g, 'https:')
       }
 
-      if (options.adapt) {
-        swf.filp(JSON.stringify(jj), 'auto')
+      if (swf && options.adapt) {
+        swf.filp && swf.filp(JSON.stringify(jj), 'auto')
       } else {
-        swf.filp(JSON.stringify(jj))
+        swf.filp && swf.filp(JSON.stringify(jj))
       }
     }
 
@@ -338,7 +340,7 @@
         return
       }
 
-      swf.animation(j)
+      swf.animation && swf.animation(j)
     }
 
     this.intervalNum = 0

@@ -39,6 +39,18 @@ class Render {
     if (node == window) {
       return true
     }
+    if (node.length > 0) {
+      let result = false
+      for (let item of node) {
+        if (item.nodeType <= 0) {
+          result = false
+          break
+        } else {
+          result = true
+        }
+      }
+      return result
+    }
     return false
   }
 
@@ -113,7 +125,13 @@ class Render {
 
   appendChild(node, child) {
     if (this.isEmptyNode(node) && this.isEmptyNode(child)) {
-      node.appendChild(child)
+      if (child.length > 0) {
+        for (let item of child) {
+          node.appendChild(item)
+        }
+      } else {
+        node.appendChild(child)
+      }
       return node
     }
     if (Utils.isEmptyString(node) && this.isEmptyNode(child)) {

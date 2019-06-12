@@ -52,6 +52,7 @@
           }
           .barrage {
             @include controls-button();
+            display: none;
           }
           .active {
             color: #3D96F5;

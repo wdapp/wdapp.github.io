@@ -41,11 +41,24 @@ class QuestionAnswer extends Component {
     let isCanSend = true
     let timeOutId = -1
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
+      let sendMsg = this.getNode('sendQaMsg').value
+      if (!sendMsg) {
+        HDScence.alert('发送内容不能为空', 'warning')
+        return
+      }
       if (!isCanSend) {
         HDScence.alert('发送过于频繁，请稍后', 'warning')
         return
       }
-      let sendMsg = this.getNode('sendQaMsg').value
+      if (sendMsg.length > 300) {
+        HDScence.alert('发送内容不能超过300字符', 'warning')
+        return
+      }
+      if (!HDScence.isLive) {
+        HDScence.alert('直播未开始，不能发送问答', 'warning')
+        return
+      }
+
       let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
       //发送问答
       liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
@@ -69,11 +82,10 @@ class QuestionAnswer extends Component {
       } else {
         for (let str in this.qaMap) {
           let uiquestion = this.qaMap[str]
-          if (!uiquestion.self) {
+          if (!uiquestion.self && uiquestion.isPublish) {
             uiquestion.visible = true
           }
         }
-
       }
       selected = !selected
     })
@@ -115,7 +127,7 @@ class QuestionAnswer extends Component {
     let container = this.getNode('question-answer')
     let h = container.offsetHeight
     let scrollBody = this.getNodeByClass('question-answer-list-wrap')
-    //scrollBody.scrollTo(0, h)
+    scrollBody.scrollTo(0, h)
   }
 }
 

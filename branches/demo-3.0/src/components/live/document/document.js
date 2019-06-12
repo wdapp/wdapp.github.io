@@ -15,15 +15,12 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.onDocumentMode((data) => {
-      if (!data.fastMode) {
+    HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
+      if (!HDScence.getLive().fastMode) {
         FlashTip.init('document')
       }
-    })
-
-    HDScence.onDocumentDisplayMode((data) => {
-      Utils.log('onDocumentDisplayMode', data)
-      if (data.documentDisplayMode) {
+      let docType = HDScence.getLive().documentDisplayMode
+      if (docType == 1) {
         //开启极速文档自适应模式
         HDScence.documentAdaptive(true)
       } else {
