@@ -36,10 +36,11 @@ class ChatMsg extends Render {
   appendMsg() {
     this.node = this.createNode('li')
     this.node.className = `chat-content-wrap ${this.self ? 'chat-content-right' : ''}`
+    this.node.setAttribute('chatid', this.chatId)
     this.innerHTML(this.node, this.HtmlContent)
     this.appendChild('chat-container', this.node)
-    this.getNode('chat-container').scrollTo(0, 0)
-    if (this.status === '0') {
+    this.getNode('chat-container').scrollTop = 0
+    if (this.status === '0' || this.self) {
       this.visible = true
     } else {
       this.visible = false

@@ -145,23 +145,45 @@ class Controls extends Component {
   }
 
   bindFullScreen() {
-    this.fullScreen.toggleFullScreen((isFullScreen) => {
-      this.loadBar.initTooltip()
-      if (isFullScreen) {
-        this.quitButton.style.display = 'none'
+    this.fullScreen.toggleFullScreen({
+      fullScreenStateChange: (data) => {
+        this.fullScreenChangeCallback(data)
       }
     })
   }
 
+  fullScreenChangeCallback(data) {
+    if (typeof data.isFullScreen == 'undefined') {
+      return false
+    }
+    this.loadBar.initTooltip()
+    console.log(data)
+    if (data.isFullScreen) {
+      this.quitButton.style.display = 'none'
+    } else {
+      this.quitButton.style.display = 'block'
+    }
+  }
+
   bindLeftBar() {
-    this.fullScreen.toggleLeftBar(() => {
-      this.loadBar.initTooltip()
+    this.fullScreen.toggleLeftBar({
+      barStateChange: (data) => {
+        this.loadBar.initTooltip()
+      },
+      fullScreenStateChange: (data) => {
+        this.fullScreenChangeCallback(data)
+      }
     })
   }
 
   bindRightBar() {
-    this.fullScreen.toggleRightBar(() => {
-      this.loadBar.initTooltip()
+    this.fullScreen.toggleRightBar({
+      barStateChange: (data) => {
+        this.loadBar.initTooltip()
+      },
+      fullScreenStateChange: (data) => {
+        this.fullScreenChangeCallback(data)
+      }
     })
   }
 
@@ -361,8 +383,9 @@ class Controls extends Component {
     this.isPlayerSliderAutoChange = false
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
-      this.stopTimer()
       HDScence.seek(value)
+      // this.updateCurrentTime()
+      this.stopTimer()
       this.isPlayerSliderAutoChange = true
     }, 500)
     return true

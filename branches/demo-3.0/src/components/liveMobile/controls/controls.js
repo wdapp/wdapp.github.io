@@ -79,6 +79,16 @@ class Controls extends Component {
   addInteractive() {
     let btn_swtch = this.getNode('controls-switch')//切换视频为主文档为主按钮
     let btn_out = this.getNode('controls-quit')//获取退出按钮
+    let btn_line = this.getNodeByClass('line')//线路按钮
+    let linesIndex = 0
+    this.bind(btn_line, 'click', (e) => {
+      HDScence.getLine()
+      linesIndex = (linesIndex + 1) >= LiveInfo.lines.length ? 0 : (linesIndex + 1)
+      HDScence.changeLine({'index': linesIndex})
+      this.innerHTML(btn_line, `线路${linesIndex + 1}`)
+      // lines =  this.ui.insertLines();
+
+    })
     //事件监听
     this.bind(btn_out, 'click', (e) => {
       this.liveSdk.call(this.liveSdk.LOGOUT, {

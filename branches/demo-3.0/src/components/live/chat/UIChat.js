@@ -7,6 +7,7 @@ class UIChat extends Render {
     this._isShowChatSelect = false
     this.isShowChatSmileList = false
     this._isAutoScroll = true
+    this._chatSwichSelect = false
   }
 
   //设置表情列表是否显示
@@ -20,10 +21,33 @@ class UIChat extends Render {
     return this.isSelectedChatSmile
   }
 
+  hideChatMsg(v) {
+    let li = document.querySelectorAll('#chat-container li')
+    for (let i = li.length; i >= 0; i--) {
+      this.setStyle(li[i], {display: (v ? 'block' : 'none')})
+    }
+  }
+
   set isShowChatSelect(v) {
     this._isShowChatSelect = v
     let style = v ? 'block' : 'none'
     this.setStyle('chat-options', {'display': style})
+  }
+
+  showPrivateChat(id) {
+    if (id === 'all') {
+      this.hideChatMsg(true)
+    }
+    let fId = `#chat-container li[fid="${id}"]`
+    let tId = `#chat-container li[tid="${id}"]`
+    let fNode = document.querySelectorAll(fId) ? document.querySelectorAll(fId) : []
+    let tNode = document.querySelectorAll(tId) ? document.querySelectorAll(tId) : []
+    for (let i = fNode.length; i >= 0; i--) {
+      this.setStyle(fNode[i], {display: 'block'})
+    }
+    for (let j = tNode.length; j >= 0; j--) {
+      this.setStyle(tNode[j], {display: 'block'})
+    }
   }
 
   get isShowChatSelect() {
@@ -41,6 +65,21 @@ class UIChat extends Render {
 
   set smiles(v) {
     this.getNode('send-chat-content').value += this.getSmiles(v)
+  }
+
+  set chatSwichVisible(v) {
+    let st = v ? 'inline-block' : ''
+    this.setStyle('chat-switch', {'display': st})
+  }
+
+  set chatSwichSelect(v) {
+    this._chatSwichSelect = v
+    let className = v ? 'chat-switch-icon chat-switch-icon-active' : 'chat-switch-icon'
+    this.getNode('chat-switch').className = className
+  }
+
+  get chatSwichSelect() {
+    return this._chatSwichSelect
   }
 
   getSmiles(index) {
@@ -72,9 +111,9 @@ class UIChat extends Render {
     if (!this.isAutoScroll) {
       return
     }
-    let chatContainer = this.getNodeByClass('chat-body')
+    let chatContainer = this.getNode('chat-body')
     let h = this.getNode('chat-container').offsetHeight
-    chatContainer.scrollTo(0, h)
+    chatContainer.scrollTop = h
   }
 
 }

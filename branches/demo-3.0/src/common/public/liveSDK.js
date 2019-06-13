@@ -423,7 +423,7 @@
               barrage: data.datas.room.barrage
             }
             var live = data.datas.live//返回给用户的live信息
-            var loginInfo = {'live': live, 'template': template, 'viewer': viewer,'room': room}
+            var loginInfo = {'live': live, 'template': template, 'viewer': viewer, 'room': room}
             DWLive.onLoginSuccess(loginInfo)
           }
 

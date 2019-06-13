@@ -3,6 +3,8 @@ import Utils from './utils'
 class LiveInfo {
   static loginInfo = {}
 
+  static lines = null
+
   constructor() {
 
   }

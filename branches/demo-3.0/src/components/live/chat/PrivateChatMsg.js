@@ -32,6 +32,8 @@ class PrivateChatMsg extends Render {
   appendMsg() {
     let li = this.createNode('li')
     li.className = `chat-content-wrap ${this.left ? '' : 'chat-content-right'}`
+    li.setAttribute('fId', this.fUserId)
+    li.setAttribute('tId', this.toUserId)
     this.innerHTML(li, this.HtmlContent)
     this.appendChild('chat-container', li)
 

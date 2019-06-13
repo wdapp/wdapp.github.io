@@ -7,7 +7,9 @@ class UIPlayer extends Render {
 
   set showTips(v) {
     let display = v ? 'block' : 'none'
+    let flex = v ? 'flex' : 'none'
     this.setStyle('video-tip', {display: display})
+    this.setStyle('noVideo', {display: flex})
   }
 
   set tipContent(v) {

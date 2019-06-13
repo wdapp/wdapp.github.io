@@ -64,7 +64,26 @@ class UI extends Render {
     this.innerHTML(viewerNode, name)
   }
 
-  //切换视频为主文档为主
+  insertLines(v) {
+    let m = ''
+    for (let i = 0; i < v.length; i++) {
+      let obj = v[i]
+      let name = obj.name
+      let selected = obj.select
+      let html = `<div class="radio-wrapp">
+                             <input class="line-radio" type="radio" index=${i} ${(selected == 1) ? 'checked' : ''} name="line" id=${'line_' + i}><label class="line-label" for="line_${i}">${name}</label>
+                        </div>`
+      m += html
+    }
+    return `<div class="line-wrap">
+                <p class="line-title">以下可以选择的网络途径：</p>
+                ${m}
+              </div>`
+  }
+
+  //切换
+  //
+  // 视频为主文档为主
   switchPanel() {
     if (!this._isSwitch) {
       return false

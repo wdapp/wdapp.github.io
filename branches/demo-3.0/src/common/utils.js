@@ -227,7 +227,6 @@ class Utils {
     let dHours = parseInt(times.split(':')[0], 10)
     let dMinutes = parseInt(times.split(':')[1], 10)
     let dSecond = parseInt(times.split(':')[2], 10)
-    // console.log(dHours,dMinutes,dSecond)
     let currentS = ( dSecond + t) % 60
     let currentM = (Math.floor((dSecond + t) / 60) + dMinutes) % 60
     let currentH = (Math.floor((dSecond + t) / 3600) + dHours) % 24

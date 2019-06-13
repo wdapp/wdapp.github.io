@@ -81,7 +81,6 @@ let HD = function () {
           throw new Error('Please fill in the valid data')
         }
         if (data.modules) {
-          // console.log(typeof data.modules);
           if (data.modules instanceof Array) {
             this.regiserModule(data.modules)
           } else {

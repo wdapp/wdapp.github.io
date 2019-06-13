@@ -1537,7 +1537,7 @@
         }
       }
     },
-    isIE9: function () {
+    isIE: function () {
       if (navigator.userAgent.indexOf('compatible') > -1 && navigator.userAgent.indexOf('MSIE') > -1 ) {
         if (navigator.userAgent.indexOf('MSIE 9.0') > -1) {
           return true
@@ -1545,7 +1545,11 @@
         if (navigator.userAgent.indexOf('MSIE 10.0') > -1) {
           return true
         }
-        return false
+        return true
+      }
+      var isIE11 = navigator.userAgent.indexOf('Trident') > -1 && navigator.userAgent.indexOf("rv:11.0") > -1;
+      if(isIE11){
+          return true
       }
       return false
     },
@@ -1555,7 +1559,6 @@
       return u === '.mp4'
     }
   }
-
   window.TIMEOUT = 5000
 
   var options = {
@@ -2263,7 +2266,8 @@
       var isMp4 = 0
       if ( !MobileLive.isMobile()) {
         if(DW.isH5play ){
-            if(util.isIE9()){
+            util.log("浏览器版本是否是IE",util.isIE())
+            if(util.isIE()){
                 isMp4 = 1;
                 this.useHls=false
                 // DW.getH5src(opts);

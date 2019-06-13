@@ -5,7 +5,7 @@ class FullScreen {
   isShowLeft = true
   isShowRight = true
   isFullScreen = false
-  fullscreenCallback = {}
+  fullScreenStateChange = {}
 
   constructor() {
     this.ui = new UserInterface()
@@ -15,18 +15,14 @@ class FullScreen {
     if (this.isSupportFullscreen) {
       this.addFullScreenListioner(() => {
         this.isFullScreen = true
-        this.fullscreenComplete(this.isFullScreen, this.fullscreenCallback)
+        this.updateFullScreenState(this.isFullScreen, this.fullScreenStateChange)
         Utils.log('enterFullscreen')
       }, () => {
         this.isFullScreen = false
-        this.fullscreenComplete(this.isFullScreen, this.fullscreenCallback)
+        this.updateFullScreenState(this.isFullScreen, this.fullScreenStateChange)
         Utils.log('exitFullscreen')
       })
     }
-  }
-
-  fullscreenComplete(isFullScreen, fullscreenCallback) {
-    this.updateFullScreenState(isFullScreen, fullscreenCallback)
   }
 
   bind(type, callback, useCapture = false) {
@@ -78,16 +74,16 @@ class FullScreen {
       false
   }
 
-  toggleFullScreen(callback) {
+  toggleFullScreen(options) {
     if (this.isSupportFullscreen) {
-      this.webFullScreen(callback)
+      this.webFullScreen(options.fullScreenStateChange)
     } else {
-      this.animationFullScreen(callback)
+      this.animationFullScreen(options.fullScreenStateChange)
     }
   }
 
   webFullScreen(callback) {
-    this.fullscreenCallback = callback
+    this.fullScreenStateChange = callback
     if (!this.isWebFullScreen()) {
       let centerWrapper = document.getElementById('centerWrapper')
       this.requestFullscreen(centerWrapper)
@@ -136,7 +132,7 @@ class FullScreen {
       document.msFullScreen)
   }
 
-  animationFullScreen() {
+  animationFullScreen(callback) {
     if (this.isFullScreen) {
       this.ui.showLeft(() => {
       }, 0)
@@ -155,51 +151,60 @@ class FullScreen {
 
   updateFullScreenState(isFullScreen, callback) {
     if (isFullScreen) {
-      this.isShowRight = false
-      this.isShowLeft = false
+      if (!this.isSupportFullscreen) {
+        this.isShowRight = false
+        this.isShowLeft = false
+      }
       this.fullScreenButton.className = this.className + ' active'
     } else {
-      this.isShowLeft = true
-      this.isShowRight = true
+      if (!this.isSupportFullscreen) {
+        this.isShowLeft = true
+        this.isShowRight = true
+      }
       this.fullScreenButton.className = this.className
     }
-    callback && callback(isFullScreen)
+    callback && callback({isFullScreen})
   }
 
-  toggleLeftBar() {
+  toggleLeftBar(options) {
     if (this.isShowLeft) {
       this.ui.hideLeft(() => {
-        this.updateBarState()
+        this.updateBarState(options, this.isShowLeft)
         Utils.log('hideLeft')
       })
     } else {
       this.ui.showLeft(() => {
-        this.updateBarState()
+        this.updateBarState(options, this.isShowLeft)
         Utils.log('showLeft')
       })
     }
     this.isShowLeft = !this.isShowLeft
   }
 
-  toggleRightBar() {
+  toggleRightBar(options) {
     if (this.isShowRight) {
       this.ui.hideRight(() => {
-        this.updateBarState()
+        this.updateBarState(options, this.isShowRight)
         Utils.log('hideRight')
       })
     } else {
       this.ui.showRight(() => {
-        this.updateBarState()
+        this.updateBarState(options, this.isShowRight)
         Utils.log('showRight')
       })
     }
     this.isShowRight = !this.isShowRight
   }
 
-  updateBarState() {
-    if (this.isShowLeft == this.isShowRight) {
+  updateBarState(options, barState) {
+    if (!this.isSupportFullscreen && this.isShowLeft == this.isShowRight) {
       this.isFullScreen = !this.isShowLeft
-      this.updateFullScreenState(this.isFullScreen)
+      this.updateFullScreenState(this.isFullScreen, options.fullScreenStateChange)
+    } else {
+      options.barStateChange && options.barStateChange({barState})
+      if (this.fullScreenButton.className == this.className + ' active') {
+        this.fullScreenButton.className = this.className
+      }
     }
   }
 }

@@ -248,7 +248,7 @@
           background-position: -59px -235px;
         }
         .chat-switch-icon {
-          display: inline-block;
+          display: none;
           @include width-height-same(.2rem);
           background-image: url(~assets/images/live-icons2.png);
           background-repeat: no-repeat;

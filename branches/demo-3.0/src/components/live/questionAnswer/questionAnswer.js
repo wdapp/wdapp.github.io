@@ -142,8 +142,9 @@ class QuestionAnswer extends Component {
   updateScroll() {
     let container = this.getNode('question-answer')
     let h = container.offsetHeight
-    let scrollBody = this.getNodeByClass('question-body')
-    scrollBody.scrollTo(0, h)
+    let scrollBody = this.getNode('question-body')
+    scrollBody.scrollTop = h
+
   }
 }
 

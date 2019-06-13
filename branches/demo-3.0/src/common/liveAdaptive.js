@@ -1,5 +1,5 @@
-import 'common/public/liveSDK'//引入观看直播Web SDK
-import {LiveSDKInterface} from 'common/interface'//引入接口适配器
+import 'common/public/liveSDK' //引入观看直播Web SDK
+import {LiveSDKInterface} from 'common/interface' //引入接口适配器
 import LiveInfo from 'common/liveinfo'
 import EventEmitter from 'onfire.js'
 import Tips from './userInterface'
@@ -54,7 +54,6 @@ class LiveAdaptive extends EventEmitter {
       groupid: params.groupId || '',
       viewertoken: params.viewerToken || '',
       viewercustomua: params.viewerCustomua || '',
-      language: params.language || '',
       viewercustominfo: params.viewerCustominfo || '',
       fastMode: params.fastMode,
       language: 'zh'
@@ -71,37 +70,12 @@ class LiveAdaptive extends EventEmitter {
   }
 
   dispatch(type) {
-    if (!type) return
-    if (this.node.dispatchEvent) {
-      this.node.dispatchEvent(new Event(type))
-    } else {
-      eventMap[type] = []
-    }
+    this.fire(type)
 
   }
 
   addEvent(type, func) {
-    if (!type) return
-    if (!this.node.dispatchEvent) {
-      if (eventMap[type]) {
-        eventMap[type].push(func)
-      } else {
-        eventMap[type] = []
-        eventMap[type].push(func)
-      }
-      let l = eventMap[type].length
-      for (let i = 0; i < l; i++) {
-        let f = eventMap[type][i]
-        f.apply(null)
-      }
-      return
-    }
-
-    if (this.node.addEventListener) {
-      this.node.addEventListener(type, func)
-    } else {
-      this.node.attachEvent(type, func)
-    }
+    this.on(type, func)
 
   }
 
@@ -124,6 +98,12 @@ class LiveAdaptive extends EventEmitter {
     this.liveInterface.on(this.liveInterface.ONLOGINSUCCESS, (result) => {
       this.param.success && this.param.success(result)
       LiveInfo.loginInfo = LiveInfo.parseLoginInfo(result)
+      if (!LiveInfo.getLoginInfoData('live', 'liveStartTime')) {
+        this.isLive = false
+      } else {
+        this.isLive = true
+      }
+
       d.success && d.success(result)
       this.dispatch(this.OnLoginSuccess)
       this.alert('登录成功')
@@ -321,7 +301,6 @@ class LiveAdaptive extends EventEmitter {
   onLiveDesc(d = {}) {
     //简介
     this.liveInterface.on(this.liveInterface.ONLIVEDESC, (result) => {
-      // console.log('简介信息---》' + result)
       LiveInfo.onLiveDesc = result[0]
       this.dispatch(this.OnLiveDesc)
       d.callback && d.callback(LiveInfo.onLiveDesc)
@@ -356,6 +335,21 @@ class LiveAdaptive extends EventEmitter {
     this.onAnounceRelease()
     this.onAnounceDelete()
     this.onBannedInfomation()
+  }
+
+  /**
+   * 获取当先的线路数组
+   * **/
+  getLine() {
+    LiveInfo.lines = this.liveInterface.call(this.liveInterface.GETLINE)
+    return LiveInfo.lines
+  }
+
+  /**
+   * 切换线路
+   * **/
+  changeLine(t = {}) {
+    this.liveInterface.call(this.liveInterface.CHANGELINE, (t.index ? parseInt(t.index) : 1 ))
   }
 
 }

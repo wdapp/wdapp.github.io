@@ -34,7 +34,6 @@ class Chat extends Component {
         let chatMsg = new ChatMsg()
         msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
         chatMsg.info = msgInfo
-
         this.chatMap[msgInfo.chatId] = chatMsg
       }
 
@@ -66,6 +65,15 @@ class Chat extends Component {
     })
   }
 
+  updateUserList() {
+    if (this.uiChat.chatSwichSelect) {
+      this.uiChat.hideChatMsg(false)
+      this.uiChat.showPrivateChat(this.selectedTeacher)
+    } else {
+      this.uiChat.hideChatMsg(true)
+    }
+  }
+
   addHandler() {
     let chatSmile = this.getNode('chat-smile')//选择表情
     let chatSwitch = this.getNode('chat-switch')//私聊
@@ -77,6 +85,11 @@ class Chat extends Component {
     let annouCloseBtn = this.getNodeByClass('announcement-close')//关闭公告按钮
     let sendInput = this.getNode('send-chat-content')//聊天输入框
     let chatContainer = this.getNode('chat-container')//
+    let chatSwich = this.getNode('chat-switch')//聊天对象
+    this.bind(chatSwich, 'click', () => {
+      this.uiChat.chatSwichSelect = !this.uiChat.chatSwichSelect
+      this.updateUserList()
+    })
     this.bind(chatContainer, 'mouseover', () => {
 
       this.uiChat.isAutoScroll = false
@@ -84,6 +97,7 @@ class Chat extends Component {
     this.bind(chatContainer, 'mouseout', () => {
 
       this.uiChat.isAutoScroll = true
+
     })
     this.bind(sendInput, 'keydown', (e) => {
       switch (e.keyCode.toString()) {
@@ -114,7 +128,14 @@ class Chat extends Component {
         this.selectedTeacher = selected.id ? selected.id : 'all'
         this.selectedteacherName = selected.innerHTML
         this.uiChat.selectName = this.selectedteacherName
+
       }
+      if (this.selectedTeacher != 'all') {
+        this.uiChat.chatSwichVisible = true
+      } else {
+        this.uiChat.chatSwichVisible = false
+      }
+      this.updateUserList()
     })
     this.bind(smilesList, 'click', (e) => {
       let select = e.target.parentNode
