@@ -91,7 +91,7 @@ class Controls extends Component {
     })
     //事件监听
     this.bind(btn_out, 'click', (e) => {
-      this.liveSdk.call(this.liveSdk.LOGOUT, {
+      HDScence.logoutRoom({
         success: () => {
           Utils.log('退出成功')
           this.ui.logoutWindow()

@@ -35,7 +35,7 @@ class LiveInfo {
     let data = Utils.stringToJSON(d)
     if (data.action && data.action === 'question') {
       if (data.value) {
-
+       let viewerId =  LiveInfo.getLoginInfoData('viewer', 'id')
         let obj = {
           id: data.value.id,
           questionId: data.value.id,
@@ -44,7 +44,7 @@ class LiveInfo {
           triggerTime: data.value.triggerTime,
           userId: data.value.userId,
           questionName: data.value.userName,
-          self: (data.value.userId === LiveInfo.getLoginInfoData('viewer', 'id'))
+          self: (data.value.userId === viewerId)
         }
         return obj
       }
@@ -57,6 +57,8 @@ class LiveInfo {
     let data = Utils.stringToJSON(d)
     if (data.action && data.action === 'answer') {
       if (data.value) {
+        let viewerId =  LiveInfo.getLoginInfoData('viewer', 'id')
+
         let obj = {
           answerName: data.value.userName,
           answerContent: data.value.content,
@@ -65,7 +67,8 @@ class LiveInfo {
           questionUserId: data.value.questionUserId,
           triggerTime: data.value.triggerTime,
           userId: data.value.userId,
-          self: (data.value.questionUserId === LiveInfo.getLoginInfoData('viewer', 'id'))
+          self: (data.value.questionUserId === viewerId)
+
 
         }
         return obj

@@ -10,6 +10,7 @@ class Answer extends Render {
     this.parentQNodeId = v.questionId
     this.answerName = v.answerName
     this.answerContent = v.answerContent
+    this.time = v.triggerTime.split(' ')[1]
     return this.create()
   }
 
@@ -24,7 +25,7 @@ class Answer extends Render {
   get nodeAnswerHtml() {
     return ` <div class="answer-wrap">
                 <span class="answer-name">${this.answerName}:</span>
-                <span class="answer-time">22:11:22</span>
+                <span class="answer-time">${this.time}</span>
                 <p class="answer-content">${this.answerContent}</p>
             </div>`
   }

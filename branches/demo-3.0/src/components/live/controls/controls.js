@@ -41,7 +41,7 @@ class Controls extends Component {
 
   addEvents() {
     HDScence.addEvent(HDScence.OnLoginSuccess, () => {
-      this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
+      // this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
       this.initUserInfo()
     })
     HDScence.addEvent(HDScence.OnUserCountMessage, () => {
@@ -78,7 +78,7 @@ class Controls extends Component {
 
         },
         confirm: () => {
-          this.liveSdk.call(this.liveSdk.LOGOUT, {
+          HDScence.logoutRoom({
             success: () => {
               Utils.log('退出成功')
               this.ui.logoutWindow()
@@ -112,7 +112,6 @@ class Controls extends Component {
           let dom = document.querySelectorAll('.line-radio')
           for (let i = 0; i < dom.length; i++) {
             if (dom[i].checked) {
-              console.log('当前选中的对象是-》' + i)
               LiveInfo.lines[i].select = 1
               index = i
 

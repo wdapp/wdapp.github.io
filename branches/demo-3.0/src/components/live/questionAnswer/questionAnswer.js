@@ -73,9 +73,7 @@ class QuestionAnswer extends Component {
         HDScence.alert('直播未开始，不能发送问答', 'warning')
         return
       }
-      let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
-      //发送问答
-      liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
+      HDScence.sendQustionMsg({'msg':sendMsg});
       msgInput.value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {

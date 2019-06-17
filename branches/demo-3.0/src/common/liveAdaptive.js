@@ -10,21 +10,21 @@ let eventMap = {}
 class LiveAdaptive extends EventEmitter {
 
   //////////////apievent///////////////////////
-  OnLoginSuccess = 'LoginSuccess'
-  OnQuestion = 'OnQuestion'
-  OnAnswer = 'OnAnswer'
-  OnQAPublish = 'OnQAPublish'
-  OnPublishChatMsg = 'OnPublishChatMsg'
-  OnPrivateChatMsg = 'OnPrivateChatMsg'
-  OnLineTeachers = 'OnLineTeachers'
-  OnPrivateChat = 'OnPrivateChat'
-  OnAnnounceShow = 'OnANnounceShow'
-  OnAnnounceDelete = 'OnAnnounceDelete'
-  OnLiveDesc = 'OnLiveDesc'
-  OnUserCountMessage = 'OnUserCountMessage'
-  OnLiveStart = 'onLiveStart'
-  OnLiveEnd = 'OnLiveEnd'
-  OnLiveStarting = 'OnLiveStarting'
+  OnLoginSuccess = 'LoginSuccess'//登录成功
+  OnQuestion = 'OnQuestion'//接收问题
+  OnAnswer = 'OnAnswer'//接收回答
+  OnQAPublish = 'OnQAPublish'//发布问答
+  OnPublishChatMsg = 'OnPublishChatMsg'//接收公共聊天
+  OnPrivateChatMsg = 'OnPrivateChatMsg'//接收私聊信息
+  OnLineTeachers = 'OnLineTeachers'//更新在线老师信息
+  OnPrivateChat = 'OnPrivateChat'//接收私聊
+  OnAnnounceShow = 'OnANnounceShow'//显示公告
+  OnAnnounceDelete = 'OnAnnounceDelete'//删除公告
+  OnLiveDesc = 'OnLiveDesc'//直播间简介
+  OnUserCountMessage = 'OnUserCountMessage'//用户数量信息
+  OnLiveStart = 'onLiveStart'//直播开始
+  OnLiveEnd = 'OnLiveEnd'//直播结束
+  OnLiveStarting = 'OnLiveStarting'//直播中
 //////////////////////////////Event///////////////
 
   ////////////////live///////
@@ -62,6 +62,9 @@ class LiveAdaptive extends EventEmitter {
     this.addAPIFunction()
   }
 
+  /**
+   * 提示框
+   * **/
   alert(content, type = '') {
     if (!tips) {
       tips = new Tips()
@@ -69,11 +72,16 @@ class LiveAdaptive extends EventEmitter {
     tips.alert({type: type, content: content})
   }
 
+  /**
+   * 发送事件
+   **/
   dispatch(type) {
     this.fire(type)
 
   }
-
+  /**
+   * 接收事件
+   * **/
   addEvent(type, func) {
     this.on(type, func)
 
@@ -291,6 +299,9 @@ class LiveAdaptive extends EventEmitter {
     })
   }
 
+  /**
+   * 删除公告
+   * **/
   onAnounceDelete(d = {}) {
     this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTREMOVE, (result) => {
       this.dispatch(this.OnAnnounceDelete)
@@ -319,6 +330,7 @@ class LiveAdaptive extends EventEmitter {
     return false
   }
 
+  //回调信心监听函数
   addAPIFunction() {
     this.onLogin()
     this.onLiveStream()
@@ -349,7 +361,43 @@ class LiveAdaptive extends EventEmitter {
    * 切换线路
    * **/
   changeLine(t = {}) {
-    this.liveInterface.call(this.liveInterface.CHANGELINE, (t.index ? parseInt(t.index) : 1 ))
+    this.liveInterface.call(this.liveInterface.CHANGELINE, (t.index ? parseInt(t.index) : 0 ))
+  }
+  /**
+   * 发送公共聊天
+   * **/
+  sendPublicMsg(d={}){
+    let  msg ="";
+    if(d.msg){
+      msg = d.msg
+    }
+    this.liveInterface.call(this.liveInterface.SENDPUBLICMSG, msg)
+
+  }
+  /**
+   * 发送私聊
+   * **/
+  sendPrivateMsg(d={}){
+    let msg = d.msg?d.msg:""
+    let t=d.teacher?d.teacher:""
+    let m =d.teacherName?d.teacherName:""
+    this.liveInterface.call(this.liveInterface.SENDPRIVATEMSG, t, m, msg)
+  }
+  /**
+   * 退出直播间
+   * **/
+  logoutRoom(d={}){
+    this.liveInterface.call(this.liveInterface.LOGOUT, d)
+
+  }
+  /***
+   * 发送问答
+   *
+   * **/
+  sendQustionMsg(d={}){
+    let  msg = d.msg?d.msg:"";
+    //发送问答
+    this.liveInterface.call(this.liveInterface.SENDQUESTIONMSG, msg)
   }
 
 }

@@ -86,6 +86,7 @@ class UInavigation extends Render {
 
   set settingpanel(v) {
     this.setStyle('setting-panel', {display: 'block'})
+    this.setStyle('mode-list', {display: 'block'})
   }
 
 }

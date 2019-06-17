@@ -6,7 +6,7 @@ import LiveInfo from 'common/liveinfo'
 import ChatMsg from './ChatMsg'
 import Announce from './announcement'
 import Utils from 'common/utils'
-
+import Input from 'common/public/input'
 
 class Chat extends Component {
 
@@ -21,7 +21,7 @@ class Chat extends Component {
     this.chatMap = {}
     this.teachers = {}
     this.selectedTeacher = 'all'
-    this.selectedteacherName = ''
+    this.selectedTeacherName = ''
     this.announce = new Announce()
     this.addHandler()
     this.addEvents()
@@ -53,18 +53,25 @@ class Chat extends Component {
       this.announce.content = '暂无公告'
       this.announce.isShowPanel = false
     })
+    let input = new Input({
+      id: 'send-chat-content'
+    })
+    if (Utils.isIOS() && Utils.isWeiXin()) {
+      input.scrollIntoView()
+    }
+    if (Utils.isAndroid()) {
+      input.scrollIntoViewIfNeeded()
+    }
   }
 
   addHandler() {
     let chatSmile = this.getNode('chat-smile')//选择表情
-    // let chatSwitch = this.getNode('chat-switch')//私聊
     let chatSelect = this.getNode('chat-select')//选择聊天对象
     let smilesList = this.getNode('chat-smile-list')//表情面板
     let chatOption = this.getNode('chat-options')//选择老师
     let sendMsg = this.getNode('send-chat')//发送聊天按钮
     let annouBtn = this.getNode('announcement_btn') //点击公告按钮
     let annouCloseBtn = this.getNodeByClass('announcement-close')//关闭公告按钮
-    let privateChat = this.getNode('private_chat')//私聊按钮
     this.bind(annouBtn, 'click', (e) => {
       this.announce.isShowPanel = true
     })
@@ -74,12 +81,6 @@ class Chat extends Component {
     this.bind(chatSmile, 'click', (e) => {
       this.uiChat.isShowChatSmileList = !this.uiChat.isShowChatSmileList
     })
-    // this.bind(privateChat, 'click', () => {
-    //   this.uiChat.isShowPrivateChat = true
-    // })
-    // this.bind(chatSwitch, 'click', (e) => {
-    //
-    // })
     this.bind(chatSelect, 'click', () => {
       this.uiChat.isShowChatSelect = !this.uiChat.isShowChatSelect
     })
@@ -87,8 +88,8 @@ class Chat extends Component {
       let selected = e.target
       if (selected.localName === 'li') {
         this.selectedTeacher = selected.id ? selected.id : 'all'
-        this.selectedteacherName = selected.innerHTML
-        this.uiChat.selectName = this.selectedteacherName
+        this.selectedTeacherName = selected.innerHTML
+        this.uiChat.selectName = this.selectedTeacherName
       }
     })
     this.bind(smilesList, 'click', (e) => {
@@ -102,6 +103,7 @@ class Chat extends Component {
 
     })
     let isCanSend = true
+    let t = this
     let timeOutId = -1
     this.bind(sendMsg, 'click', (e) => {
       let msg = Utils.trim(this.uiChat.msg)
@@ -119,12 +121,12 @@ class Chat extends Component {
       }
 
       isCanSend = false
-      this.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
-
-      if (this.selectedTeacher === 'all') {
-        this.sdk.call(this.sdk.SENDPUBLICMSG, msg)
+      let teacher = t.selectedTeacher
+      let teacherName = t.selectedTeacherName
+      if (t.selectedTeacher === 'all') {
+        HDScence.sendPublicMsg({'msg': msg})
       } else {
-        this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedteacherName, msg)
+        HDScence.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
       }
       this.uiChat.updateScroll()
       this.uiChat.msg = ''

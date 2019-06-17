@@ -17,6 +17,7 @@ class Question extends Render {
     this.self = v.self
     this.isPublish = v.isPublish
     this.userId = v.userId
+    this.time = v.triggerTime.split(' ')[1]
     return this.create(v)
   }
 
@@ -33,6 +34,11 @@ class Question extends Render {
     this.node = qli
     return qli
   }
+  // set questionSelfActive(v){
+  //   let  check = this.getNodeByClass("send-question-only-self")
+  //   // "send-question-only-self "
+  //   this.addClass(check , )
+  // }
 
   set visible(boo) {
     let isDisplay = !boo ? 'none' : 'block'
@@ -42,7 +48,7 @@ class Question extends Render {
   get nodeQuestionHtml() {
     return `<div class="question-wrap">
               <span class="question-name ${this.self ? 'self' : ''}">${this.questionName}</span>
-              <span class="question-time">15:11:32</span>            
+              <span class="question-time">${this.time}</span>            
               <p class="question-content">${this.questionContent}</p>
               <ul class="answer-list" id="${this.questionId}"></ul>
             </div>`

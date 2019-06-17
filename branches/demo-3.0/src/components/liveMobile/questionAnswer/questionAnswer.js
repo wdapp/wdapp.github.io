@@ -4,6 +4,8 @@ import './questionAnswer.scss'
 import UIQuestion from './UIQuestion'
 import UIAnswer from './UIAnswer'
 import LiveInfo from 'common/liveinfo'
+import Utils from 'common/utils'
+import Input from 'common/public/input'
 
 class QuestionAnswer extends Component {
 
@@ -21,6 +23,15 @@ class QuestionAnswer extends Component {
     HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
     HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
     HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
+    let input = new Input({
+      id: 'send-chat-content'
+    })
+    if (Utils.isIOS() && Utils.isWeiXin()) {
+      input.scrollIntoView()
+    }
+    if (Utils.isAndroid()) {
+      input.scrollIntoViewIfNeeded()
+    }
   }
 
   addQuestionPublish() {
@@ -58,10 +69,8 @@ class QuestionAnswer extends Component {
         HDScence.alert('直播未开始，不能发送问答', 'warning')
         return
       }
-
-      let liveAPI = HDScence.getObjectForName(HDScence.LiveInterface)
       //发送问答
-      liveAPI.call(liveAPI.SENDQUESTIONMSG, sendMsg)
+      HDScence.sendQustionMsg({'msg': sendMsg})
       this.getNode('sendQaMsg').value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {
@@ -79,6 +88,7 @@ class QuestionAnswer extends Component {
             uiquestion.visible = false
           }
         }
+        HDScence.alert('只显示自己问答', 'warning')
       } else {
         for (let str in this.qaMap) {
           let uiquestion = this.qaMap[str]
@@ -87,6 +97,7 @@ class QuestionAnswer extends Component {
           }
         }
       }
+      this.setSelfActive(selected)
       selected = !selected
     })
     this.updateScroll()
@@ -128,6 +139,15 @@ class QuestionAnswer extends Component {
     let h = container.offsetHeight
     let scrollBody = this.getNodeByClass('question-answer-list-wrap')
     scrollBody.scrollTo(0, h)
+  }
+
+  setSelfActive(v) {
+    let node = this.getNodeByClass('send-question-only-self')
+    if (!v) {
+      this.addClass(node, 'active')
+    } else {
+      this.removeClass(node, 'active')
+    }
   }
 }
 

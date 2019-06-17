@@ -157,7 +157,6 @@ class Controls extends Component {
       return false
     }
     this.loadBar.initTooltip()
-    console.log(data)
     if (data.isFullScreen) {
       this.quitButton.style.display = 'none'
     } else {
@@ -384,7 +383,9 @@ class Controls extends Component {
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
       HDScence.seek(value)
-      // this.updateCurrentTime()
+      if (Utils.IEVersion() != -1) {
+        this.updateCurrentTime()
+      }
       this.stopTimer()
       this.isPlayerSliderAutoChange = true
     }, 500)

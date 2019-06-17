@@ -18,7 +18,6 @@ class Document extends Component {
 
   init() {
     HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
-
       Utils.log('onDocumentDisplayMode', HDScence.getLive().documentDisplayMode)
       let docType = HDScence.getLive().documentDisplayMode
       if (docType == 1) {
@@ -27,15 +26,24 @@ class Document extends Component {
       } else {
         //极速文档适合宽度
         HDScence.documentAdaptive(false)
-        //兼容iOS屏幕旋转导致文档变大问题
-        if (Utils.isIOS()) {
-          if (Utils.isIOS()) {
-            HDScence.onRotateScreenChange((orientation) => {
-              this.updateOrientation(orientation)
-            })
-          }
-        }
       }
+    })
+    //兼容iOS屏幕旋转导致极速文档变大问题
+    if (Utils.isIOS()) {
+      HDScence.onRotateScreenChange((orientation) => {
+        this.updateOrientation(orientation)
+      })
+    }
+
+    let docTip = this.getNode('noDoc')
+    HDScence.addEvent(HDScence.OnLiveStart, () => {
+      docTip.style.display = 'none'
+    })
+    HDScence.addEvent(HDScence.OnLiveEnd, () => {
+      docTip.style.display = 'flex'
+    })
+    HDScence.addEvent(HDScence.OnLiveStarting, () => {
+      docTip.style.display = 'none'
     })
   }
 
@@ -53,10 +61,10 @@ class Document extends Component {
   }
 
   reLoadDocument() {
-    let document = this.getNode('document')
-    let children = [...document.children]
+    let drawPanel = document.getElementsByClassName('drawPanel')[0]
+    let children = [...drawPanel.children]
     children.forEach((element, index) => {
-      this.appendChild(document, element)
+      this.appendChild(drawPanel, element)
     })
     Utils.log('reLoadDocument')
   }

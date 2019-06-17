@@ -170,11 +170,12 @@ class Chat extends Component {
         return
       }
       isCanSend = false
-      t.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
+      let teacher = t.selectedTeacher
+      let  teacherName = t.selectedTeacherName
       if (t.selectedTeacher === 'all') {
-        t.sdk.call(t.sdk.SENDPUBLICMSG, msg)
+        HDScence.sendPublicMsg({'msg':msg})
       } else {
-        t.sdk.call(t.sdk.SENDPRIVATEMSG, t.selectedTeacher, t.selectedteacherName, msg)
+        HDScence.sendPrivateMsg({'msg':msg,'teacher':teacher,'teacherName':teacherName})
       }
       t.uiChat.updateScroll()
       t.uiChat.msg = ''
