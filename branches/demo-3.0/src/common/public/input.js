@@ -12,21 +12,23 @@ class Input {
   }
 
   scrollIntoView() {
-    if (this.input) {
-      this.input.onfocus = this.onFocus.bind(this)
-      this.input.onblur = this.onBlur.bind(this)
-    }
+    this.addEventListener()
   }
 
   scrollIntoViewIfNeeded() {
     this.innerHeight = window.innerHeight
+    this.addEventListener()
+  }
+
+  addEventListener() {
     if (this.input) {
-      this.input.onfocus = this.onFocus.bind(this)
-      this.input.onblur = this.onBlur.bind(this)
+      this.input.addEventListener('focus', this.onFocus.bind(this))
+      this.input.addEventListener('blur', this.onBlur.bind(this))
     }
   }
 
   onFocus() {
+    window.innerHeight = 300
     if (this.innerHeight && (this.innerHeight !== window.innerHeight)) {
       document.body.style.height = this.innerHeight + 'px'
     }
