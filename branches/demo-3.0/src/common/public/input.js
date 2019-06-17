@@ -28,8 +28,7 @@ class Input {
   }
 
   onFocus() {
-    window.innerHeight = 300
-    if (this.innerHeight && (this.innerHeight !== window.innerHeight)) {
+    if (this.innerHeight) {
       document.body.style.height = this.innerHeight + 'px'
     }
     this.upTimer && clearTimeout(this.upTimer)

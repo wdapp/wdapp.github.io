@@ -24,7 +24,7 @@ class QuestionAnswer extends Component {
     HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
     HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
     let input = new Input({
-      id: 'send-chat-content'
+      id: 'sendQaMsg'
     })
     if (Utils.isIOS() && Utils.isWeiXin()) {
       input.scrollIntoView()
