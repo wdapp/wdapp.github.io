@@ -27,7 +27,7 @@ class ChatMsg extends Render {
     this.groupId = v.groupId
     let r = /^\+?[1-9][0-9]*$/
     if (r.test(v.time)) {
-      this.time = Utils.formatTime(v.liveStart, v.time)
+      this.time = Utils.formatTime(v.startTime, v.time)
     }
     this.appendMsg()
   }
@@ -37,6 +37,12 @@ class ChatMsg extends Render {
     if (this.node) {
       this.setStyle(this.node, {display: show})
     }
+  }
+
+  get HtmlContent() {
+    return `<span class="chat-message-name ${this.self ? 'self' : 'teacher'}">${this.userName}</span>
+            <span class="chat-message-time">${this.time}</span>
+            <p class="chat-message-content">${Utils.showEm(this.msg)}</p>`
   }
 
   appendMsg() {
@@ -50,12 +56,6 @@ class ChatMsg extends Render {
       this.visible = false
     }
     // this.getNode('chat-container').scrollTo(0, 0)
-  }
-
-  get HtmlContent() {
-    return `<span class="chat-message-name ${this.self ? 'self' : 'teacher'}">${this.userName}</span>
-            <span class="chat-message-time">${this.time}</span>
-            <p class="chat-message-content">${Utils.showEm(this.msg)}</p>`
   }
 }
 

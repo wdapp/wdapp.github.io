@@ -18,14 +18,20 @@ HDScence.ready(() => {
   flexible.init(750, 750)
   fastClick.attach(document.body)
   let params = Utils.parseUrl(localStorage.address)
-  HDScence.register({
-    modules: [Player, Document, Controls, Navigation, Setting, Chat, PrivateMessage, QuestionAnswer, Intro],
-    config: params,
-    success: function (data) {
-      Utils.log('login success', data)
+  HDScence.components([Player, Document, Controls, Navigation, Setting, Chat, PrivateMessage, QuestionAnswer, Intro])
+  HDScence.login({
+    userId: params.userid, //用户id
+    roomId: params.roomid,//直播间id
+    viewerName: params.viewername,//用户名称
+    groupId: params.groupid,
+    viewerToken: params.viewertoken,//密码
+    isH5play: true,// 是否是h5播放
+    fastMode: true,//是否为急速文档
+    success(result) {
+      Utils.log('登录成功', result)
     },
-    fail: function (data) {
-      Utils.log('login fail', data)
+    fail(error) {
+      Utils.log('登录失败', error)
     }
   })
 })

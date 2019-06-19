@@ -38,7 +38,7 @@ class HDScence extends ReplayAdaptive {
   }
 
   onResize(callback, useCapture = false) {
-    window.removeEventListener('resize', callback, useCapture)
+    window.addEventListener('resize', callback, useCapture)
   }
 
   onRotateScreenChange(callback, useCapture = false) {

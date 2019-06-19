@@ -5,6 +5,14 @@ class Answer extends Render {
     super()
   }
 
+  get nodeAnswerHtml() {
+    return `<span class="anwser-arrows"></span>
+            <div class="anwser-box">
+                <p class="anwser-name">${this.answerName}:</p>
+                <p class="anwser-content">${this.answerContent}</p>
+            </div>`
+  }
+
   setInfo(v) {
     if (!v) return
     this.parentQNodeId = v.questionId
@@ -19,14 +27,6 @@ class Answer extends Render {
     this.innerHTML(answerNode, this.nodeAnswerHtml)
     this.appendChild(this.parentQNodeId, answerNode)
     this.node = answerNode
-  }
-
-  get nodeAnswerHtml() {
-    return `<span class="anwser-arrows"></span>
-            <div class="anwser-box">
-                <p class="anwser-name">${this.answerName}:</p>
-                <p class="anwser-content">${this.answerContent}</p>
-            </div>`
   }
 }
 

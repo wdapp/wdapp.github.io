@@ -29,6 +29,14 @@ class PrivateChatMsg extends Render {
     this.appendMsg()
   }
 
+  get HtmlContent() {
+    return `<div class="chat-name-wrap">
+          <p class="${this.left ? 'chat-name-from' : 'chat-name-to'} ${this.left ? this.fSelf ? 'self' : '' : this.tSelf ? 'self' : ''}">${this.left ? this.fUserName : this.toUserName }</p>
+          <p class="${this.left ? 'chat-name-to' : 'chat-name-from'} ${this.left ? this.tSelf ? 'self' : '' : this.fSelf ? 'self' : ''}">${this.left ? this.toUserName : this.fUserName }</p>
+        </div>
+        <div class="chat-message">${Utils.showEm(this.msg)}</div>`
+  }
+
   appendMsg() {
     let li = this.createNode('li')
     li.className = `chat-content-wrap ${this.left ? '' : 'chat-content-right'}`
@@ -37,14 +45,6 @@ class PrivateChatMsg extends Render {
     this.innerHTML(li, this.HtmlContent)
     this.appendChild('chat-container', li)
 
-  }
-
-  get HtmlContent() {
-    return `<div class="chat-name-wrap">
-          <p class="${this.left ? 'chat-name-from' : 'chat-name-to'} ${this.left ? this.fSelf ? 'self' : '' : this.tSelf ? 'self' : ''}">${this.left ? this.fUserName : this.toUserName }</p>
-          <p class="${this.left ? 'chat-name-to' : 'chat-name-from'} ${this.left ? this.tSelf ? 'self' : '' : this.fSelf ? 'self' : ''}">${this.left ? this.toUserName : this.fUserName }</p>
-        </div>
-        <div class="chat-message">${Utils.showEm(this.msg)}</div>`
   }
 
 }

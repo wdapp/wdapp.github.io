@@ -86,6 +86,7 @@
     }
   }
   .send-question-wrap {
+    background-color: white;
     @include layout(unset, 0, 0, 0);
     height: .9rem;
     box-shadow: 0px -3px 10px 0px rgba(181, 183, 190, 0.2), inset 0px 1px 0px 0px #e8e9eb;

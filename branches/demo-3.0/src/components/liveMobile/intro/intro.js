@@ -2,7 +2,6 @@ import Component from 'common/component'
 import template from './intro.html'
 import './intro.scss'
 import UIintro from './UIIntrol'
-import LiveInfo from 'common/liveinfo'
 
 class Intro extends Component {
   constructor() {
@@ -10,8 +9,10 @@ class Intro extends Component {
 
     this.render('intro', template, () => {
       this.ui = new UIintro()
-      HDScence.addEvent(HDScence.OnLiveDesc, () => {
-        this.ui.content = LiveInfo.onLiveDesc
+      HDScence.onLiveDesc({
+        callback: (info) => {
+          this.ui.content = info
+        }
       })
     })
     this.name = 'introl'

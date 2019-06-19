@@ -7,6 +7,18 @@ class Question extends Render {
     super()
   }
 
+  set visible(boo) {
+    let isDisplay = !boo ? 'none' : 'block'
+    this.node.style.display = isDisplay
+  }
+
+  get nodeQuestionHtml() {
+    return `<div class="question-wrap">
+              <p class="question-name ${this.self ? 'self' : ''}">${this.questionName}</p>
+              <p class="question-content">${this.questionContent}</p>
+            </div>`
+  }
+
   //设置问题数据
   setInfo(v) {
     if (!v) return
@@ -32,18 +44,6 @@ class Question extends Render {
     this.appendChild('question-answer', qli)
     this.node = qli
     return qli
-  }
-
-  set visible(boo) {
-    let isDisplay = !boo ? 'none' : 'block'
-    this.node.style.display = isDisplay
-  }
-
-  get nodeQuestionHtml() {
-    return `<div class="question-wrap">
-              <p class="question-name ${this.self ? 'self' : ''}">${this.questionName}</p>
-              <p class="question-content">${this.questionContent}</p>
-            </div>`
   }
 
 

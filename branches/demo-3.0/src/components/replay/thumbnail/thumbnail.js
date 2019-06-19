@@ -51,6 +51,13 @@ class Thumbnail extends Component {
       }
       this.updateThumbnailList(this.page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
     })
+    HDScence.on('switch', () => {
+      if (!Utils.isEmptyObject(this.page)) {
+        Utils.log(`updateThumbnailList fail await page load!`)
+        return false
+      }
+      this.updateThumbnailList(this.page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
+    })
     this.bind(thumbnailScrollWrap, 'mouseleave', () => {
       this.isScroll = true
     })

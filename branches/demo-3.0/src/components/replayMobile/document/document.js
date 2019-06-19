@@ -24,14 +24,28 @@ class Document extends Component {
       } else {
         //极速文档适合宽度
         HDScence.documentAdaptive(false)
-        //兼容iOS屏幕旋转导致文档变大问题
-        if (Utils.isIOS() && HDScence.isH5play) {
-          HDScence.onRotateScreenChange((orientation) => {
-            this.updateOrientation(orientation)
-          })
-        }
       }
     })
+
+    //兼容iOS屏幕旋转导致文档变大问题
+    if (Utils.isIOS() && HDScence.isH5play) {
+      HDScence.onRotateScreenChange((orientation) => {
+        this.updateOrientation(orientation)
+      })
+    }
+
+    //Android微信视频横屏回屏导致视频暂停
+    if (Utils.isAndroid() && Utils.isWeiXin()) {
+      HDScence.onResize(() => {
+        this.autoPlay()
+      })
+    }
+  }
+
+  autoPlay() {
+    Utils.log('Android WeiXin autoPlay', Utils.isAndroid())
+    let video = this.getNode('playbackVideo')
+    video.play()
   }
 
   updateOrientation(orientation) {

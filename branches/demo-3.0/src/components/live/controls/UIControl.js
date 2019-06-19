@@ -3,7 +3,6 @@ import UserInterface from 'common/userInterface'
 import Utils from 'common/utils'
 
 class UI extends Render {
-  _isMainVideo = false
   _isShowLeft = true
   _isShowRight = true
   _isSwitch = true
@@ -14,6 +13,16 @@ class UI extends Render {
 
     this.videoNode = this.getChildNode('player')
     this.dpNode = this.getChildNode('document')
+  }
+
+  _isMainVideo = false
+
+  get isMainVideo() {
+    return this._isMainVideo
+  }
+
+  set isMainVideo(v) {
+    this._isMainVideo = v
   }
 
   bindLeftBar() {
@@ -40,14 +49,6 @@ class UI extends Render {
       })
     }
     this._isShowRight = !this._isShowRight
-  }
-
-  get isMainVideo() {
-    return this._isMainVideo
-  }
-
-  set isMainVideo(v) {
-    this._isMainVideo = v
   }
 
   logoutWindow() {
@@ -81,38 +82,41 @@ class UI extends Render {
               </div>`
   }
 
-  //切换
-  //
-  // 视频为主文档为主
+  // 切换文档视频
   switchPanel() {
-    if (!this._isSwitch) {
-      return false
-    }
-    this._isSwitch = false
+    this.switchClass()
+  }
 
-    this.ui.fadeOut({
-      node: [this.dpNode, this.videoNode],
-      complete: () => {
+  //类名切换
+  switchClass() {
+    let left = document.querySelector('.left')
+    let center = document.querySelector('.center')
+    let leftBar = document.getElementById('leftBar')
+    let rightBar = document.getElementById('rightBar')
+    let questionWrapper = document.querySelector('.question-wrapper')
+    let controlsWrapper = document.querySelector('.controls-wrapper')
+    let leftId = left.id
+    let centerId = center.id
+    let leftClassName = left.className
+    let centerClassName = center.className
+    let leftStyle = left.getAttribute('style') || ''
+    let centerStyle = center.getAttribute('style') || ''
 
-        this.deleteChild('document')
-        this.deleteChild('player')
-        if (this.isMainVideo) {
-          this.appendChild('document', this.dpNode)
-          this.appendChild('player', this.videoNode)
-        } else {
-          this.appendChild('document', this.videoNode)
-          this.appendChild('player', this.dpNode)
-        }
-        this._isMainVideo = !this._isMainVideo
+    left.id = centerId
+    center.id = leftId
+    left.className = centerClassName
+    center.className = leftClassName
+    left.setAttribute('style', centerStyle)
+    center.setAttribute('style', leftStyle)
 
-        this.ui.fadeIn({
-          node: [this.dpNode, this.videoNode],
-          complete: () => {
-            this._isSwitch = true
-          }
-        })
-      }
-    })
+    center.appendChild(questionWrapper)
+    left.insertBefore(leftBar, left.childNodes[0])
+    left.appendChild(controlsWrapper)
+    left.appendChild(rightBar)
+
+    this._isMainVideo = !this._isMainVideo
+
+    HDScence.emit('switch', this._isMainVideo)
   }
 
 }

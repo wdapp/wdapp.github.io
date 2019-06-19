@@ -20,17 +20,20 @@ class QuestionAnswer extends Component {
   }
 
   bindEvent() {
-    HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
-    HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
-    HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
+    HDScence.onQAPulish({callback: this.addQuestionPublish.bind(this)})
+    HDScence.onQAQuestion({callback: this.addQuestion.bind(this)})
+    HDScence.onQAAnswer({callback: this.addAnswer.bind(this)})
     let input = new Input({
       id: 'sendQaMsg'
     })
-    if (Utils.isIOS() && Utils.isWeiXin()) {
-      input.scrollIntoView()
-    }
     if (Utils.isAndroid()) {
       input.scrollIntoViewIfNeeded()
+    }
+    if (Utils.isIOS()) {
+      input.tabIndex()
+    }
+    if (Utils.isIOS() && Utils.isWeiXin()) {
+      input.scrollIntoView()
     }
   }
 
@@ -54,19 +57,19 @@ class QuestionAnswer extends Component {
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
       let sendMsg = this.getNode('sendQaMsg').value
       if (!sendMsg) {
-        HDScence.alert('发送内容不能为空', 'warning')
+        this.alert('发送内容不能为空', 'warning')
         return
       }
       if (!isCanSend) {
-        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        this.alert('发送过于频繁，请稍后', 'warning')
         return
       }
       if (sendMsg.length > 300) {
-        HDScence.alert('发送内容不能超过300字符', 'warning')
+        this.alert('发送内容不能超过300字符', 'warning')
         return
       }
       if (!HDScence.isLive) {
-        HDScence.alert('直播未开始，不能发送问答', 'warning')
+        this.alert('直播未开始，不能发送问答', 'warning')
         return
       }
       //发送问答
@@ -88,7 +91,7 @@ class QuestionAnswer extends Component {
             uiquestion.visible = false
           }
         }
-        HDScence.alert('只显示自己问答', 'warning')
+        this.alert('只显示自己问答', 'warning')
       } else {
         for (let str in this.qaMap) {
           let uiquestion = this.qaMap[str]

@@ -20,13 +20,20 @@ class QuestionAnswer extends Component {
   }
 
   bindEvent() {
-    HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
-    HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
-    HDScence.addEvent(HDScence.OnQAPublish, this.addQuestionPublish.bind(this))
+    HDScence.onQAPulish({callback: this.addQuestionPublish.bind(this)})
+    HDScence.onQAQuestion({callback: this.addQuestion.bind(this)})
+    HDScence.onQAAnswer({callback: this.addAnswer.bind(this)})
+
+    // HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
+    // HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
+    // HDScence.addEvent(HDScence.OnQAPublish,this.addQuestionPublish.bind(this))
+    HDScence.on('switch', () => {
+      this.updateScroll()
+    })
   }
 
-  addQuestionPublish() {
-    let qid = LiveInfo.qaPulishInfo
+  addQuestionPublish(info) {
+    let qid = info
     if (qid && qid.length > 0) {
       for (let i = 0; i < qid.length; i++) {
         var questionId = qid[i].questionId
@@ -58,22 +65,22 @@ class QuestionAnswer extends Component {
     function sendQAMsg() {
       let sendMsg = Utils.trim(msgInput.value)
       if (!sendMsg) {
-        HDScence.alert('发送内容不能为空', 'warning')
+        t.alert('发送内容不能为空', 'warning')
         return
       }
       if (!isCanSend) {
-        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        t.alert('发送过于频繁，请稍后', 'warning')
         return
       }
       if (sendMsg.length > 300) {
-        HDScence.alert('发送内容不能超过300字符', 'warning')
+        t.alert('发送内容不能超过300字符', 'warning')
         return
       }
       if (!HDScence.isLive) {
-        HDScence.alert('直播未开始，不能发送问答', 'warning')
+        t.alert('直播未开始，不能发送问答', 'warning')
         return
       }
-      HDScence.sendQustionMsg({'msg':sendMsg});
+      HDScence.sendQustionMsg({'msg': sendMsg})
       msgInput.value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {
@@ -106,8 +113,8 @@ class QuestionAnswer extends Component {
     this.updateScroll()
   }
 
-  addQuestion() {
-    let qInfo = LiveInfo.questionInfo
+  addQuestion(info) {
+    let qInfo = info
     if (qInfo != {}) {
       let uiquestion = new UIQuestion()
       uiquestion.setInfo(qInfo)
@@ -119,8 +126,8 @@ class QuestionAnswer extends Component {
     this.updateScroll()
   }
 
-  addAnswer() {
-    let aInfo = LiveInfo.answerInfo
+  addAnswer(info) {
+    let aInfo = info
     if (!aInfo || aInfo != {}) {
       var qustion = this.qaMap[aInfo.questionId]
       if (aInfo.isPrivate == '1') {
@@ -132,7 +139,10 @@ class QuestionAnswer extends Component {
       }
       let uianswer = new UIAnswer()
       uianswer.setInfo(aInfo)
-      qustion.visible = true
+      if(qustion){
+        qustion.visible = true
+      }
+
     }
     this.updateScroll()
   }

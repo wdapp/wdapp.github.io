@@ -8,7 +8,7 @@ import 'bootstrap'
 
 class UserInterface extends Render {
   alertIndex = 0
-  _interval = 300
+  _toggleBarInterval = 300
 
   constructor() {
     super()
@@ -86,7 +86,7 @@ class UserInterface extends Render {
     Velocity(left, {
       width: '0rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         this.addClass(leftBar, 'left-bar-active')
       }
@@ -96,7 +96,7 @@ class UserInterface extends Render {
     Velocity(center, {
       left: '.12rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         callback && callback()
       }
@@ -112,7 +112,7 @@ class UserInterface extends Render {
     Velocity(left, {
       width: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         this.removeClass(leftBar, 'left-bar-active')
       }
@@ -122,7 +122,7 @@ class UserInterface extends Render {
     Velocity(center, {
       left: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         callback && callback()
       }
@@ -138,7 +138,7 @@ class UserInterface extends Render {
     Velocity(right, {
       width: '0rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         this.addClass(rightBar, 'right-bar-active')
       }
@@ -148,7 +148,7 @@ class UserInterface extends Render {
     Velocity(center, {
       right: '.12rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         callback && callback()
       }
@@ -164,7 +164,7 @@ class UserInterface extends Render {
     Velocity(right, {
       width: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         this.removeClass(rightBar, 'right-bar-active')
       }
@@ -174,7 +174,7 @@ class UserInterface extends Render {
     Velocity(center, {
       right: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._interval),
+      duration: (interval >= 0 ? interval : this._toggleBarInterval),
       complete: () => {
         callback && callback()
       }

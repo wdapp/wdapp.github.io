@@ -28,10 +28,18 @@ class Document extends Component {
         HDScence.documentAdaptive(false)
       }
     })
+
     //兼容iOS屏幕旋转导致极速文档变大问题
     if (Utils.isIOS()) {
       HDScence.onRotateScreenChange((orientation) => {
         this.updateOrientation(orientation)
+      })
+    }
+
+    //Android微信视频横屏回屏导致视频暂停
+    if (Utils.isAndroid() && Utils.isWeiXin()) {
+      HDScence.onResize(() => {
+        this.autoPlay()
       })
     }
 
@@ -45,6 +53,12 @@ class Document extends Component {
     HDScence.addEvent(HDScence.OnLiveStarting, () => {
       docTip.style.display = 'none'
     })
+  }
+
+  autoPlay() {
+    Utils.log('Android WeiXin autoPlay', Utils.isAndroid())
+    let video = this.getNode('player_live')
+    video.play()
   }
 
   updateOrientation(orientation) {

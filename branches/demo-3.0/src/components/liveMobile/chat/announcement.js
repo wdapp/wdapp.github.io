@@ -7,6 +7,10 @@ class Announcement extends Render {
 
   }
 
+  get isShowPanel() {
+    return this._isShow
+  }
+
   //是否显示面板
   set isShowPanel(v) {
     this._isShow = v
@@ -15,10 +19,6 @@ class Announcement extends Render {
     let visible = v ? 'block' : 'none'
     this.setStyle(mList, {'display': (v ? 'none' : 'block')})
     this.setStyle(anPanel, {'display': visible})
-  }
-
-  get isShowPanel() {
-    return this._isShow
   }
 
   set content(v) {

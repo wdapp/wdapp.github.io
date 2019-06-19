@@ -31,6 +31,9 @@ class QuestionAnswer extends Component {
     this.bind(questionAnswerScrollWrap, 'mouseenter', () => {
       this.isScroll = false
     })
+    HDScence.on('switch', () => {
+      this.scrollTopQuestionAnswer()
+    })
   }
 
   addQuestions(data) {

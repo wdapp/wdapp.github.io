@@ -7,16 +7,16 @@ class Announcement extends Render {
 
   }
 
+  get isShowPanel() {
+    return this._isShow
+  }
+
   //是否显示面板
   set isShowPanel(v) {
     this._isShow = v
     let anPanel = this.getNodeByClass('announcement-content-wrap')
     let visible = v ? 'block' : 'none'
     this.setStyle(anPanel, {'display': visible})
-  }
-
-  get isShowPanel() {
-    return this._isShow
   }
 
   set content(v) {

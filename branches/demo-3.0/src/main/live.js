@@ -10,10 +10,30 @@ import Controls from 'components/live/controls/controls'
 
 HDScence.ready(() => {
   let params = Utils.parseUrl(localStorage.address)
-  HDScence.register({
-    modules: [Player, Document, QuestionAnswer, Chat, Controls],
-    config: params
+  // HDScence.register({
+  //   modules: [Player, Document, QuestionAnswer, Chat, Controls],
+  //   config: params
+  // })
+  //配置自定义组件
+  HDScence.components([Player, Document, QuestionAnswer, Chat, Controls])
+  HDScence.login({
+    userId: params.userid, //用户id
+    roomId: params.roomid,//直播间id
+    viewerName: params.viewername,//用户名称
+    groupId: params.groupid,
+    viewerToken: params.viewertoken,//密码
+    isH5play: true,// 是否是h5播放
+    fastMode: true,//是否为急速文档
+    success(result) {
+      Utils.log('登录成功', result)
+      console.log('登录成功绅士手')
+    },
+    fail(error) {
+      Utils.log('登录失败', error)
+    }
   })
+  // HDScence.onQAQuestion(z)
+  // HDScence.addAllCallback();
 })
 
 

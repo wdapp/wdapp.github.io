@@ -15,6 +15,12 @@
         @include width-height-full();
       }
     }
+    .document-wrapper {
+      @include width-height(2.6rem, 1.96rem);
+      #document {
+        @include width-height-full();
+      }
+    }
     .question-wrapper {
       @include layout(1.96rem, 0, 0, 0);
       min-width: 2.6rem;
@@ -50,29 +56,32 @@
         background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
       }
     }
-    .center-wrapper {
-      @include layout(0, 0, 0, 0);
-      .document-wrapper {
-        @include layout(0, 0, .4rem, 0);
-        #document {
-          @include width-height-full();
-        }
+    .document-wrapper {
+      @include layout(0, 0, .4rem, 0);
+      #document {
+        @include width-height-full();
       }
-      .thumbnail-wrapper {
-        display: none;
-        @include layout(0, 0, .4rem, unset);
-        width: 1.6rem;
-        #thumbnail {
-          @include width-height-full();
-        }
+    }
+    .video-wrapper {
+      @include layout(0, 0, .4rem, 0);
+      #player {
+        @include width-height-full();
       }
-      .controls-wrapper {
-        @include layout(unset, 0, 0, 0);
-        height: .4rem;
-        z-index: 2;
-        #controls {
-          @include width-height-full();
-        }
+    }
+    .thumbnail-wrapper {
+      display: none;
+      @include layout(0, 0, .4rem, unset);
+      width: 1.6rem;
+      #thumbnail {
+        @include width-height-full();
+      }
+    }
+    .controls-wrapper {
+      @include layout(unset, 0, 0, 0);
+      height: .4rem;
+      z-index: 2;
+      #controls {
+        @include width-height-full();
       }
     }
     .right-bar {

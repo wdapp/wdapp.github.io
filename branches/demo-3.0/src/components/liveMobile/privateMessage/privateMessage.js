@@ -1,7 +1,6 @@
 import Component from 'common/component'
 import template from './privateMessage.html'
 import './privateMessage.scss'
-import LiveInfo from 'common/liveinfo'
 import PrivateChatMsg from './privateChatMsg'
 import UITeacher from './UITeacher'
 import UIPrivate from './UIPrivate'
@@ -19,38 +18,42 @@ class PrivateMessage extends Component {
     this.ui = new UIPrivate()
     this.chatInfo = {}
     this.selectedTeacher = ';'
-    HDScence.addEvent(HDScence.OnLineTeachers, () => {
-      let teachers = LiveInfo.onLineTeachers
-      for (let i = 0; i < teachers.length; i++) {
-        if (!this.teachers[teachers[i].id]) {
-          let uiteacher = new UITeacher()
-          let name = teachers[i].name
-          this.teachers[teachers[i].id] = teachers[i].name
-          uiteacher.appendSelected(teachers[i].id, name)
-          this.uiteachers[teachers[i].id] = uiteacher
+    HDScence.onTeachers({
+      callback: (info) => {
+        let teachers = info
+        for (let i = 0; i < teachers.length; i++) {
+          if (!this.teachers[teachers[i].id]) {
+            let uiteacher = new UITeacher()
+            let name = teachers[i].name
+            this.teachers[teachers[i].id] = teachers[i].name
+            uiteacher.appendSelected(teachers[i].id, name)
+            this.uiteachers[teachers[i].id] = uiteacher
+          }
         }
       }
     })
-    HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
-      let msgInfo = LiveInfo.privateChatMsgInfo
-      if (msgInfo.fSelf) {
-        if (!this.chatInfo[msgInfo.toUserId]) {
-          let chatMsg = new PrivateChatMsg()
-          chatMsg.info = msgInfo
-          this.chatInfo[msgInfo.toUserId] = chatMsg
+    HDScence.onPrivateChat({
+      callback: (info) => {
+        let msgInfo = info
+        if (msgInfo.fSelf) {
+          if (!this.chatInfo[msgInfo.toUserId]) {
+            let chatMsg = new PrivateChatMsg()
+            chatMsg.info = msgInfo
+            this.chatInfo[msgInfo.toUserId] = chatMsg
+          } else {
+            this.chatInfo[msgInfo.toUserId].appendMsg(msgInfo.msg, msgInfo.fSelf)
+          }
         } else {
-          this.chatInfo[msgInfo.toUserId].appendMsg(msgInfo.msg, msgInfo.fSelf)
+          if (!this.chatInfo[msgInfo.fromUserId]) {
+            let chatMsg = new PrivateChatMsg()
+            chatMsg.info = msgInfo
+            this.chatInfo[msgInfo.fromUserId] = chatMsg
+          } else {
+            this.chatInfo[msgInfo.fromUserId].appendMsg(msgInfo.msg, msgInfo.fSelf)
+          }
         }
-      } else {
-        if (!this.chatInfo[msgInfo.fromUserId]) {
-          let chatMsg = new PrivateChatMsg()
-          chatMsg.info = msgInfo
-          this.chatInfo[msgInfo.fromUserId] = chatMsg
-        } else {
-          this.chatInfo[msgInfo.fromUserId].appendMsg(msgInfo.msg, msgInfo.fSelf)
-        }
+        this.uiChat.updateScroll()
       }
-
     })
     this.addEvent()
   }
@@ -80,9 +83,8 @@ class PrivateMessage extends Component {
       this.ui.isPrivatePanelShow = false
     })
     this.bind(privateSend, 'click', () => {
-      this.sdk = HDScence.getObjectForName(HDScence.LiveInterface)
       let value = this.ui.privateValue
-      this.sdk.call(this.sdk.SENDPRIVATEMSG, this.selectedTeacher, this.selectedTeacherName, value)
+      HDScence.sendPrivateMsg({'msg': value, 'teacher': this.selectedTeacher, 'teacherName': this.selectedTeacherName})
     })
   }
 }

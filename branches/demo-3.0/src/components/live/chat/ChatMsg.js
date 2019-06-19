@@ -33,6 +33,13 @@ class ChatMsg extends Render {
     }
   }
 
+  get HtmlContent() {
+    return `<p class="chat-name ${this.self ? 'self' : 'teacher'}">${this.userName}</p>
+               <div class="chat-message">
+                 ${Utils.showEm(this.msg)}
+               </div>`
+  }
+
   appendMsg() {
     this.node = this.createNode('li')
     this.node.className = `chat-content-wrap ${this.self ? 'chat-content-right' : ''}`
@@ -45,13 +52,6 @@ class ChatMsg extends Render {
     } else {
       this.visible = false
     }
-  }
-
-  get HtmlContent() {
-    return `<p class="chat-name ${this.self ? 'self' : 'teacher'}">${this.userName}</p>
-               <div class="chat-message">
-                 ${Utils.showEm(this.msg)}
-               </div>`
   }
 }
 

@@ -2,7 +2,6 @@ import Component from 'common/component'
 import template from './document.html'
 import './document.scss'
 import FlashTip from 'common/public/flashtip'
-import Utils from 'common/utils'
 
 class Document extends Component {
   name = 'document'

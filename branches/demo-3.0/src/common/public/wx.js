@@ -3,6 +3,7 @@ class WX {
 
   }
 
+  //iOS 微信自动播放，安卓微信不支持自动播放
   WeiXinVideoAutoPlayer(id = '') {
     document.addEventListener('WeixinJSBridgeReady', () => {
       let player = document.getElementById(id)

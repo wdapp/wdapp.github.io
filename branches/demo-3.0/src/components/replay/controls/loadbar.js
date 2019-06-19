@@ -134,11 +134,11 @@ class LoadBar extends Component {
     }
     let playerSliderWrap = document.getElementById('playerSliderWrap')
     playerSliderWrap.onmouseenter = (event) => {
-      this.sliderTooltip.style.visibility = 'visible'
+      this.sliderTooltip.style.display = 'block'
       this.tooltipMove(event)
     }
     playerSliderWrap.onmouseleave = () => {
-      this.sliderTooltip.style.visibility = 'hidden'
+      this.sliderTooltip.style.display = 'none'
     }
   }
 

@@ -25,44 +25,69 @@ class Chat extends Component {
     this.announce = new Announce()
     this.addHandler()
     this.addEvents()
+
   }
 
   addEvents() {
-    HDScence.addEvent(HDScence.OnPublishChatMsg, () => {
-      let msgInfo = LiveInfo.publicChatMsgInfo
-      if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
-        let chatMsg = new ChatMsg()
-        msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
-        chatMsg.info = msgInfo
-        this.chatMap[msgInfo.chatId] = chatMsg
+    //公聊
+    HDScence.onPublicChat({
+      callback: (info) => {
+        let msgInfo = info
+        if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
+          let chatMsg = new ChatMsg()
+          msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
+          chatMsg.info = msgInfo
+          this.chatMap[msgInfo.chatId] = chatMsg
+        }
+        this.uiChat.updateScroll()
       }
-
-      this.uiChat.updateScroll()
     })
-    HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
-      let msgInfo = LiveInfo.privateChatMsgInfo
-      let chatMsg = new PrivateChatMsg()
-      chatMsg.info = msgInfo
-      this.uiChat.updateScroll()
+    //私聊
+    HDScence.onPrivateChat({
+      callback: (info) => {
+        let msgInfo = info
+        let chatMsg = new PrivateChatMsg()
+        chatMsg.info = msgInfo
+        this.uiChat.updateScroll()
+      }
     })
-    HDScence.addEvent(HDScence.OnLineTeachers, () => {
-      let teachers = LiveInfo.onLineTeachers
-      for (let i = 0; i < teachers.length; i++) {
-        if (!this.teachers[teachers[i].id]) {
-          let name = teachers[i].name
-          this.teachers[teachers[i].id] = teachers[i].name
-          this.uiChat.appendSelected(teachers[i].id, name)
+    //老师列表
+    HDScence.onTeachers({
+      callback: (info) => {
+        let teachers = info
+        for (let i = 0; i < teachers.length; i++) {
+          if (!this.teachers[teachers[i].id]) {
+            let name = teachers[i].name
+            this.teachers[teachers[i].id] = teachers[i].name
+            this.uiChat.appendSelected(teachers[i].id, name)
+          }
         }
       }
     })
-    HDScence.addEvent(HDScence.OnAnnounceShow, () => {
-      this.announce.content = LiveInfo.onAnnounceInfo
-      this.announce.isShowPanel = true
+    //公告
+    HDScence.onAnnounce({
+      callback: (d) => {
+        this.announce.content = d
+        this.announce.isShowPanel = true
+      }
     })
-    HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
-      this.announce.content = '暂无公告'
-      this.announce.isShowPanel = false
+    HDScence.onAnounceRelease({
+      callback: (d) => {
+        this.announce.content = d
+        this.announce.isShowPanel = true
+      }
     })
+    HDScence.onAnounceDelete({
+      callback: () => {
+        this.announce.content = '暂无公告'
+        this.announce.isShowPanel = false
+      }
+    })
+
+    // HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
+    //   this.announce.content = '暂无公告'
+    //   this.announce.isShowPanel = false
+    // })
   }
 
   updateUserList() {
@@ -157,25 +182,25 @@ class Chat extends Component {
 
     function sendMsgInfo() {
       if (!isCanSend) {
-        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        t.alert('发送过于频繁，请稍后', 'warning')
         return
       }
       let msg = Utils.trim(t.uiChat.msg)
       if (msg.length > 300) {
-        HDScence.alert('发送消息字数不能超过300', 'warning')
+        t.alert('发送消息字数不能超过300', 'warning')
         return
       }
       if (!msg) {
-        HDScence.alert('请输入内容', 'warning')
+        t.alert('请输入内容', 'warning')
         return
       }
       isCanSend = false
       let teacher = t.selectedTeacher
-      let  teacherName = t.selectedTeacherName
+      let teacherName = t.selectedTeacherName
       if (t.selectedTeacher === 'all') {
-        HDScence.sendPublicMsg({'msg':msg})
+        HDScence.sendPublicMsg({'msg': msg})
       } else {
-        HDScence.sendPrivateMsg({'msg':msg,'teacher':teacher,'teacherName':teacherName})
+        HDScence.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
       }
       t.uiChat.updateScroll()
       t.uiChat.msg = ''

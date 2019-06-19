@@ -6,6 +6,7 @@ class FullScreen {
   isShowRight = true
   isFullScreen = false
   fullScreenStateChange = {}
+  isfullScreenOfClickSwitch = false
 
   constructor() {
     this.ui = new UserInterface()
@@ -21,6 +22,14 @@ class FullScreen {
         this.isFullScreen = false
         this.updateFullScreenState(this.isFullScreen, this.fullScreenStateChange)
         Utils.log('exitFullscreen')
+      })
+    }
+    if (this.isSupportFullscreen) {
+      HDScence.on('switch', () => {
+        if (this.isFullScreen) {
+          this.requestFullscreen()
+          this.isfullScreenOfClickSwitch = true
+        }
       })
     }
   }
@@ -85,14 +94,20 @@ class FullScreen {
   webFullScreen(callback) {
     this.fullScreenStateChange = callback
     if (!this.isWebFullScreen()) {
-      let centerWrapper = document.getElementById('centerWrapper')
-      this.requestFullscreen(centerWrapper)
+      this.requestFullscreen()
     } else {
       this.exitFullscreen()
+      if (this.isfullScreenOfClickSwitch) {
+        setTimeout(() => {
+          this.exitFullscreen()
+          this.isfullScreenOfClickSwitch = false
+        }, 0)
+      }
     }
   }
 
-  requestFullscreen(elem) {
+  requestFullscreen() {
+    let elem = document.getElementById('center')
     if (elem.requestFullscreen) {
       elem.requestFullscreen()
     }

@@ -32,7 +32,7 @@ let HD = function () {
       }
 
       onResize(callback, useCapture = false) {
-        window.removeEventListener('resize', callback, useCapture)
+        window.addEventListener('resize', callback, useCapture)
       }
 
       onRotateScreenChange(callback, useCapture = false) {
@@ -76,20 +76,19 @@ let HD = function () {
         callback(orientation)
       }
 
+      /**
+       * 注册直播（data.modules->直播间组件，data.config->登录信息）
+       * **/
       register(data) {
         if (!data) {
           throw new Error('Please fill in the valid data')
         }
         if (data.modules) {
-          if (data.modules instanceof Array) {
-            this.regiserModule(data.modules)
-          } else {
-            this.regiserModule([data.modules])
-          }
+          this.components(data.modules)
         }
         // let liveAdaptive = new LiveAdaptive()
         let params = data.config
-        this.init({
+        this.login({
           userId: params.userid || '40A53587B37573BD',
           roomId: params.roomid || '427DB068D5EAB1279C33DC5901307461',
           viewerName: params.viewername || '抖音BGM',
@@ -115,13 +114,19 @@ let HD = function () {
 
       }
 
-      regiserModule(modules = []) {
+
+      /**
+       *
+       * 组件注册
+       * ***/
+      components(modules = {}) {
         if (modules.length < 1) return
-        for (let i = 0; i < modules.length; i++) {
+        for (let i in modules) {
           let classObj = modules[i]
           let m = new classObj()
           if (!m.name) {
-            throw new Error(module + ' can not find name property')
+            m.name = 'instance' + i
+            Utils.log(module + ' can not find name property')
           } else {
             modulesMap[m.name] = m
           }

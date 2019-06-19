@@ -28,36 +28,44 @@ class Chat extends Component {
   }
 
   addEvents() {
-    HDScence.addEvent(HDScence.OnPublishChatMsg, () => {
-      let msgInfo = LiveInfo.publicChatMsgInfo
-      if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
-        let chatMsg = new ChatMsg()
-        msgInfo.liveStart = LiveInfo.getLoginInfoData('live', 'liveStartTime')
-        chatMsg.info = msgInfo
-        this.chatMap[msgInfo.chatId] = chatMsg
+    HDScence.onPublicChat({
+      callback: (info) => {
+        let msgInfo = info
+        if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
+          let chatMsg = new ChatMsg()
+          msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
+          chatMsg.info = msgInfo
+          this.chatMap[msgInfo.chatId] = chatMsg
+        }
+        this.uiChat.updateScroll()
       }
-      this.uiChat.updateScroll()
     })
-    // HDScence.addEvent(HDScence.OnPrivateChatMsg, () => {
-    //   let msgInfo = LiveInfo.privateChatMsgInfo
-    //   let chatMsg = new PrivateChatMsg()
-    //   chatMsg.info = msgInfo
-    //   this.uiChat.updateScroll();
-    // })
-
-    HDScence.addEvent(HDScence.OnAnnounceShow, () => {
-      this.announce.content = LiveInfo.onAnnounceInfo
-      this.announce.isShowPanel = true
+    HDScence.onAnnounce({
+      callback: (d) => {
+        this.announce.content = d
+        this.announce.isShowPanel = true
+      }
     })
-    HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
-      this.announce.content = '暂无公告'
-      this.announce.isShowPanel = false
+    HDScence.onAnounceRelease({
+      callback: (d) => {
+        this.announce.content = d
+        this.announce.isShowPanel = true
+      }
+    })
+    HDScence.onAnounceDelete({
+      callback: () => {
+        this.announce.content = '暂无公告'
+        this.announce.isShowPanel = false
+      }
     })
     let input = new Input({
       id: 'send-chat-content'
     })
     if (Utils.isIOS() && Utils.isWeiXin()) {
       input.scrollIntoView()
+    }
+    if (Utils.isIOS()) {
+      input.tabIndex()
     }
     if (Utils.isAndroid()) {
       input.scrollIntoViewIfNeeded()
@@ -108,15 +116,15 @@ class Chat extends Component {
     this.bind(sendMsg, 'click', (e) => {
       let msg = Utils.trim(this.uiChat.msg)
       if (msg.length > 300) {
-        HDScence.alert('发送聊天字数不应超过300字', 'warning')
+        t.alert('发送聊天字数不应超过300字', 'warning')
         return
       }
       if (!isCanSend) {
-        HDScence.alert('发送过于频繁，请稍后', 'warning')
+        t.alert('发送过于频繁，请稍后', 'warning')
         return
       }
       if (!msg) {
-        HDScence.alert('聊天信息不能为空', 'warning')
+        t.alert('聊天信息不能为空', 'warning')
         return
       }
 
@@ -128,8 +136,8 @@ class Chat extends Component {
       } else {
         HDScence.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
       }
-      this.uiChat.updateScroll()
-      this.uiChat.msg = ''
+      t.uiChat.updateScroll()
+      t.uiChat.msg = ''
       timeOutId = setTimeout(() => {
         isCanSend = true
         clearTimeout(timeOutId)

@@ -1,6 +1,8 @@
 import Render from 'common/render'
 import Swiper from 'swiper'
 import UserInterface from 'common/userInterface'
+import Input from 'common/public/input'
+import Utils from 'common/utils'
 
 class UInavigation extends Render {
   options = ['文档', '聊天', '问答', '简介']
@@ -19,6 +21,9 @@ class UInavigation extends Render {
       speed: 600,
       on: {
         slideChangeTransitionStart: function () {
+          if (Utils.isAndroid()) {
+            Input.blurAll()
+          }
           self.index = this.activeIndex
           self.active = this.activeIndex
           self.updateSelect(this.activeIndex)
@@ -45,20 +50,8 @@ class UInavigation extends Render {
     })
   }
 
-  updateSelect(index) {
-    if (!this.isChangeSelect) {
-      return false
-    }
-    this.isChangeSelect = false
-    let clientWidth = this.navigationOptions.clientWidth
-    let section = clientWidth / this.options.length
-    let width = this.select.clientWidth
-    let left = (section / 2) - (width / 2)
-    let _index = parseInt(index)
-    let value = _index * section + left
-    this.ui.moveX(this.select, value, () => {
-      this.isChangeSelect = true
-    })
+  get swiperChangeIndex() {
+    return this.index
   }
 
   set swiperChangeIndex(v) {
@@ -68,10 +61,6 @@ class UInavigation extends Render {
     }
     this.active = v
 
-  }
-
-  get swiperChangeIndex() {
-    return this.index
   }
 
   set active(v) {
@@ -87,6 +76,22 @@ class UInavigation extends Render {
   set settingpanel(v) {
     this.setStyle('setting-panel', {display: 'block'})
     this.setStyle('mode-list', {display: 'block'})
+  }
+
+  updateSelect(index) {
+    if (!this.isChangeSelect) {
+      return false
+    }
+    this.isChangeSelect = false
+    let clientWidth = this.navigationOptions.clientWidth
+    let section = clientWidth / this.options.length
+    let width = this.select.clientWidth
+    let left = (section / 2) - (width / 2)
+    let _index = parseInt(index)
+    let value = _index * section + left
+    this.ui.moveX(this.select, value, () => {
+      this.isChangeSelect = true
+    })
   }
 
 }

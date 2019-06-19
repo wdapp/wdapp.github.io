@@ -2,7 +2,7 @@ import 'common/public/liveSDK' //引入观看直播Web SDK
 import {LiveSDKInterface} from 'common/interface' //引入接口适配器
 import LiveInfo from 'common/liveinfo'
 import EventEmitter from 'onfire.js'
-import Tips from './userInterface'
+
 
 let tips = null
 let eventMap = {}
@@ -25,6 +25,7 @@ class LiveAdaptive extends EventEmitter {
   OnLiveStart = 'onLiveStart'//直播开始
   OnLiveEnd = 'OnLiveEnd'//直播结束
   OnLiveStarting = 'OnLiveStarting'//直播中
+  OnSWFLoadComplete = 'OnSWFLoadComplete'//直播中
 //////////////////////////////Event///////////////
 
   ////////////////live///////
@@ -41,12 +42,13 @@ class LiveAdaptive extends EventEmitter {
       document.body.appendChild(app)
       this.node = app
     }
+
+    this.liveInterface = new LiveSDKInterface()
   }
 
-  //初始化入口
-  init(params) {
-    this.liveInterface = HDScence.registerObject(HDScence.LiveInterface, new LiveSDKInterface)
-    this.param = HDScence.registerObject(HDScence.InitInfo, params)
+  //初始化登录入口
+  login(params) {
+    // this.param = HDScence.registerObject(HDScence.InitInfo, params)
     this.liveInterface.call(this.liveInterface.INIT, {
       userid: params.userId || '',
       roomid: params.roomId || '',
@@ -59,17 +61,8 @@ class LiveAdaptive extends EventEmitter {
       language: 'zh'
     })
     this.isLive = false
-    this.addAPIFunction()
-  }
-
-  /**
-   * 提示框
-   * **/
-  alert(content, type = '') {
-    if (!tips) {
-      tips = new Tips()
-    }
-    tips.alert({type: type, content: content})
+    this.onLogin(params)
+    // this.addAPIFunction()
   }
 
   /**
@@ -79,6 +72,7 @@ class LiveAdaptive extends EventEmitter {
     this.fire(type)
 
   }
+
   /**
    * 接收事件
    * **/
@@ -104,7 +98,7 @@ class LiveAdaptive extends EventEmitter {
    * */
   onLogin(d = {}) {
     this.liveInterface.on(this.liveInterface.ONLOGINSUCCESS, (result) => {
-      this.param.success && this.param.success(result)
+      // d.success && d.success(result)
       LiveInfo.loginInfo = LiveInfo.parseLoginInfo(result)
       if (!LiveInfo.getLoginInfoData('live', 'liveStartTime')) {
         this.isLive = false
@@ -114,12 +108,12 @@ class LiveAdaptive extends EventEmitter {
 
       d.success && d.success(result)
       this.dispatch(this.OnLoginSuccess)
-      this.alert('登录成功')
+      // this.alert('登录成功')
     })
 
     //监听登录失败后的回调
     this.liveInterface.on(this.liveInterface.ONLOGINERROR, (result) => {
-      this.alert('登录失败', 'danger')
+      // this.alert('登录失败', 'danger')
       this.param.success && this.param.fail(result)
       d.fail && d.fail(result)
     })
@@ -163,7 +157,7 @@ class LiveAdaptive extends EventEmitter {
   onUserCount(d = {}) {
     this.liveInterface.on(this.liveInterface.ONUSERCOUNTMESSAGE, (result) => {
       LiveInfo.userCount = result[0]
-      d.userCount && d.userCount(LiveInfo.userCount)
+      d.callback && d.callback(LiveInfo.userCount)
       this.dispatch(this.OnUserCountMessage)
     })
   }
@@ -253,7 +247,7 @@ class LiveAdaptive extends EventEmitter {
   onBannedInfomation(d = {}) {
     this.liveInterface.on(this.liveInterface.ONINFORMATION, (result) => {
       LiveInfo.bannedInfomation = result[0]
-      this.alert(LiveInfo.bannedInfomation)
+      // this.alert(LiveInfo.bannedInfomation)
       d.callback && d.callback(LiveInfo.bannedInfomation)
 
     })
@@ -305,6 +299,7 @@ class LiveAdaptive extends EventEmitter {
   onAnounceDelete(d = {}) {
     this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTREMOVE, (result) => {
       this.dispatch(this.OnAnnounceDelete)
+      d.callback && d.callback()
     })
   }
 
@@ -319,6 +314,15 @@ class LiveAdaptive extends EventEmitter {
   }
 
   /**
+   * flash文档加载完成
+   */
+  onFlashPlayerLoad(callback) {
+    window.on_cc_swf_loading_completed = (result) => {
+      callback && callback(result)
+    }
+  }
+
+  /**
    * 设置文档自适应模式
    */
   documentAdaptive(boolean) {
@@ -330,8 +334,14 @@ class LiveAdaptive extends EventEmitter {
     return false
   }
 
-  //回调信心监听函数
-  addAPIFunction() {
+  /**
+   *
+   * 监听所有的事件回调
+   * ***/
+  addAllCallback() {
+    if (!this.liveInterface) {
+      Utils.log('请先调用登录')
+    }
     this.onLogin()
     this.onLiveStream()
     this.onAnnounce()
@@ -363,39 +373,43 @@ class LiveAdaptive extends EventEmitter {
   changeLine(t = {}) {
     this.liveInterface.call(this.liveInterface.CHANGELINE, (t.index ? parseInt(t.index) : 0 ))
   }
+
   /**
    * 发送公共聊天
    * **/
-  sendPublicMsg(d={}){
-    let  msg ="";
-    if(d.msg){
+  sendPublicMsg(d = {}) {
+    let msg = ''
+    if (d.msg) {
       msg = d.msg
     }
     this.liveInterface.call(this.liveInterface.SENDPUBLICMSG, msg)
 
   }
+
   /**
    * 发送私聊
    * **/
-  sendPrivateMsg(d={}){
-    let msg = d.msg?d.msg:""
-    let t=d.teacher?d.teacher:""
-    let m =d.teacherName?d.teacherName:""
+  sendPrivateMsg(d = {}) {
+    let msg = d.msg ? d.msg : ''
+    let t = d.teacher ? d.teacher : ''
+    let m = d.teacherName ? d.teacherName : ''
     this.liveInterface.call(this.liveInterface.SENDPRIVATEMSG, t, m, msg)
   }
+
   /**
    * 退出直播间
    * **/
-  logoutRoom(d={}){
+  logoutRoom(d = {}) {
     this.liveInterface.call(this.liveInterface.LOGOUT, d)
 
   }
+
   /***
    * 发送问答
    *
    * **/
-  sendQustionMsg(d={}){
-    let  msg = d.msg?d.msg:"";
+  sendQustionMsg(d = {}) {
+    let msg = d.msg ? d.msg : ''
     //发送问答
     this.liveInterface.call(this.liveInterface.SENDQUESTIONMSG, msg)
   }

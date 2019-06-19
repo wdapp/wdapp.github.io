@@ -26,19 +26,20 @@ class Player extends Component {
       }
     })
 
-    HDScence.addEvent(HDScence.OnLiveStart, () => {
-      this.ui.showTips = false
-    })
-    HDScence.addEvent(HDScence.OnLiveEnd, () => {
-      this.ui.showTips = true
-      this.ui.tipContent = '直播已结束'
-      this.tipTimer && clearTimeout(this.tipTimer)
-      this.tipTimer = setTimeout(() => {
-        this.ui.tipContent = '直播正在准备中'
-      }, this.tipTimerInterval)
-    })
-    HDScence.addEvent(HDScence.OnLiveStarting, () => {
-      this.ui.showTips = false
+    HDScence.onLiveStream({
+      liveStart: () => {
+        this.ui.showTips = false
+      },
+      living: () => {
+        this.ui.showTips = false
+      }, liveEnd: () => {
+        this.ui.showTips = true
+        this.ui.tipContent = '直播已结束'
+        this.tipTimer && clearTimeout(this.tipTimer)
+        this.tipTimer = setTimeout(() => {
+          this.ui.tipContent = '直播正在准备中'
+        }, this.tipTimerInterval)
+      }
     })
   }
 

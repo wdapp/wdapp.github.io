@@ -2,13 +2,13 @@ import Render from 'common/render'
 import Utils from 'common/utils'
 
 class UI extends Render {
-  _isMainVideo = false
-
   constructor() {
     super()
     this.videoNode = this.getChildNode('player')
     this.dpNode = this.getChildNode('document')
   }
+
+  _isMainVideo = false
 
   get isMainVideo() {
     return this._isMainVideo
@@ -16,6 +16,11 @@ class UI extends Render {
 
   set isMainVideo(v) {
     this._isMainVideo = v
+  }
+
+  set showBarrage(v) {
+    let barrageBtn = this.getNodeByClass('barrage')
+    this.setStyle(barrageBtn, {display: (v ? 'block' : 'none')})
   }
 
   logoutWindow() {
@@ -32,11 +37,6 @@ class UI extends Render {
     this.innerHTML(viewerNode, name)
   }
 
-  set showBarrage(v) {
-    let barrageBtn = this.getNodeByClass('barrage')
-    this.setStyle(barrageBtn, {display: (v ? 'block' : 'none')})
-  }
-
   //切换视频为主文档为主
   switchPanel() {
     if (this.isMainVideo) {
@@ -48,6 +48,13 @@ class UI extends Render {
     }
     this._isMainVideo = !this._isMainVideo
     this.updateNavigation(this._isMainVideo)
+    Utils.isAndroid() && this.autoPlay()
+  }
+
+  autoPlay() {
+    Utils.log('Android autoPlay', Utils.isAndroid())
+    let video = this.getNode('player_live')
+    video.play()
   }
 
   updateNavigation(isMainVideo) {

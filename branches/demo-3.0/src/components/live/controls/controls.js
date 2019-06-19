@@ -8,14 +8,29 @@ import Utils from 'common/utils'
 
 class Controls extends Component {
 
-  _ui = null
-
   constructor() {
     super()
     this.name = 'controls'
     this.render('controls', template, () => {
     })
     this.init()
+  }
+
+  _ui = null
+
+  get ui() {
+    if (!this._ui) {
+      this._ui = new UI()
+    }
+    return this._ui
+  }
+
+  set viewName(v) {
+    this.ui.setViewName(v)
+  }
+
+  set isMainVideo(v) {
+    this.ui.isMainVideo(v)
   }
 
   init() {
@@ -41,24 +56,23 @@ class Controls extends Component {
 
   addEvents() {
     HDScence.addEvent(HDScence.OnLoginSuccess, () => {
-      // this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
       this.initUserInfo()
     })
-    HDScence.addEvent(HDScence.OnUserCountMessage, () => {
-
-      this.ui.setUserCount(parseInt(LiveInfo.userCount))
+    HDScence.onUserCount({
+      callback: (d) => {
+        this.ui.setUserCount(parseInt(d))
+      }
     })
-
+    this.ui.switchPanel()
+    HDScence.onFlashPlayerLoad((result) => {
+      this.ui.switchPanel()
+    })
   }
 
   initUserInfo() {
     if (LiveInfo.loginInfo) {
       this.viewName = LiveInfo.getLoginInfoData('viewer', 'name')
     }
-  }
-
-  set viewName(v) {
-    this.ui.setViewName(v)
   }
 
   //退出登录
@@ -130,17 +144,6 @@ class Controls extends Component {
   initData(obj) {
     if (!obj) return
 
-  }
-
-  get ui() {
-    if (!this._ui) {
-      this._ui = new UI()
-    }
-    return this._ui
-  }
-
-  set isMainVideo(v) {
-    this.ui.isMainVideo(v)
   }
 
 }

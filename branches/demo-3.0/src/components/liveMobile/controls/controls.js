@@ -9,7 +9,6 @@ import Swiper from 'swiper'
 
 class Controls extends Component {
 
-  _ui = null
   _swtchTimer = 0
   _toggleSwitch = true
 
@@ -20,6 +19,23 @@ class Controls extends Component {
 
     })
     this.init()
+  }
+
+  _ui = null
+
+  get ui() {
+    if (!this._ui) {
+      this._ui = new UI()
+    }
+    return this._ui
+  }
+
+  set viewName(v) {
+    this.ui.setViewName(v)
+  }
+
+  set isMainVideo(v) {
+    this.ui.isMainVideo(v)
   }
 
   init() {
@@ -54,13 +70,13 @@ class Controls extends Component {
 
   addEvents() {
     HDScence.addEvent(HDScence.OnLoginSuccess, () => {
-      this.liveSdk = HDScence.getObjectForName(HDScence.LiveInterface)
       this.ui.barrageShow = (HDScence.getLive().isBarrage == 1)
       this.initUserInfo()
     })
-    HDScence.addEvent(HDScence.OnUserCountMessage, () => {
-
-      this.ui.setUserCount(parseInt(LiveInfo.userCount))
+    HDScence.onUserCount({
+      callback: (d) => {
+        this.ui.setUserCount(parseInt(d))
+      }
     })
 
   }
@@ -69,10 +85,6 @@ class Controls extends Component {
     if (LiveInfo.loginInfo) {
       this.viewName = LiveInfo.getLoginInfoData('viewer', 'name')
     }
-  }
-
-  set viewName(v) {
-    this.ui.setViewName(v)
   }
 
   //退出登录
@@ -114,17 +126,6 @@ class Controls extends Component {
 
   initData(obj) {
     if (!obj) return
-  }
-
-  get ui() {
-    if (!this._ui) {
-      this._ui = new UI()
-    }
-    return this._ui
-  }
-
-  set isMainVideo(v) {
-    this.ui.isMainVideo(v)
   }
 
 }

@@ -23,7 +23,9 @@ class Controls extends Component {
   isMute = false
   volume = 0
   isPlayerSliderAutoChange = true
-  isSwitch = true
+  isVideoMain = true
+  isH5play = false
+  isFullScreen = false
 
   constructor() {
     super()
@@ -33,6 +35,7 @@ class Controls extends Component {
   }
 
   init() {
+
     this.ui = new UserInterface()
     this.fullScreen = new FullScreen()
     this.playButton = this.getNode('playButton')
@@ -58,6 +61,10 @@ class Controls extends Component {
   }
 
   onEvents() {
+    HDScence.onPlayerMode((data) => {
+      this.isH5play = data.isH5play
+      this.autoPlay(this.isH5play)
+    })
     HDScence.onPlayerLoad(() => {
       this.isPlayerLoad = true
       this.updateVolume()
@@ -66,6 +73,7 @@ class Controls extends Component {
       HDScence.emit('initLoadBar', this.durationTime)
       HDScence.emit('isPlayerLoad', this.isPlayerLoad)
       Utils.log('onPlayerLoad', this.isPlayerLoad)
+      this.autoPlay(this.isH5play)
     })
     HDScence.onPlayerStart(() => {
       this.playState = true
@@ -144,9 +152,16 @@ class Controls extends Component {
     this.bind(this.thumbnailListButton, 'click', this.toggleThumbnailList.bind(this))
   }
 
+  autoPlay(isH5play) {
+    if (!isH5play) {
+      this.bindSwitchBtnWrap()
+    }
+  }
+
   bindFullScreen() {
     this.fullScreen.toggleFullScreen({
       fullScreenStateChange: (data) => {
+        this.isFullScreen = data.isFullScreen
         this.fullScreenChangeCallback(data)
       }
     })
@@ -156,7 +171,7 @@ class Controls extends Component {
     if (typeof data.isFullScreen == 'undefined') {
       return false
     }
-    this.loadBar.initTooltip()
+    this.loadBar && this.loadBar.initTooltip && this.loadBar.initTooltip()
     if (data.isFullScreen) {
       this.quitButton.style.display = 'none'
     } else {
@@ -167,7 +182,7 @@ class Controls extends Component {
   bindLeftBar() {
     this.fullScreen.toggleLeftBar({
       barStateChange: (data) => {
-        this.loadBar.initTooltip()
+        this.loadBar && this.loadBar.initTooltip && this.loadBar.initTooltip()
       },
       fullScreenStateChange: (data) => {
         this.fullScreenChangeCallback(data)
@@ -178,7 +193,7 @@ class Controls extends Component {
   bindRightBar() {
     this.fullScreen.toggleRightBar({
       barStateChange: (data) => {
-        this.loadBar.initTooltip()
+        this.loadBar && this.loadBar.initTooltip && this.loadBar.initTooltip()
       },
       fullScreenStateChange: (data) => {
         this.fullScreenChangeCallback(data)
@@ -187,27 +202,53 @@ class Controls extends Component {
   }
 
   bindSwitchBtnWrap() {
-    if (!this.isSwitch || !this.checkout('bindSwitchBtnWrap')) {
-      return false
+    if (this.isFullScreen && this.fullScreen.isSupportFullscreen) {
+      this.switchNode()
+    } else {
+      this.switchClass()
     }
-    this.isSwitch = false
+  }
+
+  switchNode() {
     let player = this.getNode('player')
     let drawPanel = this.getNode('document')
     let playerChildren = player.firstElementChild
     let drawPanelChildren = drawPanel.firstElementChild
-    this.ui.fadeOut({
-      node: [playerChildren, drawPanelChildren],
-      complete: () => {
-        player.appendChild(drawPanelChildren)
-        drawPanel.appendChild(playerChildren)
-        this.ui.fadeIn({
-          node: [playerChildren, drawPanelChildren],
-          complete: () => {
-            this.isSwitch = true
-          }
-        })
-      }
-    })
+    player.appendChild(drawPanelChildren)
+    drawPanel.appendChild(playerChildren)
+  }
+
+  switchClass() {
+    let left = document.querySelector('.left')
+    let center = document.querySelector('.center')
+    let leftBar = document.getElementById('leftBar')
+    let rightBar = document.getElementById('rightBar')
+    let questionWrapper = document.querySelector('.question-wrapper')
+    let controlsWrapper = document.querySelector('.controls-wrapper')
+    let thumbnailWrapper = document.querySelector('.thumbnail-wrapper')
+    let leftId = left.id
+    let centerId = center.id
+    let leftClassName = left.className
+    let centerClassName = center.className
+    let leftStyle = left.getAttribute('style') || ''
+    let centerStyle = center.getAttribute('style') || ''
+
+    left.id = centerId
+    center.id = leftId
+    left.className = centerClassName
+    center.className = leftClassName
+    left.setAttribute('style', centerStyle)
+    center.setAttribute('style', leftStyle)
+
+    center.appendChild(questionWrapper)
+    left.insertBefore(leftBar, left.childNodes[0])
+    left.appendChild(thumbnailWrapper)
+    left.appendChild(controlsWrapper)
+    left.appendChild(rightBar)
+
+    this.isVideoMain = !this.isVideoMain
+
+    HDScence.emit('switch', this.isVideoMain)
   }
 
   bindPlayRateList(e) {
@@ -230,6 +271,11 @@ class Controls extends Component {
   }
 
   bindPlayRateWrap() {
+    if (!this.isH5play) {
+      Utils.log('仅支持H5播放器')
+      this.ui.alert({type: 'warning', content: '仅支持H5播放器'})
+      return false
+    }
     if (this.isShowRate) {
       this.playRateList.style.display = 'none'
       this.removeClass(this.playRateWrap, 'select')
@@ -382,11 +428,11 @@ class Controls extends Component {
     this.isPlayerSliderAutoChange = false
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
+      this.stopTimer()
       HDScence.seek(value)
       if (Utils.IEVersion() != -1) {
         this.updateCurrentTime()
       }
-      this.stopTimer()
       this.isPlayerSliderAutoChange = true
     }, 500)
     return true

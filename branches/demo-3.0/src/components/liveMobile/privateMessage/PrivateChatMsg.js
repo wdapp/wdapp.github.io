@@ -1,5 +1,4 @@
 import Render from 'common/render'
-import Utils from 'common/utils'
 
 class PrivateChatMsg extends Render {
   constructor() {

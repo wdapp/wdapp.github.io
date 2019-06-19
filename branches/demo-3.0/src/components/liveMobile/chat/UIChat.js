@@ -8,6 +8,10 @@ class UIChat extends Render {
     this.isShowChatSmileList = false
   }
 
+  get isShowChatSmileList() {
+    return this.isSelectedChatSmile
+  }
+
   //设置表情列表是否显示
   set isShowChatSmileList(v) {
     this.isSelectedChatSmile = v
@@ -15,18 +19,14 @@ class UIChat extends Render {
     this.setStyle('chat-smile-list', {'display': style})
   }
 
-  get isShowChatSmileList() {
-    return this.isSelectedChatSmile
+  get isShowChatSelect() {
+    return this._isShowChatSelect
   }
 
   set isShowChatSelect(v) {
     this._isShowChatSelect = v
     let style = v ? 'block' : 'none'
     this.setStyle('chat-options', {'display': style})
-  }
-
-  get isShowChatSelect() {
-    return this._isShowChatSelect
   }
 
   //获取发送的消息内容
@@ -50,6 +50,15 @@ class UIChat extends Render {
     this.getNode('send-chat-content').value += this.getSmiles(v)
   }
 
+  set selectName(v) {
+    let selectNameNode = this.getNode('select-name')
+    this.innerHTML(selectNameNode, v)
+  }
+
+  set isShowPrivateChat(v) {
+    this.setStyle('private_msg', {display: 'block'})
+  }
+
   getSmiles(index) {
     return `[em2_${index}]`
   }
@@ -59,15 +68,6 @@ class UIChat extends Render {
     let select = `<li id="${id}" class="li-opt">${name}</li>`
     // this.innerHTML(selectId,name);
     this.appendHtml('chat-options', select)
-  }
-
-  set selectName(v) {
-    let selectNameNode = this.getNode('select-name')
-    this.innerHTML(selectNameNode, v)
-  }
-
-  set isShowPrivateChat(v) {
-    this.setStyle('private_msg', {display: 'block'})
   }
 
   updateScroll() {
