@@ -115,13 +115,15 @@
       background: rgba(255, 255, 254, 1);
       border-radius: .04rem;
       border: 1px solid rgba(221, 221, 221, 1);
+      position: relative;
       .send-question-input {
         width: 1.84rem;
-        height: 93%;
+        height: 100%;
         @include width-height(1.84rem, 93%);
         border: none;
         outline: none;
         float: left;
+        border-radius: .04rem 0 0 .04rem;
       }
       .send-question-button {
         width: .44rem;

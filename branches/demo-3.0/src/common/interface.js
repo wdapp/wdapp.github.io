@@ -213,12 +213,16 @@ class ReplaySDKInterface {
   SETVOLUME = 'setVolume'
   GETVOLUME = 'getVolume'
   PLAY = 'play'
+  SEEK = 'seek'
+  GETPLAYERTIME = 'getPlayerTime'
+  GETDURATION = 'getDuration'
   SETZSCALE = 'setZScale'
   GETZSCALE = 'getZScale'
   SETSCALE = 'setScale'
   GETSCALE = 'getScale'
   OPENSETTINGPANEL = 'openSettingPanel'
   PLAYBACKRATE = 'playbackRate'
+  LOGOUT = 'logout'
 
   ONCHATMSG = 'onChatMsg'
   ONCHATMSGSYNC = 'onChatMsgSync'
@@ -246,12 +250,16 @@ class ReplaySDKInterface {
   get playbackCall() {
     return {
       'config': $.DW.config,//登录
-      'docAdapt': $.DW.docAdapt,//登录
+      'docAdapt': $.DW.docAdapt,//文档自适应模式
       'isShowBar': $.DW.isShowBar,//隐藏显示播放器控制条
       'getBuffer': $.DW.getBuffer,//获取buffer
       'setVolume': $.DW.setVolume,//设置音量
       'getVolume': $.DW.getVolume,//获取音量
       'play': $.DW.play,//播放开始
+      'seek': $.DW.seek,//跳转
+      'getPlayerTime': $.DW.getPlayerTime,
+      'getDuration': $.DW.getDuration,
+      'logout': $.DW.logout,
       'setZScale': $.DW.setZScale,//设置画面缩放比例
       'getZScale': $.DW.getZScale,//获取画面缩放比例
       'setScale': $.DW.setScale,//设置画面缩放
@@ -270,7 +278,7 @@ class ReplaySDKInterface {
       'onQAQuetion': 'on_cc_live_qa_question',//显示提问信息
       'onQAAnswer': 'on_cc_live_qa_answer',//显示回答信息
       'onCallbackPage': 'on_cc_callback_pages',//返回文档对象
-      'onCallbackPageChange': 'on_cc_callback_pagechange',//翻页信息回调
+      'onCallbackPageChange': 'on_cc_callback_page_change',//翻页信息回调
       'onLoginError': 'on_cc_login_error',//登录失败
       'onLoginSuccess': 'on_cc_login_success',//登录成功
       'onPlayerLoad': 'on_cc_live_player_load',//播放器加载完成
@@ -308,7 +316,7 @@ class ReplaySDKInterface {
       var func = this.playbackOnfunc[t]
       window[func] = function (...options) {
         if (!f) return
-        f.call(null, options)
+        f.call(null, ...options)
       }
       return null
     }

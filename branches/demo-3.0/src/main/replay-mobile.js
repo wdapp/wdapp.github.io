@@ -38,26 +38,27 @@ HDScence.ready(() => {
 
   //登录
   HDScence.login({
-    // userId: params.userid || 'B27039502337407C',
-    // roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
-    // recordId: params.recordid || '96C0454B9E3CE464',
-
-    // roomId: params.roomid || '4E817009A54A9DC49C33DC5901307461',
-    // recordId: params.recordid || '1EDC2FF131B30BC9',
-
     userId: params.userid || '920022FE264A70C1',
     roomId: params.roomid || '8435F7E261F04EB69C33DC5901307461',
     recordId: params.recordid || 'D606FBAFE0000829',
-
     viewerName: params.viewername || '移动的关羽',
     viewerToken: params.viewertoken || '',
     success(result) {
       Utils.log('登录成功', result)
-      ui.alert({content: '登录成功'})
+      // ui.alert({content: '登录成功'})
     },
     fail(error) {
       Utils.log('登录失败', error)
-      ui.alert({type: 'danger', content: '登录失败'})
+      ui.alert({type: 'danger', content: '登录失败', time: false})
+      ui.modal({
+        titile: '登录失败',
+        content: '点击确定返回登录界面。',
+        confirmText: '确定',
+        cancelText: false,
+        complete: () => {
+          location.href = Utils.PATH.INDEX
+        }
+      })
     }
   })
 

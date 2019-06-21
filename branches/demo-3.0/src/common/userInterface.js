@@ -8,7 +8,8 @@ import 'bootstrap'
 
 class UserInterface extends Render {
   alertIndex = 0
-  _toggleBarInterval = 300
+  _toggleBarInterval = 10
+  alertTipTimer = 0
 
   constructor() {
     super()
@@ -22,7 +23,7 @@ class UserInterface extends Render {
     let {content = '', type = 'success', time = 2500} = options
     let template = `<div class="alert alert-${type ? type : 'success'}" role="alert" style="top:${(this.alertIndex < 5 ? this.alertIndex : 5) * 58}px">${content}</div>`
     let root = this.getRoot()
-    var element = this.appendChild(root, template)
+    let element = this.appendChild(root, template)
     this.alertIndex++
     if (time) {
       Velocity(element, 'fadeOut', {
@@ -34,6 +35,73 @@ class UserInterface extends Render {
         }
       })
     }
+  }
+
+  alertTip(options) {
+    if (!Utils.isEmptyObject(options)) {
+      return false
+    }
+    let {parentNodeId = '', content = '', type = 'warning', time = 5000} = options
+
+    $('.alert-tip-close').alert('close')
+
+    let template = `<div id="alertTip" class="alert alert-${type ? type : 'warning'} alert-dismissible fade in" role="alert">
+        <button type="button" class="close alert-tip-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <strong>${content}</strong>
+      </div>`
+
+    let parentNode = this.getAlertTipParentNode(parentNodeId)
+    this.appendChild(parentNode, template)
+
+    this.alertTipTimer && clearTimeout(this.alertTipTimer)
+    this.alertTipTimer = setTimeout(() => {
+      let alertTips = parentNode.getElementsByClassName('alert-dismissible')
+      for (let alertTip of alertTips) {
+        parentNode.removeChild(alertTip)
+      }
+    }, time)
+  }
+
+  alertTipClose() {
+    $('#alertTip').alert('close')
+  }
+
+  tip(content = '') {
+    if (!Utils.isEmptyString(content)) {
+      return false
+    }
+    let root = this.getRoot()
+    let tips = root.getElementsByClassName('tip-wrapp')
+    for (let tip of tips) {
+      Velocity(tip, 'stop')
+      root.removeChild(tip)
+    }
+    let template = `<div id="tipWrapp" class="tip-wrapp"><span class="tip-text">${content}</span></div>`
+    let element = this.appendChild(root, template)
+
+    let tipWrapp = document.getElementById('tipWrapp')
+    tipWrapp.onclick = function () {
+      Velocity(this, 'stop')
+      root.removeChild(this)
+    }
+
+    Velocity(element, 'fadeOut', {
+      delay: 2500,
+      duration: 500,
+      complete: (elements) => {
+        this.deleteNodes(elements)
+      }
+    })
+  }
+
+  getAlertTipParentNode(id) {
+    let parentNode = {}
+    if (id) {
+      parentNode = document.getElementById(id)
+    } else {
+      parentNode = this.getRoot()
+    }
+    return parentNode
   }
 
   modal(options) {
@@ -69,24 +137,24 @@ class UserInterface extends Render {
       this.deleteNode(element)
     })
     $('#cancel').click(function () {
-      $('#modal').modal('hide')
       cancel && cancel()
+      $('#modal').modal('hide')
     })
     $('#confirm').click(function () {
-      $('#modal').modal('hide')
       confirm && confirm()
+      $('#modal').modal('hide')
     })
     return $('#modal')
   }
 
-  hideLeft(callback, interval = 300) {
+  hideLeft(callback, interval = this._toggleBarInterval) {
     let left = this.getNode('left')
     let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
     Velocity(left, {
       width: '0rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         this.addClass(leftBar, 'left-bar-active')
       }
@@ -96,7 +164,7 @@ class UserInterface extends Render {
     Velocity(center, {
       left: '.12rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         callback && callback()
       }
@@ -105,14 +173,14 @@ class UserInterface extends Render {
     })
   }
 
-  showLeft(callback, interval = 300) {
+  showLeft(callback, interval = this._toggleBarInterval) {
     let left = this.getNode('left')
     let leftBar = this.getNode('leftBar')
     let center = this.getNode('center')
     Velocity(left, {
       width: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         this.removeClass(leftBar, 'left-bar-active')
       }
@@ -122,7 +190,7 @@ class UserInterface extends Render {
     Velocity(center, {
       left: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         callback && callback()
       }
@@ -131,14 +199,14 @@ class UserInterface extends Render {
     })
   }
 
-  hideRight(callback, interval = 300) {
+  hideRight(callback, interval = this._toggleBarInterval) {
     let right = this.getNode('right')
     let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
     Velocity(right, {
       width: '0rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         this.addClass(rightBar, 'right-bar-active')
       }
@@ -148,7 +216,7 @@ class UserInterface extends Render {
     Velocity(center, {
       right: '.12rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         callback && callback()
       }
@@ -157,14 +225,14 @@ class UserInterface extends Render {
     })
   }
 
-  showRight(callback, interval = 300) {
+  showRight(callback, interval = this._toggleBarInterval) {
     let right = this.getNode('right')
     let rightBar = this.getNode('rightBar')
     let center = this.getNode('center')
     Velocity(right, {
       width: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         this.removeClass(rightBar, 'right-bar-active')
       }
@@ -174,7 +242,7 @@ class UserInterface extends Render {
     Velocity(center, {
       right: '2.6rem',
     }, {
-      duration: (interval >= 0 ? interval : this._toggleBarInterval),
+      duration: interval,
       complete: () => {
         callback && callback()
       }

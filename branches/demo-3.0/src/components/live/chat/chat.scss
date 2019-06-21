@@ -46,7 +46,6 @@
       position: absolute;
       border-bottom: 1px solid #ffe5cf;
       color: #f99136;
-      opacity: 1;
       z-index: 4;
       background: #fff7e9;
       padding: .05rem .1rem .1rem .1rem;
@@ -284,7 +283,8 @@
           margin-right: .14rem;
           cursor: pointer;
           width: 1.14rem;
-          height: .2rem;
+          height: .22rem;
+          box-sizing: border-box;
           background: rgba(255, 255, 255, 1);
           border: 1px solid rgba(221, 221, 221, 1);
           .chat-select-options {
@@ -335,14 +335,16 @@
       .bottom {
         box-sizing: border-box;
         padding: 0 .15rem;
+        position: relative;
         .send-chat-input {
           width: 1.82rem;
-          height: .30rem;
+          height: .32rem;
           background: rgba(255, 255, 254, 1);
-          border-radius: .04rem;
+          border-radius: .04rem 0 0 .04rem;
           border: 1px solid rgba(221, 221, 221, 1);
           outline: none;
           float: left;
+          border-right: none;
         }
         .send-chat-button {
           float: left;

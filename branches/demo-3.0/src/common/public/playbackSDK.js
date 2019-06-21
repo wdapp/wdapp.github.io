@@ -1,9 +1,8 @@
 /**
  * CC playback video
- * v2.9.0 2019/01/21
+ * v3.0.1 2019/06/20
  */
 !(function ($, window, document) {
-
   // 直播播放器信息
   var CallbackPlayer = function (opts) {
     this.isReady = false
@@ -62,7 +61,7 @@
         if (!swf) {
           return
         }
-        swf.seek && swf.seek(t)
+        swf.seek(t)
       }
     }
 
@@ -82,9 +81,7 @@
       if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         t = this.getH5player().currentTime
       } else {
-        if (this.getFlash() && this.getFlash().getPosition) {
-          t = parseInt(this.getFlash().getPosition(), 10)
-        }
+        t = parseInt(this.getFlash().getPosition(), 10)
       }
       if (isNaN(t) || t < 0) {
         return 0
@@ -98,7 +95,7 @@
         return this.getH5player().duration
       } else {
         var swf = this.getFlash()
-        if (!swf || !swf.getDuration) {
+        if (!swf) {
           return
         }
         return swf.getDuration()
@@ -119,7 +116,7 @@
         return buffer
       } else {
         var swf = this.getFlash()
-        if (!swf || !swf.getBufferLength) {
+        if (!swf) {
           return
         }
         return swf.getBufferLength()
@@ -132,7 +129,7 @@
         this.getH5player().volume = parseFloat(n)
       } else {
         var swf = this.getFlash()
-        if (!swf || !swf.setVolume) {
+        if (!swf) {
           return
         }
         return swf.setVolume(n)
@@ -144,7 +141,7 @@
         return this.getH5player().volume
       } else {
         var swf = this.getFlash()
-        if (!swf || !swf.getVolume) {
+        if (!swf) {
           return
         }
         return swf.getVolume()
@@ -160,7 +157,7 @@
         }
       } else {
         var swf = this.getFlash()
-        if (!swf || !swf.isPlay) {
+        if (!swf) {
           return
         }
         return swf.isPlay()
@@ -169,7 +166,7 @@
 
     this.setZScale = function (s) {
       var swf = this.getFlash()
-      if (!swf || !swf.setZScale) {
+      if (!swf) {
         return
       }
       return swf.setZScale(s)
@@ -177,7 +174,7 @@
 
     this.getZScale = function () {
       var swf = this.getFlash()
-      if (!swf || !swf.getZScale) {
+      if (!swf) {
         return
       }
       return swf.getZScale()
@@ -185,7 +182,7 @@
 
     this.setScale = function (s) {
       var swf = this.getFlash()
-      if (!swf || !swf.setScale) {
+      if (!swf) {
         return
       }
       return swf.setScale(s)
@@ -193,7 +190,7 @@
 
     this.getScale = function () {
       var swf = this.getFlash()
-      if (!swf || !swf.getScale) {
+      if (!swf) {
         return
       }
       return swf.getScale()
@@ -201,7 +198,7 @@
 
     this.openSettingPanel = function () {
       var swf = this.getFlash()
-      if (!swf || !swf.openSettingPanel) {
+      if (!swf) {
         return
       }
       return swf.openSettingPanel()
@@ -279,7 +276,7 @@
       if (!swf) {
         return
       }
-      swf.clear && swf.clear()
+      swf.clear()
     }
 
     // 画图
@@ -291,7 +288,7 @@
         return
       }
 
-      swf.draw && swf.draw(j)
+      swf.draw(j)
     }
 
     this.draws = function (js) {
@@ -302,7 +299,7 @@
 
       (function (jstr) {
         setTimeout(function () {
-          swf.drawList && swf.drawList(jstr)
+          swf.drawList(jstr)
         })
       })(js)
     }
@@ -324,10 +321,10 @@
         jj.url = u.replace(/http:/g, 'https:')
       }
 
-      if (swf && options.adapt) {
-        swf.filp && swf.filp(JSON.stringify(jj), 'auto')
+      if (options.adapt) {
+        swf.filp(JSON.stringify(jj), 'auto')
       } else {
-        swf.filp && swf.filp(JSON.stringify(jj))
+        swf.filp(JSON.stringify(jj))
       }
     }
 
@@ -340,7 +337,7 @@
         return
       }
 
-      swf.animation && swf.animation(j)
+      swf.animation(j)
     }
 
     this.intervalNum = 0
@@ -704,7 +701,7 @@
 
     var extend = function (o, n) {
       for (var p in n) {
-        if (n.hasOwnProperty(p) && (!o.hasOwnProperty(p) ))
+        if (n.hasOwnProperty(p) && (!o.hasOwnProperty(p)))
           o[p] = n[p]
       }
     }
@@ -1556,16 +1553,36 @@
   var util = {
     DEBUG: window.DEBUG,
     log: function (arg1, arg2) {
-      if (window.DEBUG) {
+      if (window.DEBUG && window.console && typeof console.log === 'function') {
         if (arg2) {
           console.log(arg1 + ' => ', arg2)
         } else {
           console.log(arg1)
         }
       }
+    },
+    isIE: function () {
+      if (navigator.userAgent.indexOf('compatible') > -1 && navigator.userAgent.indexOf('MSIE') > -1) {
+        if (navigator.userAgent.indexOf('MSIE 9.0') > -1) {
+          return true
+        }
+        if (navigator.userAgent.indexOf('MSIE 10.0') > -1) {
+          return true
+        }
+        return true
+      }
+      var isIE11 = navigator.userAgent.indexOf('Trident') > -1 && navigator.userAgent.indexOf('rv:11.0') > -1
+      if (isIE11) {
+        return true
+      }
+      return false
+    },
+    isMp4: function (url) {
+      var l = url.split('?')[0]
+      var u = l.slice(l.length - 4)
+      return u === '.mp4'
     }
   }
-
   window.TIMEOUT = 5000
 
   var options = {
@@ -1699,10 +1716,10 @@
       DWDpc.fastMode = this.fastMode
 
       var scriptArray = [
-
+        // '//static.csslcloud.net/js/hls.min.js',
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/swfobject.js',
-        '//image.csslcloud.net/js/dpc.js?v=20180121',
+        '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)),
         '//static.csslcloud.net/js/json3.min.js',
         '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
         '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
@@ -2237,39 +2254,88 @@
 
   var MobileLive = {
     pauseState: false,
-    init: function (opts) {
+    useHls: false,
+    init: function (ots) {
       var _this = this
-      $.ajax({
-        url: '//view.csslcloud.net/api/vod/v2/play/h5',
-        type: 'GET',
-        dataType: 'jsonp',
-        data: {
-          userid: opts.userId,
-          roomid: opts.roomId,
-          recordid: opts.recordId
-        },
-        success: function (data) {
-          var pvdefault = data.video[0]
 
-          var playurl = pvdefault.playurl
-          var secureplayurl = pvdefault.secureplayurl
+      function getInfo(opts) {
+        $.ajax({
+          url: '//view.csslcloud.net/api/vod/v2/play/h5',
+          type: 'GET',
+          dataType: 'jsonp',
+          data: {
+            userid: opts.userId,
+            roomid: opts.roomId,
+            recordid: opts.recordId,
+            mp4: isMp4
+          },
+          success: function (data) {
+            if (data.isValid === 'false') {
+              // 加密视频仍然用flash播放
+              DW.isH5play = false
+              callback.callbackPlayer.flashPlayerInit()
+            } else {
+              var pvdefault = data.video[0]
 
-          var isHttps = window.location.protocol === 'https:'
-          if (isHttps && !!secureplayurl) {
-            playurl = secureplayurl
+              var playurl = pvdefault.playurl
+              var secureplayurl = pvdefault.secureplayurl
+
+              var isHttps = window.location.protocol === 'https:'
+              if (isHttps && !!secureplayurl) {
+                playurl = secureplayurl
+              }
+              _this.appendVideo(playurl, opts)
+            }
           }
 
-          _this.appendVideo(playurl, opts)
+        })
+      }
+
+      var isMp4 = 0
+      if (!MobileLive.isMobile()) {
+        if (DW.isH5play) {
+          util.log('浏览器版本是否是IE', util.isIE())
+          if (util.isIE()) {
+            isMp4 = 1
+            this.useHls = false
+            // DW.getH5src(opts);
+            getInfo(ots)
+            return
+          } else {
+            isMp4 = 0
+            this.useHls = true
+            var script = document.createElement('script')
+            script.src = '//static.csslcloud.net/js/hls.js?v=' + parseInt(Math.random() * 2000, 10)
+            script.onload = function () {
+              // DW.getH5src(opts);
+              getInfo(ots)
+            }
+            document.body.appendChild(script)
+            return
+          }
         }
-      })
+      }
+      getInfo(ots)
     },
 
-    appendVideo: function (s, opts) {
+    appendVideo: function (src, opts) {
       var _this = this
 
-      var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
       $('#' + playbackPlayer.id).html(v)
       var video = document.getElementById('playbackVideo')
+
+      if (this.useHls && !util.isMp4(src)) {
+        if (Hls.isSupported()) {
+          var hls = new Hls()
+          hls.attachMedia(video)
+          hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+            hls.loadSource(src)
+          })
+        }
+      } else {
+        $('#playbackVideo').attr('src', src)
+      }
       if (opts.isShowBar) {
         video.removeAttribute('controls')
       }

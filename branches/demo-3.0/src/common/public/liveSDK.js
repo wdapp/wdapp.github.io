@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.9.1 2019/01/21 */
+ * v2.9.2 2019/06/20 */
 (function () {
 
   var DELAY_TIME = 10 * 1000
@@ -188,7 +188,9 @@
       if (typeof option == 'undefined') {
         option = {}
       }
-      window.$ = window.jQuery = $
+      if ($) {
+        window.$ = window.jQuery = $
+      }
       this.userid = $.trim(option.userid)
       this.roomid = $.trim(option.roomid)
       this.groupid = $.trim(option.groupid)
@@ -226,7 +228,7 @@
         '//static.csslcloud.net/js/report.js'
       ]
       if (DWDpc.fastMode) {
-        scripts.push('//image.csslcloud.net/js/dpc.js?v=20180121')
+        scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
@@ -419,11 +421,8 @@
               'groupId': data.datas.viewer.groupId,
               'name': data.datas.viewer.name
             }//返回给用户的viewer信息;
-            var room = {
-              barrage: data.datas.room.barrage
-            }
             var live = data.datas.live//返回给用户的live信息
-            var loginInfo = {'live': live, 'template': template, 'viewer': viewer, 'room': room}
+            var loginInfo = {'live': live, 'template': template, 'viewer': viewer}
             DWLive.onLoginSuccess(loginInfo)
           }
 

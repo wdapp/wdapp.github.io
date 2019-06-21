@@ -2,6 +2,7 @@
 import 'babel-polyfill' //IE 9 兼容 ECMAScript 6
 import LiveAdaptive from './liveAdaptive'
 import Utils from 'common/utils' //公共方法库
+
 let HD = function () {
   return (function () {
 
@@ -86,7 +87,6 @@ let HD = function () {
         if (data.modules) {
           this.components(data.modules)
         }
-        // let liveAdaptive = new LiveAdaptive()
         let params = data.config
         this.login({
           userId: params.userid || '40A53587B37573BD',
@@ -113,7 +113,6 @@ let HD = function () {
         })
 
       }
-
 
       /**
        *

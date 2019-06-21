@@ -2,14 +2,11 @@
  * 渲染类
  * */
 import Utils from 'common/utils'
-import Velocity from 'velocity-animate'
-import 'bootstrap'
 
 class Render {
 
   constructor() {
     this._root = {}
-    this.alertIndex = 0
   }
 
   getRoot(id = 'app') {
@@ -30,28 +27,6 @@ class Render {
 
   innerHTML(node = {}, template = '') {
     Utils.isEmptyString(template) && this.isEmptyNode(node) && (node.innerHTML = template)
-  }
-
-  alert(c, t) {
-    // if (!Utils.isEmptyObject(options)) {
-    //   return false
-    // }
-    // type primary secondary success danger warning info light dark
-    let content = c, type = t, time = 2500
-    let template = `<div class="alert alert-${type ? type : 'success'}" role="alert" style="top:${(this.alertIndex < 5 ? this.alertIndex : 5) * 58}px">${content}</div>`
-    let root = this.getRoot()
-    let element = this.appendChild(root, template)
-    this.alertIndex++
-    if (time) {
-      Velocity(element, 'fadeOut', {
-        delay: time,
-        duration: 500,
-        complete: (elements) => {
-          this.deleteNodes(elements)
-          this.alertIndex--
-        }
-      })
-    }
   }
 
   isEmptyNode(node = {}) {

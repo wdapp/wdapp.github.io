@@ -5,6 +5,7 @@ import UIQuestion from './UIQuestion'
 import UIAnswer from './UIAnswer'
 import LiveInfo from 'common/liveinfo'
 import Utils from 'common/utils'
+import UserInterface from 'common/userInterface'//UI库
 
 class QuestionAnswer extends Component {
 
@@ -14,6 +15,7 @@ class QuestionAnswer extends Component {
     this.render('questionAnswer', template, () => {
     })
 
+    this.ui = new UserInterface()
     this.qaMap = {}
     this.sendControl()
     this.bindEvent()
@@ -24,9 +26,6 @@ class QuestionAnswer extends Component {
     HDScence.onQAQuestion({callback: this.addQuestion.bind(this)})
     HDScence.onQAAnswer({callback: this.addAnswer.bind(this)})
 
-    // HDScence.addEvent(HDScence.OnQuestion, this.addQuestion.bind(this))
-    // HDScence.addEvent(HDScence.OnAnswer, this.addAnswer.bind(this))
-    // HDScence.addEvent(HDScence.OnQAPublish,this.addQuestionPublish.bind(this))
     HDScence.on('switch', () => {
       this.updateScroll()
     })
@@ -64,22 +63,35 @@ class QuestionAnswer extends Component {
 
     function sendQAMsg() {
       let sendMsg = Utils.trim(msgInput.value)
+      if (!HDScence.isLive) {
+        t.ui.alertTip({
+          parentNodeId: 'sendQuestionWrap',
+          content: '直播未开始，无法提问'
+        })
+        return false
+      }
       if (!sendMsg) {
-        t.alert('发送内容不能为空', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'sendQuestionWrap',
+          content: '提问信息不能为空'
+        })
+        return false
       }
       if (!isCanSend) {
-        t.alert('发送过于频繁，请稍后', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'sendQuestionWrap',
+          content: '提问过于频繁，请稍后'
+        })
+        return false
       }
       if (sendMsg.length > 300) {
-        t.alert('发送内容不能超过300字符', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'sendQuestionWrap',
+          content: '问题不能超过300个字符'
+        })
+        return false
       }
-      if (!HDScence.isLive) {
-        t.alert('直播未开始，不能发送问答', 'warning')
-        return
-      }
+      t.ui.alertTipClose()
       HDScence.sendQustionMsg({'msg': sendMsg})
       msgInput.value = ''
       isCanSend = false
@@ -113,8 +125,8 @@ class QuestionAnswer extends Component {
     this.updateScroll()
   }
 
-  addQuestion(info) {
-    let qInfo = info
+  addQuestion() {
+    let qInfo = LiveInfo.questionInfo
     if (qInfo != {}) {
       let uiquestion = new UIQuestion()
       uiquestion.setInfo(qInfo)
@@ -126,8 +138,8 @@ class QuestionAnswer extends Component {
     this.updateScroll()
   }
 
-  addAnswer(info) {
-    let aInfo = info
+  addAnswer() {
+    let aInfo = LiveInfo.answerInfo
     if (!aInfo || aInfo != {}) {
       var qustion = this.qaMap[aInfo.questionId]
       if (aInfo.isPrivate == '1') {
@@ -139,10 +151,7 @@ class QuestionAnswer extends Component {
       }
       let uianswer = new UIAnswer()
       uianswer.setInfo(aInfo)
-      if(qustion){
-        qustion.visible = true
-      }
-
+      qustion && (qustion.visible = true)
     }
     this.updateScroll()
   }

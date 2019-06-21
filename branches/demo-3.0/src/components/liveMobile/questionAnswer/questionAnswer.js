@@ -6,6 +6,7 @@ import UIAnswer from './UIAnswer'
 import LiveInfo from 'common/liveinfo'
 import Utils from 'common/utils'
 import Input from 'common/public/input'
+import UserInterface from 'common/userInterface'//UI库
 
 class QuestionAnswer extends Component {
 
@@ -13,6 +14,7 @@ class QuestionAnswer extends Component {
     super()
     this.render('questionAnswer', template, () => {
     })
+    this.ui = new UserInterface()
     this.name = 'qa'
     this.qaMap = {}
     this.sendControl()
@@ -56,22 +58,35 @@ class QuestionAnswer extends Component {
     let timeOutId = -1
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
       let sendMsg = this.getNode('sendQaMsg').value
+      if (!HDScence.isLive) {
+        this.ui.alertTip({
+          parentNodeId: 'sendQuestionInputWrap',
+          content: '直播未开始，无法提问'
+        })
+        return false
+      }
       if (!sendMsg) {
-        this.alert('发送内容不能为空', 'warning')
-        return
+        this.ui.alertTip({
+          parentNodeId: 'sendQuestionInputWrap',
+          content: '提问信息不能为空'
+        })
+        return false
       }
       if (!isCanSend) {
-        this.alert('发送过于频繁，请稍后', 'warning')
-        return
+        this.ui.alertTip({
+          parentNodeId: 'sendQuestionInputWrap',
+          content: '提问过于频繁，请稍后'
+        })
+        return false
       }
       if (sendMsg.length > 300) {
-        this.alert('发送内容不能超过300字符', 'warning')
-        return
+        this.ui.alertTip({
+          parentNodeId: 'sendQuestionInputWrap',
+          content: '问题不能超过300个字符'
+        })
+        return false
       }
-      if (!HDScence.isLive) {
-        this.alert('直播未开始，不能发送问答', 'warning')
-        return
-      }
+      this.ui.alertTipClose()
       //发送问答
       HDScence.sendQustionMsg({'msg': sendMsg})
       this.getNode('sendQaMsg').value = ''
@@ -91,7 +106,7 @@ class QuestionAnswer extends Component {
             uiquestion.visible = false
           }
         }
-        this.alert('只显示自己问答', 'warning')
+        this.ui.tip('只看我的问答')
       } else {
         for (let str in this.qaMap) {
           let uiquestion = this.qaMap[str]
@@ -99,6 +114,7 @@ class QuestionAnswer extends Component {
             uiquestion.visible = true
           }
         }
+        this.ui.tip('查看所有问答')
       }
       this.setSelfActive(selected)
       selected = !selected

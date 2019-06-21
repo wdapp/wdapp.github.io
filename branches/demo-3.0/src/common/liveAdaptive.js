@@ -2,10 +2,7 @@ import 'common/public/liveSDK' //引入观看直播Web SDK
 import {LiveSDKInterface} from 'common/interface' //引入接口适配器
 import LiveInfo from 'common/liveinfo'
 import EventEmitter from 'onfire.js'
-
-
-let tips = null
-let eventMap = {}
+import Utils from 'common/utils' //公共方法库
 
 class LiveAdaptive extends EventEmitter {
 
@@ -48,7 +45,6 @@ class LiveAdaptive extends EventEmitter {
 
   //初始化登录入口
   login(params) {
-    // this.param = HDScence.registerObject(HDScence.InitInfo, params)
     this.liveInterface.call(this.liveInterface.INIT, {
       userid: params.userId || '',
       roomid: params.roomId || '',
@@ -62,7 +58,6 @@ class LiveAdaptive extends EventEmitter {
     })
     this.isLive = false
     this.onLogin(params)
-    // this.addAPIFunction()
   }
 
   /**
@@ -70,7 +65,6 @@ class LiveAdaptive extends EventEmitter {
    **/
   dispatch(type) {
     this.fire(type)
-
   }
 
   /**
@@ -108,13 +102,10 @@ class LiveAdaptive extends EventEmitter {
 
       d.success && d.success(result)
       this.dispatch(this.OnLoginSuccess)
-      // this.alert('登录成功')
     })
 
     //监听登录失败后的回调
     this.liveInterface.on(this.liveInterface.ONLOGINERROR, (result) => {
-      // this.alert('登录失败', 'danger')
-      this.param.success && this.param.fail(result)
       d.fail && d.fail(result)
     })
 
@@ -247,7 +238,6 @@ class LiveAdaptive extends EventEmitter {
   onBannedInfomation(d = {}) {
     this.liveInterface.on(this.liveInterface.ONINFORMATION, (result) => {
       LiveInfo.bannedInfomation = result[0]
-      // this.alert(LiveInfo.bannedInfomation)
       d.callback && d.callback(LiveInfo.bannedInfomation)
 
     })
@@ -316,9 +306,9 @@ class LiveAdaptive extends EventEmitter {
   /**
    * flash文档加载完成
    */
-  onFlashPlayerLoad(callback) {
+  onFlashPlayerLoad(d = {}) {
     window.on_cc_swf_loading_completed = (result) => {
-      callback && callback(result)
+      d.callback && d.callback(result)
     }
   }
 

@@ -64,8 +64,10 @@ class Controls extends Component {
       }
     })
     this.ui.switchPanel()
-    HDScence.onFlashPlayerLoad((result) => {
-      this.ui.switchPanel()
+    HDScence.onFlashPlayerLoad({
+      callback: (result) => {
+        this.ui.switchPanel()
+      }
     })
   }
 
@@ -123,7 +125,7 @@ class Controls extends Component {
         },
         confirm: () => {
           let index = 0
-          let dom = document.querySelectorAll('.line-radio')
+          let dom = document.getElementsByClassName('line-radio')
           for (let i = 0; i < dom.length; i++) {
             if (dom[i].checked) {
               LiveInfo.lines[i].select = 1

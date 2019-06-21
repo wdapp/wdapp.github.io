@@ -3,6 +3,7 @@
  * JavaScript 发布订阅事件封装
  * */
 import 'common/public/playbackSDK'
+import {ReplaySDKInterface} from 'common/interface' //引入接口适配器
 import Utils from 'common/utils'
 import EventEmitter from 'onfire.js'
 
@@ -15,6 +16,8 @@ class ReplayAdaptive extends EventEmitter {
 
   constructor() {
     super()
+
+    this.replayInterface = new ReplaySDKInterface()
   }
 
   /**
@@ -47,7 +50,7 @@ class ReplayAdaptive extends EventEmitter {
       return false
     }
     let {isH5play = true, fastMode = true} = {isH5play: params.isH5play, fastMode: params.fastMode}
-    $.DW.config({
+    this.replayInterface.call(this.replayInterface.CONFIG, {
       userId: params.userId || '',
       roomId: params.roomId || '',
       recordId: params.recordId || '',
@@ -100,10 +103,10 @@ class ReplayAdaptive extends EventEmitter {
      *  }
      */
 
-    window.on_cc_login_success = (result) => {
+    this.replayInterface.on(this.replayInterface.ONLOGINSUCCESS, (result) => {
       params.success && params.success(result)
       this.initReplayInfoAync(result)
-    }
+    })
 
     /**
      * @function on_cc_login_error
@@ -114,9 +117,9 @@ class ReplayAdaptive extends EventEmitter {
        }
      */
 
-    window.on_cc_login_error = (error) => {
+    this.replayInterface.on(this.replayInterface.ONLOGINERROR, (error) => {
       params.fail && params.fail(error)
-    }
+    })
     return true
   }
 
@@ -222,7 +225,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   togglePlay() {
-    $.DW.play()
+    this.replayInterface.call(this.replayInterface.PLAY)
   }
 
   /**
@@ -234,7 +237,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   seek(time) {
-    $.DW.seek(time)
+    this.replayInterface.call(this.replayInterface.SEEK, parseFloat(time))
   }
 
   /**
@@ -245,7 +248,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   get currentTime() {
-    return $.DW.getPlayerTime()
+    return this.replayInterface.call(this.replayInterface.GETPLAYERTIME)
   }
 
   /**
@@ -256,7 +259,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   get durationTime() {
-    return $.DW.getDuration()
+    return this.replayInterface.call(this.replayInterface.GETDURATION)
   }
 
   /**
@@ -267,7 +270,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   get buffer() {
-    return $.DW.getBuffer()
+    return this.replayInterface.call(this.replayInterface.GETBUFFER)
   }
 
   /**
@@ -278,7 +281,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   get volume() {
-    return $.DW.getVolume()
+    return this.replayInterface.call(this.replayInterface.GETVOLUME)
   }
 
   /**
@@ -293,7 +296,7 @@ class ReplayAdaptive extends EventEmitter {
     if (isNaN(number)) {
       return false
     }
-    $.DW.setVolume(number)
+    this.replayInterface.call(this.replayInterface.SETVOLUME, number)
     return true
   }
 
@@ -309,7 +312,8 @@ class ReplayAdaptive extends EventEmitter {
     if (isNaN(number)) {
       return false
     }
-    $.DW.playbackRate(number)
+    this.replayInterface.call(this.replayInterface.PLAYBACKRATE, number)
+    return true
   }
 
   /**
@@ -325,7 +329,7 @@ class ReplayAdaptive extends EventEmitter {
       return false
     }
     let number = boolean ? 0 : 1
-    $.DW.isShowBar(number)
+    this.replayInterface.call(this.replayInterface.ISSHOWBAR, number)
     return true
   }
 
@@ -341,7 +345,7 @@ class ReplayAdaptive extends EventEmitter {
     if (typeof boolean !== 'boolean') {
       return false
     }
-    $.DW.docAdapt(boolean)
+    this.replayInterface.call(this.replayInterface.DOCADAPT, boolean)
     return true
   }
 
@@ -353,7 +357,7 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   logout() {
-    $.DW.logout()
+    this.replayInterface.call(this.replayInterface.LOGOUT)
   }
 
   /**
@@ -382,10 +386,10 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onQuestions(callback) {
-    window.on_cc_live_qa_question = (data) => {
+    this.replayInterface.on(this.replayInterface.ONQAQUETION, (data) => {
       let question = data.value
       callback && callback(question)
-    }
+    })
   }
 
   /**
@@ -415,10 +419,10 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onAnswers(callback) {
-    window.on_cc_live_qa_answer = (data) => {
+    this.replayInterface.on(this.replayInterface.ONQAANSWER, (data) => {
       let answer = data.value
       callback && callback(answer)
-    }
+    })
   }
 
   /**
@@ -451,12 +455,12 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onChatMessageSync(callback) {
-    window.on_cc_live_chat_msg_sync = (datas) => {
+    this.replayInterface.on(this.replayInterface.ONCHATMSGSYNC, (datas) => {
       for (let data of datas) {
         let message = data
         callback && callback(message)
       }
-    }
+    })
   }
 
   /**
@@ -497,9 +501,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onAllPages(callback) {
-    window.on_cc_callback_pages = (datas) => {
+    this.replayInterface.on(this.replayInterface.ONCALLBACKPAGE, (datas) => {
       callback && callback(datas)
-    }
+    })
   }
 
   /**
@@ -540,9 +544,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onChangePageSync(callback) {
-    window.on_cc_callback_page_change = (data) => {
+    this.replayInterface.on(this.replayInterface.ONCALLBACKPAGECHANGE, (data) => {
       callback && callback(data)
-    }
+    })
   }
 
   /**
@@ -554,9 +558,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onPlayerLoad(callback) {
-    window.on_cc_live_player_load = () => {
+    this.replayInterface.on(this.replayInterface.ONPLAYERLOAD, () => {
       callback && callback()
-    }
+    })
   }
 
   /**
@@ -568,9 +572,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onPlayerStart(callback) {
-    window.on_player_start = () => {
+    this.replayInterface.on(this.replayInterface.ONPLAYERSTART, () => {
       callback && callback()
-    }
+    })
   }
 
   /**
@@ -582,9 +586,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onPlayerPause(callback) {
-    window.on_spark_player_pause = () => {
+    this.replayInterface.on(this.replayInterface.ONPLAYERPAUSE, () => {
       callback && callback()
-    }
+    })
   }
 
   /**
@@ -596,9 +600,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onPlayerResume(callback) {
-    window.on_spark_player_resume = () => {
+    this.replayInterface.on(this.replayInterface.ONPLAYERRESUME, () => {
       callback && callback()
-    }
+    })
   }
 
   /**
@@ -610,9 +614,9 @@ class ReplayAdaptive extends EventEmitter {
    */
 
   onPlayerEnd(callback) {
-    window.on_spark_player_end = () => {
+    this.replayInterface.on(this.replayInterface.ONPLAYEREND, () => {
       callback && callback()
-    }
+    })
   }
 
 }

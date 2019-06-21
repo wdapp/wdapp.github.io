@@ -34,20 +34,26 @@ HDScence.ready(() => {
     userId: params.userid || 'B27039502337407C',
     roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
     recordId: params.recordid || '96C0454B9E3CE464',
-
     viewerName: params.viewername || '关羽',
     viewerToken: params.viewertoken || '',
     isH5play: params.isH5play,
     fastMode: params.fastMode,
-    // isH5play: false,
-    // fastMode: false,
     success(result) {
       Utils.log('登录成功', result)
-      ui.alert({content: '登录成功'})
+      // ui.alert({content: '登录成功'})
     },
     fail(error) {
       Utils.log('登录失败', error)
-      ui.alert({type: 'danger', content: '登录失败'})
+      ui.alert({type: 'danger', content: '登录失败', time: false})
+      ui.modal({
+        titile: '登录失败',
+        content: '点击确定返回登录界面。',
+        confirmText: '确定',
+        cancelText: false,
+        complete: () => {
+          location.href = Utils.PATH.INDEX
+        }
+      })
     }
   })
 })

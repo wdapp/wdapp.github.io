@@ -26,6 +26,7 @@ class Controls extends Component {
   isVideoMain = true
   isH5play = false
   isFullScreen = false
+  isSwitch = true
 
   constructor() {
     super()
@@ -46,6 +47,7 @@ class Controls extends Component {
     this.palyTimeCurrent = this.getNode('palyTimeCurrent')
     this.voiceButton = this.getNode('voiceButton')
     this.quitButton = this.getNode('quitButton')
+    this.switchBtnWrap = this.getNode('switchBtnWrap')
     this.thumbnailListButton = this.getNode('thumbnailListButton')
     this.thumbnailWrapper = this.getNode('thumbnailWrapper')
     this.playRateWrap = this.getNode('playRateWrap')
@@ -61,9 +63,20 @@ class Controls extends Component {
   }
 
   onEvents() {
+    HDScence.onDocumentMode((data) => {
+      if (!data.fastMode && this.fullScreen.isSupportFullscreen) {
+        this.isSwitch = false
+      }
+    })
     HDScence.onPlayerMode((data) => {
       this.isH5play = data.isH5play
       this.autoPlay(this.isH5play)
+      if (!this.isH5play && this.fullScreen.isSupportFullscreen) {
+        this.isSwitch = false
+      }
+      if (!this.isH5play) {
+        this.playRateWrap.parentNode.style.display = 'none'
+      }
     })
     HDScence.onPlayerLoad(() => {
       this.isPlayerLoad = true
@@ -136,14 +149,13 @@ class Controls extends Component {
   handleClick() {
     let leftBar = this.getNode('leftBar')
     let rightBar = this.getNode('rightBar')
-    let switchBtnWrap = this.getNode('switchBtnWrap')
     let fullScreenButtonWrap = this.getNode('fullScreenButtonWrap')
 
     this.bind(leftBar, 'click', this.bindLeftBar.bind(this))
     this.bind(rightBar, 'click', this.bindRightBar.bind(this))
     this.bind(fullScreenButtonWrap, 'click', this.bindFullScreen.bind(this))
-    this.bind(switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
 
+    this.bind(this.switchBtnWrap, 'click', this.bindSwitchBtnWrap.bind(this))
     this.bind(this.playButton, 'click', this.bindPlay.bind(this))
     this.bind(this.voiceButton, 'click', this.toggleMute.bind(this))
     this.bind(this.quitButton, 'click', this.bindQuit.bind(this))
@@ -174,8 +186,10 @@ class Controls extends Component {
     this.loadBar && this.loadBar.initTooltip && this.loadBar.initTooltip()
     if (data.isFullScreen) {
       this.quitButton.style.display = 'none'
+      !this.isSwitch && (this.switchBtnWrap.parentNode.style.display = 'none')
     } else {
       this.quitButton.style.display = 'block'
+      !this.isSwitch && (this.switchBtnWrap.parentNode.style.display = 'block')
     }
   }
 
@@ -271,11 +285,6 @@ class Controls extends Component {
   }
 
   bindPlayRateWrap() {
-    if (!this.isH5play) {
-      Utils.log('仅支持H5播放器')
-      this.ui.alert({type: 'warning', content: '仅支持H5播放器'})
-      return false
-    }
     if (this.isShowRate) {
       this.playRateList.style.display = 'none'
       this.removeClass(this.playRateWrap, 'select')

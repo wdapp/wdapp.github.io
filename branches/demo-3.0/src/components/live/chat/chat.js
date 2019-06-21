@@ -7,6 +7,7 @@ import ChatMsg from './ChatMsg'
 import PrivateChatMsg from './PrivateChatMsg'
 import Announce from './announcement'
 import Utils from 'common/utils'
+import UserInterface from 'common/userInterface'//UI库
 
 class Chat extends Component {
 
@@ -17,6 +18,7 @@ class Chat extends Component {
     this.render('chat', template, () => {
 
     })
+    this.ui = new UserInterface()
     this.uiChat = new UIChat()
     this.chatMap = {}
     this.teachers = {}
@@ -182,18 +184,28 @@ class Chat extends Component {
 
     function sendMsgInfo() {
       if (!isCanSend) {
-        t.alert('发送过于频繁，请稍后', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'chatAlertTipWrap',
+          content: '发送过于频繁，请稍后'
+        })
+        return false
       }
       let msg = Utils.trim(t.uiChat.msg)
       if (msg.length > 300) {
-        t.alert('发送消息字数不能超过300', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'chatAlertTipWrap',
+          content: '聊天不能超过300个字符'
+        })
+        return false
       }
       if (!msg) {
-        t.alert('请输入内容', 'warning')
-        return
+        t.ui.alertTip({
+          parentNodeId: 'chatAlertTipWrap',
+          content: '聊天信息不能为空'
+        })
+        return false
       }
+      t.ui.alertTipClose()
       isCanSend = false
       let teacher = t.selectedTeacher
       let teacherName = t.selectedTeacherName
