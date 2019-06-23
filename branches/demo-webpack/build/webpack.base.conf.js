@@ -15,8 +15,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '..', 'dist'),
-    filename: 'js/[name].js?hash=[hash]',
-    // publicPath:"//static.csslcloud.net"
+    filename: 'js/[name].js?hash=[hash]'
   },
 
   devServer: {
