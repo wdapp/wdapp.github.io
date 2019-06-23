@@ -1,0 +1,31 @@
+@import "~assets/styles/mixin.scss";
+
+.intro {
+  @include width-height-full();
+  padding: 0 .3rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  .intro-header {
+    border-bottom: 1px solid #e8e8e8;
+    margin: .3rem 0;
+    padding-bottom: .26rem;
+    .intro-title {
+      font-size: .32rem;
+      color: #333;
+      border-left: 4px solid #3d96f5;
+      padding-left: .1rem;
+      line-height: .42rem;
+      @include word-break();
+    }
+  }
+  .intro-body {
+    padding-bottom: .2rem;
+    box-sizing: border-box;
+    .intro-content {
+      font-size: .28rem;
+      line-height: .38rem;
+      color: #79808b;
+      @include word-break();
+    }
+  }
+}

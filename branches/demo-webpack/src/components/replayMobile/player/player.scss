@@ -1,0 +1,26 @@
+@import "~assets/styles/mixin.scss";
+
+.player {
+  @include width-height-full();
+  background-color: #333333;
+  .live-player {
+    @include width-height-full();
+    video {
+      @include width-height-full();
+    }
+  }
+  .video-tip {
+    position: absolute;
+    top: 0;
+    height: 4.22rem;
+    width: 100%;
+    .waiting-layer {
+      @include width-height-full();
+      line-height: 4.22rem;
+      text-align: center;
+      .waiting-text {
+        color: white;
+      }
+    }
+  }
+}

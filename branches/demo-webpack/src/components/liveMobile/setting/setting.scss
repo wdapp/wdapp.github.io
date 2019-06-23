@@ -1,0 +1,97 @@
+@import "~assets/styles/mixin.scss";
+
+@mixin option() {
+  background: #ffffff;
+  border: 1px solid #e8e9eb;
+  border-radius: 2px;
+  text-align: center;
+  width: 1.46rem;
+  height: 1.46rem;
+  padding-top: 12px;
+  box-sizing: border-box;
+}
+
+.setting {
+  @include layout(4.92rem, 0, 0, 0);
+  z-index: 3;
+  display: none;
+  .model-full {
+    @include width-height-full();
+    background-color: white;
+    //display: none;
+    .announcement-wrap {
+      .header {
+        height: .8rem;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        .announcement-title {
+          line-height: .8rem;
+          font-size: .3rem;
+          color: #38404b;
+        }
+        .announcement-close {
+          @include layout(.1rem, .08rem, 0, unset);
+          display: inline-block;
+          @include width-height-same(.56rem);
+          background: url(~assets/images/icon-close.png) center no-repeat;
+          background-size: 47%;
+        }
+      }
+      .announcement-content-wrap {
+        @include layout(.8rem, 0, 0, 0);
+        padding: .30rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        .announcement-content {
+          @include width-height-full();
+          @include word-break();
+          color: #79808b;
+          line-height: 150%;
+          font-size: 100%;
+        }
+      }
+    }
+  }
+  .model-flex {
+    @include layout(.86rem, 0, 0, 0);
+    background-color: white;
+    overflow-y: auto;
+    //display: none;
+    .setting-options-wrap {
+      box-sizing: border-box;
+      padding: .2rem 0rem;
+      .options {
+        float: left;
+        margin: .2rem;
+        .setting-wrap {
+          @include option();
+          .live-model-toggle-icon {
+            display: inline-block;
+            width: .44rem;
+            height: .54rem;
+            background: url(~assets/images/icon-audio.png) no-repeat;
+            background-size: 100%;
+          }
+          .live-model-toggle-text {
+            font-size: .12rem;
+            margin-top: 10px;
+          }
+        }
+        .announcement-wrap {
+          @include option();
+          .announcement-icon {
+            display: inline-block;
+            width: .44rem;
+            height: .54rem;
+            background: url(~assets/images/icon-gao.png) no-repeat;
+            background-size: 100%;
+          }
+          .announcement-text {
+            font-size: .12rem;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+}

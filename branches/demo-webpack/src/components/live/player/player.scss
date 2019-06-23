@@ -1,0 +1,9 @@
+@import "~assets/styles/mixin.scss";
+
+.player {
+  background-color: #333333;
+  @include width-height-full();
+  .live-player {
+    @include width-height-full();
+  }
+}

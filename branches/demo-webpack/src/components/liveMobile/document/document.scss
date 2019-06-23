@@ -1,0 +1,22 @@
+@import "~assets/styles/mixin.scss";
+
+.drawPanel {
+  @include width-height-full();
+  overflow-y: auto;
+  .no-doc {
+    position: absolute;
+    @include width-height-full();
+    @include flex(column, center, center);
+    .no-doc-image {
+      width: .92rem;
+      height: 1.12rem;
+      display: block;
+    }
+    .no-doc-text {
+      margin-top: .4rem;
+      color: #79808b;
+      font-size: .16rem;
+      display: inline-block;
+    }
+  }
+}

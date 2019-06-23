@@ -1,0 +1,146 @@
+@import "~assets/styles/mixin.scss";
+
+.question-answer {
+  @include width-height-full();
+  .question-header {
+    @include width-height(100%, .35rem);
+    background-color: #E8E8E8;
+    .question-icon-wrap {
+      @include layout(.09rem, .20rem, .15rem, .20rem);
+      .question-icon {
+        @include width-height(.2rem, .2rem);
+        background-image: url(~assets/images/live-icons2.png);
+        background-repeat: no-repeat;
+        background-position: -1px -1px;
+        display: inline-block;
+      }
+    }
+    .question-title {
+      font-weight: 400;
+      font-size: .16rem;
+      line-height: .35rem;
+      color: #333;
+      text-indent: .45rem;
+    }
+  }
+  .question-body {
+    @include layout(.35rem, 0, .86rem, 0);
+    overflow-y: auto;
+    .question-answer-ul {
+      //@include width-height-full();
+      width: 100%;
+      overflow: hidden;
+      .question-answer-wrap {
+        border-bottom: 1px rgba(238, 238, 238, 1) solid;
+        .question-wrap {
+          margin: .1rem .1rem 0 .1rem;
+          padding: .1rem;
+          box-sizing: border-box;
+          border-bottom: 1px rgba(238, 238, 238, 1) solid;
+          .question-name {
+            @include ellipsis();
+            width: 100%;
+            font-weight: 400;
+            font-size: .12rem;
+            color: #666666;
+          }
+          .self {
+            color: rgba(15, 151, 229, 1);
+          }
+          .question-content {
+            @include word-break();
+            width: 100%;
+            margin-top: .15rem;
+            font-size: .13rem;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            line-height: .2rem;
+          }
+        }
+        .anwser-wrap {
+          box-sizing: border-box;
+          margin: .13rem .2rem .1rem .2rem;
+          .anwser-arrows {
+            @include width-height(.12rem, .12rem);
+            background-image: url(~assets/images/live-icons2.png);
+            background-repeat: no-repeat;
+            background-position: 0 -260px;
+            display: inline-block;
+            float: left;
+          }
+          .anwser-box {
+            padding-left: .2rem;
+            .anwser-name {
+              font-size: .12rem;
+              font-weight: 400;
+              color: #03990B;
+              @include ellipsis();
+            }
+            .anwser-content {
+              font-size: .13rem;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+              margin-top: .09rem;
+              @include word-break();
+              line-height: .2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .question-footer {
+    box-sizing: border-box;
+    @include layout(unset, 0, 0, 0);
+    height: .85rem;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    padding: .11rem .15rem;
+    .only-self-question-wrap {
+      .only-self-question-checkbox {
+        @include width-height(.18rem, .18rem);
+        background: rgba(255, 255, 255, 1);
+        border: 1px solid rgba(221, 221, 221, 1);
+      }
+      .only-self-question {
+        font-weight: 400;
+        color: #333333;
+        font-size: .12rem;
+        vertical-align: text-top;
+        cursor: pointer;
+      }
+    }
+    .send-question-wrap {
+      @include width-height(2.3rem, .34rem);
+      background: rgba(255, 255, 254, 1);
+      border-radius: .04rem;
+      border: 1px solid rgba(221, 221, 221, 1);
+      position: relative;
+      .send-question-input {
+        width: 1.84rem;
+        height: 100%;
+        @include width-height(1.84rem, 93%);
+        border: none;
+        outline: none;
+        float: left;
+        border-radius: .04rem 0 0 .04rem;
+      }
+      .send-question-button {
+        width: .44rem;
+        height: 100%;
+        @include width-height(.44rem, 100%);
+        background: rgba(87, 184, 244, 1);
+        border-radius: 0px 4px 4px 0px;
+        font-size: .12rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: .34rem;
+        outline: none;
+        border: none;
+      }
+      .send-question-button:hover {
+        background: rgb(55, 111, 154);
+      }
+    }
+  }
+}
