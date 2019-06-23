@@ -1,0 +1,122 @@
+@import "~assets/styles/mixin.scss";
+
+.chat {
+  @include width-height-full();
+  .chat-header {
+    height: .35rem;
+    background: rgba(241, 241, 241, 1);
+    box-shadow: 0px -1px 0px 0px rgba(232, 232, 232, 1), 0px 1px 0px 0px rgba(232, 232, 232, 1);
+    box-sizing: border-box;
+    padding: 0 .1rem;
+    .chat-title-icon {
+      @include width-height-same(.22rem);
+      display: inline-block;
+      background-image: url(~assets/images/icon-playbar.png);
+      background-repeat: no-repeat;
+      background-position: -.12rem -2.71rem;
+      float: left;
+      margin-right: .1rem;
+      margin-top: .07rem;
+    }
+    .chat-title {
+      float: left;
+      font-size: .14rem;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: .35rem;
+    }
+  }
+  .chat-body {
+    @include layout(.35rem, 0, 0, 0);
+    overflow-y: auto;
+    .chat-message-wrap {
+      width: 100%;
+      overflow: hidden;
+      padding: .2rem .15rem;
+      box-sizing: border-box;
+      .chat-content-wrap {
+        width: 100%;
+        position: relative;
+        float: left;
+        margin-bottom: .2rem;
+        .chat-name {
+          width: 100%;
+          @include ellipsis();
+          font-size: .12rem;
+          font-weight: 400;
+          color: #666666;
+        }
+        .chat-message {
+          display: inline-block;
+          max-width: 2rem;
+          @include word-break();
+          background: rgba(247, 247, 247, 1);
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.5);
+          border: 1px solid #eeeeee;
+          padding: .06rem .1rem .08rem .1rem;
+          box-sizing: border-box;
+          margin-top: .1rem;
+          font-size: .13rem;
+          color: rgba(51, 51, 51, 1);
+          line-height: .23rem;
+          border-radius: .04rem;
+          min-width: .27rem;
+          min-height: .39rem;
+          img {
+            width: .24rem;
+          }
+        }
+        .chat-message:after {
+          content: '';
+          position: absolute;
+          display: inline-block;
+          width: .07rem;
+          height: .1rem;
+          top: .34rem;
+          left: -.06rem;
+          background-image: url(~assets/images/live-icons2.png);
+          background-repeat: no-repeat;
+          background-position: -25px -120px;
+        }
+        .teacher {
+          color: rgba(3, 153, 11, 1);
+        }
+        .self {
+          color: #e67410;
+        }
+      }
+      .chat-content-right {
+        .chat-name {
+          text-align: right;
+        }
+        .chat-name-wrap {
+          float: right;
+          .chat-name-from {
+            float: right;
+          }
+          .chat-name-to {
+            float: right;
+          }
+          clear: both;
+        }
+        .chat-message {
+          float: right;
+          background: #ffaa5f;
+          border: 1px solid #ff902e;
+        }
+        .chat-message:after {
+          content: '';
+          position: absolute;
+          display: inline-block;
+          width: .07rem;
+          height: .1rem;
+          top: .34rem;
+          left: 2.29rem;
+          background-image: url(~assets/images/live-icons2.png);
+          background-repeat: no-repeat;
+          background-position: -35px -135px;
+        }
+      }
+    }
+  }
+}

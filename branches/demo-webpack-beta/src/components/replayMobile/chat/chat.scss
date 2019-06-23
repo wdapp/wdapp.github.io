@@ -1,0 +1,58 @@
+@import "~assets/styles/mixin.scss";
+
+.chat {
+  @include width-height-full();
+  background-color: #f7f7f7;
+  .chat-message {
+    @include layout(0, 0, 0, 0);
+    overflow-y: auto;
+    padding: 0 .3rem;
+    box-sizing: border-box;
+    .chat-message-box {
+      @include width-height-full();
+      .chat-message-wrap {
+        //border-bottom: 1px solid rgba(221, 221, 221, 1);
+        box-sizing: border-box;
+        padding: .3rem 0;
+        .chat-message-name {
+          display: inline-block;
+          max-width: 3rem;
+          font-size: .26rem;
+          //color: rgba(61, 150, 245, 1);
+          @include ellipsis();
+        }
+        .chat-message-time {
+          visibility: hidden;
+          display: inline-block;
+          max-width: 2rem;
+          font-size: .26rem;
+          color: rgba(181, 183, 190, 1);
+          float: right;
+          margin-right: .3rem;
+          @include ellipsis();
+        }
+        .chat-message-content {
+          width: 100%;
+          font-size: .28rem;
+          line-height: .34rem;
+          margin-top: .2rem;
+          @include word-break();
+          img {
+            width: .48rem;
+            margin: 0 2px;
+            box-sizing: content-box;
+          }
+        }
+        .chatImage {
+          max-width: 70%;
+        }
+        .self {
+          color: #3D96F5
+        }
+        .teacher {
+          color: #12AD1A;
+        }
+      }
+    }
+  }
+}

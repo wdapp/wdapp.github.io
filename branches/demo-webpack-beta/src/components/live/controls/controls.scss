@@ -1,0 +1,119 @@
+@import "~assets/styles/mixin.scss";
+
+.controls {
+  @include width-height-full();
+  ul {
+    li {
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+  .controls-wrap {
+    @include width-height-full();
+    box-sizing: border-box;
+    min-width: 3.7rem;
+    background: rgba(241, 241, 241, 1);
+    padding: .15rem .15rem 0 .2rem;
+    .controls-left-wrap {
+      float: left;
+      .controls-left {
+        li {
+          float: left;
+          margin-right: .2rem;
+          .controls-switch {
+            display: inline-block;
+            width: .23rem;
+            height: .23rem;
+            background-image: url(~assets/images/live-icons2.png);
+            background-repeat: no-repeat;
+            background-position: -40px -369px;
+          }
+          .controls-switch:hover {
+            background-position: -140px -318px;
+          }
+          .controls-line {
+            display: inline-block;
+            width: .23rem;
+            height: .23rem;
+            background-image: url(~assets/images/live-icons2.png);
+            background-repeat: no-repeat;
+            background-position: -40px -343px;
+          }
+          .controls-line:hover {
+            background-position: -107px -316px;
+          }
+        }
+      }
+    }
+    .controls-reight-wrap {
+      float: right;
+      .controls-reight {
+        li {
+          float: left;
+          margin-left: .2rem;
+          .controls-online-wrap {
+            margin-top: .04rem;
+            .controls-online-icon {
+              display: inline-block;
+              background-image: url(~assets/images/live-icons2.png);
+              background-repeat: no-repeat;
+              background-position: -82px -323px;
+              width: .15rem;
+              height: .12rem;
+            }
+            .controls-online-number {
+              max-width: 1rem;
+              font-size: .12rem;
+              color: rgba(102, 102, 102, 1);
+              vertical-align: top;
+              display: inline-block;
+              @include ellipsis();
+            }
+            .controls-online-unit {
+              font-size: .12rem;
+              color: rgba(102, 102, 102, 1);
+              vertical-align: top;
+            }
+          }
+          .controls-user {
+            margin-top: .04rem;
+            font-size: .12rem;
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            border-left: 1px #BBBBBB solid;
+            padding-left: .15rem;
+            height: .14rem;
+            max-width: 2rem;
+            display: inline-block;
+            @include ellipsis();
+          }
+          .controls-quit {
+            display: inline-block;
+            width: .23rem;
+            height: .23rem;
+            background-position: -81px -344px;
+            background-image: url(~assets/images/live-icons2.png);
+            background-repeat: no-repeat;
+          }
+        }
+      }
+    }
+  }
+}
+
+.line-label {
+  margin-left: .1rem;
+}
+
+.line-wrap {
+  color: #333333;
+}
+
+.line-title {
+  margin-bottom: .1rem;
+}
+
+.radio-wrapp {
+  margin-bottom: .1rem;
+}

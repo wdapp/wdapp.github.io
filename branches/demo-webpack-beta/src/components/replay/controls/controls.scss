@@ -1,0 +1,377 @@
+@import "~assets/styles/mixin.scss";
+
+@mixin initalSlider() {
+  background-image: none;
+  box-shadow: none;
+  border-radius: unset;
+  filter: none;
+}
+
+.controls {
+  position: relative;
+  background-color: #ffffff;
+  @include width-height-full();
+  .slider-player-wrap {
+    position: absolute;
+    top: -4px;
+    height: 4px;
+    width: 100%;
+    background-color: #757575;
+    .slider-tooltip {
+      display: none;
+      left: 0;
+      margin-top: -36px;
+      pointer-events: none;
+      padding: 5px 0;
+      position: absolute;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.42857143;
+      line-break: auto;
+      text-align: start;
+      text-decoration: none;
+      text-shadow: none;
+      text-transform: none;
+      letter-spacing: normal;
+      word-break: normal;
+      word-spacing: normal;
+      word-wrap: normal;
+      white-space: normal;
+      font-size: 12px;
+      .slider-tooltip-arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        bottom: 0;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px 5px 0;
+        border-top-color: #000;
+      }
+      .slider-tooltip-inner {
+        white-space: nowrap;
+        max-width: none;
+        padding: 3px 8px;
+        color: #fff;
+        text-align: center;
+        background-color: #000;
+        border-radius: 4px;
+      }
+    }
+    .slider-player {
+      @include layout(0, 0, 0, .1rem);
+      .slider {
+        position: absolute;
+        @include width-height-full();
+        .slider-track {
+          width: 100%;
+          height: 4px;
+          top: unset;
+          bottom: 0;
+          margin: 0;
+          background-color: #757575;
+          @include initalSlider();
+          .slider-track-high {
+            @include initalSlider();
+          }
+          .slider-selection {
+            background-color: #ff920a;
+            @include initalSlider();
+          }
+        }
+        .slider-handle {
+          top: -3px;
+          border-radius: 100%;
+          background-image: none;
+          box-sizing: content-box;
+          border: 1px solid #ff920a;
+          background-color: #ffffff;
+          @include width-height-same(10px);
+          visibility: hidden;
+        }
+      }
+      .buffer {
+        position: absolute;
+        height: 100%;
+        width: 0%;
+        background-color: #999999;
+      }
+    }
+  }
+  .controls-wrap {
+    @include width-height-full();
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    .controls-left {
+      .play-btn-wrap {
+        cursor: pointer;
+        float: left;
+        margin-right: .2rem;
+        margin-top: .04rem;
+        @include width-height-same(.3rem);
+        .play-btn {
+          display: inline-block;
+          @include width-height-full();
+          background: url(~assets/images/icon-playbar.png) no-repeat -8px -220px;
+        }
+        .play-btn:hover {
+          background: url(~assets/images/icon-playbar.png) no-repeat -8px -170px;
+        }
+        .pause {
+          background: url(~assets/images/icon-playbar.png) no-repeat -8px -70px;
+        }
+        .pause:hover {
+          background: url(~assets/images/icon-playbar.png) no-repeat -8px -120px;
+        }
+      }
+      .play-time-wrap {
+        float: left;
+        min-width: 1.35rem;
+        text-align: center;
+        margin-right: .25rem;
+        margin-top: .12rem;
+        color: #666;
+        font-size: .14rem;
+        .play-time-duration {
+          text-align: left;
+          max-width: 1rem;
+          min-width: .56rem;
+          display: inline-block;
+          @include ellipsis();
+        }
+        .play-time-separator {
+          vertical-align: top;
+        }
+        .paly-time-current {
+          text-align: right;
+          max-width: 1rem;
+          min-width: .56rem;
+          display: inline-block;
+          @include ellipsis();
+        }
+      }
+      .slider-voice-wrap {
+        cursor: pointer;
+        float: left;
+        margin-top: .1rem;
+        .slider-voice-icon {
+          float: left;
+          width: .24rem;
+          height: .23rem;
+          display: inline-block;
+          margin-right: .05rem;
+          background: url(~assets/images/icon-playbar.png) no-repeat -134px -75px;
+        }
+        .slider-voice-icon:hover {
+          background: url(~assets/images/icon-playbar.png) no-repeat -134px -125px;
+        }
+        .mute {
+          background: url(~assets/images/icon-playbar.png) no-repeat -134px -225px;
+        }
+        .mute:hover {
+          background: url(~assets/images/icon-playbar.png) no-repeat -134px -175px;
+        }
+        .slider-voice {
+          margin-top: .08rem;
+          float: left;
+          width: .76rem;
+          height: 4px;
+          position: relative;
+          .slider {
+            position: absolute;
+            @include width-height-full();
+            .slider-track {
+              width: 100%;
+              height: 4px;
+              top: 0;
+              margin: 0;
+              background-color: #B3B3B3;
+              @include initalSlider();
+              .slider-track-high {
+                @include initalSlider();
+              }
+              .slider-selection {
+                background-color: #ff920a;
+                @include initalSlider();
+              }
+            }
+            .slider-handle {
+              top: -3px;
+              border-radius: 100%;
+              background-image: none;
+              box-sizing: content-box;
+              border: 1px solid #ff920a;
+              background-color: #ffffff;
+              @include width-height-same(8px);
+              margin-left: -4px;
+            }
+          }
+        }
+      }
+    }
+    .controls-right {
+      float: right;
+      .controls-group {
+        .item {
+          float: left;
+          margin-right: .2rem;
+          margin-top: .1rem;
+          .quit-btn-wrap {
+            cursor: pointer;
+            width: .24rem;
+            height: .23rem;
+            .quit-btn {
+              display: inline-block;
+              @include width-height-full();
+              background: url(~assets/images/icon-playbar.png) no-repeat -53px -75px;
+            }
+            .quit-btn:hover {
+              background: url(~assets/images/icon-playbar.png) no-repeat -53px -125px;
+            }
+          }
+          .bullets-screen-btn-wrap {
+            cursor: pointer;
+            width: .24rem;
+            height: .23rem;
+            .bullets-screen-btn {
+              display: inline-block;
+              @include width-height-full();
+              background: url(~assets/images/bulletScreen/barrage-opennor.png) no-repeat -4px -5px;
+            }
+            .bullets-screen-btn:hover {
+              background: url(~assets/images/bulletScreen/barrage-openhov.png) no-repeat -4px -5px;
+            }
+            .bullets-screen-close {
+              background: url(~assets/images/bulletScreen/barrage-closenor.png) no-repeat -4px -5px;
+            }
+            .bullets-screen-close:hover {
+              background: url(~assets/images/bulletScreen/barrage-closehov.png) no-repeat -4px -5px;
+            }
+          }
+          .thumbnail-list-btn-wrap {
+            cursor: pointer;
+            width: .24rem;
+            height: .23rem;
+            .thumbnail-list-btn {
+              display: inline-block;
+              @include width-height-full();
+              background: url(~assets/images/icon-playbar.png) -93px -75px no-repeat;
+            }
+            .thumbnail-list-btn:hover {
+              background: url(~assets/images/icon-playbar.png) -93px -125px no-repeat;
+            }
+            .active {
+              background: url(~assets/images/icon-playbar.png) -93px -125px no-repeat !important;
+            }
+          }
+          .play-rate-wrap {
+            cursor: pointer;
+            width: .48rem;
+            height: .26rem;
+            border: 1px solid #999;
+            border-radius: .02rem;
+            color: #666;
+            margin-top: -.02rem;
+            .play-rate-btn {
+              display: inline-block;
+              @include width-height-full();
+              font-size: .12rem;
+              line-height: .26rem;
+              text-align: center;
+            }
+            .play-rate-list {
+              display: none;
+              position: absolute;
+              top: -1.85rem;
+              right: .93rem;
+              background: rgba(22, 22, 22, 0.8);
+              border: 1px solid rgba(102, 102, 102, 0.50);
+              border-radius: .04rem;
+              width: .78rem;
+              height: 1.78rem;
+              .play-rate-number {
+                height: .34rem;
+                line-height: .34rem;
+                text-align: center;
+                cursor: pointer;
+                font-size: .12rem;
+                color: #B6B6B6;
+              }
+              .play-rate-number:hover {
+                color: white;
+              }
+              .active, .active:hover {
+                color: #ff920a;
+              }
+            }
+          }
+          .play-rate-wrap:hover {
+            color: #ff920a;
+            border: 1px solid #ff920a;
+          }
+          .select {
+            color: #ff920a;
+            border: 1px solid #ff920a;
+          }
+          .switch-btn-wrap {
+            cursor: pointer;
+            width: .24rem;
+            height: .23rem;
+            .switch-btn {
+              display: inline-block;
+              @include width-height-full();
+              background: url(~assets/images/icon-playbar.png) no-repeat  -254px -73px;
+            }
+            .switch-btn:hover {
+              background: url(~assets/images/icon-playbar.png) no-repeat  -254px -123px;
+            }
+          }
+          .full-screen-btn-wrap {
+            cursor: pointer;
+            width: .24rem;
+            height: .23rem;
+            .full-screen-btn {
+              display: inline-block;
+              @include width-height-full();
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -74px;
+            }
+            .full-screen-btn:hover {
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -124px;
+            }
+            .active {
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -223px;
+            }
+            .active:hover {
+              background: url(~assets/images/icon-playbar.png) no-repeat -294px -173px;
+            }
+          }
+        }
+        li:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.controls:hover .slider-player-wrap {
+  height: 6px;
+  top: -6px;
+}
+
+.controls:hover .slider-player-wrap .slider-player .slider .slider-track {
+  bottom: unset;
+  top: 0;
+  height: 6px;
+}
+
+.controls:hover .slider-player-wrap .slider-player .slider .slider-handle {
+  visibility: visible;
+}
+
+.slider-horizontal.slider .slider-track {
+  top: 0 !important;
+}
