@@ -2,7 +2,8 @@
  * 观看回放 Web SDK 接口封装
  * JavaScript 发布订阅事件封装
  * */
-import 'common/public/playbackSDK'
+// import 'common/public/playbackSDK'
+import 'huode-scence-websdk/playbackSDK' //引入观看直播Web SDK
 import {ReplaySDKInterface} from 'common/interface' //引入接口适配器
 import Utils from 'common/utils'
 import EventEmitter from 'onfire.js'

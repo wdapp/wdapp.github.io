@@ -1,4 +1,5 @@
-import 'common/public/liveSDK' //引入观看直播Web SDK
+// import 'common/public/liveSDK' //引入观看直播Web SDK
+import 'huode-scence-websdk/liveSDK' //引入观看直播Web SDK
 import {LiveSDKInterface} from 'common/interface' //引入接口适配器
 import LiveInfo from 'common/liveinfo'
 import EventEmitter from 'onfire.js'
