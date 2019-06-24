@@ -1,8 +1,11 @@
-import 'huode-scence-websdk/liveSDK' //引入观看直播Web SDK
+/**
+ * 观看直播 Web SDK 接口封装
+ * JavaScript 发布订阅事件封装
+ * */
 import {LiveSDKInterface} from 'common/interface' //引入接口适配器
 import LiveInfo from 'common/liveinfo'
 import EventEmitter from 'onfire.js'
-import Utils from 'common/utils' //公共方法库
+import Utils from 'common/utils'
 
 class LiveAdaptive extends EventEmitter {
 
@@ -29,6 +32,7 @@ class LiveAdaptive extends EventEmitter {
   LiveInterface = 'LiveInterface'
   InitInfo = 'InitInfo'
   LoginInfo = 'LoginInfo'
+  isLive = false
 
   constructor() {
     super()
@@ -45,6 +49,9 @@ class LiveAdaptive extends EventEmitter {
 
   //初始化登录入口
   login(params) {
+    if (!Utils.isEmptyObject(params)) {
+      return false
+    }
     this.liveInterface.call(this.liveInterface.INIT, {
       userid: params.userId || '',
       roomid: params.roomId || '',
@@ -56,7 +63,6 @@ class LiveAdaptive extends EventEmitter {
       fastMode: params.fastMode,
       language: 'zh'
     })
-    this.isLive = false
     this.onLogin(params)
   }
 
@@ -90,7 +96,11 @@ class LiveAdaptive extends EventEmitter {
   /**
    *登录状态监听
    * */
-  onLogin(d = {}) {
+  onLogin(d = {
+    success: (d) => {
+    }, fail: (d) => {
+    }
+  }) {
     this.liveInterface.on(this.liveInterface.ONLOGINSUCCESS, (result) => {
       // d.success && d.success(result)
       LiveInfo.loginInfo = LiveInfo.parseLoginInfo(result)
@@ -120,34 +130,42 @@ class LiveAdaptive extends EventEmitter {
    *
    *直播状态监听
    * **/
-  onLiveStream(d = {}) {
-    //直播开始
+  onLiveStream(d = {
+    liveStart: () => {
+    }, living: () => {
+    }, liveEnd: () => {
+    }
+  }) {
+    //直播开始    //TODO 状态机管理
     this.liveInterface.on(this.liveInterface.ONLIVESTART, () => {
+      this.isLive = true
       this.dispatch(this.OnLiveStart)
       d.liveStart && d.liveStart()
-      this.isLive = true
     })
 
     this.liveInterface.on(this.liveInterface.ONLIVESTARTING, () => {
+      this.isLive = true
       this.dispatch(this.OnLiveStarting)
       d.living && d.living()
-      this.isLive = true
     })
 
     //直播结束
     this.liveInterface.on(this.liveInterface.ONLIVEEND, () => {
+      this.isLive = false
       this.dispatch(this.OnLiveEnd)
       d.liveEnd && d.liveEnd()
-      this.isLive = false
     })
   }
 
   /**
    * 获取当前用户总人数
    * **/
-  onUserCount(d = {}) {
+  onUserCount(d = {
+    callback: () => {
+    }
+  }) {
     this.liveInterface.on(this.liveInterface.ONUSERCOUNTMESSAGE, (result) => {
-      LiveInfo.userCount = result[0]
+      LiveInfo.userCount = result ? result[0] : 0
       d.callback && d.callback(LiveInfo.userCount)
       this.dispatch(this.OnUserCountMessage)
     })
@@ -156,7 +174,10 @@ class LiveAdaptive extends EventEmitter {
   /**
    *监听发布问答功能回调
    * **/
-  onQAPulish(d = {}) {
+  onQAPulish(d = {
+    callback: () => {
+    }
+  }) {
 
     //问答发布
     this.liveInterface.on(this.liveInterface.ONQAPUBLISH, (result) => {
@@ -169,7 +190,10 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 接收回答
    * **/
-  onQAAnswer(d = {}) {
+  onQAAnswer(d = {
+    callback: () => {
+    }
+  }) {
     //问答接收回答接收回答
     this.liveInterface.on(this.liveInterface.ONANSWER, (result) => {
       LiveInfo.answerInfo = LiveInfo.parseAnswerInfo(result)
@@ -182,7 +206,10 @@ class LiveAdaptive extends EventEmitter {
    * 提问
    *
    * **/
-  onQAQuestion(d = {}) {
+  onQAQuestion(d = {
+    callback: () => {
+    }
+  }) {
     //问答接收提问
     this.liveInterface.on(this.liveInterface.ONQUESTION, (result) => {
       LiveInfo.questionInfo = LiveInfo.parseQuestionInfo(result)
@@ -194,7 +221,10 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 接收公聊信息
    * **/
-  onPublicChat(d = {}) {
+  onPublicChat(d = {
+    callback: () => {
+    }
+  }) {
     //收到公聊天
     this.liveInterface.on(this.liveInterface.ONPUBLICCHATMESSAGE, (result) => {
       LiveInfo.publicChatMsgInfo = LiveInfo.parsePublicChatMsg(result)
@@ -207,7 +237,10 @@ class LiveAdaptive extends EventEmitter {
    * 接收私聊信息
    *
    * **/
-  onPrivateChat(d = {}) {
+  onPrivateChat(d = {
+    callback: () => {
+    }
+  }) {
     //收到私聊信息
     this.liveInterface.on(this.liveInterface.ONPRIVATECHATMESSAGE, (result) => {
       // LiveInfo.privateChatMsg = LiveInfo.parsePrivateChat(result)
@@ -223,7 +256,10 @@ class LiveAdaptive extends EventEmitter {
    * 接收私聊回复
    *
    * **/
-  onPrivateChatRevert(d = {}) {
+  onPrivateChatRevert(d = {
+    callback: () => {
+    }
+  }) {
     //收到私聊回复
     this.liveInterface.on(this.liveInterface.ONPRIVATEANSWER, (result) => {
       LiveInfo.privateChatMsgInfo = LiveInfo.parsePrivateChatMsg(result, true)
@@ -235,11 +271,13 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 禁言通知
    * **/
-  onBannedInfomation(d = {}) {
+  onBannedInfomation(d = {
+    callback: () => {
+    }
+  }) {
     this.liveInterface.on(this.liveInterface.ONINFORMATION, (result) => {
       LiveInfo.bannedInfomation = result[0]
       d.callback && d.callback(LiveInfo.bannedInfomation)
-
     })
   }
 
@@ -247,8 +285,10 @@ class LiveAdaptive extends EventEmitter {
    *
    * 显示老师在线信息
    * **/
-
-  onTeachers(d = {}) {
+  onTeachers(d = {
+    callback: () => {
+    }
+  }) {
     //在线的老师数量
     this.liveInterface.on(this.liveInterface.ONONLINETEACHERS, (result) => {
       LiveInfo.onLineTeachers = LiveInfo.parseOnLineTeachers(result)
@@ -261,7 +301,10 @@ class LiveAdaptive extends EventEmitter {
    *
    * 显示公告
    * **/
-  onAnnounce(d = {}) {
+  onAnnounce(d = {
+    callback: () => {
+    }
+  }) {
     //显示公告
     this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTSHOW, (result) => {
       LiveInfo.onAnnounceInfo = LiveInfo.parseAnnounceInfo(result)
@@ -274,7 +317,10 @@ class LiveAdaptive extends EventEmitter {
    *
    * 发布更新公告
    * **/
-  onAnounceRelease(d = {}) {
+  onAnounceRelease(d = {
+    callback: () => {
+    }
+  }) {
     //显示公告
     this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTRELEASE, (result) => {
       LiveInfo.onAnnounceInfo = LiveInfo.parseAnnounceInfo(result)
@@ -286,7 +332,10 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 删除公告
    * **/
-  onAnounceDelete(d = {}) {
+  onAnounceDelete(d = {
+    callback: () => {
+    }
+  }) {
     this.liveInterface.on(this.liveInterface.ONANNOUNCEMENTREMOVE, (result) => {
       this.dispatch(this.OnAnnounceDelete)
       d.callback && d.callback()
@@ -294,7 +343,10 @@ class LiveAdaptive extends EventEmitter {
   }
 
   /**直播间简介**/
-  onLiveDesc(d = {}) {
+  onLiveDesc(d = {
+    callback: () => {
+    }
+  }) {
     //简介
     this.liveInterface.on(this.liveInterface.ONLIVEDESC, (result) => {
       LiveInfo.onLiveDesc = result[0]
@@ -306,7 +358,10 @@ class LiveAdaptive extends EventEmitter {
   /**
    * flash文档加载完成
    */
-  onFlashPlayerLoad(d = {}) {
+  onFlashPlayerLoad(d = {
+    callback: () => {
+    }
+  }) {
     window.on_cc_swf_loading_completed = (result) => {
       d.callback && d.callback(result)
     }
@@ -315,38 +370,13 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 设置文档自适应模式
    */
-  documentAdaptive(boolean) {
-    if (typeof boolean !== 'boolean') {
+  documentAdaptive(b = false) {
+    if (typeof b !== 'boolean') {
       return false
     }
     //简介
-    this.liveInterface.call(this.liveInterface.DOCADAPT, boolean)
+    this.liveInterface.call(this.liveInterface.DOCADAPT, b)
     return false
-  }
-
-  /**
-   *
-   * 监听所有的事件回调
-   * ***/
-  addAllCallback() {
-    if (!this.liveInterface) {
-      Utils.log('请先调用登录')
-    }
-    this.onLogin()
-    this.onLiveStream()
-    this.onAnnounce()
-    this.onLiveDesc()
-    this.onPublicChat()
-    this.onPrivateChat()
-    this.onQAAnswer()
-    this.onQAPulish()
-    this.onQAQuestion()
-    this.onTeachers()
-    this.onUserCount()
-    this.onPrivateChatRevert()
-    this.onAnounceRelease()
-    this.onAnounceDelete()
-    this.onBannedInfomation()
   }
 
   /**
@@ -360,14 +390,14 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 切换线路
    * **/
-  changeLine(t = {}) {
+  changeLine(t = {index: 0}) {
     this.liveInterface.call(this.liveInterface.CHANGELINE, (t.index ? parseInt(t.index) : 0 ))
   }
 
   /**
    * 发送公共聊天
    * **/
-  sendPublicMsg(d = {}) {
+  sendPublicMsg(d = {msg: ''}) {
     let msg = ''
     if (d.msg) {
       msg = d.msg
@@ -379,7 +409,7 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 发送私聊
    * **/
-  sendPrivateMsg(d = {}) {
+  sendPrivateMsg(d = {msg: '', teacher: '', teacherName: ''}) {
     let msg = d.msg ? d.msg : ''
     let t = d.teacher ? d.teacher : ''
     let m = d.teacherName ? d.teacherName : ''
@@ -389,7 +419,11 @@ class LiveAdaptive extends EventEmitter {
   /**
    * 退出直播间
    * **/
-  logoutRoom(d = {}) {
+  logoutRoom(d = {
+    success: () => {
+    }, error: () => {
+    }
+  }) {
     this.liveInterface.call(this.liveInterface.LOGOUT, d)
 
   }
@@ -398,7 +432,7 @@ class LiveAdaptive extends EventEmitter {
    * 发送问答
    *
    * **/
-  sendQustionMsg(d = {}) {
+  sendQuestionMsg(d = {msg: ''}) {
     let msg = d.msg ? d.msg : ''
     //发送问答
     this.liveInterface.call(this.liveInterface.SENDQUESTIONMSG, msg)

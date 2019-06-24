@@ -17,7 +17,7 @@ let HD = function () {
         Utils.log({
           debug: Utils.debug,
           PATH: Utils.PATH,
-          useragent: Utils.useragent,
+          userAgent: Utils.userAgent,
           version: Utils.version,
           timestamp: Utils.timestamp,
           tag: Utils.tag,

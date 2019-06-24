@@ -88,7 +88,7 @@ class QuestionAnswer extends Component {
       }
       this.ui.alertTipClose()
       //发送问答
-      HDScence.sendQustionMsg({'msg': sendMsg})
+      HDScence.sendQuestionMsg({'msg': sendMsg})
       this.getNode('sendQaMsg').value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {

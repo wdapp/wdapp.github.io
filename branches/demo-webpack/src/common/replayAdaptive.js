@@ -2,7 +2,6 @@
  * 观看回放 Web SDK 接口封装
  * JavaScript 发布订阅事件封装
  * */
-import 'huode-scence-websdk/playbackSDK'
 import {ReplaySDKInterface} from 'common/interface' //引入接口适配器
 import Utils from 'common/utils'
 import EventEmitter from 'onfire.js'
@@ -167,9 +166,9 @@ class ReplayAdaptive extends EventEmitter {
   emitReplayInfoAync(data) {
     this.emit('viewerId', this.viewerId)
     this.emit('groupId', this.groupId)
-    this.emit('desc', data.room.desc)
-    this.emit('barrage', data.room.barrage)
-    this.emit('documentDisplayMode', data.room.documentDisplayMode)
+    data.room && this.emit('desc', data.room.desc)
+    data.room && this.emit('barrage', data.room.barrage)
+    data.room && this.emit('documentDisplayMode', data.room.documentDisplayMode)
   }
 
   onViewerId(callback) {
@@ -292,11 +291,11 @@ class ReplayAdaptive extends EventEmitter {
    * $.DW.setVolume()
    */
 
-  set volume(number) {
-    if (isNaN(number)) {
+  set volume(value) {
+    if (isNaN(value)) {
       return false
     }
-    this.replayInterface.call(this.replayInterface.SETVOLUME, number)
+    this.replayInterface.call(this.replayInterface.SETVOLUME, value)
     return true
   }
 

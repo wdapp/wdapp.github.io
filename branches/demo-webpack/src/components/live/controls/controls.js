@@ -65,7 +65,7 @@ class Controls extends Component {
     })
     this.ui.switchPanel()
     HDScence.onFlashPlayerLoad({
-      callback: (result) => {
+      callback: () => {
         this.ui.switchPanel()
       }
     })
@@ -79,20 +79,17 @@ class Controls extends Component {
 
   //退出登录
   addInteractive() {
-    let btn_swtch = this.getNodeByClass('controls-switch')//切换视频为主文档为主按钮
-    let btn_line = this.getNodeByClass('controls-line')//切换视频为主文档为主按钮
-    let btn_out = this.getNodeByClass('controls-quit')//获取退出按钮
+    let btnSwitch = this.getNodeByClass('controls-switch')//切换视频为主文档为主按钮
+    let btnLine = this.getNodeByClass('controls-line')//切换视频为主文档为主按钮
+    let btnOut = this.getNodeByClass('controls-quit')//获取退出按钮
 
-    //事件监听
-    this.bind(btn_out, 'click', (e) => {
+    //事件监听  //TODO 所有文字提示需要单独提取到一个文件中，方便国际化处理
+    this.bind(btnOut, 'click', (e) => {
       this.ui.ui.modal({
-        titile: '退出',
+        title: '退出',
         content: '您确定要退出吗？',
         cancelText: '取消',
         confirmText: '确定',
-        cancel: () => {
-
-        },
         confirm: () => {
           HDScence.logoutRoom({
             success: () => {
@@ -102,27 +99,22 @@ class Controls extends Component {
               Utils.log('退出失败')
             }
           })
-        },
-        complete: () => {
-
         }
       })
     })
-    this.bind(btn_swtch, 'click', (e) => {
+    this.bind(btnSwitch, 'click', (e) => {
       this.ui.switchPanel()
     })
     let lines = ''
-    this.bind(btn_line, 'click', (e) => {
+    this.bind(btnLine, 'click', (e) => {
       HDScence.getLine()
       lines = this.ui.insertLines(LiveInfo.lines)
       // this.ui.insertLines()
       this.ui.ui.modal({
-        titile: '选择网络',
+        title: '选择网络',
         content: lines,
         cancelText: '取消',
         confirmText: '确定',
-        cancel: () => {
-        },
         confirm: () => {
           let index = 0
           let dom = document.getElementsByClassName('line-radio')
@@ -136,8 +128,6 @@ class Controls extends Component {
             }
           }
           HDScence.changeLine({'index': index})
-        },
-        complete: () => {
         }
       })
     })

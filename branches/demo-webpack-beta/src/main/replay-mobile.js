@@ -51,7 +51,7 @@ HDScence.ready(() => {
       Utils.log('登录失败', error)
       ui.alert({type: 'danger', content: '登录失败', time: false})
       ui.modal({
-        titile: '登录失败',
+        title: '登录失败',
         content: '点击确定返回登录界面。',
         confirmText: '确定',
         cancelText: false,

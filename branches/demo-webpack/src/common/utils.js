@@ -48,7 +48,7 @@ class Utils {
     return _timestamp
   }
 
-  static get useragent() {
+  static get userAgent() {
     return navigator.userAgent
   }
 
@@ -92,19 +92,19 @@ class Utils {
   }
 
   static isMobile() {
-    return /iPad|iPhone|Android|Windows Phone/ig.test(this.useragent)
+    return /iPad|iPhone|Android|Windows Phone/ig.test(this.userAgent)
   }
 
   static isIOS() {
-    return /iPad|iPhone/ig.test(this.useragent)
+    return /iPad|iPhone/ig.test(this.userAgent)
   }
 
   static isAndroid() {
-    return /Android/ig.test(this.useragent)
+    return /Android/ig.test(this.userAgent)
   }
 
   static isWeiXin() {
-    return /MicroMessenger/ig.test(this.useragent)
+    return /MicroMessenger/ig.test(this.userAgent)
   }
 
   static isReplay(address = '') {

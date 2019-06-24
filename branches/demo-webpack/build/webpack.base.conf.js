@@ -117,10 +117,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    }),
     new HtmlWebpackPlugin({
       title: '登录',
       inject: 'body',

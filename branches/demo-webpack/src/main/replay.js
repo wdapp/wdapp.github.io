@@ -29,12 +29,12 @@ HDScence.ready(() => {
   let params = Utils.parseUrl(localStorage.address)
   Utils.log('params', params)
 
-  //登录
+  //登录  //TODO 测试账号改进到配置文件中
   HDScence.login({
-    userId: params.userid || 'B27039502337407C',
-    roomId: params.roomid || '3115C441D8B66A719C33DC5901307461',
-    recordId: params.recordid || '96C0454B9E3CE464',
-    viewerName: params.viewername || '关羽',
+    userId: params.userid || '',
+    roomId: params.roomid || '',
+    recordId: params.recordid || '',
+    viewerName: params.viewername || '',
     viewerToken: params.viewertoken || '',
     isH5play: params.isH5play,
     fastMode: params.fastMode,
@@ -46,7 +46,7 @@ HDScence.ready(() => {
       Utils.log('登录失败', error)
       ui.alert({type: 'danger', content: '登录失败', time: false})
       ui.modal({
-        titile: '登录失败',
+        title: '登录失败',
         content: '点击确定返回登录界面。',
         confirmText: '确定',
         cancelText: false,

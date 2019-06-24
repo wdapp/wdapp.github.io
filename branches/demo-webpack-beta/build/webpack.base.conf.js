@@ -15,8 +15,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '..', 'dist'),
-    filename: 'js/[name].js?hash=[hash]',
-    // publicPath:"//view.csslcloud.net"
+    filename: 'js/[name].js?hash=[hash]'
   },
 
   devServer: {
@@ -118,10 +117,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    }),
     new HtmlWebpackPlugin({
       title: '登录',
       inject: 'body',

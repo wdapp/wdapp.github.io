@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v3.0.1 2019/06/20
+ * v3.0.1 2019/06/24
  */
 !(function ($, window, document) {
   // 直播播放器信息
@@ -1549,11 +1549,11 @@
 
   var callback = {}
 
-  window.DEBUG = false
+  window.isDebug = false
   var util = {
-    DEBUG: window.DEBUG,
+    isDebug: window.isDebug,
     log: function (arg1, arg2) {
-      if (window.DEBUG && window.console && typeof console.log === 'function') {
+      if (window.isDebug && window.console && typeof console.log === 'function') {
         if (arg2) {
           console.log(arg1 + ' => ', arg2)
         } else {
@@ -1702,8 +1702,6 @@
     },
     // 初始化DW对象
     config: function (opts) {
-      window.$ = window.jQuery = $
-
       if (checkVideo()) {
         if (opts.isH5play + '' === 'true') {
           this.isH5play = true

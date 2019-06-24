@@ -109,14 +109,14 @@ class UserInterface extends Render {
       return false
     }
 
-    let {titile = '', content = '', showButton = true, cancelText = 'Cancel', confirmText = 'Confirm', cancel = null, confirm = null, complete = null} = options
+    let {title = '', content = '', showButton = true, cancelText = 'Cancel', confirmText = 'Confirm', cancel = null, confirm = null, complete = null} = options
     let template = `
       <div id="modal" class="modal fade" tabindex="-1" role="dialog" data-show="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">${titile}</h4>
+              <h4 class="modal-title">${title}</h4>
             </div>
             <div class="modal-body">
             ${content}

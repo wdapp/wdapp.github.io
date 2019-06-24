@@ -322,7 +322,7 @@ class Controls extends Component {
 
   bindQuit() {
     this.ui.modal({
-      titile: '退出',
+      title: '退出',
       content: '您确定要退出吗？',
       cancelText: '取消',
       confirmText: '确定',

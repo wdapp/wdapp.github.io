@@ -95,7 +95,7 @@ class QuestionAnswer extends Component {
         return false
       }
       t.ui.alertTipClose()
-      HDScence.sendQustionMsg({'msg': sendMsg})
+      HDScence.sendQuestionMsg({'msg': sendMsg})
       msgInput.value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {

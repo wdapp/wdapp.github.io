@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.9.2 2019/06/20 */
+ * v2.9.2 2019/06/24 */
 (function () {
 
   var DELAY_TIME = 10 * 1000
@@ -22,7 +22,6 @@
     }
     return hasFlash
   }
-
   //工具类
   var Util = {
     sendAjax: function (url, data, callBack) {
@@ -187,9 +186,6 @@
     init: function (option) {
       if (typeof option == 'undefined') {
         option = {}
-      }
-      if ($) {
-        window.$ = window.jQuery = $
       }
       this.userid = $.trim(option.userid)
       this.roomid = $.trim(option.roomid)
