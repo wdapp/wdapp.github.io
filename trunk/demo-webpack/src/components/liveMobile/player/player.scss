@@ -1,0 +1,49 @@
+@import "~assets/styles/mixin.scss";
+
+.player {
+  position: relative;
+  width: 100%;
+  height: 4.22rem;
+  .no-video {
+    position: absolute;
+    @include width-height-full();
+    @include flex(column, center, center);
+    .no-video-image {
+      width: .92rem;
+      height: 1.12rem;
+      display: block;
+    }
+    .no-video-text {
+      margin-top: .4rem;
+      color: #79808b;
+      font-size: .16rem;
+      display: inline-block;
+    }
+  }
+  .live-player {
+    position: absolute;
+    top: 0;
+    @include width-height-full();
+    video {
+      @include width-height-full();
+    }
+  }
+}
+
+.video-tip {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  height: 4.22rem;
+  width: 100%;
+  background-color: black;
+  .waiting-layer {
+    @include width-height-full();
+    line-height: 4.22rem;
+    text-align: center;
+    .waiting-text {
+      color: white;
+    }
+  }
+}

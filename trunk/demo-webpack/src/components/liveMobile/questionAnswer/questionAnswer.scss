@@ -1,0 +1,153 @@
+@import "~assets/styles/mixin.scss";
+
+.question-answer {
+  @include width-height-full();
+  .question-answer-list-wrap {
+    @include layout(0, 0, .8rem, 0);
+    overflow-y: auto;
+    .question-answer-list {
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 0 .4rem;
+      .question {
+        box-sizing: border-box;
+        padding: .2rem 0rem;
+        .question-wrap {
+          .question-name {
+            font-size: .24rem;
+            color: #3d96f5;
+            @include ellipsis();
+            display: inline-block;
+            max-width: 2rem;
+          }
+          .question-time {
+            font-size: .24rem;
+            color: #b5b7be;
+            float: right;
+            @include ellipsis();
+            max-width: 2rem;
+            display: inline-block;
+          }
+          .question-content {
+            font-size: .26rem;
+            color: #3d96f5;
+            padding: .2rem 0;
+            box-sizing: border-box;
+            border-bottom: 1px solid #eee;
+            line-height: .36rem;
+            width: 100%;
+            @include word-break();
+          }
+          .answer-list {
+            padding-left: .2rem;
+            box-sizing: border-box;
+            .answer {
+              padding: .2rem 0 .2rem .4rem;
+              box-sizing: border-box;
+              border-bottom: 1px solid #eeeeee;
+              .answer-wrap {
+                .answer-name {
+                  color: #12ad1a;
+                  font-size: .24rem;
+                  @include ellipsis();
+                  max-width: 2rem;
+                  display: inline-block;
+                }
+                .answer-name:after {
+                  content: '';
+                  position: absolute;
+                  background: url(~assets/images/icon08.png) no-repeat;
+                  display: inline-block;
+                  width: .32rem;
+                  height: .24rem;
+                  background-size: 100%;
+                  left: .5rem;
+                }
+                .answer-time {
+                  color: #b5b7be;
+                  font-size: .24rem;
+                  float: right;
+                  @include ellipsis();
+                  max-width: 2rem;
+                  display: inline-block;
+                }
+                .answer-content {
+                  margin-top: .2rem;
+                  font-size: .26rem;
+                  line-height: .36rem;
+                  @include word-break();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .send-question-wrap {
+    background-color: white;
+    @include layout(unset, 0, 0, 0);
+    height: .9rem;
+    box-shadow: 0px -3px 10px 0px rgba(181, 183, 190, 0.2), inset 0px 1px 0px 0px #e8e9eb;
+    @include flex(row, center, space-around);
+    .send-question-only-self-wrap {
+      width: .46rem;
+      height: .42rem;
+      margin-left: .1rem;
+      .send-question-only-self {
+        @include width-height-full();
+        display: inline-block;
+        background: url(~assets/images/icon-ask.png) no-repeat;
+        background-size: 100%;
+      }
+      .active {
+        background: url(~assets/images/icon-ask-active.png) no-repeat;
+        background-size: 100%;
+      }
+    }
+    .send-question-input-wrap {
+      position: relative;
+      outline: none;
+      border: none;
+      font-size: .26rem;
+      width: 5rem;
+      height: .6rem;
+      .send-question-input {
+        @include width-height-full();
+        line-height: .6rem;
+        font-size: .26rem;
+        padding: 0;
+        outline: none;
+        border: none;
+        color: #1e1f21;
+      }
+      .send-question-input-border {
+        display: inline-block;
+        position: absolute;
+        width: 5rem;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        border-bottom: 1px solid #e8e8e8;
+      }
+    }
+    .send-question-input-button-wrap {
+      width: 1rem;
+      height: .64rem;
+      margin-right: .1rem;
+      .send-question-input-button {
+        @include width-height-full();
+        line-height: .64rem;
+        text-align: center;
+        background: rgba(249, 249, 249, 1);
+        border-radius: .04rem;
+        border: 1px solid rgba(221, 221, 221, 1);
+        outline: none;
+        font-size: .28rem;
+        font-weight: 400;
+        color: rgba(56, 64, 75, 1);
+      }
+    }
+  }
+}

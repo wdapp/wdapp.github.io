@@ -1,0 +1,161 @@
+@import "~assets/styles/mixin.scss";
+
+.chat {
+  @include width-height-full();
+  background-color: white;
+  .chat-message {
+    @include layout(0, 0, .9rem, 0);
+    overflow-y: auto;
+    padding: 0 .3rem;
+    box-sizing: border-box;
+    .chat-message-box {
+      width: 100%;
+      overflow: hidden;
+      .chat-message-wrap {
+        border-bottom: 1px solid rgba(221, 221, 221, 1);
+        box-sizing: border-box;
+        padding: .3rem 0;
+        .chat-message-name {
+          display: inline-block;
+          max-width: 3rem;
+          font-size: .26rem;
+          color: rgba(61, 150, 245, 1);
+          @include ellipsis();
+        }
+        .chat-message-time {
+          display: inline-block;
+          max-width: 2rem;
+          font-size: .26rem;
+          color: rgba(181, 183, 190, 1);
+          float: right;
+          margin-right: .3rem;
+          @include ellipsis();
+        }
+        .chat-message-content {
+          width: 100%;
+          font-size: .28rem;
+          line-height: .34rem;
+          font-family: MicrosoftYaHei;
+          color: rgba(30, 31, 33, 1);
+          margin-top: .2rem;
+          @include word-break();
+          img {
+            width: .48rem;
+          }
+        }
+        .self {
+          color: #3D96F5
+        }
+        .teacher {
+          color: #12AD1A;
+        }
+      }
+    }
+  }
+  .send-message {
+    background-color: white;
+    box-shadow: 0px -3px 10px 0px rgba(181, 183, 190, 0.2), inset 0px 1px 0px 0px #e8e9eb;
+    @include layout(unset, 0, 0, 0);
+    @include flex(row, center, space-around);
+    height: .9rem;
+    .gift-button-wrap {
+      .gift-button {
+
+      }
+    }
+    .private-message-button-wrap {
+      margin-left: .1rem;
+      .private-message-button {
+        left: .1rem;
+        top: .09rem;
+        display: inline-block;
+        @include width-height-same(.60rem);
+        background: url(~assets/images/icon04.png) no-repeat;
+        background-size: 100%;
+      }
+      .active {
+        background: url(~assets/images/icon05.png) no-repeat;
+        background-size: 100%;
+      }
+      .tip:after {
+        content: '';
+        display: inline-block;
+        width: .12rem;
+        height: .12rem;
+        border-radius: .06rem;
+        background: #FC5F73;
+        position: absolute;
+        top: .28rem;
+        left: .58rem;
+        z-index: 10;
+      }
+    }
+    .send-message-input-wrap {
+      position: relative;
+      width: 4.3rem;
+      height: .6rem;
+      .send-message-input {
+        @include width-height-full();
+        line-height: .6rem;
+        font-size: .26rem;
+        padding: 0;
+        outline: none;
+        border: none;
+      }
+    }
+    .send-message-input-border {
+      display: inline-block;
+      position: absolute;
+      width: 5.1rem;
+      bottom: -2px;
+      left: 0;
+      height: 1px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .send-emoji-button-wrap {
+      .send-emoji-button {
+        background: url(~assets/images/icon06.png) no-repeat;
+        display: inline-block;
+        @include width-height-same(.6rem);
+        background-size: 100%;
+      }
+      .emoji-table {
+        //display: none;
+        border: 1px solid #ccc;
+        position: absolute;
+        top: -1.29rem;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        tbody {
+          tr {
+            td {
+              text-align: center;
+              padding: .06rem .01rem;
+              img {
+                @include width-height-same(.52rem);
+              }
+            }
+          }
+        }
+      }
+    }
+    .send-message-button-wrap {
+      margin-right: .1rem;
+      width: 1rem;
+      height: .64rem;
+      .send-message-button {
+        @include width-height-full();
+        line-height: .64rem;
+        text-align: center;
+        background: rgba(249, 249, 249, 1);
+        border-radius: .04rem;
+        border: 1px solid rgba(221, 221, 221, 1);
+        outline: none;
+        font-size: .28rem;
+        font-weight: 400;
+        color: rgba(56, 64, 75, 1);
+      }
+    }
+  }
+}

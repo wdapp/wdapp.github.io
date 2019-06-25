@@ -1,0 +1,58 @@
+@import "~assets/styles/header.scss";
+@import "~border-1px.css";
+@import '~swiper/dist/css/swiper.css';
+
+.app {
+  position: absolute;
+  @include width-height-full();
+  .top {
+    position: absolute;
+    height: 4.22rem;
+    width: 100%;
+    background-color: black;
+    .main {
+      height: 100%;
+      width: 100%;
+      .video-wrapper {
+        @include width-height-full();
+        #player {
+          @include width-height-full();
+        }
+      }
+    }
+  }
+  .bottom {
+    @include layout(4.22rem, 0, 0, 0);
+    .navigation {
+      width: 100%;
+      height: .8rem;
+      #navigation {
+        @include width-height-full();
+      }
+    }
+    .swiper {
+      @include layout(.8rem, 0, 0, 0);
+      .swiper-container {
+        @include width-height-full();
+        .swiper-slide {
+          @include width-height-full();
+          #document {
+            @include width-height-full();
+          }
+          #chat {
+            @include width-height-full();
+          }
+          #questionAnswer {
+            @include width-height-full();
+          }
+          #intro {
+            @include width-height-full();
+          }
+        }
+      }
+    }
+  }
+  .model {
+
+  }
+}

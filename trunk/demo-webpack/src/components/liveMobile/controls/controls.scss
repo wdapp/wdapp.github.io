@@ -1,0 +1,111 @@
+@import "~assets/styles/mixin.scss";
+
+@mixin controls-button() {
+  width: 1rem;
+  height: .39rem;
+  background: rgba(30, 31, 33, 1);
+  border-radius: 1rem;
+  font-size: .24rem;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 1);
+  line-height: .39rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.controls {
+  @include width-height-full();
+  .swiper-container-controls {
+    position: relative;
+    overflow: hidden;
+    @include width-height-full();
+    .swiper-slide {
+      @include width-height-full();
+      .control-wrap {
+        @include width-height-full();
+        padding: 0 .5rem;
+        box-sizing: border-box;
+        @include flex(row, center, space-between);
+        .left {
+          .online {
+            .online-icon {
+              display: inline-block;
+              width: .22rem;
+              height: .24rem;
+              background: url(~assets/images/icon-num.png) no-repeat;
+              background-size: 100%;
+            }
+            .online-number {
+              display: inline-block;
+              max-width: 1.4rem;
+              font-size: .26rem;
+              color: rgba(255, 255, 255, 1);
+              @include ellipsis();
+            }
+          }
+        }
+        .right {
+          @include flex(row, center, flex-start);
+
+          div {
+            margin-left: .1rem;
+          }
+          .barrage {
+            @include controls-button();
+            display: none;
+          }
+          .active {
+            color: #3D96F5;
+          }
+          .line {
+            @include controls-button();
+          }
+          .switch {
+            @include controls-button();
+          }
+        }
+      }
+      .advertisement-wrap {
+        @include width-height-full();
+        padding: 0 .5rem;
+        box-sizing: border-box;
+        @include flex(row, center, flex-start);
+        .advertisement-icon {
+          display: inline-block;
+          @include width-height-same(.36rem);
+          background: url(~assets/images/icon-a.png) no-repeat;
+          background-size: 100%;
+          margin-right: .1rem;
+        }
+        .advertisement-content {
+          width: 80%;
+          a {
+            color: #D3D3D4;
+            text-decoration: none;
+            font-size: .13rem;
+            @include ellipsis();
+            max-width: 100%;
+            display: inline-block;
+          }
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            @include width-height-full();
+          }
+        }
+      }
+    }
+    .swiper-button-prev {
+      background-size: .2rem .25rem;
+      left: 0;
+      outline: none;
+    }
+    .swiper-button-next {
+      background-size: .2rem .25rem;
+      right: 0;
+      outline: none;
+    }
+  }
+}
+

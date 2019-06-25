@@ -1,0 +1,101 @@
+
+@media (max-width:1100px){
+    html,body{
+        height: 100%;
+        overflow: hidden;
+    }
+    .container{display: none;}
+    .mobile{
+        display: block;
+        font-size: 14px;
+        height: 100%;
+        background: url('/img/bg-launch-top.png') 0 top no-repeat;
+        background-size: 100%;
+    }
+    .mobile .top{
+        padding-top: 50px;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
+    .mobile .top h3{
+        font-size:17px;
+        color:#666666;
+        line-height:40px;
+        background: url('/img/icon-launch.png') 0 center no-repeat;
+        padding-left: 20px;
+        margin: 0 40px;
+    }
+    .mobile .top p,.mobile .bottom p{
+        margin: 0 40px;
+    }
+    .btn-box{
+        text-align: center;
+        margin-top: 50px;
+    }
+    .btn-box a{
+        display: inline-block;
+        background:#fd7345;
+        border-radius:8px;
+        width:150px;
+        height:45px;
+        font-size: 16px;
+        color: #fff;
+        text-align: center;
+        line-height: 45px;
+    }
+    .mobile .bottom{
+        position: absolute;
+        bottom: 0;
+        height: 50%;
+        width: 100%;
+        border-top: 1px solid #E4E4E4;
+        background: url('/img/bg-launch-bottom.png') 0 bottom no-repeat;
+        background-size: 100%;
+        z-index: 1;
+    }
+    .mobile .bottom h3{
+        font-size:17px;
+        color:#666666;
+        line-height:40px;
+        background: url('/img/icon-launch.png') 0 center no-repeat;
+        padding-left: 20px;
+        margin: 40px 0 0 40px;
+    }
+    .btn-install{
+        text-align: center;
+    }
+    .btn-install a{
+        display: inline-block;
+        background:#fff;
+        border-radius:8px;
+        width:150px;
+        height:45px;
+        font-size: 16px;
+        text-align: center;
+        border:1px solid #ff6633;
+        color:#ff6633;
+        line-height: 45px;
+        margin-top: 30px;
+    }
+    .mobile .bottom .gray{
+        color: #999;
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+}
+
+@media (max-width: 767px) {
+}
+
+@media (max-width: 480px) {
+    .mobile .top{
+        padding-top: 20px;
+    }
+    .mobile .bottom h3{
+        margin-top: 10px;
+    }
+}

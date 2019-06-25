@@ -1,0 +1,10 @@
+@import "~assets/styles/mixin.scss";
+
+.document {
+  background-color: #f7f7f7;
+  @include width-height-full();
+  overflow-y: auto;
+  .playback-panel {
+    @include width-height-full();
+  }
+}

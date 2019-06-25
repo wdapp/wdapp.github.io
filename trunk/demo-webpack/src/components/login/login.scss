@@ -1,0 +1,31 @@
+.login {
+  padding: 20px 20px;
+  .logo {
+    margin: 40px auto;
+    display: block;
+  }
+  .address, .viewername, .viewertoken {
+    border: 1px #eeeeee solid;
+    height: 40px;
+    width: 100%;
+    border-radius: 5rem;
+    outline: none;
+    text-indent: 20px;
+    display: block;
+    margin: 20px auto;
+  }
+  button {
+    background-color: #fff;
+    border: 1px #eeeeee solid;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    border-radius: 5rem;
+    outline: none;
+    display: block;
+    margin: 20px auto;
+  }
+  .checkbox {
+    margin: 20px auto;
+  }
+}

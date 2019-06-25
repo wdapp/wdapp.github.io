@@ -1,0 +1,73 @@
+<div class="controls">
+  <div class="slider-player-wrap" id="playerSliderWrap">
+    <div class="slider-player" id="sliderPlayer">
+      <input id="playerSlider" type="text" data-slider-tooltip="hide" data-slider-value="0" data-slider-min="0"
+             data-slider-max="100"/>
+    </div>
+    <span class="slider-tooltip" id="sliderTooltip">
+      <div class="slider-tooltip-arrow"></div>
+      <div class="slider-tooltip-inner">00:00</div>
+    </span>
+  </div>
+  <div class="controls-wrap">
+    <div class="controls-left">
+      <div id="playButton" class="play-btn-wrap">
+        <span id="playButtonIcon" class="play-btn" title="播放"></span>
+      </div>
+      <div class="play-time-wrap">
+        <span id="palyTimeCurrent" class="paly-time-current">00:00:00</span>
+        <span class="play-time-separator">/</span>
+        <span id="playTimeDuration" class="play-time-duration">00:00:00</span>
+      </div>
+      <div class="slider-voice-wrap">
+        <span id="voiceButton" class="slider-voice-icon"></span>
+        <div class="slider-voice">
+          <input id="voiceSlider" type="text" data-slider-tooltip="hide" data-slider-value="1" data-slider-step="0.1"
+                 data-slider-min="0"
+                 data-slider-max="1"/>
+        </div>
+      </div>
+    </div>
+    <div class="controls-right">
+      <ul class="controls-group">
+        <li class="item">
+          <div class="quit-btn-wrap" id="quitButton">
+            <span class="quit-btn" title="退出登录"></span>
+          </div>
+        </li>
+        <li class="item" id="bulletsScreen" style="display: none">
+          <div class="bullets-screen-btn-wrap">
+            <span class="bullets-screen-btn" title="关闭弹幕"></span>
+          </div>
+        </li>
+        <li class="item">
+          <div class="thumbnail-list-btn-wrap" id="thumbnailListButton">
+            <span class="thumbnail-list-btn" title="文档列表"></span>
+          </div>
+        </li>
+        <li class="item">
+          <div class="play-rate-wrap" id="playRateWrap">
+            <span class="play-rate-btn" id="playRateBtn" title="设置倍速播放">倍速</span>
+            <ul class="play-rate-list" id="playRateList">
+              <li class="play-rate-number">2.0X</li>
+              <li class="play-rate-number">1.5X</li>
+              <li class="play-rate-number">1.25X</li>
+              <li class="play-rate-number active">1.0X</li>
+              <li class="play-rate-number">0.8X</li>
+            </ul>
+          </div>
+        </li>
+        <li class="item">
+          <div class="switch-btn-wrap" id="switchBtnWrap">
+            <span class="switch-btn" title="切换窗口"></span>
+          </div>
+        </li>
+        <li class="item">
+          <div class="full-screen-btn-wrap" id="fullScreenButtonWrap">
+            <span class="full-screen-btn" title="网页全屏"></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
