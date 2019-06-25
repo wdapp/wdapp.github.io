@@ -13,19 +13,19 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.onDocumentMode((data) => {
+    HDScene.onDocumentMode((data) => {
       if (!data.fastMode) {
         FlashTip.init('document')
       }
     })
-    HDScence.onDocumentDisplayMode((data) => {
+    HDScene.onDocumentDisplayMode((data) => {
       Utils.log('onDocumentDisplayMode', data)
       if (data.documentDisplayMode) {
         //开启极速文档自适应模式
-        HDScence.documentAdaptive(true)
+        HDScene.documentAdaptive(true)
       } else {
         //开启极速文档自适应模式
-        HDScence.documentAdaptive(false)
+        HDScene.documentAdaptive(false)
       }
     })
   }

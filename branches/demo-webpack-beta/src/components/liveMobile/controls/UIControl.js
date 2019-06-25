@@ -58,7 +58,7 @@ class UI extends Render {
   }
 
   updateNavigation(isMainVideo) {
-    HDScence.emit('isMainVideo', isMainVideo)
+    HDScene.emit('isMainVideo', isMainVideo)
   }
 }
 

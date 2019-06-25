@@ -16,27 +16,27 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.onDocumentDisplayMode((data) => {
+    HDScene.onDocumentDisplayMode((data) => {
       Utils.log('onDocumentDisplayMode', data)
       if (data.documentDisplayMode) {
         //开启极速文档适合窗口
-        HDScence.documentAdaptive(true)
+        HDScene.documentAdaptive(true)
       } else {
         //极速文档适合宽度
-        HDScence.documentAdaptive(false)
+        HDScene.documentAdaptive(false)
       }
     })
 
     //兼容iOS屏幕旋转导致文档变大问题
-    if (Utils.isIOS() && HDScence.isH5play) {
-      HDScence.onRotateScreenChange((orientation) => {
+    if (Utils.isIOS() && HDScene.isH5play) {
+      HDScene.onRotateScreenChange((orientation) => {
         this.updateOrientation(orientation)
       })
     }
 
     //Android微信视频横屏回屏导致视频暂停
     if (Utils.isAndroid() && Utils.isWeiXin()) {
-      HDScence.onResize(() => {
+      HDScene.onResize(() => {
         this.autoPlay()
       })
     }

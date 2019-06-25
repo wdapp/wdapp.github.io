@@ -116,7 +116,7 @@ class UI extends Render {
 
     this._isMainVideo = !this._isMainVideo
 
-    HDScence.emit('switch', this._isMainVideo)
+    HDScene.emit('switch', this._isMainVideo)
   }
 
 }

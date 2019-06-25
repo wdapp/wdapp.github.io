@@ -32,7 +32,7 @@ class Chat extends Component {
 
   addEvents() {
     //公聊
-    HDScence.onPublicChat({
+    HDScene.onPublicChat({
       callback: (info) => {
         let msgInfo = info
         if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
@@ -45,7 +45,15 @@ class Chat extends Component {
       }
     })
     //私聊
-    HDScence.onPrivateChat({
+    HDScene.onPrivateChat({
+      callback: (info) => {
+        let msgInfo = info
+        let chatMsg = new PrivateChatMsg()
+        chatMsg.info = msgInfo
+        this.uiChat.updateScroll()
+      }
+    })
+    HDScene.onPrivateChatRevert({
       callback: (info) => {
         let msgInfo = info
         let chatMsg = new PrivateChatMsg()
@@ -54,7 +62,7 @@ class Chat extends Component {
       }
     })
     //老师列表
-    HDScence.onTeachers({
+    HDScene.onTeachers({
       callback: (info) => {
         let teachers = info
         for (let i = 0; i < teachers.length; i++) {
@@ -67,26 +75,26 @@ class Chat extends Component {
       }
     })
     //公告
-    HDScence.onAnnounce({
+    HDScene.onAnnounce({
       callback: (d) => {
         this.announce.content = d
         this.announce.isShowPanel = true
       }
     })
-    HDScence.onAnounceRelease({
+    HDScene.onAnounceRelease({
       callback: (d) => {
         this.announce.content = d
         this.announce.isShowPanel = true
       }
     })
-    HDScence.onAnounceDelete({
+    HDScene.onAnounceDelete({
       callback: () => {
         this.announce.content = '暂无公告'
         this.announce.isShowPanel = false
       }
     })
 
-    // HDScence.addEvent(HDScence.OnAnnounceDelete, () => {
+    // HDScene.addEvent(HDScene.OnAnnounceDelete, () => {
     //   this.announce.content = '暂无公告'
     //   this.announce.isShowPanel = false
     // })
@@ -212,9 +220,9 @@ class Chat extends Component {
       let teacher = t.selectedTeacher
       let teacherName = t.selectedTeacherName
       if (t.selectedTeacher === 'all') {
-        HDScence.sendPublicMsg({'msg': msg})
+        HDScene.sendPublicMsg({'msg': msg})
       } else {
-        HDScence.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
+        HDScene.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
       }
       t.uiChat.updateScroll()
       t.uiChat.msg = ''

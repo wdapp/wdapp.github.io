@@ -17,41 +17,41 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
-      Utils.log('onDocumentDisplayMode', HDScence.getLive().documentDisplayMode)
-      let docType = HDScence.getLive().documentDisplayMode
+    HDScene.addEvent(HDScene.OnLoginSuccess, (e) => {
+      Utils.log('onDocumentDisplayMode', HDScene.getLive().documentDisplayMode)
+      let docType = HDScene.getLive().documentDisplayMode
       if (docType == 1) {
         //开启极速文档适合窗口
-        HDScence.documentAdaptive(true)
+        HDScene.documentAdaptive(true)
       } else {
         //极速文档适合宽度
-        HDScence.documentAdaptive(false)
+        HDScene.documentAdaptive(false)
       }
     })
 
     //兼容iOS屏幕旋转导致极速文档变大问题
     if (Utils.isIOS()) {
-      HDScence.onRotateScreenChange((orientation) => {
+      HDScene.onRotateScreenChange((orientation) => {
         this.updateOrientation(orientation)
       })
     }
 
     //Android微信视频横屏回屏导致视频暂停
     if (Utils.isAndroid() && Utils.isWeiXin()) {
-      HDScence.onResize(() => {
+      HDScene.onResize(() => {
         this.autoPlay()
       })
     }
 
     let docTip = this.getNode('noDoc')
-    HDScence.addEvent(HDScence.OnLiveStart, () => {
+    HDScene.addEvent(HDScene.OnLiveStart, () => {
       docTip.style.display = 'none'
     })
-    HDScence.addEvent(HDScence.OnLiveEnd, () => {
+    HDScene.addEvent(HDScene.OnLiveEnd, () => {
       docTip.style.display = 'flex'
       this.reLoadDocument()
     })
-    HDScence.addEvent(HDScence.OnLiveStarting, () => {
+    HDScene.addEvent(HDScene.OnLiveStarting, () => {
       docTip.style.display = 'none'
     })
   }

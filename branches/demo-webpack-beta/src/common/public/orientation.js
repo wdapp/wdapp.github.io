@@ -6,7 +6,7 @@ class Orientation {
   }
 
   init() {
-    HDScence.onRotateScreenChange((orientation) => {
+    HDScene.onRotateScreenChange((orientation) => {
       this.updateOrientation(orientation)
     })
   }

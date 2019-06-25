@@ -2273,16 +2273,20 @@
               DW.isH5play = false
               callback.callbackPlayer.flashPlayerInit()
             } else {
-              var pvdefault = data.video[0]
+              if (data && data.video && data.video.length > 0) {
+                var pvdefault = data.video[0]
 
-              var playurl = pvdefault.playurl
-              var secureplayurl = pvdefault.secureplayurl
+                var playurl = pvdefault.playurl
+                var secureplayurl = pvdefault.secureplayurl
 
-              var isHttps = window.location.protocol === 'https:'
-              if (isHttps && !!secureplayurl) {
-                playurl = secureplayurl
+                var isHttps = window.location.protocol === 'https:'
+                if (isHttps && !!secureplayurl) {
+                  playurl = secureplayurl
+                }
+                _this.appendVideo(playurl, opts)
+              } else {
+                window.on_cc_live_player_load_fail && window.on_cc_live_player_load_fail()
               }
-              _this.appendVideo(playurl, opts)
             }
           }
 

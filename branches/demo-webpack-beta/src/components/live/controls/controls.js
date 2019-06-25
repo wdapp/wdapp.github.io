@@ -55,16 +55,16 @@ class Controls extends Component {
   }
 
   addEvents() {
-    HDScence.addEvent(HDScence.OnLoginSuccess, () => {
+    HDScene.addEvent(HDScene.OnLoginSuccess, () => {
       this.initUserInfo()
     })
-    HDScence.onUserCount({
+    HDScene.onUserCount({
       callback: (d) => {
         this.ui.setUserCount(parseInt(d))
       }
     })
     this.ui.switchPanel()
-    HDScence.onFlashPlayerLoad({
+    HDScene.onFlashPlayerLoad({
       callback: () => {
         this.ui.switchPanel()
       }
@@ -91,7 +91,7 @@ class Controls extends Component {
         cancelText: '取消',
         confirmText: '确定',
         confirm: () => {
-          HDScence.logoutRoom({
+          HDScene.logoutRoom({
             success: () => {
               Utils.log('退出成功')
               this.ui.logoutWindow()
@@ -107,7 +107,7 @@ class Controls extends Component {
     })
     let lines = ''
     this.bind(btnLine, 'click', (e) => {
-      HDScence.getLine()
+      HDScene.getLine()
       lines = this.ui.insertLines(LiveInfo.lines)
       // this.ui.insertLines()
       this.ui.ui.modal({
@@ -127,7 +127,7 @@ class Controls extends Component {
               LiveInfo.lines[i].select = 0
             }
           }
-          HDScence.changeLine({'index': index})
+          HDScene.changeLine({'index': index})
         }
       })
     })

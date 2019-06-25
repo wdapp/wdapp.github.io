@@ -210,7 +210,7 @@ $(function () {
         var o = JSON.parse(j);
         var answer = o.value;
         // 私密回答只能自己看
-        if (answer.questionUserId !== DWLive.userid && answer.isPrivate) {
+        if (answer.questionUserId !== DWLive.viewerid && answer.isPrivate) {
             return;
         }
         var qid = o.value.questionId;
@@ -242,6 +242,10 @@ $(function () {
     //发布随堂测功能
     DWLive.onPracticePublish = function (j) {
 
+    };
+    // 发布奖杯
+    DWLive.onPrizeSend = function(j){
+        console.log('奖杯信息：' + j)
     };
     // 禁言
     DWLive.onInformation = function (j) {

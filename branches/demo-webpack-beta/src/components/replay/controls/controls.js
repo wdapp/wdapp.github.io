@@ -63,12 +63,12 @@ class Controls extends Component {
   }
 
   onEvents() {
-    HDScence.onDocumentMode((data) => {
+    HDScene.onDocumentMode((data) => {
       if (!data.fastMode && this.fullScreen.isSupportFullscreen) {
         this.isSwitch = false
       }
     })
-    HDScence.onPlayerMode((data) => {
+    HDScene.onPlayerMode((data) => {
       this.isH5play = data.isH5play
       this.autoPlay(this.isH5play)
       if (!this.isH5play && this.fullScreen.isSupportFullscreen) {
@@ -78,38 +78,38 @@ class Controls extends Component {
         this.playRateWrap.parentNode.style.display = 'none'
       }
     })
-    HDScence.onPlayerLoad(() => {
+    HDScene.onPlayerLoad(() => {
       this.isPlayerLoad = true
       this.updateVolume()
       this.setDurationTime()
       this.updateCurrentTime()
-      HDScence.emit('initLoadBar', this.durationTime)
-      HDScence.emit('isPlayerLoad', this.isPlayerLoad)
+      HDScene.emit('initLoadBar', this.durationTime)
+      HDScene.emit('isPlayerLoad', this.isPlayerLoad)
       Utils.log('onPlayerLoad', this.isPlayerLoad)
       this.autoPlay(this.isH5play)
     })
-    HDScence.onPlayerStart(() => {
+    HDScene.onPlayerStart(() => {
       this.playState = true
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerStart', this.playState)
     })
-    HDScence.onPlayerPause(() => {
+    HDScene.onPlayerPause(() => {
       this.playState = false
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerPause', this.playState)
     })
-    HDScence.onPlayerResume(() => {
+    HDScene.onPlayerResume(() => {
       this.playState = true
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerResume', this.playState)
     })
-    HDScence.onPlayerEnd(() => {
+    HDScene.onPlayerEnd(() => {
       this.playState = false
       this.updateCurrentTime()
       this.onPlayStateChange(this.playState)
       Utils.log('onPlayerEnd', this.playState)
     })
-    HDScence.onBarrageInfo((data) => {
+    HDScene.onBarrageInfo((data) => {
       Utils.log('barrage', data)
       this.bulletsScreen.style.display = data.isBarrage == 1 ? 'blcok' : 'none'
     })
@@ -117,7 +117,7 @@ class Controls extends Component {
 
   initSlider() {
     this.playerSlider = new Slider('#playerSlider', {})
-    HDScence.once('initLoadBar', (durationTime) => {
+    HDScene.once('initLoadBar', (durationTime) => {
       this.loadBar = new LoadBar({
         element: 'playerSliderWrap',
         durationTime: durationTime
@@ -262,7 +262,7 @@ class Controls extends Component {
 
     this.isVideoMain = !this.isVideoMain
 
-    HDScence.emit('switch', this.isVideoMain)
+    HDScene.emit('switch', this.isVideoMain)
   }
 
   bindPlayRateList(e) {
@@ -276,7 +276,7 @@ class Controls extends Component {
     this.addClass(option, 'active')
     let rateLabel = option.innerHTML
     let rate = rateLabel.substring(0, rateLabel.length - 1)
-    HDScence.rate = rate
+    HDScene.rate = rate
     Utils.log('rate', rate)
     this.playRateBtn.innerHTML = rateLabel
     this.interval = Math.floor(999 / rate)
@@ -315,7 +315,7 @@ class Controls extends Component {
     } else {
       this.addClass(this.thumbnailListButton.getElementsByTagName('span')[0], 'active')
       this.thumbnailWrapper.style.display = 'block'
-      HDScence.emit('showThumbnailList')
+      HDScene.emit('showThumbnailList')
     }
     this.isShowThumbnailList = !this.isShowThumbnailList
   }
@@ -330,7 +330,7 @@ class Controls extends Component {
 
       },
       confirm: () => {
-        HDScence.logout()
+        HDScene.logout()
         location.href = Utils.PATH.INDEX
       },
       complete: () => {
@@ -343,7 +343,7 @@ class Controls extends Component {
     if (!this.checkout('bindPlay')) {
       return false
     }
-    HDScence.togglePlay()
+    HDScene.togglePlay()
   }
 
   stopTimer() {
@@ -360,13 +360,13 @@ class Controls extends Component {
   }
 
   setDurationTime() {
-    this.durationTime = HDScence.durationTime
+    this.durationTime = HDScene.durationTime
     this.playTimeDuration.innerText = Utils.formatSeconds(this.durationTime)
     this.setPlayerSliderMax()
   }
 
   updateCurrentTime() {
-    this.currentTime = Math.ceil(HDScence.currentTime)
+    this.currentTime = Math.ceil(HDScene.currentTime)
     if (this.currentTime > this.durationTime) {
       this.currentTime = this.durationTime
     }
@@ -381,7 +381,7 @@ class Controls extends Component {
   }
 
   updateVolume() {
-    this.volume = HDScence.volume
+    this.volume = HDScene.volume
     this.voiceSlider.setValue(this.volume)
     this.updateMute(this.volume)
     Utils.log('updateVolume volume', this.volume)
@@ -391,8 +391,8 @@ class Controls extends Component {
     if (!this.checkout('setVolume')) {
       return false
     }
-    HDScence.volume = volume
-    this.volume = HDScence.volume
+    HDScene.volume = volume
+    this.volume = HDScene.volume
     this.updateMute(this.volume)
     Utils.log('setVolume volume', this.volume)
   }
@@ -405,13 +405,13 @@ class Controls extends Component {
       if (!this.volume) {
         this.volume = 1
       }
-      HDScence.volume = this.volume
+      HDScene.volume = this.volume
     } else {
-      HDScence.volume = 0
+      HDScene.volume = 0
     }
-    this.updateMute(HDScence.volume)
-    this.voiceSlider.setValue(HDScence.volume)
-    Utils.log('toggleMute volume', HDScence.volume)
+    this.updateMute(HDScene.volume)
+    this.voiceSlider.setValue(HDScene.volume)
+    Utils.log('toggleMute volume', HDScene.volume)
   }
 
   updateMute(volume) {
@@ -438,7 +438,7 @@ class Controls extends Component {
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
       this.stopTimer()
-      HDScence.seek(value)
+      HDScene.seek(value)
       if (Utils.IEVersion() != -1) {
         this.updateCurrentTime()
       }

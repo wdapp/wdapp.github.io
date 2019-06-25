@@ -22,9 +22,9 @@ class QuestionAnswer extends Component {
   }
 
   bindEvent() {
-    HDScence.onQAPulish({callback: this.addQuestionPublish.bind(this)})
-    HDScence.onQAQuestion({callback: this.addQuestion.bind(this)})
-    HDScence.onQAAnswer({callback: this.addAnswer.bind(this)})
+    HDScene.onQAPulish({callback: this.addQuestionPublish.bind(this)})
+    HDScene.onQAQuestion({callback: this.addQuestion.bind(this)})
+    HDScene.onQAAnswer({callback: this.addAnswer.bind(this)})
     let input = new Input({
       id: 'sendQaMsg'
     })
@@ -58,7 +58,7 @@ class QuestionAnswer extends Component {
     let timeOutId = -1
     this.bind(this.getNode('qaSendBtn'), 'click', () => {
       let sendMsg = this.getNode('sendQaMsg').value
-      if (!HDScence.isLive) {
+      if (!HDScene.isLive) {
         this.ui.alertTip({
           parentNodeId: 'sendQuestionInputWrap',
           content: '直播未开始，无法提问'
@@ -88,7 +88,7 @@ class QuestionAnswer extends Component {
       }
       this.ui.alertTipClose()
       //发送问答
-      HDScence.sendQuestionMsg({'msg': sendMsg})
+      HDScene.sendQuestionMsg({'msg': sendMsg})
       this.getNode('sendQaMsg').value = ''
       isCanSend = false
       timeOutId = setTimeout(() => {

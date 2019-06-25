@@ -19,14 +19,14 @@ class Player extends Component {
     })
     this.ui = new UIPlayer()
 
-    HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
-      Utils.log('HDScence.isLive', HDScence.isLive)
-      if (!HDScence.isLive) {
+    HDScene.addEvent(HDScene.OnLoginSuccess, (e) => {
+      Utils.log('HDScene.isLive', HDScene.isLive)
+      if (!HDScene.isLive) {
         this.ui.showTips = true
       }
     })
 
-    HDScence.onLiveStream({
+    HDScene.onLiveStream({
       liveStart: () => {
         this.ui.showTips = false
       },

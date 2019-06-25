@@ -26,7 +26,7 @@ class Thumbnail extends Component {
     let thumbnailList = []
     let thumbnailListTime = []
 
-    HDScence.onAllPages((pages) => {
+    HDScene.onAllPages((pages) => {
       Utils.log(pages)
       for (let page of pages) {
         this.addThumbnail(thumbnailListGroup, page.url, page.time, once)
@@ -36,22 +36,22 @@ class Thumbnail extends Component {
       thumbnailList = this.handleClick()
       thumbnailListTime = [...document.getElementsByClassName('thumbnail-list-time')]
     })
-    HDScence.onChangePageSync((page) => {
+    HDScene.onChangePageSync((page) => {
       Utils.log('onChangePageSync', page)
       this.page = page
       this.updateThumbnailList(page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
     })
-    HDScence.once('isPlayerLoad', (isPlayerLoad) => {
+    HDScene.once('isPlayerLoad', (isPlayerLoad) => {
       this.isPlayerLoad = isPlayerLoad
     })
-    HDScence.on('showThumbnailList', () => {
+    HDScene.on('showThumbnailList', () => {
       if (!Utils.isEmptyObject(this.page)) {
         Utils.log(`updateThumbnailList fail await page load!`)
         return false
       }
       this.updateThumbnailList(this.page, thumbnailListTime, thumbnailList, thumbnailScrollWrap)
     })
-    HDScence.on('switch', () => {
+    HDScene.on('switch', () => {
       if (!Utils.isEmptyObject(this.page)) {
         Utils.log(`updateThumbnailList fail await page load!`)
         return false
@@ -133,7 +133,7 @@ class Thumbnail extends Component {
     }
     this.delaySeek && clearTimeout(this.delaySeek)
     this.delaySeek = setTimeout(() => {
-      HDScence.seek(time)
+      HDScene.seek(time)
     }, 500)
     return true
   }

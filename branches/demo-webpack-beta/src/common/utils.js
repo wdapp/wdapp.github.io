@@ -25,6 +25,10 @@ class Utils {
     }
   }
 
+  static get admin() {
+    return config.admin
+  }
+
   static get debug() {
     if (typeof config.debug !== 'boolean') {
       config.debug = true

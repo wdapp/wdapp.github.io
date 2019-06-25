@@ -18,9 +18,9 @@ class Player extends Component {
 
   config() {
     //隐藏播放器控制器
-    HDScence.isShowControl(false)
+    HDScene.isShowControl(false)
     //初始化flash播放器
-    HDScence.onPlayerMode((data) => {
+    HDScene.onPlayerMode((data) => {
       if (!data.isH5play) {
         FlashTip.init('player')
       }

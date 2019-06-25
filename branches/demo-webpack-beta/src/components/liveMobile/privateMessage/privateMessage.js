@@ -18,7 +18,7 @@ class PrivateMessage extends Component {
     this.ui = new UIPrivate()
     this.chatInfo = {}
     this.selectedTeacher = ';'
-    HDScence.onTeachers({
+    HDScene.onTeachers({
       callback: (info) => {
         let teachers = info
         for (let i = 0; i < teachers.length; i++) {
@@ -32,7 +32,7 @@ class PrivateMessage extends Component {
         }
       }
     })
-    HDScence.onPrivateChat({
+    HDScene.onPrivateChat({
       callback: (info) => {
         let msgInfo = info
         if (msgInfo.fSelf) {
@@ -84,7 +84,7 @@ class PrivateMessage extends Component {
     })
     this.bind(privateSend, 'click', () => {
       let value = this.ui.privateValue
-      HDScence.sendPrivateMsg({'msg': value, 'teacher': this.selectedTeacher, 'teacherName': this.selectedTeacherName})
+      HDScene.sendPrivateMsg({'msg': value, 'teacher': this.selectedTeacher, 'teacherName': this.selectedTeacherName})
     })
   }
 }

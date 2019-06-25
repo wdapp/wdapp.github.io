@@ -69,11 +69,11 @@ class Controls extends Component {
   }
 
   addEvents() {
-    HDScence.addEvent(HDScence.OnLoginSuccess, () => {
-      this.ui.barrageShow = (HDScence.getLive().isBarrage == 1)
+    HDScene.addEvent(HDScene.OnLoginSuccess, () => {
+      this.ui.barrageShow = (HDScene.getLive().isBarrage == 1)
       this.initUserInfo()
     })
-    HDScence.onUserCount({
+    HDScene.onUserCount({
       callback: (d) => {
         this.ui.setUserCount(parseInt(d))
       }
@@ -94,16 +94,16 @@ class Controls extends Component {
     let btn_line = this.getNodeByClass('line')//线路按钮
     let linesIndex = 0
     this.bind(btn_line, 'click', (e) => {
-      HDScence.getLine()
+      HDScene.getLine()
       linesIndex = (linesIndex + 1) >= LiveInfo.lines.length ? 0 : (linesIndex + 1)
-      HDScence.changeLine({'index': linesIndex})
+      HDScene.changeLine({'index': linesIndex})
       this.innerHTML(btn_line, `线路${linesIndex + 1}`)
       // lines =  this.ui.insertLines();
 
     })
     //事件监听
     this.bind(btn_out, 'click', (e) => {
-      HDScence.logoutRoom({
+      HDScene.logoutRoom({
         success: () => {
           Utils.log('退出成功')
           this.ui.logoutWindow()

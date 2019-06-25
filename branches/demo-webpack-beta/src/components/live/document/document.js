@@ -14,17 +14,17 @@ class Document extends Component {
   }
 
   init() {
-    HDScence.addEvent(HDScence.OnLoginSuccess, (e) => {
-      if (!HDScence.getLive().fastMode) {
+    HDScene.addEvent(HDScene.OnLoginSuccess, (e) => {
+      if (!HDScene.getLive().fastMode) {
         FlashTip.init('document')
       }
-      let docType = HDScence.getLive().documentDisplayMode
+      let docType = HDScene.getLive().documentDisplayMode
       if (docType == 1) {
         //开启极速文档自适应模式
-        HDScence.documentAdaptive(true)
+        HDScene.documentAdaptive(true)
       } else {
         //开启极速文档自适应模式
-        HDScence.documentAdaptive(false)
+        HDScene.documentAdaptive(false)
       }
     })
   }

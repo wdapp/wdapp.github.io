@@ -175,8 +175,7 @@
 <script src="js/jquery.panzoom.min.js"></script>
 <script src="js/main.js"></script>
 <script src="//image.csslcloud.net/js/dpc.js"></script>
-<script src="js/liveSDK.js"></script>
-<!--<script src="//view.csslcloud.net/js/liveSDK.js"></script>-->
+<script src="//view.csslcloud.net/js/liveSDK.js"></script>
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
@@ -207,7 +206,7 @@
                 $('#embox').hide().remove();
             } else {
                 var strFace;
-                var path = './img/em2_mobile/';
+                var path = 'http:img/em2_mobile/';
                 if ($('#embox').length <= 0) {
                     strFace = '<div id="embox" style="position:absolute;z-index:1000;bottom:39px;left:0;">' +
                         '<table border="0" cellspacing="0" cellpadding="0"><tr>';
@@ -279,19 +278,19 @@
         }
 
         if (isWeiXin()) {
-        //禁止浏览器后退时，极速文档动画被翻页
-        window.frames.history.pushState(null, null, window.frames.document.URL);
-        window.frames.addEventListener("popstate", function () {
+          //禁止浏览器后退时，极速文档动画被翻页
           window.frames.history.pushState(null, null, window.frames.document.URL);
-        });
-        DWLive.onPageChange = function (data) {
-          window.frames.history.pushState(null, null, window.frames.document.URL);
-          window.frames.addEventListener("popstate", function (e) {
-            window.frames.history.go(0);
+          window.frames.addEventListener("popstate", function () {
             window.frames.history.pushState(null, null, window.frames.document.URL);
           });
-        };
-      }
+          DWLive.onPageChange = function (data) {
+            window.frames.history.pushState(null, null, window.frames.document.URL);
+            window.frames.addEventListener("popstate", function (e) {
+              window.frames.history.go(0);
+              window.frames.history.pushState(null, null, window.frames.document.URL);
+            });
+          };
+        }
 
         $("#chat_input").focus(function () {
             $("#qaV").attr("tabIndex", "-1");

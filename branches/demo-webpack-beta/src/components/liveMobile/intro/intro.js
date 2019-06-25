@@ -9,7 +9,7 @@ class Intro extends Component {
 
     this.render('intro', template, () => {
       this.ui = new UIintro()
-      HDScence.onLiveDesc({
+      HDScene.onLiveDesc({
         callback: (info) => {
           this.ui.content = info
         }

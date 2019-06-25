@@ -243,8 +243,6 @@ class LiveAdaptive extends EventEmitter {
   }) {
     //收到私聊信息
     this.liveInterface.on(this.liveInterface.ONPRIVATECHATMESSAGE, (result) => {
-      // LiveInfo.privateChatMsg = LiveInfo.parsePrivateChat(result)
-      // HDScence.dispatch(HDScence.OnPrivateChat);
       LiveInfo.privateChatMsgInfo = LiveInfo.parsePrivateChatMsg(result)
       this.dispatch(this.OnPrivateChatMsg)
       d.callback && d.callback(LiveInfo.privateChatMsgInfo)

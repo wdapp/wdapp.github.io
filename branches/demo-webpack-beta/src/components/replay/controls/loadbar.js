@@ -57,10 +57,10 @@ class LoadBar extends Component {
   }
 
   updateBuffer() {
-    if (!HDScence.buffer) {
+    if (!HDScene.buffer) {
       return false
     }
-    let buffer = (HDScence.buffer / this.durationTime) * 100
+    let buffer = (HDScene.buffer / this.durationTime) * 100
     if (buffer <= 100) {
       this.bufferWrap.style.width = buffer + '%'
     } else {

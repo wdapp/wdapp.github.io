@@ -1,4 +1,4 @@
-import 'common/liveHDScence' //直播核心对象
+import 'common/liveHDScene' //直播核心对象
 import './styles/live-mobile.scss' //移动端观看直播私有样式
 import Utils from 'common/utils' //公共方法库
 import fastClick from 'fastclick' //解决移动端点击延迟问题
@@ -16,18 +16,18 @@ import PrivateMessage from 'components/liveMobile/privateMessage/privateMessage'
 import QuestionAnswer from 'components/liveMobile/questionAnswer/questionAnswer'
 import Intro from 'components/liveMobile/intro/intro'
 
-HDScence.ready(() => {
+HDScene.ready(() => {
   flexible.init(750, 750)
   fastClick.attach(document.body)
   let ui = new UserInterface()
   let params = Utils.parseUrl(localStorage.address)
-  HDScence.components([Player, Document, Controls, Navigation, Setting, Chat, PrivateMessage, QuestionAnswer, Intro])
-  HDScence.login({
-    userId: params.userid, //用户id
-    roomId: params.roomid,//直播间id
-    viewerName: params.viewername,//用户名称
+  HDScene.components([Player, Document, Controls, Navigation, Setting, Chat, PrivateMessage, QuestionAnswer, Intro])
+  HDScene.login({
+    userId: params.userid || Utils.admin.liveMobile.userid, //用户id
+    roomId: params.roomid || Utils.admin.liveMobile.roomid,//直播间id
+    viewerName: params.viewername || Utils.admin.liveMobile.viewername,//用户名称
+    viewerToken: params.viewertoken || Utils.admin.liveMobile.viewertoken,//密码
     groupId: params.groupid,
-    viewerToken: params.viewertoken,//密码
     fastMode: true,//是否为急速文档
     isH5play: true,// 是否是h5播放器,观看直播PC端使用flash，移动端使用h5播放器
     success(result) {

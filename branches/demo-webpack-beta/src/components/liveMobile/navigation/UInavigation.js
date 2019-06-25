@@ -34,15 +34,15 @@ class UInavigation extends Render {
     this.ui = new UserInterface()
 
     //更新select位置
-    HDScence.once('onOrientationChange', (orientation) => {
+    HDScene.once('onOrientationChange', (orientation) => {
       this.updateSelect(this.index)
     })
     let delay = 0
-    HDScence.onRotateScreenChange((orientation) => {
+    HDScene.onRotateScreenChange((orientation) => {
       if (orientation == 'portrait') {//竖屏
         delay && clearTimeout(delay)
         delay = setTimeout(() => {
-          HDScence.emit('onOrientationChange', orientation)
+          HDScene.emit('onOrientationChange', orientation)
         }, 200)
       } else {//横屏
         delay && clearTimeout(delay)

@@ -11,7 +11,7 @@ class Player extends Component {
     this.render('player', template, () => {
       this.init()
     })
-    HDScence.onLiveStream({
+    HDScene.onLiveStream({
       liveStart: () => {
 
       },

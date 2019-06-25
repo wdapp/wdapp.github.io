@@ -14,11 +14,11 @@ class QuestionAnswer extends Component {
   }
 
   init() {
-    HDScence.onQuestions((data) => {
+    HDScene.onQuestions((data) => {
       this.addQuestions(data)
       Utils.log('onQuestions', data)
     })
-    HDScence.onAnswers((data) => {
+    HDScene.onAnswers((data) => {
       this.addAnswers(data)
       Utils.log('onAnswers', data)
     })
@@ -31,7 +31,7 @@ class QuestionAnswer extends Component {
     this.bind(questionAnswerScrollWrap, 'mouseenter', () => {
       this.isScroll = false
     })
-    HDScence.on('switch', () => {
+    HDScene.on('switch', () => {
       this.scrollTopQuestionAnswer()
     })
   }

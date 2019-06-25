@@ -31,7 +31,7 @@ class Chat extends Component {
   }
 
   addEvents() {
-    HDScence.onPublicChat({
+    HDScene.onPublicChat({
       callback: (info) => {
         let msgInfo = info
         if (LiveInfo.getLoginInfoData('viewer', 'groupId') === msgInfo.groupId || !msgInfo.groupId || !LiveInfo.getLoginInfoData('viewer', 'groupId')) {
@@ -43,19 +43,19 @@ class Chat extends Component {
         this.uiChat.updateScroll()
       }
     })
-    HDScence.onAnnounce({
+    HDScene.onAnnounce({
       callback: (d) => {
         this.announce.content = d
         this.announce.isShowPanel = true
       }
     })
-    HDScence.onAnounceRelease({
+    HDScene.onAnounceRelease({
       callback: (d) => {
         this.announce.content = d
         this.announce.isShowPanel = true
       }
     })
-    HDScence.onAnounceDelete({
+    HDScene.onAnounceDelete({
       callback: () => {
         this.announce.content = '暂无公告'
         this.announce.isShowPanel = false
@@ -144,9 +144,9 @@ class Chat extends Component {
       let teacher = t.selectedTeacher
       let teacherName = t.selectedTeacherName
       if (t.selectedTeacher === 'all') {
-        HDScence.sendPublicMsg({'msg': msg})
+        HDScene.sendPublicMsg({'msg': msg})
       } else {
-        HDScence.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
+        HDScene.sendPrivateMsg({'msg': msg, 'teacher': teacher, 'teacherName': teacherName})
       }
       t.uiChat.updateScroll()
       t.uiChat.msg = ''
