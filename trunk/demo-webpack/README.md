@@ -108,10 +108,10 @@ module.exports = {
 
 ##### 登录
 
-直播端接口为 common目录下的liveHDScence.js,回放端接口为common目录下的replayHDScence.js
+直播端接口为 common目录下的liveHDScene.js,回放端接口为common目录下的replayHDScene.js
 
 ```javascript
-import 'common/liveHDScence'//提供Web SDK方法（直播引入liveHDScence，回放引入replayHDScence）
+import 'common/liveHDScene'//提供Web SDK方法（直播引入liveHDScene，回放引入replayHDScene）
 	//登录
   HDScene.login({
     userId:'B27039502337407C', //用户id
@@ -208,7 +208,7 @@ d={
 #####接收回答回调
 
 ```javascript
-HDScence.onQAAnswer({callback:function(d){
+HDScene.onQAAnswer({callback:function(d){
   console.log("接收回答信息"+d)
 }})
 d={
@@ -229,19 +229,19 @@ d={
 ##### 发送公共聊天
 
 ```javascript
-HDScence.sendPublicMsg(d)  d={"msg":"公共聊天内容"}
+HDScene.sendPublicMsg(d)  d={"msg":"公共聊天内容"}
 ```
 
 ##### 发送私聊
 
 ```javascript
-HDScence.sendPrivateMsg(d) d={"msg":"私聊内容","teacher":"私聊的老师id","teacherName":"私聊老师名称"}
+HDScene.sendPrivateMsg(d) d={"msg":"私聊内容","teacher":"私聊的老师id","teacherName":"私聊老师名称"}
 ```
 
 ##### 接收公共聊天
 
 ```javascript
-HDScence.onPublicChat(d) {
+HDScene.onPublicChat(d) {
   console.log("接收到了公共聊天"+d)
 }
 d={
@@ -260,7 +260,7 @@ d={
 ##### 接收私聊
 
 ```javascript
-HDScence.onPrivateChat(d){
+HDScene.onPrivateChat(d){
   console.log("接收到私有聊天")
 }
 d={
@@ -279,7 +279,7 @@ d={
 ##### 接收私聊回复
 
 ```javascript
-HDScence.onPrivateChatRevert(d){
+HDScene.onPrivateChatRevert(d){
   console.log("接收到私聊的回复")
 }
 参数同接收私聊
@@ -290,7 +290,7 @@ HDScence.onPrivateChatRevert(d){
 #####显示公告
 
 ```javascript
-HDScence.onAnnounce({callback:function(d){
+HDScene.onAnnounce({callback:function(d){
   console.log("接收公告信息"+d)
 }})
 d="我是公告信息信息信息"
@@ -299,7 +299,7 @@ d="我是公告信息信息信息"
 ##### 发布更新公告
 
 ```javascript
-HDScence.onAnounceRelease({callback:function(d){
+HDScene.onAnounceRelease({callback:function(d){
   console.log("更新公告信息"+d)
 }})
 d="我是更新的公告信息"
@@ -308,7 +308,7 @@ d="我是更新的公告信息"
 ##### 删除公告信息
 
 ```javascript
-HDScence.onAnounceDelete({callback:function(){
+HDScene.onAnounceDelete({callback:function(){
   console.log("公告删除了")
 }})
 ```
@@ -318,7 +318,7 @@ HDScence.onAnounceDelete({callback:function(){
 ##### 退出直播间
 
 ```javascript
-HDScence.logoutRoom({success:function(){
+HDScene.logoutRoom({success:function(){
   console.log("退出直播间成功")
 },error:function(){	
   console.log("退出直播间失败")
@@ -328,7 +328,7 @@ HDScence.logoutRoom({success:function(){
 ##### 切换线路
 
 ```javascript
-HDScence.changeLine({
+HDScene.changeLine({
   index:0 //线路的值
 })
 ```
@@ -336,7 +336,7 @@ HDScence.changeLine({
 ##### 获取线路
 
 ```javascript
-HDScence.getLine()
+HDScene.getLine()
 ```
 
 ### 回放模块
@@ -344,8 +344,8 @@ HDScence.getLine()
 ##### 登录
 
 ```javascript
-import 'common/replayHDScence'//提供Web SDK 观看回放事件、方法、属性
-HDScence.login({
+import 'common/replayHDScene'//提供Web SDK 观看回放事件、方法、属性
+HDScene.login({
   			userId: 'userId',//用户id
         roomId: 'roomId',//直播见id
         recordId: 'recordId',//回放id
@@ -361,39 +361,39 @@ HDScence.login({
 ##### 恢复播放
 
 ```javascript
-HDScence.togglePlay() //切换播放暂停状态
+HDScene.togglePlay() //切换播放暂停状态
 ```
 
 ##### 跳转到指定时间点
 
 ```javascript
-HDScence.seek(t)
+HDScene.seek(t)
 t=20 //t 为播放时间点
 ```
 
 ##### 获取视频总时长
 
 ```javascript
-let durition = HDScence.durationTime;  //获取视频总时长
+let durition = HDScene.durationTime;  //获取视频总时长
 ```
 
 ##### 获取当前播放时间点
 
 ```javascript
-let currentTime = HDScence.currentTime; //获取当前播放时间点
+let currentTime = HDScene.currentTime; //获取当前播放时间点
 ```
 
 ##### 获取缓冲进度
 
 ```javascript
-let buffer = HDScence.buffer;
+let buffer = HDScene.buffer;
 ```
 
 ##### 设置或者获取音量
 
 ```javascript
-let volum = HDScence.volume; //获取音量
-HDScence.volume = 0.1;//设置音量
+let volum = HDScene.volume; //获取音量
+HDScene.volume = 0.1;//设置音量
 ```
 
 #### 问答
@@ -401,7 +401,7 @@ HDScence.volume = 0.1;//设置音量
 #####历史问题回调
 
 ```javascript
-HDScence.onQuestions(function(d){
+HDScene.onQuestions(function(d){
  	console.log("接收到的历史问题消息回调"+d) 
 })
 d={
@@ -417,7 +417,7 @@ d={
 ##### 历史回答回调
 
 ```javascript
-HDScence.onAnswers(function(d){
+HDScene.onAnswers(function(d){
     console.log("接收到历史回答回调"+d)
   })
 d={
@@ -437,7 +437,7 @@ d={
 #####历史聊天数据回调
 
 ```javascript
-HDScence.onChatMessageSync(function(d){
+HDScene.onChatMessageSync(function(d){
     console.log("历史的聊天信息"+d);
   })
 d={ 
@@ -458,7 +458,7 @@ d={
 #####历史问题数据
 
 ```javascript
-HDScence.onQuestions(function(d){
+HDScene.onQuestions(function(d){
   console.log("问题数据->"+d);
 })
 d={
@@ -475,7 +475,7 @@ d={
 ##### 历史回答
 
 ```javascript
-HDScence.onAnswers(function(d){
+HDScene.onAnswers(function(d){
   content: "sdfdsafd",//回答内容
   groupId: "",//分组信息
   isPrivate: 1,//是否仅自己可见
@@ -493,7 +493,7 @@ HDScence.onAnswers(function(d){
 ##### 是否隐藏控制条
 
 ```javascript
-HDScence.isShowControl({
+HDScene.isShowControl({
   visible:true  //显示控制条
 })
 ```
@@ -501,14 +501,14 @@ HDScence.isShowControl({
 #####极速文档是否自适应
 
 ```javascript
-HDScence.documentAdaptive(b)
+HDScene.documentAdaptive(b)
 b = true/false //true为自适应窗口设置图像大小，false以窗口宽度为基准设置大小
 ```
 
 ##### 退出
 
 ```javascript
-HDScence.logout() //退出回放
+HDScene.logout() //退出回放
 ```
 
 ### 自定义组件
@@ -536,7 +536,7 @@ export default ExampleCompents
 ```javascript
 import ExampleCompents from './exampleCompents'//ExampleCompents.js所在的文件目录
 //配置自定义组件需要倒入模块核心类
-  HDScence.components({
+  HDScene.components({
     ExampleCompents,
     ...
   })
@@ -545,7 +545,7 @@ import ExampleCompents from './exampleCompents'//ExampleCompents.js所在的文�
 ### 示例代码
 
 ```javascript
-import 'common/liveHDScence'//提供Web SDK方法（直播引入liveHDScence，回放引入replayHDScence）
+import 'common/liveHDScene'//提供Web SDK方法（直播引入liveHDScene，回放引入replayHDScene）
 import Utils from 'common/utils'//公共方法库
 import './styles/replay.scss'//PC端回放私有样式
 
@@ -558,9 +558,9 @@ import Controls from 'components/replay/controls/controls'
 import Thumbnail from 'components/replay/thumbnail/thumbnail'
 
 //当dom准备完成后调用
-HDScence.ready(() => {
+HDScene.ready(() => {
   //配置自定义组件
-  HDScence.components({
+  HDScene.components({
     Player,
     Document,
     QuestionAnswer,
@@ -569,7 +569,7 @@ HDScence.ready(() => {
     Thumbnail
   })
   //登录
-  HDScence.login({
+  HDScene.login({
     userId:'B27039502337407C', //用户id
     roomId:  '3115C441D8B66A719C33DC5901307461',//直播间id
     recordId:  '96C0454B9E3CE464',//回放id（可选）直播不需要，回放需要
@@ -586,4 +586,5 @@ HDScence.ready(() => {
   })
 })
 ```
+
 
