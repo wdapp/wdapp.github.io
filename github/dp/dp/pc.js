@@ -506,6 +506,7 @@
     var imgeLoadComplete = false;
   var timer = 0
   var mytime = 0
+  alert("1.0.0")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
