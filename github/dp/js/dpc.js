@@ -120,7 +120,7 @@
         })(this);
         var displayMode = $('#documentDisplayMode').val();
         if(this.df){
-          this.df.src = '//image.csslcloud.net/dp/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
+          this.df.src = '//192.168.200.33/websdk/github/dp/dp/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
         }
 
         this.isLoaded = false;
@@ -142,7 +142,7 @@
         this.setDisplayMode = function (m) {
 
             if(!this.df)return;
-            this.df.src = '//image.csslcloud.net/dp/dp.html?vertical=1&displayMode=' + m+'&hd_version='+Utils.getDate();
+            this.df.src = '//192.168.200.33/websdk/github/dp/dp/dp.html?vertical=1&displayMode=' + m+'&hd_version='+Utils.getDate();
         };
         this.resetWithMeta = function () {
             this.resetWithMeta();

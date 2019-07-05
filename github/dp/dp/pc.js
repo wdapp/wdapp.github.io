@@ -504,24 +504,39 @@
         lastPageDoc="";
     };
     var imgeLoadComplete = false;
-    PC.prototype.showJPG = function (d) {
+  var timer = 0
+  var mytime = 0
+  PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
             var lastImg = document.getElementById('picture_one');
             var img = creatImage(d.completeURI);
+
             //创建图片加载对象
             function creatImage(url) {
+
+              timer = setInterval(function(){
+                mytime++
+                },1)
                 var myImg = new Image();
+              myImg.remove()
+              window.stop()
+
                 myImg.src = url;
+              myImg.src = ""
                 myImg.id = "picture_one";
                 myImg.style = "z-index:10;display:none;";
-                myImg.onerror = imageLoadError;
-                myImg.onload = imageLoadComplate;
+                myImg.onerror = imageLoadError
+                myImg.onload = imageLoadComplate
                 return myImg;
             }
             //图像加载失败
             function imageLoadError(e){
-                if(typeof window.dpImageLoadError === 'function'){
+              clearInterval(timer)
+              console.log("图片加载 失败 时长===>>>",mytime)
+              // pc.imgParentNode.remove
+
+              if(typeof window.dpImageLoadError === 'function'){
                     window.dpImageLoadError(e);
                 }
                 //android端
@@ -540,6 +555,9 @@
             }
             //图像加载完成调用函数
             function imageLoadComplate() {
+                clearInterval(timer)
+                console.log("图片加载 成功 时长===>>>",mytime)
+
                 imgeLoadComplete = true;
                 // 画板展示的宽和高
                 var dpDisplayedWidth = window.innerWidth;
