@@ -507,7 +507,7 @@
   var timer = 0
   var mytime = 0
   var img = new Image()
-  alert("1.0.1")
+  alert("1.0.2")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
@@ -518,15 +518,13 @@
             //创建图片加载对象
             function creatImage(url) {
 
-              // timer = setInterval(function(){
-              //   mytime++
-              //   },1)
+              timer = setInterval(function(){
+                mytime++
+                },1)
                 var myImg = new Image();
               // myImg.remove()
               // window.stop()
-
                 myImg.src = url;
-              // myImg.src = ""
                 myImg.id = "picture_one";
                 myImg.style = "z-index:10;display:none;";
                 myImg.onerror = imageLoadError
