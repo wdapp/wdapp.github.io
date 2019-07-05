@@ -506,18 +506,25 @@
     var imgeLoadComplete = false;
   var timer = 0
   var mytime = 0
-  var img = new Image()
-  alert("1.0.4")
+  // var img = new Image()
+  // alert("1.0.4")
   console.log("1.0.4")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
             var lastImg = document.getElementById('picture_one');
-            if(img && img.src){
-              img.src = ''
-            }
-            img = creatImage(d.completeURI);
+            // if(img && img.src){
+            //   img.src = ''
+            // }
+            var nodelist = document.querySelectorAll(".picture_close")
+            var nodelistToArray = Array.apply(null, nodelist);
+    nodelistToArray.forEach(function (element, index) {
+      element.setAttribute("src","")
+    });
 
+            var img = creatImage(d.completeURI);
+             console.log("img===>>>",img)
+            img.className = "picture_close"
             //创建图片加载对象
             function creatImage(url) {
 
