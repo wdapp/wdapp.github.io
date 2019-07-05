@@ -507,7 +507,7 @@
   var timer = 0
   var mytime = 0
   var img = new Image()
-  alert("1.0.3")
+  alert("1.0.4")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
@@ -537,6 +537,7 @@
             function imageLoadError(e){
               clearInterval(timer)
               console.log("图片加载 失败 时长===>>>",mytime)
+              mytime = 0
               // pc.imgParentNode.remove
 
               if(typeof window.dpImageLoadError === 'function'){
@@ -560,7 +561,7 @@
             function imageLoadComplate() {
                 clearInterval(timer)
                 console.log("图片加载 成功 时长===>>>",mytime)
-
+                mytime = 0
                 imgeLoadComplete = true;
                 // 画板展示的宽和高
                 var dpDisplayedWidth = window.innerWidth;
