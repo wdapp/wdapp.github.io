@@ -551,7 +551,7 @@
       console.log('url===>', url)//                                       w_宽   原图片质量的压缩比 50%
       myImg.src = url + '?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1000/quality,q_50'
       var limitUrl = url.split('/')
-      if (limitUrl.length >= 7 && limitUrl[limitUrl.length - 2] < 32) {
+      if (limitUrl.length >= 7 && limitUrl[limitUrl.length - 2].length >= 32) {
         myImg.src = url
       }
 
