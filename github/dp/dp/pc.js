@@ -505,7 +505,7 @@
     };
     var imgeLoadComplete = false;
   var timer = 0
-  // var img = 0
+  var mytime = 0
   var img = new Image()
   alert("1.0.1")
   PC.prototype.showJPG = function (d) {
