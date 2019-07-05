@@ -507,12 +507,14 @@
   var timer = 0
   var mytime = 0
   var img = new Image()
-  alert("1.0.2")
+  alert("1.0.3")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
             var lastImg = document.getElementById('picture_one');
-            img.src = ''
+            if(img && img.src){
+              img.src = ''
+            }
             img = creatImage(d.completeURI);
 
             //创建图片加载对象
