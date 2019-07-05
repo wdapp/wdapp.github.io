@@ -537,7 +537,9 @@
                 var myImg = new Image();
               // myImg.remove()
               // window.stop()
-                myImg.src = url;
+              console.log("url===>",url)
+              myImg.src = url+"?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1000/quality,q_50";
+                console.log("url===>",url)
                 myImg.id = "picture_one";
                 myImg.style = "z-index:10;display:none;";
                 myImg.onerror = imageLoadError
