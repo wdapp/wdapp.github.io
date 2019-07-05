@@ -505,26 +505,28 @@
     };
     var imgeLoadComplete = false;
   var timer = 0
-  var mytime = 0
-  alert("1.0.0")
+  // var img = 0
+  var img = new Image()
+  alert("1.0.1")
   PC.prototype.showJPG = function (d) {
             var t = this;
             imgeLoadComplete = false;
             var lastImg = document.getElementById('picture_one');
-            var img = creatImage(d.completeURI);
+            img.src = ''
+            img = creatImage(d.completeURI);
 
             //创建图片加载对象
             function creatImage(url) {
 
-              timer = setInterval(function(){
-                mytime++
-                },1)
+              // timer = setInterval(function(){
+              //   mytime++
+              //   },1)
                 var myImg = new Image();
-              myImg.remove()
-              window.stop()
+              // myImg.remove()
+              // window.stop()
 
                 myImg.src = url;
-              myImg.src = ""
+              // myImg.src = ""
                 myImg.id = "picture_one";
                 myImg.style = "z-index:10;display:none;";
                 myImg.onerror = imageLoadError
