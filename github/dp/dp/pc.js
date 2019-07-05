@@ -525,6 +525,9 @@
             var img = creatImage(d.completeURI);
              console.log("img===>>>",img)
             img.className = "picture_close"
+                console.log("size",img.size)
+                console.log("size",img.sizes)
+                console.log("size",img.fileSize)
             //创建图片加载对象
             function creatImage(url) {
 
@@ -544,7 +547,7 @@
             //图像加载失败
             function imageLoadError(e){
               clearInterval(timer)
-              console.log("图片加载 失败 时长===>>>",mytime)
+              // console.log("图片加载 失败 时长===>>>",mytime)
               mytime = 0
               // pc.imgParentNode.remove
 
@@ -566,9 +569,10 @@
 
             }
             //图像加载完成调用函数
-            function imageLoadComplate() {
+            function imageLoadComplate(e) {
                 clearInterval(timer)
                 console.log("图片加载 成功 时长===>>>",mytime)
+                console.log("图片加载 成功 imageLoadComplate ===>>>",e)
                 mytime = 0
                 imgeLoadComplete = true;
                 // 画板展示的宽和高
