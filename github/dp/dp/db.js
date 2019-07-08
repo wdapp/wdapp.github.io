@@ -192,7 +192,7 @@
      *
      * */
     DrawingBoard.prototype.drawLine = function (data) {
-        // console.log(data)
+        console.log(data)
         // console.log('db.js drawLine', JSON.stringify(data));
        // this.penBoard.style.display = "block";
         this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
@@ -222,24 +222,24 @@
     };
 
   DrawingBoard.prototype.drawLineAll = function (data) {
-    // console.log("drawLineAll",data)
+    console.log("drawLineAll",data)
     // console.log('db.js drawLine', JSON.stringify(data));
     // this.penBoard.style.display = "block";
     this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
     var canvas = this.db;
     var context = this.dbContext;
 
-    // var x0 = data.drawData[0].x * canvas.width;
-    // var y0 = data.drawData[0].y * canvas.height;
+    var x0 = data.drawData[0].x * canvas.width;
+    var y0 = data.drawData[0].y * canvas.height;
 
-    context.beginPath();
+    // context.beginPath();
     context.strokeStyle = data.drawColor;
     context.globalAlpha = 1;
     context.lineWidth = data.drawLineWidth * canvas.width / data.docWidth;
     context.lineJoin = "round";
 
     // 起点
-    // context.moveTo(x0, y0);
+    context.moveTo(x0, y0);
 
     for (var i = 0; i < data.drawData.length; i++) {
       var xn = data.drawData[i].x * canvas.width;
@@ -600,8 +600,8 @@
       var canvas = this.db;
       var context = this.dbContext;
 
-      var x0 = cs[0].drawData[0].x * canvas.width;
-      var y0 = cs[0].drawData[0].y * canvas.height;
+      // var x0 = cs[0].drawData[0].x * canvas.width;
+      // var y0 = cs[0].drawData[0].y * canvas.height;
 
 
       cs.forEach(function (c) {
@@ -609,7 +609,8 @@
         });
 
       // 起点
-      context.moveTo(x0, y0);
+      // context.moveTo(x0, y0);
+
       context.stroke()
     };
 
