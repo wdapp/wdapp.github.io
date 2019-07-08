@@ -496,21 +496,21 @@
     }
 
 
-    // timeIntervalId = setInterval(function () {
-    //     if (!window.dp) {
-    //         return;
-    //     }
-    //
-    //     if (window.isSupportCanvas) {
-    //         // if (dp.width == document.documentElement.clientWidth &&
-    //         //     dp.height == document.documentElement.clientHeight) {
-    //         //     return;
-    //         // }
-    //
-    //         dp.resize();
-    //     }
-    //
-    // }, 300);
+    timeIntervalId = setInterval(function () {
+        if (!window.dp) {
+            return;
+        }
+
+        if (window.isSupportCanvas) {
+            // if (dp.width == document.documentElement.clientWidth &&
+            //     dp.height == document.documentElement.clientHeight) {
+            //     return;
+            // }
+
+            dp.resize();
+        }
+
+    }, 30);
 
 
     window.dpDblClick = function () {

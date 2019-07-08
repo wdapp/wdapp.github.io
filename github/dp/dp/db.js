@@ -98,7 +98,7 @@
             this.clearPrevDraw(d);
         } else if (d.drawType == DrawType.drawLine) { // 绘线
           if(type){
-            this.drawLineAll(d);
+            this.drawLine(d);
           }else{
             this.drawLine(d);
           }
@@ -600,8 +600,8 @@
             return;
         }
 
-      var canvas = this.db;
-      var context = this.dbContext;
+      // var canvas = this.db;
+      // var context = this.dbContext;
 
       // var x0 = cs[0].drawData[0].x * canvas.width;
       // var y0 = cs[0].drawData[0].y * canvas.height;
@@ -614,7 +614,7 @@
       // 起点
       // context.moveTo(x0, y0);
 
-      context.stroke()
+      // context.stroke()
     };
 
 
