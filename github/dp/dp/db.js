@@ -98,7 +98,7 @@
             this.clearPrevDraw(d);
         } else if (d.drawType == DrawType.drawLine) { // 绘线
           if(type){
-            this.drawLine(d);
+            this.drawLineAll(d);
           }else{
             this.drawLine(d);
           }
@@ -347,7 +347,127 @@
         var x = data.drawData.x * canvas.width;
         var y = data.drawData.y * canvas.height;
 
-        var w = data.drawData.width * canvas.width;
+        var w = data.drawData.width *
+          context.moveTo(x0, y0);
+
+      for (var i = 0; i < data.drawData.length; i++) {
+        var xn = data.drawData[i].x * canvas.width;
+        var yn = data.drawData[i].y * canvas.height;
+
+        context.lineTo(xn, yn);
+        // this.drawPenImage(xn,yn);
+      }
+      // context.stroke();
+    };
+
+  DrawingBoard.prototype.drawPenImage = function (x,y) {
+    console.log("drawPenImage ===>>>",x,y)
+
+    clearTimeout(this.timerId);
+    if(!this.penBoard || !this.penBoardContext)return;
+    this.penBoardContext.clearRect(0,0,this.penBoard.width,this.penBoard.height);
+    if(this.penImage){
+      // console.log("dangqianshuju-->" + this.penW, this.penH ,(x),(y - this.penIconScaleW ),this.penIconScaleW,this.penIconScaleW);
+      this.penBoardContext.drawImage(this.penImage,0,0,(this.penW ==0?32:this.penW ) ,(this.penH ==0?32:this.penW ),(x),(y - this.penIconScaleW ),this.penIconScaleW,this.penIconScaleW);
+    }else{
+      this.penBoardContext.fillStyle = '#ffff00';
+      this.penBoardContext.globalAlpha = 1;
+      this.penBoardContext.beginPath();
+      this.penBoardContext.arc( x , y , 30 , 0 , 2*Math.PI , false );
+      this.penBoardContext.fill();
+    }
+    this.timerId = setTimeout(function () {
+      console.log("drawPenImage setTimeout ===>>>")
+      this.penBoardContext.clearRect(0,0,this.penBoard.width,this.penBoard.height);
+    }.bind(this),2000);
+    //this.penBoardContext.stroke();
+  };
+  /**
+   * 实时画线
+   *
+   * */
+  DrawingBoard.prototype.drawLineRealTime = function (data) {
+    // console.log('db.js drawLineRealTime', JSON.stringify(data));
+
+    var canvas = this.db;
+    var context = this.dbContext;
+
+    var x0 = data.drawData[0].x * canvas.width;
+    var y0 = data.drawData[0].y * canvas.height;
+
+    context.beginPath();
+
+    context.strokeStyle = data.drawColor;
+    context.globalAlpha = 1;
+    context.lineWidth = data.drawLineWidth * canvas.width / data.docWidth;
+    context.lineJoin = "round";
+
+    // 起点
+    context.moveTo(x0, y0);
+
+    for (var i = 0; i < data.drawData.length; i++) {
+      var xn = data.drawData[i].x * canvas.width;
+      var yn = data.drawData[i].y * canvas.height;
+
+      context.lineTo(xn, yn);
+    }
+
+    context.stroke();
+  };
+  DrawingBoard.prototype.drawLineData = function (data) {
+    // console.log('drawlinedata', data);
+    this.caches[data.docKey].push(data);
+    // var currentDraws = this.caches[data.docKey];
+    // if (currentDraws.length > 0) {
+    //     var currentDrawText = currentDraws[currentDraws.length - 1];
+    //
+    //     if (currentDrawText.drawId == data.drawId) {
+    //         var currentDrawLineDrawDatas = currentDrawText.drawData;
+    //         var currentLastestDrawLineDrawData = currentDrawLineDrawDatas[currentDrawLineDrawDatas.length - 1];
+    //
+    //         var dataDrawLineDrawDatas = data.drawData;
+    //         var dataFirstDrawLineDrawData = dataDrawLineDrawDatas[0];
+    //
+    //         if (currentLastestDrawLineDrawData.x == dataFirstDrawLineDrawData.x &&
+    //             currentLastestDrawLineDrawData.y == dataFirstDrawLineDrawData.y) {
+    //             for (var i = 1; i < dataDrawLineDrawDatas.length; i++) {
+    //                 currentDrawLineDrawDatas.push(dataDrawLineDrawDatas[i]);
+    //             }
+    //         } else {
+    //             this.caches[data.docKey].push(data);
+    //         }
+    //     } else {
+    //         this.caches[data.docKey].push(data);
+    //     }
+    // } else {
+    //     this.caches[data.docKey].push(data);
+    // }
+  };
+
+  /**
+   * 矩形
+   *
+   * */
+  DrawingBoard.prototype.drawRectangle = function (data) {
+
+    var canvas = this.db;
+    var context = this.dbContext;
+
+    var x = data.drawData.x * canvas.width;
+    var y = data.drawData.y * canvas.height;
+
+    var w = data.drawData.width * canvas.width;
+    var h = data.drawData.height * canvas.height;
+
+    context.beginPath();
+    context.strokeStyle = data.drawColor;
+    context.globalAlpha = 1;
+    context.lineWidth = data.drawLineWidth * canvas.width / data.docWidth;
+    context.lineJoin = "round";
+
+    context.strokeRect(x, y, w, h);
+    context.stroke();
+    canvas.width;
         var h = data.drawData.height * canvas.height;
 
         context.beginPath();
@@ -600,8 +720,8 @@
             return;
         }
 
-      // var canvas = this.db;
-      // var context = this.dbContext;
+      var canvas = this.db;
+      var context = this.dbContext;
 
       // var x0 = cs[0].drawData[0].x * canvas.width;
       // var y0 = cs[0].drawData[0].y * canvas.height;
@@ -614,7 +734,7 @@
       // 起点
       // context.moveTo(x0, y0);
 
-      // context.stroke()
+      context.stroke()
     };
 
 

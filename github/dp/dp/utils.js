@@ -52,6 +52,7 @@
             }
 
             if (typeof j === "string") {
+                console.log("toJson j = ",j)
                 j = JSON.parse(j);
             }
             return j;
