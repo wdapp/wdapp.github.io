@@ -192,7 +192,7 @@
      *
      * */
     DrawingBoard.prototype.drawLine = function (data) {
-        console.log(data)
+        // console.log(data)
         // console.log('db.js drawLine', JSON.stringify(data));
        // this.penBoard.style.display = "block";
         this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
@@ -222,7 +222,7 @@
     };
 
   DrawingBoard.prototype.drawLineAll = function (data) {
-    console.log("drawLineAll",data)
+    // console.log("drawLineAll",data)
     // console.log('db.js drawLine', JSON.stringify(data));
     // this.penBoard.style.display = "block";
     this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
@@ -246,13 +246,15 @@
       var yn = data.drawData[i].y * canvas.height;
 
       context.lineTo(xn, yn);
-      this.drawPenImage(xn,yn);
+      // this.drawPenImage(xn,yn);
     }
     // context.stroke();
   };
 
     DrawingBoard.prototype.drawPenImage = function (x,y) {
-        clearTimeout(this.timerId);
+      console.log("drawPenImage ===>>>",x,y)
+
+      clearTimeout(this.timerId);
         if(!this.penBoard || !this.penBoardContext)return;
             this.penBoardContext.clearRect(0,0,this.penBoard.width,this.penBoard.height);
         if(this.penImage){
@@ -266,7 +268,8 @@
             this.penBoardContext.fill();
         }
         this.timerId = setTimeout(function () {
-            this.penBoardContext.clearRect(0,0,this.penBoard.width,this.penBoard.height);
+          console.log("drawPenImage setTimeout ===>>>")
+          this.penBoardContext.clearRect(0,0,this.penBoard.width,this.penBoard.height);
         }.bind(this),2000);
         //this.penBoardContext.stroke();
     };
