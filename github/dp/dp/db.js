@@ -81,7 +81,9 @@
 
     };
 
-    DrawingBoard.prototype.draw = function (d) {
+    DrawingBoard.prototype.draw = function (d,type) {
+        console.log("d.drawType",d.drawType)
+
         if (!this.isCompleteCacheHistroyDraws) {
             this.tempCaches.push(d);
             return;
@@ -95,7 +97,11 @@
         } else if (d.drawType == DrawType.clearPrevDraw) { // 清除上一步
             this.clearPrevDraw(d);
         } else if (d.drawType == DrawType.drawLine) { // 绘线
+          if(type){
+            this.drawLineAll(d);
+          }else{
             this.drawLine(d);
+          }
         } else if (d.drawType == DrawType.drawRectangle) { // 矩形
             this.drawRectangle(d);
         } else if (d.drawType == DrawType.drawCircular) { // 圆形
@@ -214,6 +220,37 @@
         }
         context.stroke();
     };
+
+  DrawingBoard.prototype.drawLineAll = function (data) {
+    console.log("drawLineAll",data)
+    // console.log('db.js drawLine', JSON.stringify(data));
+    // this.penBoard.style.display = "block";
+    this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
+    var canvas = this.db;
+    var context = this.dbContext;
+
+    // var x0 = data.drawData[0].x * canvas.width;
+    // var y0 = data.drawData[0].y * canvas.height;
+
+    context.beginPath();
+    context.strokeStyle = data.drawColor;
+    context.globalAlpha = 1;
+    context.lineWidth = data.drawLineWidth * canvas.width / data.docWidth;
+    context.lineJoin = "round";
+
+    // 起点
+    // context.moveTo(x0, y0);
+
+    for (var i = 0; i < data.drawData.length; i++) {
+      var xn = data.drawData[i].x * canvas.width;
+      var yn = data.drawData[i].y * canvas.height;
+
+      context.lineTo(xn, yn);
+      this.drawPenImage(xn,yn);
+    }
+    // context.stroke();
+  };
+
     DrawingBoard.prototype.drawPenImage = function (x,y) {
         clearTimeout(this.timerId);
         if(!this.penBoard || !this.penBoardContext)return;
@@ -560,9 +597,20 @@
             return;
         }
 
-        cs.forEach(function (c) {
-            t.draw(c);
+      var canvas = this.db;
+      var context = this.dbContext;
+
+      var x0 = cs[0].drawData[0].x * canvas.width;
+      var y0 = cs[0].drawData[0].y * canvas.height;
+
+
+      cs.forEach(function (c) {
+            t.draw(c,true);
         });
+
+      // 起点
+      context.moveTo(x0, y0);
+      context.stroke()
     };
 
 
