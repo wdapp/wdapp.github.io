@@ -513,7 +513,7 @@
   var mytime = 0
   // var img = new Image()
   // alert("1.0.4")
-  console.log('1.0.7')
+  console.log('1.0.8')
   PC.prototype.showJPG = function (d) {
     var t = this
     imgeLoadComplete = false
@@ -541,7 +541,7 @@
         mytime++
       }, 1)
       var myImg = new Image()
-
+      //TODO
       // image/auto-orient,1/resize,m_fixed,w_1800,h_200/quality,q_50
       //
       // w:宽    h:高   q:图片相对质量（取值1～100）
