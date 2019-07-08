@@ -192,7 +192,7 @@
      *
      * */
     DrawingBoard.prototype.drawLine = function (data) {
-        console.log(data)
+        // console.log(data)
         // console.log('db.js drawLine', JSON.stringify(data));
        // this.penBoard.style.display = "block";
         this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
@@ -222,7 +222,7 @@
     };
 
   DrawingBoard.prototype.drawLineAll = function (data) {
-    console.log("drawLineAll",data)
+    // console.log("drawLineAll",data)
     // console.log('db.js drawLine', JSON.stringify(data));
     // this.penBoard.style.display = "block";
     this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
