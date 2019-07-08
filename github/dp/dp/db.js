@@ -24,13 +24,13 @@
         // 清除上一步
         clearPrevDraw: 1,
         // 绘线
-        drawLine: 2,
+        drawLine: 20,
         // 矩形
-        drawRectangle: 3,
+        drawRectangle: 30,
         // 圆形
-        drawCircular: 4,
+        drawCircular: 40,
         // 文字
-        drawText: 5,
+        drawText: 50,
         // 删除整个文档
         deleteDoc: 6,
         // 清理文档每一页的画笔数据
@@ -40,7 +40,7 @@
         // 清除指定ID的画笔数据
         deleteDrawById: 9,
         //激光笔
-        laserPen:10
+        laserPen:100
     };
 
     var DrawingBoard = function () {
