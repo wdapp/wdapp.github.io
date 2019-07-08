@@ -513,7 +513,7 @@
   var mytime = 0
   // var img = new Image()
   // alert("1.0.4")
-  console.log('1.0.9')
+  console.log('1.0.10')
   PC.prototype.showJPG = function (d) {
     var t = this
     imgeLoadComplete = false
