@@ -24,7 +24,7 @@
         // 清除上一步
         clearPrevDraw: 1,
         // 绘线
-        drawLine: 20,
+        drawLine: 2,
         // 矩形
         drawRectangle: 3,
         // 圆形
@@ -82,8 +82,6 @@
     };
 
     DrawingBoard.prototype.draw = function (d) {
-        console.log("d.drawType",d.drawType)
-
         if (!this.isCompleteCacheHistroyDraws) {
             this.tempCaches.push(d);
             return;
@@ -188,6 +186,7 @@
      *
      * */
     DrawingBoard.prototype.drawLine = function (data) {
+        console.log(data)
         // console.log('db.js drawLine', JSON.stringify(data));
        // this.penBoard.style.display = "block";
         this.penIconScaleW =((this.penW ) * this.penBoard.width / 1920) > 48? 48 :((this.penW ) * this.penBoard.width / 1920) < 16 ? 16:((this.penW ) * this.penBoard.width / 1920);//处理显示问题大于最大48最小16
