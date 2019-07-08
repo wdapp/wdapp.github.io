@@ -82,7 +82,7 @@
     };
 
     DrawingBoard.prototype.draw = function (d,type) {
-        console.log("d.drawType",d.drawType)
+        // console.log("d.drawType",d.drawType)
 
         if (!this.isCompleteCacheHistroyDraws) {
             this.tempCaches.push(d);
