@@ -52,8 +52,13 @@
             }
 
             if (typeof j === "string") {
-                console.log("toJson j = ",j)
-                j = JSON.parse(j);
+                try {
+                    j = JSON.parse(j);
+                } catch (e) {
+                    console.log(j);
+                    console.log(j.length);
+                    console.log(e);
+                }
             }
             return j;
         },
