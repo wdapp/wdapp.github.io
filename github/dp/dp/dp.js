@@ -502,10 +502,10 @@
         }
 
         if (window.isSupportCanvas) {
-            if (dp.width == document.documentElement.clientWidth &&
-                dp.height == document.documentElement.clientHeight) {
-                return;
-            }
+            // if (dp.width == document.documentElement.clientWidth &&
+            //     dp.height == document.documentElement.clientHeight) {
+            //     return;
+            // }
 
             dp.resize();
         }
