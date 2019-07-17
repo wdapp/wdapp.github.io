@@ -5,7 +5,7 @@ module.exports = {
   timestamp: (new Date()),
   tag: '1.0.0',
   host: 'localhost',
-  path: 'github.wdapp.top/branches/demo-3.0/dist',
+  path: 'localhost:8080',
   admin: {
     live: {
       userid: '',
