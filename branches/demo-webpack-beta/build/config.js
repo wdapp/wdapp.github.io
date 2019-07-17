@@ -7,9 +7,9 @@ module.exports = {
 
   host: '192.168.200.33',
   // host: '192.168.199.136',
-  path: 'github.wdapp.top/branches/demo-3.0/dist',
+  // path: 'github.wdapp.top/branches/demo-webpack/dist',
   // path: 'wand.shike.me/dist',
-  // path: '192.168.200.33:8080',
+  path: '192.168.200.33:8080',
   // path: '192.168.199.136:8080',
 
   admin: {
