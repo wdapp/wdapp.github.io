@@ -96,7 +96,10 @@ $(function () {
             if (o.userid === DWLive.viewerid) {
                 $('#chat-list li[uid = ' + o.userid + ']').addClass('me');
             }
-            DWLive.barrage(o.msg); // 发送弹幕
+            var status = o.status;
+            if(o.userid === DWLive.viewerid || status == '0'){
+              DWLive.barrage(o.msg); // 发送弹幕
+            }
         }
     };
 
@@ -108,6 +111,10 @@ $(function () {
         $.each(chatIds,function (index,data) {
             var cId='[chatId='+ data+']';
             $(cId).attr('status',status);
+            if(status == '0'){
+              var text = $(cId + ' .chat-content').text();
+              DWLive.barrage(text); // 发送弹幕
+            }
         });
         $('#chat-list').parent().scrollTop($('#chat-list').height());
     };
