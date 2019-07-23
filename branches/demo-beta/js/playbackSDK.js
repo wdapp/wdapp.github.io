@@ -1256,6 +1256,9 @@
           callback.pageChanges = pageChanges
         }
 
+        //文档信息加载完成，首先渲染首页
+        callback.drawPanel.filp(callback.pageChanges[0])
+
         var animations = meta.animation
         if (animations && animations.length) {
           animations.sort(function (p1, p2) {
