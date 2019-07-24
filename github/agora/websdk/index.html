@@ -77,7 +77,7 @@ function join() {
   document.getElementById("join").disabled = true;
   document.getElementById("video").disabled = true;
   var channel_key = document.getElementById("token").value;
-
+  console.log("channel_key", channel_key)
   console.log("Init AgoraRTC client with App ID: " + appId.value);
   client = AgoraRTC.createClient({mode: 'live'});
   client.init(appId.value, function () {
