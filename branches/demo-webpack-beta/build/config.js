@@ -1,9 +1,9 @@
 module.exports = {
   debug: true,
   port: '8080',
-  version: '1.0.0',
+  version: '1.0.1',
   timestamp: (new Date()),
-  tag: '1.0.0',
+  tag: '1.0.1',
 
   host: '192.168.200.33',
   // host: '192.168.199.136',
