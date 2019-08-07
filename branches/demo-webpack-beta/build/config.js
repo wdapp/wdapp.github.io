@@ -15,7 +15,7 @@ module.exports = {
   admin: {
     live: {
       userid: 'B22337407C',
-      roomid: '3115C901307461',
+      roomid: '3115C441D8B66A719C33DC5901307461',
       viewername: '吕布',
       viewertoken: '',
       fastMode: ''
