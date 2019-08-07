@@ -11,7 +11,7 @@ import UserInterface from 'common/userInterface'//UI库
 
 class Chat extends Component {
 
-  constructor() {
+  constructor () {
     super()
 
     this.name = 'chat'
@@ -30,7 +30,7 @@ class Chat extends Component {
 
   }
 
-  addEvents() {
+  addEvents () {
     //公聊
     HDScene.onPublicChat({
       callback: (info) => {
@@ -40,7 +40,7 @@ class Chat extends Component {
           msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
           chatMsg.info = msgInfo
           this.chatMap[msgInfo.chatId] = chatMsg
-          chatMsg.removePreviousChatMsg()
+          chatMsg.removeOverflowChatMsg(500)
         }
         this.uiChat.updateScroll()
       }
@@ -101,7 +101,7 @@ class Chat extends Component {
     // })
   }
 
-  updateUserList() {
+  updateUserList () {
     if (this.uiChat.chatSwichSelect) {
       this.uiChat.hideChatMsg(false)
       this.uiChat.showPrivateChat(this.selectedTeacher)
@@ -110,7 +110,7 @@ class Chat extends Component {
     }
   }
 
-  addHandler() {
+  addHandler () {
     let chatSmile = this.getNode('chat-smile')//选择表情
     let chatSwitch = this.getNode('chat-switch')//私聊
     let chatSelect = this.getNode('chat-select')//选择聊天对象
@@ -193,7 +193,7 @@ class Chat extends Component {
       sendMsgInfo()
     })
 
-    function sendMsgInfo() {
+    function sendMsgInfo () {
       if (!isCanSend) {
         t.ui.alertTip({
           parentNodeId: 'chatAlertTipWrap',
@@ -231,16 +231,8 @@ class Chat extends Component {
         isCanSend = true
         clearTimeout(timeOutId)
       }, 2000)
-
-      let i = 0;
-      setInterval(() => {
-        i++
-        HDScene.sendPublicMsg({'msg': i + '===>'})
-      }, 500)
     }
-
   }
-
 }
 
 export default Chat

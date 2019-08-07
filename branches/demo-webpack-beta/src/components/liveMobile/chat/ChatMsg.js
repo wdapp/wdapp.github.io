@@ -2,7 +2,7 @@ import Render from 'common/render'
 import Utils from 'common/utils'
 
 class ChatMsg extends Render {
-  constructor() {
+  constructor () {
     super()
     this.chatId = ''
     this.userId = ''
@@ -14,7 +14,7 @@ class ChatMsg extends Render {
     this.self = ''
   }
 
-  set info(v) {
+  set info (v) {
     if (!v) return
     this.chatId = v.chatId
     this.userId = v.userId
@@ -32,20 +32,20 @@ class ChatMsg extends Render {
     this.appendMsg()
   }
 
-  set visible(v) {
+  set visible (v) {
     let show = v ? 'block' : 'none'
     if (this.node) {
       this.setStyle(this.node, {display: show})
     }
   }
 
-  get HtmlContent() {
+  get HtmlContent () {
     return `<span class="chat-message-name ${this.self ? 'self' : 'teacher'}">${this.userName}</span>
             <span class="chat-message-time">${this.time}</span>
             <p class="chat-message-content">${Utils.showEm(this.msg)}</p>`
   }
 
-  appendMsg() {
+  appendMsg () {
     this.node = this.createNode('li')
     this.node.className = `chat-message-wrap`
     this.innerHTML(this.node, this.HtmlContent)
@@ -56,6 +56,22 @@ class ChatMsg extends Render {
       this.visible = false
     }
     // this.getNode('chat-container').scrollTo(0, 0)
+  }
+
+  //大量聊天数据优化
+  removeOverflowChatMsg (n) {
+    const chatContainer = document.getElementById('chat-container')
+    const chatChildren = chatContainer.children
+    const chatChildrenNumber = chatChildren.length
+    const index = chatChildrenNumber - n
+    if (index > 0) {
+      for (let i = index; i > 0; i--) {
+        const child = chatContainer.childNodes[i]
+        if (this.isEmptyNode(child)) {
+          chatContainer.removeChild(child)
+        }
+      }
+    }
   }
 }
 

@@ -55,11 +55,19 @@ class ChatMsg extends Render {
   }
 
   //大量聊天数据优化
-  removePreviousChatMsg () {
-    // var rc = this.getNode('chat_container').children.length - 500
-    // if (rc > 0) {
-    //   $('#chat_container > li:lt(' + rc + ')').remove()
-    // }
+  removeOverflowChatMsg (n) {
+    const chatContainer = document.getElementById('chat-container')
+    const chatChildren = chatContainer.children
+    const chatChildrenNumber = chatChildren.length
+    const index = chatChildrenNumber - n
+    if (index > 0) {
+      for (let i = index; i > 0; i--) {
+        const child = chatContainer.childNodes[i]
+        if (this.isEmptyNode(child)) {
+          chatContainer.removeChild(child)
+        }
+      }
+    }
   }
 }
 
