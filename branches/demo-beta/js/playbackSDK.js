@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v3.0.1 2019/06/24
+ * v3.0.2 2019/08/07
  */
 !(function ($, window, document) {
   // 直播播放器信息
@@ -1257,7 +1257,9 @@
         }
 
         //文档信息加载完成，首先渲染首页
-        callback.drawPanel.filp(callback.pageChanges[0])
+        if(callback.pageChanges && callback.pageChanges.length) {
+          callback.drawPanel.filp(callback.pageChanges[0])
+        }
 
         var animations = meta.animation
         if (animations && animations.length) {

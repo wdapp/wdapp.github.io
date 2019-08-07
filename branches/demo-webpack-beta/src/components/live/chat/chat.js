@@ -40,6 +40,7 @@ class Chat extends Component {
           msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
           chatMsg.info = msgInfo
           this.chatMap[msgInfo.chatId] = chatMsg
+          chatMsg.removePreviousChatMsg()
         }
         this.uiChat.updateScroll()
       }
@@ -230,6 +231,12 @@ class Chat extends Component {
         isCanSend = true
         clearTimeout(timeOutId)
       }, 2000)
+
+      let i = 0;
+      setInterval(() => {
+        i++
+        HDScene.sendPublicMsg({'msg': i + '===>'})
+      }, 500)
     }
 
   }

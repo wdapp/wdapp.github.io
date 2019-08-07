@@ -2,7 +2,7 @@ import Render from 'common/render'
 import Utils from 'common/utils'
 
 class ChatMsg extends Render {
-  constructor() {
+  constructor () {
     super()
     this.chatId = ''
     this.userId = ''
@@ -14,7 +14,7 @@ class ChatMsg extends Render {
     this.self = ''
   }
 
-  set info(v) {
+  set info (v) {
     if (!v) return
     this.chatId = v.chatId
     this.userId = v.userId
@@ -26,21 +26,21 @@ class ChatMsg extends Render {
     this.appendMsg()
   }
 
-  set visible(v) {
+  set visible (v) {
     let show = v ? 'block' : 'none'
     if (this.node) {
       this.setStyle(this.node, {display: show})
     }
   }
 
-  get HtmlContent() {
+  get HtmlContent () {
     return `<p class="chat-name ${this.self ? 'self' : 'teacher'}">${this.userName}</p>
                <div class="chat-message">
                  ${Utils.showEm(this.msg)}
                </div>`
   }
 
-  appendMsg() {
+  appendMsg () {
     this.node = this.createNode('li')
     this.node.className = `chat-content-wrap ${this.self ? 'chat-content-right' : ''}`
     this.node.setAttribute('chatid', this.chatId)
@@ -52,6 +52,14 @@ class ChatMsg extends Render {
     } else {
       this.visible = false
     }
+  }
+
+  //大量聊天数据优化
+  removePreviousChatMsg () {
+    // var rc = this.getNode('chat_container').children.length - 500
+    // if (rc > 0) {
+    //   $('#chat_container > li:lt(' + rc + ')').remove()
+    // }
   }
 }
 
