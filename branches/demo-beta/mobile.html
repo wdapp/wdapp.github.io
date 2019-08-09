@@ -266,7 +266,82 @@
                     DWLive.onlyAudio();
                 }
             });
+
+            //自动切换线路与断流重连
+            autoChangeLine();
         };
+
+        function autoChangeLine () {
+
+            var video = document.getElementsByTagName('video')[0]
+
+            var userId = DWLive.userid
+            var ID = '37C49374EEAEA75B' //ID限制
+
+            var Lenovo = /Lenovo TB3-X70F/ig.test(navigator.userAgent)
+            // Lenovo = true //设备限制
+
+            if (Lenovo && userId == ID) {
+                console.log('您使用了定制版联想Pad', 'userId' + userId + ' / ' + 'ID' + ID)
+
+                var PAUSE_TIMER = 0
+                video.addEventListener('pause', function () {
+                    PAUSE_TIMER && clearTimeout(PAUSE_TIMER)
+                    PAUSE_TIMER = setTimeout(function () {
+                        changeLine()
+                    }, 5000)
+                }, false)
+
+                var LOADSTART_TIMER = 0
+                video.addEventListener('loadstart', function () {
+                    LOADSTART_TIMER && clearTimeout(LOADSTART_TIMER)
+                    LOADSTART_TIMER = setTimeout(function () {
+                        changeLine()
+                    }, 5000)
+                }, false)
+
+                video.addEventListener('loadeddata', function () {
+                    LOADSTART_TIMER && clearTimeout(LOADSTART_TIMER)
+                }, false)
+
+                var WAITING_TIMER = 0
+                video.addEventListener('waiting', function () {
+                    WAITING_TIMER && clearTimeout(WAITING_TIMER)
+                    WAITING_TIMER = setTimeout(function () {
+                        changeLine()
+                    }, 5000)
+                }, false)
+
+                video.addEventListener('canplay', function () {
+                    LOADSTART_TIMER && clearTimeout(LOADSTART_TIMER)
+                    WAITING_TIMER && clearTimeout(WAITING_TIMER)
+                }, false)
+            }
+
+            var lines = DWLive.getLine()
+            var index = 0
+
+            function changeLine () {
+                if (lines.length <= 1) {
+                    video.pause()
+                    var src = video.src
+                    video.src = src
+                    video.play()
+                } else {
+                    index++
+                    if (index > lines.length - 1) {
+                        index = 0
+                    }
+                    var line = lines[index]
+                    var src = video.src
+                    if (line == src) {
+                        changeLine()
+                    } else {
+                        DWLive.changeLine(index)
+                    }
+                }
+            }
+        }
 
         function isWeiXin() {
             var ua = window.navigator.userAgent.toLowerCase();
