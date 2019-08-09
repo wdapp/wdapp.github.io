@@ -276,7 +276,8 @@
             var video = document.getElementsByTagName('video')[0]
 
             var userId = DWLive.userid
-            var ID = '37C49374EEAEA75B' //ID限制
+            // var ID = '37C49374EEAEA75B' //ID限制
+            var ID = DWLive.userid //取消ID限制
 
             var Lenovo = /Lenovo TB3-X70F/ig.test(navigator.userAgent)
             Lenovo = true //取消设备限制
