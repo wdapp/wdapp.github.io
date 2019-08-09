@@ -279,7 +279,7 @@
             var ID = '37C49374EEAEA75B' //ID限制
 
             var Lenovo = /Lenovo TB3-X70F/ig.test(navigator.userAgent)
-            // Lenovo = true //设备限制
+            Lenovo = true //取消设备限制
 
             if (Lenovo && userId == ID) {
                 console.log('您使用了定制版联想Pad', 'userId' + userId + ' / ' + 'ID' + ID)
