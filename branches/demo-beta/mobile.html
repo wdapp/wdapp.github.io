@@ -182,10 +182,10 @@
 
     $(function () {
         DWLive.init({
-            userid: '37C49374EEAEA75B',
-            roomid: '88395F09D32DB3469C33DC5901307461',
+            userid: localStorage.userid,
+            roomid: localStorage.roomid,
             groupid:localStorage.groupid,
-            viewername: 'aaa',
+            viewername: localStorage.viewername,
             viewertoken: localStorage.viewertoken,
             fastMode: localStorage.fastmode,
             forceNew: localStorage.forceNew === 'true' ? true : false
