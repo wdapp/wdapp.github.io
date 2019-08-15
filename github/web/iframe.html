@@ -24,7 +24,7 @@
         url = _url;
     }
     if (url) {
-        var iframe = "<iframe id=\"iframe\" style=\"position: absolute;width: 100%;height: 100%\" src=\"" + url + "\" frameborder=\"0\"></iframe>\n";
+        var iframe = "<iframe allow=\"autoplay\" allow-scripts id=\"iframe\" style=\"position: absolute;width: 100%;height: 100%\" src=\"" + url + "\" frameborder=\"0\"></iframe>\n";
         $("body").append(iframe);
     } else {
         $("body").append("<p>未输入iframe嵌套liveview直播间域名，请刷新界面，输入直播间地址</p>\n");
