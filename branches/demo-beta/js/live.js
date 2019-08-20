@@ -101,7 +101,7 @@ $(function () {
               DWLive.barrage(o.msg); // 发送弹幕
             }
             //大量聊天数据优化
-            var rc = $("#chat-list").children().length - 10;
+            var rc = $("#chat-list").children().length - 500;
             if (rc > 0) {
               $("#chat-list> li:lt(" + rc + ")").remove();
             }

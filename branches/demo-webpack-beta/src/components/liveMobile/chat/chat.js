@@ -39,7 +39,7 @@ class Chat extends Component {
           msgInfo.startTime = LiveInfo.getLoginInfoData('live', 'liveStartTime')
           chatMsg.info = msgInfo
           this.chatMap[msgInfo.chatId] = chatMsg
-          chatMsg.removeOverflowChatMsg(500)
+          chatMsg.removeOverflowChatMsg(300)
         }
         this.uiChat.updateScroll()
       }

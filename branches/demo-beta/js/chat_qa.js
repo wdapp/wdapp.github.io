@@ -52,7 +52,7 @@ $(function () {
                     .remove();
             }
             //大量聊天数据优化
-            var rc = $("#chat_container").children().length - 10;
+            var rc = $("#chat_container").children().length - 500;
             if (rc > 0) {
               $("#chat_container > li:lt(" + rc + ")").remove();
             }
