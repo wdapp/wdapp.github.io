@@ -97,6 +97,24 @@
             video: document.getElementById('video').checked,
             screen: false
           })
+
+          localStream.setVideoEncoderConfiguration({
+            // 视频分辨率
+            resolution: {
+              width: 320,
+              height: 280
+            },
+            // 视频编码帧率。通常建议是 15 帧，不超过 30 帧
+            frameRate: {
+              min: 15,
+              max: 25
+            },
+            // 码率。一般情况下推荐使用标准码率
+            bitrate: {
+              min: 1000,
+              max: 5000
+            }
+          });
           //localStream = AgoraRTC.createStream({streamID: uid, audio: false, cameraId: camera, microphoneId: microphone, video: false, screen: true, extensionId: 'minllpmhdgpndnkomcoccfekfegnlikg'});
           if (document.getElementById('video').checked) {
             localStream.setVideoProfile('720p_3')
@@ -128,6 +146,7 @@
             console.log('getUserMedia failed', err)
           })
         }
+
       }, function (err) {
         console.log('Join channel failed', err)
       })
