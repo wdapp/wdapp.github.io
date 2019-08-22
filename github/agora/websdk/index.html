@@ -118,7 +118,7 @@
             localStream.setVideoProfile('240p')
 
           }
-
+          console.log('===>>>', client.getLocalVideoStats())
           // The user has granted access to the camera and mic.
           localStream.on('accessAllowed', function () {
             console.log('accessAllowed')
