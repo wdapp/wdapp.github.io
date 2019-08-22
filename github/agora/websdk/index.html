@@ -118,7 +118,22 @@
             localStream.setVideoProfile('240p')
 
           }
-          console.log('===>>>', client.getLocalVideoStats())
+          client.getLocalVideoStats((localVideoStats) => {
+            for(var uid in localVideoStats){
+              console.log(`Video CaptureFrameRate from ${uid}: ${localVideoStats[uid].CaptureFrameRate}`);
+              console.log(`Video CaptureResolutionHeight from ${uid}: ${localVideoStats[uid].CaptureResolutionHeight}`);
+              console.log(`Video CaptureResolutionWidth from ${uid}: ${localVideoStats[uid].CaptureResolutionWidth}`);
+              console.log(`Video EncodeDelay from ${uid}: ${localVideoStats[uid].EncodeDelay}`);
+              console.log(`Video MuteState from ${uid}: ${localVideoStats[uid].MuteState}`);
+              console.log(`Video SendBitrate from ${uid}: ${localVideoStats[uid].SendBitrate}`);
+              console.log(`Video SendFrameRate from ${uid}: ${localVideoStats[uid].SendFrameRate}`);
+              console.log(`Video SendResolutionHeight from ${uid}: ${localVideoStats[uid].SendResolutionHeight}`);
+              console.log(`Video SendResolutionWidth from ${uid}: ${localVideoStats[uid].SendResolutionWidth}`);
+              console.log(`Video TargetSendBitrate from ${uid}: ${localVideoStats[uid].TargetSendBitrate}`);
+              console.log(`Video TotalDuration from ${uid}: ${localVideoStats[uid].TotalDuration}`);
+              console.log(`Video TotalFreezeTime from ${uid}: ${localVideoStats[uid].TotalFreezeTime}`);
+            }
+          });
           // The user has granted access to the camera and mic.
           localStream.on('accessAllowed', function () {
             console.log('accessAllowed')
