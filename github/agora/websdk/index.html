@@ -81,23 +81,7 @@
     console.log('channel_key', channel_key)
     console.log('Init AgoraRTC client with App ID: ' + appId.value)
     client = AgoraRTC.createClient({mode: 'live'})
-    client.getLocalVideoStats((localVideoStats) => {
-      console.log(localVideoStats)
-      for(var uid in localVideoStats){
-        console.log(`Video CaptureFrameRate from ${uid}: ${localVideoStats[uid].CaptureFrameRate}`);
-        console.log(`Video CaptureResolutionHeight from ${uid}: ${localVideoStats[uid].CaptureResolutionHeight}`);
-        console.log(`Video CaptureResolutionWidth from ${uid}: ${localVideoStats[uid].CaptureResolutionWidth}`);
-        console.log(`Video EncodeDelay from ${uid}: ${localVideoStats[uid].EncodeDelay}`);
-        console.log(`Video MuteState from ${uid}: ${localVideoStats[uid].MuteState}`);
-        console.log(`Video SendBitrate from ${uid}: ${localVideoStats[uid].SendBitrate}`);
-        console.log(`Video SendFrameRate from ${uid}: ${localVideoStats[uid].SendFrameRate}`);
-        console.log(`Video SendResolutionHeight from ${uid}: ${localVideoStats[uid].SendResolutionHeight}`);
-        console.log(`Video SendResolutionWidth from ${uid}: ${localVideoStats[uid].SendResolutionWidth}`);
-        console.log(`Video TargetSendBitrate from ${uid}: ${localVideoStats[uid].TargetSendBitrate}`);
-        console.log(`Video TotalDuration from ${uid}: ${localVideoStats[uid].TotalDuration}`);
-        console.log(`Video TotalFreezeTime from ${uid}: ${localVideoStats[uid].TotalFreezeTime}`);
-      }
-    });
+
     client.init(appId.value, function () {
       console.log('AgoraRTC client initialized')
       client.join(channel_key, channel.value, null, function (uid) {
@@ -156,6 +140,23 @@
 
             client.on('stream-published', function (evt) {
               console.log('Publish local stream successfully')
+              client.getLocalVideoStats((localVideoStats) => {
+                console.log(localVideoStats)
+                for(var uid in localVideoStats){
+                  console.log(`Video CaptureFrameRate from ${uid}: ${localVideoStats[uid].CaptureFrameRate}`);
+                  console.log(`Video CaptureResolutionHeight from ${uid}: ${localVideoStats[uid].CaptureResolutionHeight}`);
+                  console.log(`Video CaptureResolutionWidth from ${uid}: ${localVideoStats[uid].CaptureResolutionWidth}`);
+                  console.log(`Video EncodeDelay from ${uid}: ${localVideoStats[uid].EncodeDelay}`);
+                  console.log(`Video MuteState from ${uid}: ${localVideoStats[uid].MuteState}`);
+                  console.log(`Video SendBitrate from ${uid}: ${localVideoStats[uid].SendBitrate}`);
+                  console.log(`Video SendFrameRate from ${uid}: ${localVideoStats[uid].SendFrameRate}`);
+                  console.log(`Video SendResolutionHeight from ${uid}: ${localVideoStats[uid].SendResolutionHeight}`);
+                  console.log(`Video SendResolutionWidth from ${uid}: ${localVideoStats[uid].SendResolutionWidth}`);
+                  console.log(`Video TargetSendBitrate from ${uid}: ${localVideoStats[uid].TargetSendBitrate}`);
+                  console.log(`Video TotalDuration from ${uid}: ${localVideoStats[uid].TotalDuration}`);
+                  console.log(`Video TotalFreezeTime from ${uid}: ${localVideoStats[uid].TotalFreezeTime}`);
+                }
+              });
             })
           }, function (err) {
             console.log('getUserMedia failed', err)
