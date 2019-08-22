@@ -119,6 +119,7 @@
 
           }
           client.getLocalVideoStats((localVideoStats) => {
+            console.log(localVideoStats)
             for(var uid in localVideoStats){
               console.log(`Video CaptureFrameRate from ${uid}: ${localVideoStats[uid].CaptureFrameRate}`);
               console.log(`Video CaptureResolutionHeight from ${uid}: ${localVideoStats[uid].CaptureResolutionHeight}`);
