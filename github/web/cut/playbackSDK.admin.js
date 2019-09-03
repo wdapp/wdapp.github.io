@@ -3874,7 +3874,6 @@
     options = $.extend(options, opts)
 
     callback = new Callback(options)
-    console.log(callback)
   }
 
   var DW = {
