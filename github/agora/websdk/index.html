@@ -80,8 +80,11 @@
     var channel_key = document.getElementById('token').value
     console.log('channel_key', channel_key)
     console.log('Init AgoraRTC client with App ID: ' + appId.value)
+    window.testIndex = 0
+    window.testTimer = setInterval(function () {
+      window.testIndex+=100
+    }, 100)
     client = AgoraRTC.createClient({mode: 'live'})
-
     client.init(appId.value, function () {
       console.log('AgoraRTC client initialized')
       client.join(channel_key, channel.value, null, function (uid) {
@@ -168,6 +171,12 @@
       })
     }, function (err) {
       console.log('AgoraRTC client init failed', err)
+    })
+    self.client.on('first-video-frame-decode', function (evt) {
+      console.log('first-video-frame-decode');
+      console.log(evt.stream);
+      console.log('本地订阅远端流成功并完成第一帧视频解码时会触发该回调。', window.testIndex)
+      clearInterval(window.testTimer)
     })
 
     channelKey = ''
