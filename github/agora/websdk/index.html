@@ -80,10 +80,7 @@
     var channel_key = document.getElementById('token').value
     console.log('channel_key', channel_key)
     console.log('Init AgoraRTC client with App ID: ' + appId.value)
-    window.testIndex = 0
-    window.testTimer = setInterval(function () {
-      window.testIndex+=100
-    }, 100)
+
     client = AgoraRTC.createClient({mode: 'live'})
     client.init(appId.value, function () {
       console.log('AgoraRTC client initialized')
@@ -202,6 +199,10 @@
     })
 
     client.on('stream-subscribed', function (evt) {
+      window.testIndex = 0
+      window.testTimer = setInterval(function () {
+        window.testIndex+=100
+      }, 100)
       var stream = evt.stream
       console.log('Subscribe remote stream successfully: ' + stream.getId())
       if ($('div#video #agora_remote' + stream.getId()).length === 0) {
