@@ -172,7 +172,7 @@
     self.client.on('first-video-frame-decode', function (evt) {
       console.log('first-video-frame-decode');
       console.log(evt.stream);
-      console.log('本地订阅远端流成功并完成第一帧视频解码时会触发该回调。', window.testIndex)
+      console.log('本地订阅远端流成功并完成第一帧视频解码时会触发该回调。 ', window.testIndex)
       clearInterval(window.testTimer)
     })
 
