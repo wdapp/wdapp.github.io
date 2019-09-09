@@ -2783,11 +2783,13 @@
     // 与所有端断开连接
     if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
       live.interaction.stopLocalStream()
-      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
-        window.on_cc_live_interaction_disconnect(data)
-      }
-      if (live.interaction.local.type.video) {
+      var type = live.interaction.local.type
+      $('#interactionLocalVideo')[0].src = '';
+      if (type.video) {
         DWLive.livePlayerInit()
+      }
+      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+        window.on_cc_live_interaction_disconnect(data, type)
       }
     } else {
       // 断开其他人

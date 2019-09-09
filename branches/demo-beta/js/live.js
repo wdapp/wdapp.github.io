@@ -978,7 +978,7 @@ $(function () {
 
 });
 
-console.log('tag 1.0.1')
+console.log('tag 1.0.2')
 window.ALLOW_SPEAK_INTERACTION = false;
 DWLive.onRoomSetting = function (data) {
     window.ALLOW_SPEAK_INTERACTION = data.allow_speak_interaction == 'true';
@@ -1015,7 +1015,7 @@ DWLive.onRoomSetting = function (data) {
 
 
 // 断开语音通话
-window.on_cc_live_interaction_disconnect = function (data) {
+window.on_cc_live_interaction_disconnect = function (data, type) {
     $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
     $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
 
@@ -1026,11 +1026,9 @@ window.on_cc_live_interaction_disconnect = function (data) {
     $('#videoInteractions').empty();
     $('#audioInteractions').empty();
 
-    $('#interactionLocalVideo')[0].src = '';
-
     $('#videoInteraction').hide();
 
-    if (live.interaction.local.type.video) {
+    if (type.video) {
         $('#videoInteractions').css('height', '0px');
     }
     $('#btn-network').removeClass('wl-disable');
