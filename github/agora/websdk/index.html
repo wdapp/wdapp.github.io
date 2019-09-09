@@ -173,6 +173,7 @@
       console.log('first-video-frame-decode');
       console.log(evt.stream);
       console.log('本地订阅远端流成功并完成第一帧视频解码时会触发该回调。 ', window.testIndex)
+      window.testIndex = 0
       clearInterval(window.testTimer)
     })
 
