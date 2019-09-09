@@ -1056,7 +1056,7 @@ function on_cc_live_interaction_interval(type, time) {
 
     $('#interactionMsg').text('通话中 ' + m + ':' + s);
 }
-console.log('tag 1.0.5')
+console.log('tag 1.0.6')
 
 /**
  * 获取本地流信息
@@ -1076,12 +1076,12 @@ function on_cc_live_interaction_remote_media(type, chatuser, stream) {
         $('#videoInteractions').css('height', '100%');
 
         var id = 'interactionRemoteVideo' + chatuser.id;
-        $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
+        $('#videoInteractions').append('<video cc-data="1" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
         $('#' + id)[0].srcObject = stream;
         $('#videoInteraction').hide();
     } else {// 远程音频
         var id = 'interactionRemoteAudio' + chatuser.id;
-        $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
+        $('#audioInteractions').append('<audio cc-data="3" id="' + id + '" autoplay controls></audio>');
         $('#' + id)[0].srcObject = stream;
     }
 }

@@ -2804,20 +2804,24 @@
   }
 
   window.on_cc_live_interaction_remote_media_self = function (type, chatuser, stream) {
-    if (type.video) {
-      $('#livePlayer').replaceWith('<div id="livePlayer"></div>');
-      $('#videoInteractions').css('height', '100%');
-      var id = 'interactionRemoteVideo' + chatuser.id;
-      $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
-      $('#' + id)[0].srcObject = stream;
-      $('#videoInteraction').hide();
-    } else {// 远程音频
-      var id = 'interactionRemoteAudio' + chatuser.id;
-      $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
-      $('#' + id)[0].srcObject = stream;
-    }
     if (typeof window.on_cc_live_interaction_remote_media === 'function') {
       window.on_cc_live_interaction_remote_media(type, chatuser, stream)
+    }
+    if (type.video) {
+      var id = 'interactionRemoteVideo' + chatuser.id
+      if ($(id).length > 0) {
+        $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
+        $('#videoInteractions').css('height', '100%')
+        $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
+        $('#' + id)[0].srcObject = stream
+        $('#videoInteraction').hide()
+      }
+    } else {// 远程音频
+      var id = 'interactionRemoteAudio' + chatuser.id
+      if ($(id).length > 0) {
+        $('#audioInteractions').append('<audio cc-data="2" id="' + id + '" autoplay controls></audio>')
+        $('#' + id)[0].srcObject = stream
+      }
     }
   }
 
