@@ -1018,19 +1018,11 @@ DWLive.onRoomSetting = function (data) {
 window.on_cc_live_interaction_disconnect = function (data, type) {
     $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
     $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
-
     $('li[name="interaction"]').removeClass('disable').show();
 
     $('#interactionMsg').text('');
-
-    $('#videoInteractions').empty();
-    $('#audioInteractions').empty();
-
     $('#videoInteraction').hide();
 
-    if (type.video) {
-        $('#videoInteractions').css('height', '0px');
-    }
     $('#btn-network').removeClass('wl-disable');
 
     if (!window.ALLOW_SPEAK_INTERACTION) {
@@ -1039,8 +1031,8 @@ window.on_cc_live_interaction_disconnect = function (data, type) {
 };
 
 // 接受语音/连麦互动
-function on_cc_live_interaction_accept(p) {
-    if (p.video) {
+function on_cc_live_interaction_accept(type) {
+    if (type.video) {
         $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('calling');
         $('#videoInteraction .call-tit').hide();
     } else {
@@ -1052,17 +1044,16 @@ function on_cc_live_interaction_accept(p) {
 }
 
 
-function on_cc_live_interaction_interval(p, t) {
-    if (t < 0) {
+function on_cc_live_interaction_interval(type, time) {
+    if (time < 0) {
         return;
     }
 
-    var s = t % 60;
+    var s = time % 60;
     s = s < 10 ? ('0' + s) : s;
 
-    var m = parseInt(t / 60, 10);
+    var m = parseInt(time / 60, 10);
     m = m < 10 ? ('0' + m) : m;
-
 
     $('#interactionMsg').text('通话中 ' + m + ':' + s);
 }
@@ -1070,10 +1061,10 @@ function on_cc_live_interaction_interval(p, t) {
 /**
  * 获取本地流信息
  * */
-function on_cc_live_interaction_local_media(p, stream) {
+function on_cc_live_interaction_local_media(type, stream) {
     // 视频+音频
-    if (p.video) {
-        $('#videoInteractio').show();
+    if (type.video) {
+        $('#videoInteraction').show();
         var $lv = $('#interactionLocalVideo')[0];
         // $lv.src = URL.createObjectURL(stream); // 加载流信息
         $lv.srcObject = stream;

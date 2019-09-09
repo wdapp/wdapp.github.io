@@ -1472,9 +1472,9 @@
       live.interaction.interactionTimeInterval = setInterval(function () {
         ++live.interaction.interactionTime
         if (typeof window.on_cc_live_interaction_interval === 'function') {
-          var p = live.interaction.local.type
-          var t = live.interaction.interactionTime
-          window.on_cc_live_interaction_interval(p, t)
+          var type = live.interaction.local.type
+          var time = live.interaction.interactionTime
+          window.on_cc_live_interaction_interval(type, time)
         }
       }, 1000)
     }
@@ -1643,16 +1643,20 @@
 
     this.createLocalMedia = function (c) {
       var that = this
-      var p = that.local.type
-      getUserMedia.call(navigator, p, function (stream) {
-        if (p.video) {
+      var type = that.local.type
+      getUserMedia.call(navigator, type, function (stream) {
+        if (type.video) {
           that.local.video.stream = stream
         } else {
           that.local.audio.stream = stream
         }
 
+        var localVideo = $('#interactionLocalVideo')[0];
+        localVideo.srcObject = stream;
+        localVideo.volume = 0; // 静音
+
         if (typeof window.on_cc_live_interaction_local_media === 'function') {
-          window.on_cc_live_interaction_local_media(p, stream)
+          window.on_cc_live_interaction_local_media(type, stream)
         }
 
         if (c && typeof c === 'function') {
@@ -2784,8 +2788,11 @@
     if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
       live.interaction.stopLocalStream()
       var type = live.interaction.local.type
+      $('#videoInteractions').empty();
+      $('#audioInteractions').empty();
       $('#interactionLocalVideo')[0].src = '';
       if (type.video) {
+        $('#videoInteractions').css('height', '0px');
         DWLive.livePlayerInit()
       }
       if (typeof window.on_cc_live_interaction_disconnect === 'function') {
