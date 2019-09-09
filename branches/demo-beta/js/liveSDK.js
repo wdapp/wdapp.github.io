@@ -2,7 +2,7 @@
  * CC live video
  * v2.9.2 2019/06/24 */
 (function () {
-  console.log('tag 1.0.0')
+  console.log('tag 1.0.1')
 
   var DELAY_TIME = 10 * 1000
 
