@@ -1,6 +1,6 @@
 /**
  * CC playback video
- * v3.0.2 2019/08/07
+ * v3.0.3 2019/09/10
  */
 !(function ($, window, document) {
   // 直播播放器信息
@@ -1194,10 +1194,19 @@
 
       if (sub.requestLoginData) {
 
-        if (DWDpc.fastMode) {
-          $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
-          DWDpc.appendDrawPanel()
-          DWDpc.init()
+        var drawPanel = document.getElementById("playbackPanel");
+        //初始化极速动画对象
+        if (DWDpc.fastMode && drawPanel) {
+           $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
+          var script = document.createElement("script");
+          script.src = '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000))
+          script.onload = function(){
+            DWDpc.appendDrawPanel()
+            DWDpc.init()
+            DWDpc.isDPReady = true;
+            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
+          }
+          document.body.appendChild(script);
         }
 
         opts.chat = {
@@ -1625,6 +1634,7 @@
 
   //极速文档模式
   var DWDpc = {
+    isDPReady:false,
     dpc: {},
     fastMode: false,
     init: function () {
@@ -1643,36 +1653,42 @@
       }
     },
     pageChange: function (pc) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.animationChange(ac)
     },
     history: function (h) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.history(h)
     },
     draw: function (d) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.draw(d)
     },
     clear: function () {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.clear()
     },
     docAdapt: function (t) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
@@ -1722,7 +1738,6 @@
         // '//static.csslcloud.net/js/hls.min.js',
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/swfobject.js',
-        '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)),
         '//static.csslcloud.net/js/json3.min.js',
         '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
         '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
@@ -2124,15 +2139,18 @@
         if (typeof window.on_cc_request_snapshoot === 'function') {
           window.on_cc_request_snapshoot(pc)
         }
-        callback.drawPanel.filp(JSON.stringify({
-          'fileName': pc.docName,
-          'totalPage': pc.docTotalPage,
-          'docid': pc.encryptDocId,
-          'url': pc.url,
-          'page': pc.pageNum,
-          'useSDK': pc.useSDK
-        }))
-
+        if(DWDpc.fastMode){
+          callback.drawPanel.filp(pc);
+        }else{
+          callback.drawPanel.filp(JSON.stringify({
+            'fileName': pc.docName,
+            'totalPage': pc.docTotalPage,
+            'docid': pc.encryptDocId,
+            'url': pc.url,
+            'page': pc.pageNum,
+            'useSDK': pc.useSDK
+          }))
+        }
         meta.pageChange.push(pc)
       }
     }

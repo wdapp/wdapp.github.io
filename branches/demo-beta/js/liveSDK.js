@@ -1,7 +1,7 @@
 /**
  * CC live video
  * v2.9.2 2019/06/24 */
-console.log('tag 1.0.0')
+// console.log('tag 1.0.0')
 (function () {
 
   var DELAY_TIME = 10 * 1000
@@ -1199,6 +1199,9 @@ console.log('tag 1.0.0')
 
       // 挂断互动信息
       this.socket.on('speak_disconnect', function (data) {
+        if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
+          window.on_cc_live_interaction_disconnect_self(toJson(data))
+        }
         if (typeof window.on_cc_live_interaction_disconnect === 'function') {
           window.on_cc_live_interaction_disconnect(toJson(data))
         }
@@ -1746,6 +1749,12 @@ console.log('tag 1.0.0')
           debug('Interaction', 'iceConnectionState failed')
 
           live.interaction.hangupInteraction()
+
+          if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
+            window.on_cc_live_interaction_disconnect_self({
+              disconnectid: DWLive.viewerid
+            })
+          }
 
           if (typeof window.on_cc_live_interaction_disconnect === 'function') {
             window.on_cc_live_interaction_disconnect({
@@ -2758,6 +2767,28 @@ console.log('tag 1.0.0')
 
     if (typeof window.on_cc_live_interaction_accept === 'function') {
       window.on_cc_live_interaction_accept(live.interaction.local.type, toJson(data))
+    }
+  }
+
+  window.on_cc_live_interaction_disconnect_self = function (data) {
+    var uid = data.disconnectid;
+    var isPC = !!live.interaction.usersPcs[uid];
+    if (uid != DWLive.viewerid && !isPC) {
+      return;
+    }
+    if (uid != DWLive.viewerid && isPC) {
+      DWLive.hangupInteraction();
+    }
+    live.interaction.clearCallingTimer();
+    live.interaction.disconnectInteraction(uid);
+    // 与所有端断开连接
+    if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
+      live.interaction.stopLocalStream();
+      if (live.interaction.local.type.video) {
+        DWLive.livePlayerInit();
+      }
+    } else {
+      // 断开其他人
     }
   }
 

@@ -1,6 +1,6 @@
 /**
  * CC live video
- * v2.9.2 2019/06/24 */
+ * v2.9.3 2019/09/10 */
 (function () {
 
   var DELAY_TIME = 10 * 1000
@@ -61,6 +61,7 @@
   }
   var DWDpc = {
     DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
+    isDPReady:false,
     dpc: {},
     fastMode: false,
     init: function () {
@@ -79,78 +80,117 @@
       }
     },
     pageChange: function (pc) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
+      if (!this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.animationChange(ac)
     },
     history: function (h) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.history(h)
     },
     draw: function (d) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.draw(d)
     },
     clear: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.clear()
     },
     reload: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.reload()
     },
     setDocMode: function (t) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.setFreeDocMode(t)
     },
     getDocs: function (callback) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.getDocs(DWLive.roomid, DWLive.userid, callback)
     },
     changePageTo: function (dId, pI) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.changePageTo(dId, pI)
     },
     showMarquee: function (m) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.openMarquee(m)
     },
     closeMarquee: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.closeMarquee()
     },
     openBarrage: function (l) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.openBarrage()
     },
     insertBarrage: function (data) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
@@ -166,12 +206,18 @@
       this.dpc.insertBarrage(ifo)
     },
     closeBarrage: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.closeBarrage()
     },
     docAdapt: function (t) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
@@ -187,6 +233,7 @@
       if (typeof option == 'undefined') {
         option = {}
       }
+
       this.userid = $.trim(option.userid)
       this.roomid = $.trim(option.roomid)
       this.groupid = $.trim(option.groupid)
@@ -223,9 +270,6 @@
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/report.js'
       ]
-      if (DWDpc.fastMode) {
-        scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
-      }
 
       if (MobileLive.isMobile() == 'isMobile') {
         if ($('#drawPanel').length > 0) {
@@ -338,14 +382,21 @@
           DWLive.liveCountdown = data.datas.room.liveCountdown
           DWLive.groupId = data.datas.viewer.groupId
 
+          var drawPanel = document.getElementById("drawPanel");
           //初始化极速动画对象
-          if (DWDpc.fastMode) {
+          if (DWDpc.fastMode && drawPanel) {
             $('#documentDisplayMode').val(DWLive.documentDisplayMode)
-            DWDpc.appendDrawPanel()
-            DWDpc.init()
+            var script = document.createElement("script");
+            script.src = '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000))
+            script.onload = function(){
+              DWDpc.appendDrawPanel()
+              DWDpc.init()
+              DWDpc.isDPReady = true;
+              window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
+            }
+            document.body.appendChild(script);
           }
           fn()
-
           var delay = data.datas.room.delayTime,
             foreignPublish = data.datas.room.foreignPublish
           LivePlayer.delay = delay
