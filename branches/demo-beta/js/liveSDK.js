@@ -1,8 +1,8 @@
 /**
  * CC live video
  * v2.9.2 2019/06/24 */
-// console.log('tag 1.0.0')
 (function () {
+  console.log('tag 1.0.0')
 
   var DELAY_TIME = 10 * 1000
 
@@ -1202,9 +1202,9 @@
         if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
           window.on_cc_live_interaction_disconnect_self(toJson(data))
         }
-        if (typeof window.on_cc_live_interaction_disconnect === 'function') {
-          window.on_cc_live_interaction_disconnect(toJson(data))
-        }
+        // if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+        //   window.on_cc_live_interaction_disconnect(toJson(data))
+        // }
       })
 
       // 广播信息
@@ -1756,11 +1756,11 @@
             })
           }
 
-          if (typeof window.on_cc_live_interaction_disconnect === 'function') {
-            window.on_cc_live_interaction_disconnect({
-              disconnectid: DWLive.viewerid
-            })
-          }
+          // if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+          //   window.on_cc_live_interaction_disconnect({
+          //     disconnectid: DWLive.viewerid
+          //   })
+          // }
         }
       }
 
@@ -2771,21 +2771,24 @@
   }
 
   window.on_cc_live_interaction_disconnect_self = function (data) {
-    var uid = data.disconnectid;
-    var isPC = !!live.interaction.usersPcs[uid];
+    var uid = data.disconnectid
+    var isPC = !!live.interaction.usersPcs[uid]
     if (uid != DWLive.viewerid && !isPC) {
-      return;
+      return
     }
     if (uid != DWLive.viewerid && isPC) {
-      DWLive.hangupInteraction();
+      DWLive.hangupInteraction()
     }
-    live.interaction.clearCallingTimer();
-    live.interaction.disconnectInteraction(uid);
+    live.interaction.clearCallingTimer()
+    live.interaction.disconnectInteraction(uid)
     // 与所有端断开连接
     if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
-      live.interaction.stopLocalStream();
+      live.interaction.stopLocalStream()
+      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+        window.on_cc_live_interaction_disconnect(data)
+      }
       if (live.interaction.local.type.video) {
-        DWLive.livePlayerInit();
+        DWLive.livePlayerInit()
       }
     } else {
       // 断开其他人
