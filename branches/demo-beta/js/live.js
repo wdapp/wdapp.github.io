@@ -987,7 +987,7 @@ DWLive.onRoomSetting = function (data) {
         return;
     }
 
-    if (!live.interaction.isSupportInteraction()) {
+    if (!DWLive.isSupportInteraction()) {
         // console.log(!live.interaction.isSupportInteraction());
         return;
     }

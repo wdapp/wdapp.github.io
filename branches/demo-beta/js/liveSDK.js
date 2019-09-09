@@ -1,6 +1,7 @@
 /**
  * CC live video
  * v2.9.2 2019/06/24 */
+console.log('tag 1.0.0')
 (function () {
 
   var DELAY_TIME = 10 * 1000
@@ -2881,6 +2882,7 @@
 
   window.DWLive = DWLive
   window.live = live
+  DWLive.isSupportInteraction = live.interaction.isSupportInteraction
 
   // live player ready
   window._swfInit = function () {
