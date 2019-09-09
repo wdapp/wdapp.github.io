@@ -978,7 +978,7 @@ $(function () {
 
 });
 
-
+console.log('tag 1.0.1')
 window.ALLOW_SPEAK_INTERACTION = false;
 DWLive.onRoomSetting = function (data) {
     window.ALLOW_SPEAK_INTERACTION = data.allow_speak_interaction == 'true';
