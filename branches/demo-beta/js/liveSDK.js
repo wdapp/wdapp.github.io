@@ -2792,7 +2792,7 @@
       $('#audioInteractions').empty();
       $('#interactionLocalVideo')[0].src = '';
       if (type.video) {
-        $('#videoInteractions').css('height', '0px');
+        // $('#videoInteractions').css('height', '0px');
         DWLive.livePlayerInit()
       }
       if (typeof window.on_cc_live_interaction_disconnect === 'function') {
@@ -2811,10 +2811,9 @@
       var id = 'interactionRemoteVideo' + chatuser.id
       if ($(id).length > 0) {
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
-        $('#videoInteractions').css('height', '100%')
+        // $('#videoInteractions').css('height', '100%')
         $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
         $('#' + id)[0].srcObject = stream
-        $('#videoInteraction').hide()
       }
     } else {// 远程音频
       var id = 'interactionRemoteAudio' + chatuser.id
