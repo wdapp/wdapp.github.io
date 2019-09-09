@@ -978,7 +978,6 @@ $(function () {
 
 });
 
-console.log('tag 1.0.3')
 window.ALLOW_SPEAK_INTERACTION = false;
 DWLive.onRoomSetting = function (data) {
     window.ALLOW_SPEAK_INTERACTION = data.allow_speak_interaction == 'true';
@@ -1057,21 +1056,13 @@ function on_cc_live_interaction_interval(type, time) {
 
     $('#interactionMsg').text('通话中 ' + m + ':' + s);
 }
+console.log('tag 1.0.4')
 
 /**
  * 获取本地流信息
  * */
 function on_cc_live_interaction_local_media(type, stream) {
-    // 视频+音频
-    if (type.video) {
-        $('#videoInteraction').show();
-        var $lv = $('#interactionLocalVideo')[0];
-        // $lv.src = URL.createObjectURL(stream); // 加载流信息
-        $lv.srcObject = stream;
-        $lv.volume = 0; // 静音
-    } else {
-
-    }
+    $('#videoInteraction').show();
 }
 
 /**
