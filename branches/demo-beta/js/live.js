@@ -1016,48 +1016,27 @@ DWLive.onRoomSetting = function (data) {
 
 // 断开语音通话
 window.on_cc_live_interaction_disconnect = function (data) {
-    var uid = data.disconnectid;
-    var isPC = !!live.interaction.usersPcs[uid];
+    $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
+    $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
 
-    if (uid != DWLive.viewerid && !isPC) {
-        return;
+    $('li[name="interaction"]').removeClass('disable').show();
+
+    $('#interactionMsg').text('');
+
+    $('#videoInteractions').empty();
+    $('#audioInteractions').empty();
+
+    $('#interactionLocalVideo')[0].src = '';
+
+    $('#videoInteraction').hide();
+
+    if (live.interaction.local.type.video) {
+        $('#videoInteractions').css('height', '0px');
     }
-    if (uid != DWLive.viewerid && isPC) {
-        DWLive.hangupInteraction();
-    }
+    $('#btn-network').removeClass('wl-disable');
 
-    live.interaction.clearCallingTimer();
-    live.interaction.disconnectInteraction(uid);
-
-    // 与所有端断开连接
-    if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
-        live.interaction.stopLocalStream();
-
-        $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
-        $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
-
-        $('li[name="interaction"]').removeClass('disable').show();
-
-        $('#interactionMsg').text('');
-
-        $('#videoInteractions').empty();
-        $('#audioInteractions').empty();
-
-        $('#interactionLocalVideo')[0].src = '';
-
-        $('#videoInteraction').hide();
-
-        if (live.interaction.local.type.video) {
-            DWLive.livePlayerInit();
-            $('#videoInteractions').css('height', '0px');
-        }
-        $('#btn-network').removeClass('wl-disable');
-
-        if (!window.ALLOW_SPEAK_INTERACTION) {
-            $('li[name="interaction"]').hide();
-        }
-    } else {
-        // 断开其他人
+    if (!window.ALLOW_SPEAK_INTERACTION) {
+        $('li[name="interaction"]').hide();
     }
 };
 
