@@ -2882,7 +2882,7 @@ console.log('tag 1.0.0')
 
   window.DWLive = DWLive
   window.live = live
-  DWLive.isSupportInteraction = live.interaction.isSupportInteraction
+  DWLive.isSupportInteraction = window.live.interaction.isSupportInteraction
 
   // live player ready
   window._swfInit = function () {
