@@ -1056,7 +1056,7 @@ function on_cc_live_interaction_interval(type, time) {
 
     $('#interactionMsg').text('通话中 ' + m + ':' + s);
 }
-console.log('tag 1.0.4')
+console.log('tag 1.0.5')
 
 /**
  * 获取本地流信息
