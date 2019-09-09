@@ -1701,8 +1701,8 @@
 
       // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
       pc.onaddstream = function (event) {
-        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
-          window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream)
+        if (typeof window.on_cc_live_interaction_remote_media_self === 'function') {
+          window.on_cc_live_interaction_remote_media_self(live.interaction.local.type, chatuser, event.stream)
         }
       }
 
@@ -1740,8 +1740,8 @@
 
       // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
       pc.onaddstream = function (event) {
-        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
-          window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream)
+        if (typeof window.on_cc_live_interaction_remote_media_self === 'function') {
+          window.on_cc_live_interaction_remote_media_self(live.interaction.local.type, chatuser, event.stream)
         }
       }
 
@@ -2800,6 +2800,24 @@
       }
     } else {
       // 断开其他人
+    }
+  }
+
+  window.on_cc_live_interaction_remote_media_self = function (type, chatuser, stream) {
+    if (type.video) {
+      $('#livePlayer').replaceWith('<div id="livePlayer"></div>');
+      $('#videoInteractions').css('height', '100%');
+      var id = 'interactionRemoteVideo' + chatuser.id;
+      $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
+      $('#' + id)[0].srcObject = stream;
+      $('#videoInteraction').hide();
+    } else {// 远程音频
+      var id = 'interactionRemoteAudio' + chatuser.id;
+      $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
+      $('#' + id)[0].srcObject = stream;
+    }
+    if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+      window.on_cc_live_interaction_remote_media(type, chatuser, stream)
     }
   }
 

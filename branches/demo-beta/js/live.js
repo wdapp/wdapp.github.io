@@ -1069,21 +1069,19 @@ function on_cc_live_interaction_local_media(type, stream) {
  * 远程互动流
  *
  * */
-function on_cc_live_interaction_remote_media(p, chatuser, stream) {
-    if (p.video) {
+function on_cc_live_interaction_remote_media(type, chatuser, stream) {
+    if (type.video) {
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>');
 
         $('#videoInteractions').css('height', '100%');
 
         var id = 'interactionRemoteVideo' + chatuser.id;
         $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
-        // $('#' + id)[0].src = URL.createObjectURL(stream);
         $('#' + id)[0].srcObject = stream;
         $('#videoInteraction').hide();
     } else {// 远程音频
         var id = 'interactionRemoteAudio' + chatuser.id;
         $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
-        // $('#' + id)[0].src = URL.createObjectURL(stream);
         $('#' + id)[0].srcObject = stream;
     }
 }
