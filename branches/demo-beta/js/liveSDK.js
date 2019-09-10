@@ -1155,7 +1155,6 @@
       this.socket.on('room_setting', function (data) {
         data = toJson(data)
         if (typeof DWLive.onRoomSetting === 'function') {
-          console.log('onRoomSetting', data)
           DWLive.onRoomSetting(data)
         }
         if (data.layout_video_main != currentLayout) {
