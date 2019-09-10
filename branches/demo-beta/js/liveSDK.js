@@ -1157,7 +1157,6 @@
         if (typeof DWLive.onRoomSetting === 'function') {
           data.allow_speak_interaction = 'true'
           console.log('onRoomSetting', data)
-
           DWLive.onRoomSetting(data)
         }
         if (data.layout_video_main != currentLayout) {
