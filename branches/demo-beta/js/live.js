@@ -1084,14 +1084,14 @@ function on_cc_live_interaction_remote_media(type, chatuser, stream) {
  *
  * @param p
  */
-function on_cc_live_interaction_request_timeout(p) {
+function on_cc_live_interaction_request_timeout(type) {
     // 音频通话
-    if (p.audio) {
+    if (type.audio) {
         $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
     }
 
     // 视频通话
-    if (p.video) {
+    if (type.video) {
         $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
         $('#videoInteraction').hide();
     }

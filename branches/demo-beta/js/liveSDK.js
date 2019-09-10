@@ -1501,7 +1501,7 @@
         live.interaction.isRequesting = false
 
         $('#interactionLocalVideo')[0].src = ''
-        $('#videoInteraction').hide()
+        // $('#videoInteraction').hide()
 
         if (typeof window.on_cc_live_interaction_request_timeout === 'function') {
           window.on_cc_live_interaction_request_timeout(live.interaction.local.type)
