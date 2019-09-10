@@ -2810,7 +2810,7 @@
     }
     if (type.video) {
       var id = 'interactionRemoteVideo' + chatuser.id
-      if ($(id).length > 0) {
+      if ($(id).length < 1) {
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
         // $('#videoInteractions').css('height', '100%')
         $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
@@ -2818,7 +2818,7 @@
       }
     } else {// 远程音频
       var id = 'interactionRemoteAudio' + chatuser.id
-      if ($(id).length > 0) {
+      if ($(id).length < 1) {
         $('#audioInteractions').append('<audio cc-data="2" id="' + id + '" autoplay controls></audio>')
         $('#' + id)[0].srcObject = stream
       }
