@@ -1062,7 +1062,9 @@ function on_cc_live_interaction_interval(type, time) {
  * 获取本地流信息
  * */
 function on_cc_live_interaction_local_media(type, stream) {
-    $('#videoInteraction').show();
+    if (type.video) {
+        $('#videoInteraction').show();
+    }
 }
 
 /**
