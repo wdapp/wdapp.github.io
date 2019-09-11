@@ -1048,7 +1048,7 @@ window.on_cc_live_interaction_disconnect = function (data) {
         // 断开其他人
     }
 };
-console.log('live.old.js tag 1.0.9')
+console.log('live.old.js tag 1.0.10')
 
 // 接受语音/连麦互动
 function on_cc_live_interaction_accept(p) {
