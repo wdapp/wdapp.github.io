@@ -331,6 +331,7 @@
           Pusher.options.pusherUrl = url
           Pusher.options.key = key
           DWLive.viewerid = data.datas.viewer.id
+          DWLive.sessionId = data.datas.viewer.key
           DWLive.viewername = data.datas.viewer.name
           DWLive.isBan = data.datas.room.isBan//禁播
           DWLive.liveid = data.datas.liveId
@@ -1484,9 +1485,9 @@
       }
 
       var self = this
-      var accountId = $('#userId').val()
-      var roomId = $('#roomId').val()
-      var sessionId = opts.viewer.sessionId
+      var accountId = DWLive.userid
+      var roomId = DWLive.roomid
+      var sessionId = DWLive.sessionId
       var channelId = params.channelId
       var appId = window.atob(this.hex2str(params.appId))
       var viewToken = params.viewToken
