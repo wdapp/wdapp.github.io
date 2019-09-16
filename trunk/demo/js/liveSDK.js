@@ -3,6 +3,7 @@
  * v2.9.3 2019/09/10 */
 (function () {
 
+  var VERSION = "2.9.3";
   var DELAY_TIME = 10 * 1000
 
   function isSupportFlash() {
@@ -344,7 +345,11 @@
           viewertoken: this.viewertoken,
           forcibly: this.forcibly,
           viewercustomua: this.viewercustomua,
-          viewercustominfo: this.viewercustominfo
+          viewercustominfo: this.viewercustominfo,
+          version:VERSION,
+          service:2,
+          client:4
+
         },
         success: function (data) {
           if (!data.success) {
