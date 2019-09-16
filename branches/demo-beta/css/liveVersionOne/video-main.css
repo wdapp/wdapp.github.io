@@ -1158,6 +1158,7 @@ a.green-btn { color: #FFF; }
     width: 352px;
     height: 264px;
     background: #333;
+    z-index: 1;
 }
 .call-tit{
     height: 40px;
@@ -1182,6 +1183,7 @@ a.green-btn { color: #FFF; }
 .call-box-small{
     width: 140px;
     height: 105px;
+    z-index: 1;
 }
 .call-box-small .call-tit{
     font-size: 12px;
