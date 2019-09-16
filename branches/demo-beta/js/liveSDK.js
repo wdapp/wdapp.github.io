@@ -1651,7 +1651,6 @@
       AgoraRTC.getDevices(function (devices) {
         for (var i = 0; i !== devices.length; ++i) {
           var device = devices[i]
-          option.value = device.deviceId
           if (device.kind === 'audioinput' && !self.microphoneId) {
             self.microphoneId = device.deviceId
           }
