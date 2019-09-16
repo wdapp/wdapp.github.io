@@ -1234,8 +1234,8 @@
       })
 
       this.socket.on("speak_disconnect_third_party", function (data) {
-        if (typeof window.on_cc_live_interaction_disconnect === "function") {
-          window.on_cc_live_interaction_disconnect(toJson(data));
+        if (typeof window.on_cc_live_interaction_disconnect_self === "function") {
+          window.on_cc_live_interaction_disconnect_self(toJson(data));
         }
       })
 
