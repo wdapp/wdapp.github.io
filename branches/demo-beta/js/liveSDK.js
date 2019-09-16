@@ -1604,7 +1604,9 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        $('#interactionLocalVideo')[0].src = ''
+        if ($('#interactionLocalVideo')[0]) {
+          $('#interactionLocalVideo')[0].src = '';
+        }
         $('#videoInteraction').hide()
         $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
@@ -1729,7 +1731,9 @@
 
         live.interaction.isRequesting = false
 
-        $('#interactionLocalVideo')[0].src = ''
+        if ($('#interactionLocalVideo')[0]) {
+          $('#interactionLocalVideo')[0].src = ''
+        }
         // $('#videoInteraction').hide()
 
         if (typeof window.on_cc_live_interaction_request_timeout === 'function') {
@@ -3031,7 +3035,9 @@
       var type = live.interaction.local.type
       $('#videoInteractions').empty();
       $('#audioInteractions').empty();
-      $('#interactionLocalVideo')[0].src = '';
+      if ($('#interactionLocalVideo')[0]) {
+        $('#interactionLocalVideo')[0].src = '';
+      }
       if (type.video) {
         DWLive.livePlayerInit()
       }
