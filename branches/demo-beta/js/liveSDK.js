@@ -1567,7 +1567,7 @@
 
           self.localStream.on('player-status-change', function (data) {
             console.log('player-status-change ===>', data)
-            if (data.status == 'aborted') {
+            if (data.isErrorState) {
               self.localStream.close()
             }
           })
@@ -1608,8 +1608,8 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        // $('#videoInteraction').hide()
-        // $('#agora_local').hide()
+        $('#videoInteraction').hide()
+        $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
         window.isRequesting = false
       })
