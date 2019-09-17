@@ -1632,13 +1632,11 @@
         $("#btn-network").removeClass("wl-disable");
         $("#videoInteractions").empty();
         $("#audioInteractions").empty();
-
-        $("#interactionLocalVideo")[0].src = "";
         $("#videoInteraction").hide();
-
         $("#videoInteractions").css("height", "0px");
         $('#agora_local').html('');
         $('#agora_local').replaceWith(self.interactionLocalVideoCache)
+        $("#interactionLocalVideo")[0].src = "";
 
         if (!window.ALLOW_SPEAK_INTERACTION) {
           $("li[name=\"interaction\"]").hide();
