@@ -1538,7 +1538,7 @@
         AgoraRTC.Logger.error('Your browser does not support WebRTC!')
       }
       var self = this
-
+      AgoraRTC.Logger.enableLogUpload();
       self.client = AgoraRTC.createClient({mode: 'live', codec: 'h264'})
       self.client.init(options.agora.appId, function () {
         self.client.join(options.agora.viewToken, options.agora.channelId, options.agora.uid, function (uid) {
