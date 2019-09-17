@@ -1620,7 +1620,10 @@
         return
       }
       live.livePlayer.init()
-      self.localStream.close()
+      self.localStream && self.localStream.close()
+      if (!self.client) {
+        return
+      }
       self.client.leave(function () {
         $("li[name=\"interaction\"][t=\"video\"] a").removeClass("audio applying calling").addClass("video");
         $("li[name=\"interaction\"][t=\"audio\"] a").removeClass("audio applying calling").addClass("audio");
@@ -2994,7 +2997,7 @@
 
   // 接受语音互动请求
   window.on_cc_live_accept_interaction = function (data) {
-    if (!window.isSpeakThirdParty) {
+    if (!window.isSpeakThirdParty && live && live.livePlayer) {
       live.livePlayer.closeSound();
     }
 
