@@ -1429,9 +1429,9 @@
       var err = undefined
       try {
         if (window.isSpeakThirdParty) {
-          socket.emit("hangup_interaction_third_party", JSON.stringify(j));
+          this.socket.emit("hangup_interaction_third_party", JSON.stringify(j));
         } else {
-          socket.emit("hangup_interaction", JSON.stringify(j));
+          this.socket.emit("hangup_interaction", JSON.stringify(j));
         }
       } catch (e) {
         err = e
