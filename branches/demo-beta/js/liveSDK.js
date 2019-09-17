@@ -1576,7 +1576,7 @@
             if (self.interactionLocalVideoCache) {
               self.interactionLocalVideoCache.src = '';
             }
-            $('#interactionLocalVideo').replaceWith('<div id="agora_local"></div>')
+            $('#interactionLocalVideo').replaceWith('<div id="agora_local" class="agora-local"></div>')
 
             self.localStream.play('agora_local')
 
