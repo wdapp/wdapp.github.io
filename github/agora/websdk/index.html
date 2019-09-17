@@ -86,7 +86,7 @@
       console.log('AgoraRTC client initialized')
       client.join(channel_key, channel.value, null, function (uid) {
         console.log('User ' + uid + ' join channel successfully')
-        if (document.getElementById('video').checked) {
+        // if (document.getElementById('video').checked) {
           camera = videoSource.value
           microphone = audioSource.value
           localStream = AgoraRTC.createStream({
@@ -165,7 +165,7 @@
           }, function (err) {
             console.log('getUserMedia failed', err)
           })
-        }
+        // }
 
       }, function (err) {
         console.log('Join channel failed', err)
