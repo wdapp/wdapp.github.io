@@ -1608,8 +1608,8 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        $('#videoInteraction').hide()
-        $('#agora_local').hide()
+        // $('#videoInteraction').hide()
+        // $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
         window.isRequesting = false
       })
