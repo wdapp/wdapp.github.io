@@ -1566,6 +1566,7 @@
           })
 
           self.localStream.on('player-status-change', function (data) {
+            console.log('player-status-change ===>', data)
             if (data.status == 'aborted') {
               self.localStream.close()
             }
