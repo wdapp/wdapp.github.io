@@ -1619,7 +1619,7 @@
       if (!self.client) {
         return
       }
-      live.livePlayer.init()
+      DWLive.livePlayerInit()
       self.localStream && self.localStream.close()
       if (!self.client) {
         return
