@@ -1547,7 +1547,7 @@
             video: options.agora.type.video,
             audio: options.agora.type.audio,
             cameraId: self.cameraId,
-            // microphoneId: self.microphoneId,
+            microphoneId: self.microphoneId,
             screen: false
           })
           var videoSize = (options.agora.videoSize).split('x')
