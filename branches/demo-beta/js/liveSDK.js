@@ -1573,6 +1573,9 @@
 
           self.localStream.init(function () {
             self.interactionLocalVideoCache  = $('#interactionLocalVideo')[0]
+            if (self.interactionLocalVideoCache) {
+              self.interactionLocalVideoCache.src = '';
+            }
             $('#interactionLocalVideo').replaceWith('<div id="agora_local"></div>')
 
             self.localStream.play('agora_local')
@@ -1604,9 +1607,6 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        if ($('#interactionLocalVideo')[0]) {
-          $('#interactionLocalVideo')[0].src = '';
-        }
         $('#videoInteraction').hide()
         $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
@@ -1887,8 +1887,10 @@
         }
 
         var localVideo = $('#interactionLocalVideo')[0];
-        localVideo.srcObject = stream;
-        localVideo.volume = 0; // 静音
+        if (localVideo) {
+          localVideo.srcObject = stream;
+          localVideo.volume = 0; // 静音
+        }
 
         if (typeof window.on_cc_live_interaction_local_media === 'function') {
           window.on_cc_live_interaction_local_media(type, stream)
