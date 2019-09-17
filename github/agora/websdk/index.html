@@ -130,6 +130,10 @@
             console.log('accessDenied')
           })
 
+          localStream.on('player-status-change', function (data) {
+            console.log('player-status-change ===>', data)
+          })
+
           localStream.init(function () {
             console.log('getUserMedia successfully')
             localStream.play('agora_local')
