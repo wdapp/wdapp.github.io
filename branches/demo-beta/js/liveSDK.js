@@ -1566,8 +1566,7 @@
           })
 
           self.localStream.on('player-status-change', function (data) {
-            console.log('player-status-change ===>', data)
-            if (data.isErrorState) {
+            if (data.mediaType == 'video' && data.status == 'aborted') {
               self.localStream.close()
             }
           })

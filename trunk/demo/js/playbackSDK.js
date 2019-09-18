@@ -555,12 +555,13 @@
       requestChatqaData: false,
       allRequests: 0,
     }
-
+    param.version = VERSION;
+    param.service = 3;
+    param.client = 4;
     // 登录
     substepRequest({
       url: '//view.csslcloud.net/api/room/replay/login',
-      data: Object.assign(param,{version:VERSION,service:3,
-        client:4}),
+      data: param,
       fn: window.on_cc_login_error,
       done: function (data) {
         if (!checkout(data, window.on_cc_login_error)) {
