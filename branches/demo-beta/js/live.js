@@ -1028,7 +1028,7 @@ window.on_cc_live_interaction_disconnect = function (data, type) {
         $('li[name="interaction"]').hide();
     }
 };
-console.log('live.js tag 1.0.10')
+console.log('live.js tag 1.0.11')
 
 // 接受语音/连麦互动
 function on_cc_live_interaction_accept(type) {
