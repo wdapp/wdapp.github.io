@@ -256,7 +256,7 @@ a.close-check { color: #FFF; background-color: #457594; padding: 5px 10px; }
 .video-middle .l-m-b li:hover,
 .video-middle .l-m-b li.active { background-image: url(../../images/newLive/live-icons.png); background-repeat: no-repeat; background-position: 0 -275px }
 .video-middle .l-m-b li.volue:hover { background-image: none; }
-.video-middle .l-m-b .lmb-r { position: absolute; left: 0 }
+.video-middle .l-m-b .lmb-r { position: absolute; left: 0 ;width: 100%}
 .video-middle .l-m-b .lbm-l-left,
 .video-middle .l-m-b .lbm-l-right { position: absolute; top: 14px; width: 10px; height: 21px; padding: 0 10px; cursor: pointer }
 .video-middle .l-m-b .lbm-l-left { left: 0; background-image: url(../../images/newLive/live-icons.png); background-repeat: no-repeat; background-position: -35px -285px }
