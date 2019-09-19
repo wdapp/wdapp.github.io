@@ -222,10 +222,14 @@
 
       var _this = this
       var scripts = [
-        '//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js',
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/report.js'
       ]
+      var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
+      if (!isIE) {
+        scripts.push('//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js')
+      }
+
       if (DWDpc.fastMode) {
         scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
@@ -730,6 +734,10 @@
         return
       }
       window.isRequesting = true
+      var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
+      if (isIE) {
+        return
+      }
       live.interaction.requestInteraction(t)
     },
 
@@ -1479,7 +1487,9 @@
       if (!AgoraRTC.checkSystemRequirements()) {
         AgoraRTC.Logger.error('Your browser does not support WebRTC!')
       }
-
+      if (AgoraRTC) {
+        AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
+      }
       if (!window.atob) {
         return
       }
