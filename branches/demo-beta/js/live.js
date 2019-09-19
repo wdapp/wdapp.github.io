@@ -1074,7 +1074,7 @@ function on_cc_live_interaction_local_media(type, stream) {
 function on_cc_live_interaction_remote_media(type, chatuser, stream) {
     if (type.video) {
         $('#videoInteractions').css('height', '100%');
-        // $('#videoInteraction').hide();
+        $('#videoInteraction').hide();
     } else {// 远程音频
 
     }
