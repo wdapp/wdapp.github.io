@@ -1597,7 +1597,6 @@
       })
       self.client.on('stream-subscribed', function (evt) {
         var remoteStream = evt.stream
-        $('#videoInteractions').css('height', '100%')
         $('#videoInteractions').append('<div id="interactionRemoteVideo' + remoteStream.getId() + '" style="height: 100%; width: 100%;" autoplay></div>')
 
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
@@ -3059,7 +3058,6 @@
       $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
       var id = 'interactionRemoteVideo' + chatuser.id
       if ($('#'+id).length < 1) {
-        // $('#videoInteractions').css('height', '100%')
         $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
         $('#' + id)[0].srcObject = stream
       }
