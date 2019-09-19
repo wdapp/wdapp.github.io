@@ -1021,7 +1021,6 @@ window.on_cc_live_interaction_disconnect = function (data, type) {
 
     $('#interactionMsg').text('');
     $('#videoInteraction').hide();
-    // $('#videoInteractions').css('height', '0px');
     $('#btn-network').removeClass('wl-disable');
 
     if (!window.ALLOW_SPEAK_INTERACTION) {
@@ -1073,7 +1072,6 @@ function on_cc_live_interaction_local_media(type, stream) {
  * */
 function on_cc_live_interaction_remote_media(type, chatuser, stream) {
     if (type.video) {
-        // $('#videoInteractions').css('height', '100%');
         $('#videoInteraction').hide();
     } else {// 远程音频
 
