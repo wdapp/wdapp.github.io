@@ -1572,7 +1572,9 @@
           })
 
           self.localStream.init(function () {
-            $('#interactionLocalVideo').after('<div id="agora_local"></div>')
+            if (!$('#agora_local').length) {
+              $('#interactionLocalVideo').after('<div id="agora_local"></div>')
+            }
 
             self.localStream.play('agora_local')
 
@@ -1602,7 +1604,6 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        // $('#videoInteraction').hide()
         if (typeof window.on_cc_live_interaction_remote_media === 'function') {
           window.on_cc_live_interaction_remote_media(self.local.type)
         }
@@ -1623,25 +1624,13 @@
         return
       }
       self.client.leave(function () {
-        $("li[name=\"interaction\"][t=\"video\"] a").removeClass("audio applying calling").addClass("video");
-        $("li[name=\"interaction\"][t=\"audio\"] a").removeClass("audio applying calling").addClass("audio");
-        $("li[name=\"interaction\"]").removeClass("disable").show();
-        $("#interactionMsg").text("");
-        $("#btn-network").removeClass("wl-disable");
         $("#videoInteractions").empty();
         $("#audioInteractions").empty();
-        $("#videoInteraction").hide();
-        $("#videoInteractions").css("height", "0px");
-        $('#agora_local').html('');
         $("#interactionLocalVideo")[0].src = "";
-
-        if (!window.ALLOW_SPEAK_INTERACTION) {
-          $("li[name=\"interaction\"]").hide();
-        }
-        window.isRequesting = false
+        $('#agora_local').html('');
       }, function (err) {
-        window.isRequesting = false
       });
+      window.isRequesting = false
     }
 
     this.cameraId = ''
@@ -3017,6 +3006,10 @@
   window.on_cc_live_interaction_disconnect_self = function (data) {
     if (window.isSpeakThirdParty) {
       live.interaction.leaveAgoraRTC()
+      var type = live.interaction.local.type
+      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+        window.on_cc_live_interaction_disconnect(data, type)
+      }
     }
     var uid = data.disconnectid
     var isPC = !!live.interaction.usersPcs[uid]
@@ -3040,7 +3033,7 @@
       if (type.video) {
         DWLive.livePlayerInit()
       }
-      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+      if (window.isSpeakThirdParty && typeof window.on_cc_live_interaction_disconnect === 'function') {
         window.on_cc_live_interaction_disconnect(data, type)
       }
     } else {
