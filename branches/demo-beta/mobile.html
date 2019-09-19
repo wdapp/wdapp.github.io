@@ -192,7 +192,7 @@
         });
 
         DWLive.onLiveTime = function (e) {
-            console.log('onLiveTime', e);
+            // console.log('onLiveTime', e);
         };
 
         document.addEventListener('WeixinJSBridgeReady', function () {
@@ -283,7 +283,7 @@
             Lenovo = true //取消设备限制
 
             if (Lenovo && userId == ID) {
-                console.log('您使用了定制版联想Pad', 'userId' + userId + ' / ' + 'ID' + ID)
+                // console.log('您使用了定制版联想Pad', 'userId' + userId + ' / ' + 'ID' + ID)
 
                 var PAUSE_TIMER = 0
                 video.addEventListener('pause', function () {
@@ -463,12 +463,12 @@
 
     // 获取播放器自定义背景图片
     DWLive.playerBackgroundImageUri = function (data) {
-        console.log(data);
+        // console.log(data);
     };
 
     // 获取播放器自定义提示语
     DWLive.playerBackgroundHint = function (data) {
-        console.log(data);
+        // console.log(data);
     };
 
     window.onorientationchange = function () {

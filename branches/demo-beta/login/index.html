@@ -381,13 +381,13 @@
         function parseUrl(url) {
             var querys = url.split('?');
             if (!querys[1]) {
-                console.log('无效链接');
+                // console.log('无效链接');
                 return false;
             }
             var query = url.split('?')[1];
             var queryArr = query.split('&');
             if (queryArr.length === 0) {
-                console.log('无效链接');
+                // console.log('无效链接');
                 return false;
             }
             var obj = {};

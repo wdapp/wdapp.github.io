@@ -191,11 +191,11 @@
 
             var ds = c.draws[key];
             if (ds && ds.length > 0) {
-                console.log('before:', ds);
+                // console.log('before:', ds);
 
                 c.draws[key] = $.grep(ds, function (d) {
                     if (drawId == d.drawid) {
-                        console.log('delete:', d);
+                        // console.log('delete:', d);
                     }
 
                     return drawId != d.drawid;
