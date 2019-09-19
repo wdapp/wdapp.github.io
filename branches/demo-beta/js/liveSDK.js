@@ -1581,6 +1581,7 @@
             self.localStream.play('agora_local')
 
             // $('#agora_local').css('display', 'block')
+            $('#agora_local').show()
 
             self.client.publish(self.localStream, function (err) {
             })
