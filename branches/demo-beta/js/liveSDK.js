@@ -3043,7 +3043,7 @@
       if (type.video) {
         DWLive.livePlayerInit()
       }
-      if (window.isSpeakThirdParty && typeof window.on_cc_live_interaction_disconnect === 'function') {
+      if (!window.isSpeakThirdParty && typeof window.on_cc_live_interaction_disconnect === 'function') {
         window.on_cc_live_interaction_disconnect(data, type)
       }
     } else {
