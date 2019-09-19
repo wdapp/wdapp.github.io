@@ -1573,6 +1573,7 @@
 
           self.localStream.init(function () {
             $('#interactionLocalVideo').after('<div id="agora_local"></div>')
+
             self.localStream.play('agora_local')
 
             self.client.publish(self.localStream, function (err) {
@@ -1602,7 +1603,10 @@
         remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
       })
       self.client.on('first-video-frame-decode', function (evt) {
-        $('#videoInteraction').hide()
+        // $('#videoInteraction').hide()
+        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+          window.on_cc_live_interaction_remote_media(self.local.type)
+        }
         $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
         window.isRequesting = false
@@ -1729,7 +1733,6 @@
         if ($('#interactionLocalVideo')[0]) {
           $('#interactionLocalVideo')[0].src = ''
         }
-        // $('#videoInteraction').hide()
 
         if (typeof window.on_cc_live_interaction_request_timeout === 'function') {
           window.on_cc_live_interaction_request_timeout(live.interaction.local.type)
