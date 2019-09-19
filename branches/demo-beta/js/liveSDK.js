@@ -1576,15 +1576,9 @@
             if (self.interactionLocalVideoCache) {
               self.interactionLocalVideoCache.src = '';
             }
-            $('#interactionLocalVideo').replaceWith('<div id="agora_local" class="agora-local"></div>')
+            $('#interactionLocalVideo').replaceWith('<div id="agora_local" class="agora-local" style="display: block;height: 100%;width: 100%"></div>')
 
             self.localStream.play('agora_local')
-
-            $('#agora_local').css({
-              'width': '100%',
-              'height': '100%'
-            })
-            $('#agora_local').show()
 
             self.client.publish(self.localStream, function (err) {
             })
