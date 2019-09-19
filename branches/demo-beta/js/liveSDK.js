@@ -1572,12 +1572,7 @@
           })
 
           self.localStream.init(function () {
-            self.interactionLocalVideoCache  = $('#interactionLocalVideo')[0]
-            if (self.interactionLocalVideoCache) {
-              self.interactionLocalVideoCache.src = '';
-            }
-            $('#interactionLocalVideo').replaceWith('<div id="agora_local" class="agora-local"></div>')
-
+            $('#interactionLocalVideo').after('<div id="agora_local"></div>')
             self.localStream.play('agora_local')
 
             self.client.publish(self.localStream, function (err) {
@@ -1635,7 +1630,6 @@
         $("#videoInteraction").hide();
         $("#videoInteractions").css("height", "0px");
         $('#agora_local').html('');
-        $('#agora_local').replaceWith(self.interactionLocalVideoCache)
         $("#interactionLocalVideo")[0].src = "";
 
         if (!window.ALLOW_SPEAK_INTERACTION) {
