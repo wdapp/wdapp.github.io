@@ -1580,7 +1580,7 @@
 
             self.localStream.play('agora_local')
 
-            $('#agora_local').css('display', 'block')
+            // $('#agora_local').css('display', 'block')
 
             self.client.publish(self.localStream, function (err) {
             })
@@ -1610,7 +1610,7 @@
       })
       self.client.on('first-video-frame-decode', function (evt) {
         $('#videoInteraction').hide()
-        $('#agora_local').hide()
+        // $('#agora_local').hide()
         $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
         window.isRequesting = false
       })
