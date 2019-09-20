@@ -6,7 +6,7 @@ $(function () {
     };
 
     window._onStart = function () {
-        // console.log('直播中----');
+        console.log('直播中----');
     };
 
     // 停止直播
