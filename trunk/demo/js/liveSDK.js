@@ -227,6 +227,8 @@
     }
   }
 
+  window.isRequesting = false
+
   var DWLive = {
     DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
     MediaScaleMode: {scale43: '4:3', scale169: '16:9', scaleFull: 'full', scaleNormal: 'normal'},
@@ -271,6 +273,14 @@
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/report.js'
       ]
+      var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
+      if (!isIE) {
+        scripts.push('//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js')
+      }
+
+      if (DWDpc.fastMode) {
+        scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+      }
 
       if (MobileLive.isMobile() == 'isMobile') {
         if ($('#drawPanel').length > 0) {
@@ -377,6 +387,7 @@
           Pusher.options.pusherUrl = url
           Pusher.options.key = key
           DWLive.viewerid = data.datas.viewer.id
+          DWLive.sessionId = data.datas.viewer.key
           DWLive.viewername = data.datas.viewer.name
           DWLive.isBan = data.datas.room.isBan//禁播
           DWLive.liveid = data.datas.liveId
@@ -778,6 +789,14 @@
 
     // 请求语音互动
     requestInteraction: function (t) {
+      if (window.isRequesting) {
+        return
+      }
+      window.isRequesting = true
+      var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
+      if (isIE) {
+        return
+      }
       live.interaction.requestInteraction(t)
     },
 
@@ -1008,6 +1027,7 @@
         if (typeof window.onSocketDisconnect === 'function') {
           window.onSocketDisconnect()
         }
+        window.isRequesting = false
       })
 
       // 翻页回调
@@ -1208,9 +1228,30 @@
           DWLive.onUnBanStream(data)
         }
       })
+      window.isSpeakThirdParty = false
+
       this.socket.on('room_setting', function (data) {
         data = toJson(data)
         if (typeof DWLive.onRoomSetting === 'function') {
+          console.log('room_setting', data)
+
+          window.allowSpeakThirdParty = data.allow_speak_third_party
+
+          if (data.allow_speak_interaction == 'true') {
+            window.isSpeakThirdParty = false
+          }
+
+          if (window.allowSpeakThirdParty.status == 'true') {
+            window.isSpeakThirdParty = true
+            data.allow_speak_interaction = 'true'
+          }
+
+          if(window.isSpeakThirdParty) {
+            console.log('声网连麦', window.isSpeakThirdParty)
+          } else {
+            console.log('WebRTC连麦', window.isSpeakThirdParty)
+          }
+
           DWLive.onRoomSetting(data)
         }
         if (data.layout_video_main != currentLayout) {
@@ -1240,8 +1281,8 @@
 
       // 互动信息
       this.socket.on('speak_message', function (data) {
-        if (typeof window.on_cc_live_interaction_message === 'function') {
-          window.on_cc_live_interaction_message(toJson(data))
+        if (!window.isSpeakThirdParty && typeof window.on_cc_live_interaction_message === "function") {
+          window.on_cc_live_interaction_message(toJson(data));
         }
       })
 
@@ -1254,8 +1295,14 @@
 
       // 挂断互动信息
       this.socket.on('speak_disconnect', function (data) {
-        if (typeof window.on_cc_live_interaction_disconnect === 'function') {
-          window.on_cc_live_interaction_disconnect(toJson(data))
+        if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
+          window.on_cc_live_interaction_disconnect_self(toJson(data))
+        }
+      })
+
+      this.socket.on("speak_disconnect_third_party", function (data) {
+        if (typeof window.on_cc_live_interaction_disconnect_self === "function") {
+          window.on_cc_live_interaction_disconnect_self(toJson(data));
         }
       })
 
@@ -1448,7 +1495,11 @@
 
       var err = undefined
       try {
-        this.socket.emit('hangup_interaction', JSON.stringify(j))
+        if (window.isSpeakThirdParty) {
+          this.socket.emit("hangup_interaction_third_party", JSON.stringify(j));
+        } else {
+          this.socket.emit("hangup_interaction", JSON.stringify(j));
+        }
       } catch (e) {
         err = e
       } finally {
@@ -1487,6 +1538,188 @@
 
     this.isRequesting = false
 
+    this.client = null
+    this.localStream = null
+
+    //声网连麦
+    this.initAgoraRTC = function (params) {
+      if (!AgoraRTC.checkSystemRequirements()) {
+        AgoraRTC.Logger.error('Your browser does not support WebRTC!')
+      }
+      if (AgoraRTC) {
+        AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
+      }
+      if (!window.atob) {
+        return
+      }
+
+      var self = this
+      var accountId = DWLive.userid
+      var roomId = DWLive.roomid
+      var sessionId = DWLive.sessionId
+      var channelId = params.channelId
+      var appId = window.atob(this.hex2str(params.appId))
+      var viewToken = params.viewToken
+      var videoSize = params.videosize
+      var uid = 0
+      var type = this.local.type
+
+      var options = {
+        agora: {
+          appId: appId,
+          viewToken: viewToken,
+          channelId: channelId,
+          type: type,
+          ui: uid,
+          videoSize: videoSize
+        },
+        tokens: {
+          accountId: accountId,
+          roomId: roomId,
+          sessionId: sessionId,
+          channelId: channelId,
+          ui: uid
+        }
+      }
+
+      self.joinAgoraRTC(options)
+    }
+
+    this.hex2str = function(hex) {
+      var trimedStr = hex.trim();
+      var rawStr = trimedStr.substr(0,2).toLowerCase() === "0x" ? trimedStr.substr(2) : trimedStr;
+      var len = rawStr.length;
+      if(len % 2 !== 0) {
+        alert("Illegal Format ASCII Code!");
+        return "";
+      }
+      var curCharCode;
+      var resultStr = [];
+      for(var i = 0; i < len;i = i + 2) {
+        curCharCode = parseInt(rawStr.substr(i, 2), 16);
+        resultStr.push(String.fromCharCode(curCharCode));
+      }
+      return resultStr.join("");
+    }
+
+    this.joinAgoraRTC = function (options) {
+      if (!AgoraRTC.checkSystemRequirements()) {
+        AgoraRTC.Logger.error('Your browser does not support WebRTC!')
+      }
+      var self = this
+      AgoraRTC.Logger.enableLogUpload();
+      self.client = AgoraRTC.createClient({mode: 'live', codec: 'h264'})
+      self.client.init(options.agora.appId, function () {
+        self.client.join(options.agora.viewToken, options.agora.channelId, options.agora.uid, function (uid) {
+          self.localStream = AgoraRTC.createStream({
+            streamID: uid,
+            video: options.agora.type.video,
+            audio: options.agora.type.audio,
+            cameraId: self.cameraId,
+            microphoneId: self.microphoneId,
+            screen: false
+          })
+          var videoSize = (options.agora.videoSize).split('x')
+          self.localStream.setVideoEncoderConfiguration({
+            // 视频分辨率
+            resolution: {
+              width: parseInt(videoSize[0]),
+              height: parseInt(videoSize[1])
+            }
+          })
+
+          self.localStream.on('accessAllowed', function () {
+          })
+
+          self.localStream.on('accessDenied', function () {
+          })
+
+          self.localStream.on('player-status-change', function (data) {
+            if (data.mediaType == 'video' && data.status == 'aborted') {
+              self.localStream.close()
+            }
+          })
+
+          self.localStream.init(function () {
+            if (!$('#agora_local').length) {
+              $('#interactionLocalVideo').after('<div id="agora_local"></div>')
+            }
+
+            self.localStream.play('agora_local')
+
+            self.client.publish(self.localStream, function (err) {
+            })
+
+            self.client.on('stream-published', function (evt) {
+            })
+          }, function (err) {
+          })
+
+        }, function (err) {
+        })
+
+      }, function (err) {
+      })
+      self.client.on('stream-added', function (evt) {
+        var stream = evt.stream
+
+        self.client.subscribe(stream, function (err) {
+        })
+      })
+      self.client.on('stream-subscribed', function (evt) {
+        var remoteStream = evt.stream
+        $('#videoInteractions').append('<div id="interactionRemoteVideo' + remoteStream.getId() + '" style="height: 100%; width: 100%;" autoplay></div>')
+
+        remoteStream.play('interactionRemoteVideo' + remoteStream.getId(), {fit: 'contain'})
+      })
+      self.client.on('first-video-frame-decode', function (evt) {
+        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+          window.on_cc_live_interaction_remote_media(self.local.type)
+        }
+        $('#agora_local').hide()
+        $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
+        window.isRequesting = false
+      })
+    }
+
+    this.leaveAgoraRTC = function () {
+      var self = this
+      if (!self.client) {
+        return
+      }
+      DWLive.livePlayerInit()
+      self.localStream && self.localStream.close()
+      if (!self.client) {
+        return
+      }
+      self.client.leave(function () {
+        $("#videoInteractions").empty();
+        $("#audioInteractions").empty();
+        $("#interactionLocalVideo")[0].src = "";
+        $('#agora_local').html('');
+      }, function (err) {
+      });
+      window.isRequesting = false
+    }
+
+    this.cameraId = ''
+    this.microphoneId = ''
+
+    this.getDevices = function () {
+      var self = this
+      AgoraRTC.getDevices(function (devices) {
+        for (var i = 0; i !== devices.length; ++i) {
+          var device = devices[i]
+          if (device.kind === 'audioinput' && !self.microphoneId) {
+            self.microphoneId = device.deviceId
+          }
+          if (device.kind === 'videoinput' && !self.cameraId) {
+            self.cameraId = device.deviceId
+          }
+        }
+      })
+    }
+
     /**
      * 请求语音互动
      *
@@ -1497,6 +1730,7 @@
      * */
     this.requestInteraction = function (t, callback) {
       debug('Interaction', '请求互动')
+      window.isSpeakThirdParty && this.getDevices()
 
       this.local.type = t
 
@@ -1525,9 +1759,9 @@
       live.interaction.interactionTimeInterval = setInterval(function () {
         ++live.interaction.interactionTime
         if (typeof window.on_cc_live_interaction_interval === 'function') {
-          var p = live.interaction.local.type
-          var t = live.interaction.interactionTime
-          window.on_cc_live_interaction_interval(p, t)
+          var type = live.interaction.local.type
+          var time = live.interaction.interactionTime
+          window.on_cc_live_interaction_interval(type, time)
         }
       }, 1000)
     }
@@ -1553,13 +1787,15 @@
 
         live.interaction.isRequesting = false
 
-        $('#interactionLocalVideo')[0].src = ''
-        $('#videoInteraction').hide()
+        if ($('#interactionLocalVideo')[0]) {
+          $('#interactionLocalVideo')[0].src = ''
+        }
 
         if (typeof window.on_cc_live_interaction_request_timeout === 'function') {
           window.on_cc_live_interaction_request_timeout(live.interaction.local.type)
         }
       }, 60000)
+      window.isRequesting = false
     }
     // 清空互动请求超时定时器
     this.clearRequestTimeoutTimer = function () {
@@ -1696,16 +1932,22 @@
 
     this.createLocalMedia = function (c) {
       var that = this
-      var p = that.local.type
-      getUserMedia.call(navigator, p, function (stream) {
-        if (p.video) {
+      var type = that.local.type
+      getUserMedia.call(navigator, type, function (stream) {
+        if (type.video) {
           that.local.video.stream = stream
         } else {
           that.local.audio.stream = stream
         }
 
+        var localVideo = $('#interactionLocalVideo')[0];
+        if (localVideo) {
+          localVideo.srcObject = stream;
+          localVideo.volume = 0; // 静音
+        }
+
         if (typeof window.on_cc_live_interaction_local_media === 'function') {
-          window.on_cc_live_interaction_local_media(p, stream)
+          window.on_cc_live_interaction_local_media(type, stream)
         }
 
         if (c && typeof c === 'function') {
@@ -1750,8 +1992,8 @@
 
       // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
       pc.onaddstream = function (event) {
-        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
-          window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream)
+        if (typeof window.on_cc_live_interaction_remote_media_self === 'function') {
+          window.on_cc_live_interaction_remote_media_self(live.interaction.local.type, chatuser, event.stream)
         }
       }
 
@@ -1789,8 +2031,8 @@
 
       // 如果检测到媒体流连接到本地，将其绑定到一个audio标签上输出
       pc.onaddstream = function (event) {
-        if (typeof window.on_cc_live_interaction_remote_media === 'function') {
-          window.on_cc_live_interaction_remote_media(live.interaction.local.type, chatuser, event.stream)
+        if (typeof window.on_cc_live_interaction_remote_media_self === 'function') {
+          window.on_cc_live_interaction_remote_media_self(live.interaction.local.type, chatuser, event.stream)
         }
       }
 
@@ -1802,8 +2044,8 @@
 
           live.interaction.hangupInteraction()
 
-          if (typeof window.on_cc_live_interaction_disconnect === 'function') {
-            window.on_cc_live_interaction_disconnect({
+          if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
+            window.on_cc_live_interaction_disconnect_self({
               disconnectid: DWLive.viewerid
             })
           }
@@ -1838,7 +2080,16 @@
 
     // 当前浏览器是否支持互动功能
     this.isSupportInteraction = function () {
-      return window.location.protocol === 'https:' && !!(PeerConnection && URL && getUserMedia && nativeRTCIceCandidate && nativeRTCSessionDescription)
+      if (window.isSpeakThirdParty) {
+        if (!AgoraRTC.checkSystemRequirements()) {
+          AgoraRTC.Logger.error('Your browser does not support WebRTC!')
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return window.location.protocol === 'https:' && !!(PeerConnection && URL && getUserMedia && nativeRTCIceCandidate && nativeRTCSessionDescription)
+      }
     }
 
     // 挂断互动
@@ -2800,10 +3051,15 @@
 
   // 接受语音互动请求
   window.on_cc_live_accept_interaction = function (data) {
-    DWLive.closeSound()
+    if (!window.isSpeakThirdParty && live && live.livePlayer) {
+      live.livePlayer.closeSound();
+    }
 
     // 清除请求超时计时器
     live.interaction.clearRequestTimeoutTimer()
+    if (window.isSpeakThirdParty) {
+      live.interaction.initAgoraRTC(data)
+    }
 
     DWLive.enterInteractionRoom()
 
@@ -2813,6 +3069,66 @@
 
     if (typeof window.on_cc_live_interaction_accept === 'function') {
       window.on_cc_live_interaction_accept(live.interaction.local.type, toJson(data))
+    }
+  }
+
+  window.on_cc_live_interaction_disconnect_self = function (data) {
+    if (window.isSpeakThirdParty) {
+      live.interaction.leaveAgoraRTC()
+      var type = live.interaction.local.type
+      if (typeof window.on_cc_live_interaction_disconnect === 'function') {
+        window.on_cc_live_interaction_disconnect(data, type)
+      }
+    }
+    var uid = data.disconnectid
+    var isPC = !!live.interaction.usersPcs[uid]
+    if (uid != DWLive.viewerid && !isPC) {
+      return
+    }
+    if (uid != DWLive.viewerid && isPC) {
+      DWLive.hangupInteraction()
+    }
+    live.interaction.clearCallingTimer()
+    live.interaction.disconnectInteraction(uid)
+    // 与所有端断开连接
+    if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
+      live.interaction.stopLocalStream()
+      var type = live.interaction.local.type
+      $('#videoInteractions').empty();
+      $('#audioInteractions').empty();
+      if ($('#interactionLocalVideo')[0]) {
+        $('#interactionLocalVideo')[0].src = '';
+      }
+      if (type.video) {
+        DWLive.livePlayerInit()
+      }
+      if (!window.isSpeakThirdParty && typeof window.on_cc_live_interaction_disconnect === 'function') {
+        window.on_cc_live_interaction_disconnect(data, type)
+      }
+    } else {
+      // 断开其他人
+    }
+    window.isRequesting = false
+  }
+
+  window.on_cc_live_interaction_remote_media_self = function (type, chatuser, stream) {
+    if (typeof window.on_cc_live_interaction_remote_media === 'function') {
+      window.on_cc_live_interaction_remote_media(type, chatuser, stream)
+    }
+    window.isRequesting = false
+    if (type.video) {
+      $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
+      var id = 'interactionRemoteVideo' + chatuser.id
+      if ($('#'+id).length < 1) {
+        $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
+        $('#' + id)[0].srcObject = stream
+      }
+    } else {// 远程音频
+      var id = 'interactionRemoteAudio' + chatuser.id
+      if ($('#'+id).length < 1) {
+        $('#audioInteractions').append('<audio cc-data="2" id="' + id + '" autoplay controls></audio>')
+        $('#' + id)[0].srcObject = stream
+      }
     }
   }
 
@@ -2937,6 +3253,7 @@
 
   window.DWLive = DWLive
   window.live = live
+  DWLive.isSupportInteraction = window.live.interaction.isSupportInteraction
 
   // live player ready
   window._swfInit = function () {
