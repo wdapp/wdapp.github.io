@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<body>
+<canvas id="can" width="400" height="400"style="background: Black"></canvas>
+<script>
+
+  //sn 数组 ？？？？ctx:获取id为can的2d面板（解决：fx是用来控制蛇移动的量，由于t% 20 * 20 + 1，每次会向右移动20px）
+  //n 表示每次位于数组最前面的数
+
+  var sn = [ 42, 41 ], dz = 43, fx = 1, n, ctx = document.getElementById("can").getContext("2d");
+
+  function draw(t, c) {
+    ctx.fillStyle = c;  //设置颜色
+
+    //绘制图形，显示时的左上角（x,y）坐标，图形的宽高（设置成18可能是因为存在边框）
+
+    ctx.fillRect(t % 20 * 20 + 1,~~(t / 20) * 20 + 1, 18, 18);
+  }
+
+  //用户按下键盘时产生的事件，当sn[1]- sn[0] == (n = [ -1, -20, 1, 20 ][(e || event).keyCode - 37] || fx)（不懂）
+  //为true时，fx=fx,反之fx=n;（解决：左上右下方向键对应n数组内取值，其他键将超出下标无法取值）
+
+  document.onkeydown = function(e){
+    fx = sn[1] -sn[0] == (n = [-1, -20, 1, 20 ][(e || event).keyCode - 37] || fx) ?fx : n
+  };
+  !function() {
+    sn.unshift(n = sn[0] +fx);  //向sn数组头部插入数值n,n=42+1;
+    //当刚插入的值不在头部时或者刚插入的值不在画板中时，或者一直向右或向下不变移动18次后，或者向上向左一直移动2次后，结束游戏
+
+    if (sn.indexOf(n, 1) > 0 || n<0||n>399 || fx == 1 && n % 20 == 0 || fx == -1 &&n % 20 == 19)
+      return alert("GAME OVER");
+
+    //初始化蛇的位置？？？
+
+    draw(n, "Lime");
+
+    if (n == dz) {
+      //产生0-40的随机整数，在sn数组中查找dz的位置,以确保产生的食物不于蛇重叠。
+
+      while(sn.indexOf(dz = ~~(Math.random() * 400))>= 0);
+
+      //在面板中绘制黄色的食物。
+
+      draw(dz, "Yellow");
+    } else
+
+    //将数组的最后一个元素删除，即在面板中绘制黑色的图形进行遮盖
+      draw(sn.pop(), "Black");
+
+    //在130毫秒间隔后重复执行？？？（解决：是用来控制速度的量，并使重复执行当前函数，并不是属于else范围中）
+
+    setTimeout(arguments.callee, 130);
+  }();
+</script>
+</body>
+</html>
