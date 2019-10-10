@@ -1,15 +1,15 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div>
+    ReplayComputer
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'ReplayComputer'
 }
 </script>
 
-<style>
+<style lang='stylus' scoped>
 
 </style>

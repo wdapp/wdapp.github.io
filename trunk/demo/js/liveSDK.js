@@ -3414,5 +3414,9 @@
       }
     }
   }
-
+  window.onunload = function (e) {
+    if (live && live.interaction) {
+      live.interaction.hangupInteraction();
+    }
+  };
 })(window)
