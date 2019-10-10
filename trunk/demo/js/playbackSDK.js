@@ -3,7 +3,123 @@
  * v3.0.3 2019/09/10
  */
 !(function ($, window, document) {
-  var VERSION = "3.0.3";
+  var VERSION = "2.9.2";
+  !(function () {
+    function startTestVersion(d) {
+      log(d);
+      var info = d.h5 ? d.h5 : {};
+
+      if (info.lowVersion) {
+        if (isMax(info.lowVersion.v, VERSION)) {
+
+          var date = info.lowVersion.expiration;
+          var msg = (info.errorMsg ? info.errorMsg : "您的版本已低于最低支持版本，最后截止时间 ") + date;
+          log(msg);
+          if (Error) {
+            throw new Error(msg)
+          } else {
+            warning(msg);
+          }
+
+        }
+      }
+      if (info.newVersion) {
+        if (isMax(info.newVersion.v, VERSION)) {
+          var notifyMsg = (info.notify ? info.notify : "有新版本发布,请更新至新版本进行测试.新版本发布日期：") + info.newVersion.date;
+          // log(notifyMsg);
+           warning(notifyMsg);
+        }
+      }
+    }
+
+    function log(l) {
+      if (console.log) {
+        console.log(l);
+      }
+    }
+
+    function warning(l) {
+      if (console.warn) {
+        console.warn(l);
+      }
+    }
+
+    //判断v1 是否大于v2
+    function isMax(v1, v2) {
+      var v1s = v1.split(".");
+      var v2s = v2.split(".");
+      var index = 0;
+      var len = v1s.length;
+      var result = false;
+      while (index < len) {
+        var vv1 = parseInt(v1s[index]);
+        var vv2 = parseInt(v2s[index]);
+        if (vv1 > vv2) {
+          result = true
+          break;
+        } else if (vv1 < vv2) {
+          result = false;
+          break;
+        }
+        index++;
+      }
+      return result;
+
+    }
+
+    function requestError(d) {
+
+    }
+
+    var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
+
+    // log("当前浏览器是否是IE--》 " +util.isIE());
+    // if(util.isIE()){
+      var xmlhttp = null;
+      if(window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+      }else if(window.ActiveXObject){
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      if(xmlhttp){
+        xmlhttp.open("GET",url,true);
+        xmlhttp.onreadystatechange = function(){
+          if(xmlhttp.readyState === 4){
+            if(xmlhttp.status === 200){
+              var versionInfo = JSON.parse(xmlhttp.responseText);
+              // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+              if (versionInfo) {
+                startTestVersion(versionInfo)
+              }
+            }
+          }
+        }
+        xmlhttp.send();
+       }
+      // return;
+    // }
+    // jQuery.support.cors = true;
+    // $.ajax({
+    //   url: url,
+    //   method: "POST",
+    //   dataType: "json",
+    //   crossDomain:true,
+    //   success: function (data) {
+    //     log("版本信息加载完成-->" + data);
+    //     var versionInfo = data;
+    //     // log(versionInfo);
+    //     if (versionInfo) {
+    //       startTestVersion(versionInfo)
+    //     }
+    //   },
+    //   error: function (xhr,status,errorThrown) {
+    //     console.log("当前的数据"+ xhr.responseText,status,errorThrown);
+    //     requestError(xhr);
+    //   }
+    // })
+  })()
+
+
   // 直播播放器信息
   var CallbackPlayer = function (opts) {
     this.isReady = false
@@ -82,7 +198,7 @@
       if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         t = this.getH5player().currentTime
       } else {
-        t = parseInt(this.getFlash().getPosition(), 10)
+        t = parseInt(this.getFlash().getPosition?(this.getFlash().getPosition()):0, 10)
       }
       if (isNaN(t) || t < 0) {
         return 0
@@ -99,7 +215,7 @@
         if (!swf) {
           return
         }
-        return swf.getDuration()
+        return swf.getDuration?swf.getDuration():0;
       }
     }
 
@@ -120,7 +236,7 @@
         if (!swf) {
           return
         }
-        return swf.getBufferLength()
+        return swf.getBufferLength?swf.getBufferLength():0;
       }
 
     }
@@ -133,7 +249,11 @@
         if (!swf) {
           return
         }
-        return swf.setVolume(n)
+        if(swf.setVolume){
+          return swf.setVolume(n)
+        }
+        return 0;
+
       }
     }
 
@@ -145,7 +265,7 @@
         if (!swf) {
           return
         }
-        return swf.getVolume()
+        return swf.getVolume?swf.getVolume():0;
       }
     }
 
@@ -161,7 +281,7 @@
         if (!swf) {
           return
         }
-        return swf.isPlay()
+        return swf.isPlay?swf.isPlay():0;
       }
     }
 
@@ -1262,10 +1382,27 @@
 
         var pageChanges = meta.pageChange
         if (pageChanges && pageChanges.length) {
+          pageChanges.sort(function (a,b) {
+            return a.serverTime - b.serverTime
+          })
           pageChanges.sort(function (p1, p2) {
             return parseInt(p1.time) - parseInt(p2.time)
           })
-          callback.pageChanges = pageChanges
+
+          var len = pageChanges.length;
+          var lastTime = -1;
+          var pages=[];
+          for(var i=0 ;i<len;i++){
+            var obj = pageChanges[i];
+            if(obj.time == lastTime){
+              pages[pages.length - 1] = obj;
+
+            }else{
+              pages.push(obj);
+            }
+            lastTime = obj.time;
+          }
+          callback.pageChanges = pages;
         }
 
         //文档信息加载完成，首先渲染首页
@@ -1639,7 +1776,7 @@
   var DWDpc = {
     isDPReady:false,
     dpc: {},
-    fastMode: false,
+    fastMode: true,
     init: function () {
       this.dpc = new Dpc()
     },
@@ -1708,8 +1845,8 @@
   }
 
   var DW = {
-    isH5play: false,
-    fastMode: false,
+    isH5play: true,
+    fastMode: true,
     forceNew: false,
     setFastMode: function (opts) {
       if (typeof opts.fastMode == 'string') {
@@ -1721,17 +1858,21 @@
       } else if (typeof opts.fastMode == 'boolean') {
         this.fastMode = opts.fastMode
       } else {
-        this.fastMode = false
+        this.fastMode = true
       }
     },
     // 初始化DW对象
     config: function (opts) {
       if (checkVideo()) {
-        if (opts.isH5play + '' === 'true') {
-          this.isH5play = true
-        } else {
+        if (opts.isH5play + '' === 'false') {
           this.isH5play = false
+        } else {
+          this.isH5play = true
         }
+      }
+      if(!opts.recordId){
+        throw new Error("未传入有效的recordId");
+        return;
       }
 
       this.setFastMode(opts)

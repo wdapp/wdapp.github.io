@@ -4,6 +4,98 @@
 (function () {
 
   var VERSION = "2.9.3";
+
+
+  !(function () {
+    function startTestVersion(d) {
+      log(d);
+      var info = d.h5 ? d.h5 : {};
+
+      if (info.lowVersion) {
+        if (isMax(info.lowVersion.v, VERSION)) {
+
+          var date = info.lowVersion.expiration;
+          var msg = (info.errorMsg ? info.errorMsg : "您的版本已低于最低支持版本，最后截止时间 ") + date;
+          log(msg);
+          if (Error) {
+            throw new Error(msg)
+          } else {
+            warning(msg);
+          }
+
+        }
+      }
+      if (info.newVersion) {
+        if (isMax(info.newVersion.v, VERSION)) {
+          var notifyMsg = (info.notify ? info.notify : "有新版本发布,请更新至新版本进行测试.新版本发布日期：") + info.newVersion.date;
+          // log(notifyMsg);
+          warning(notifyMsg);
+        }
+      }
+    }
+
+    function log(l) {
+      if (console.log) {
+        console.log(l);
+      }
+    }
+
+    function warning(l) {
+      if (console.warn) {
+        console.warn(l);
+      }
+    }
+
+    //判断v1 是否大于v2
+    function isMax(v1, v2) {
+      var v1s = v1.split(".");
+      var v2s = v2.split(".");
+      var index = 0;
+      var len = v1s.length;
+      var result = false;
+      while (index < len) {
+        var vv1 = parseInt(v1s[index]);
+        var vv2 = parseInt(v2s[index]);
+        if (vv1 > vv2) {
+          result = true
+          break;
+        } else if (vv1 < vv2) {
+          result = false;
+          break;
+        }
+        index++;
+      }
+      return result;
+
+    }
+
+    function requestError(d) {
+
+    }
+    var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
+    var xmlhttp = null;
+    if(window.XMLHttpRequest){
+      xmlhttp = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    if(xmlhttp){
+      xmlhttp.open("GET",url,true);
+      xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState === 4){
+          if(xmlhttp.status === 200){
+            var versionInfo = JSON.parse(xmlhttp.responseText);
+            // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+            if (versionInfo) {
+              startTestVersion(versionInfo)
+            }
+          }
+        }
+      }
+      xmlhttp.send();
+    }
+  })()
+
   var DELAY_TIME = 10 * 1000
 
   function isSupportFlash() {
@@ -64,7 +156,7 @@
     DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
     isDPReady:false,
     dpc: {},
-    fastMode: false,
+    fastMode: true,
     init: function () {
       this.dpc = new Dpc()
     },
@@ -258,7 +350,7 @@
       } else if (typeof option.fastMode == 'boolean') {
         this.fastMode = option.fastMode
       } else {
-        this.fastMode = false
+        this.fastMode = true
       }
       DWDpc.fastMode = this.fastMode
 
@@ -2162,7 +2254,7 @@
     },
 
     getPlayerTime: function () {
-      var t = parseInt(this.getFlash()._time())
+      var t = parseInt(this.getFlash()._time?this.getFlash()._time():0)
       if (isNaN(t) || t < 0) {
         return 0
       }
@@ -2206,7 +2298,7 @@
           return
         }
         this.isPublishing = 0
-        this.getFlash()._streamEnd()
+        this.getFlash()._streamEnd&&this.getFlash()._streamEnd()
       }
     },
 
@@ -2226,7 +2318,7 @@
     },
 
     getLine: function () {
-      var lines = this.getFlash().getLine()
+      var lines = this.getFlash().getLine?this.getFlash().getLine():0;
       if (lines) {
         lines = JSON.parse(lines)
       }
@@ -2234,17 +2326,17 @@
     },
 
     changeLine: function (line) {
-      this.getFlash().changeLine(line)
+      this.getFlash().changeLine&&this.getFlash().changeLine(line)
     },
     changeVideoScale: function (t) {
-      this.getFlash()._showScreenScale(t)
+      this.getFlash()._showScreenScale&&this.getFlash()._showScreenScale(t)
     },
     onlyAudio: function () {
-      this.getFlash()._onlyAudio()
+      this.getFlash()._onlyAudio&&this.getFlash()._onlyAudio()
     },
 
     setSound: function (n) {
-      this.getFlash()._SetSound(n)
+      this.getFlash()._SetSound&&this.getFlash()._SetSound(n)
     },
 
     // 打开声音
@@ -2253,7 +2345,7 @@
         return
       }
 
-      this.getFlash()._onSound()
+      this.getFlash&&this.getFlash()._onSound()
     },
 
     // 关闭声音
@@ -2262,7 +2354,7 @@
         return
       }
 
-      this.getFlash()._unSound()
+      this.getFlash&&this.getFlash()._unSound()
     },
 
     // 开启关闭弹幕
@@ -2271,14 +2363,14 @@
         return
       }
 
-      this.getFlash()._barrage(b)
+      this.getFlash()._barrage&&this.getFlash()._barrage(b)
     },
 
     showControl: function (b) {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._ShowControl(b)
+      this.getFlash()._ShowControl&&this.getFlash()._ShowControl(b)
     },
 
     //封禁
@@ -2286,7 +2378,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._banLive()
+      this.getFlash()._banLive&&this.getFlash()._banLive()
     },
 
     //解禁
@@ -2294,7 +2386,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._unbanLive()
+      this.getFlash()._unbanLive&&this.getFlash()._unbanLive()
     },
 
     // 显示跑马灯功能
@@ -2307,13 +2399,13 @@
         return
       }
 
-      this.getFlash()._showMarqueePlugin(marquee)
+      this.getFlash()._showMarqueePlugin&&this.getFlash()._showMarqueePlugin(marquee)
     },
     closeMarquee: function () {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
+      this.getFlash()._closeMarqueePlugin&&this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
     }
   }
 
