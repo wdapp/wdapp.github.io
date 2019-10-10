@@ -3196,12 +3196,12 @@
   window.live = live
   DWLive.isSupportInteraction = window.live.interaction.isSupportInteraction
 
-  // window.onunload = function () {
-  //   window.live.interaction.hangupInteraction()
-  // }
-  // window.onbeforeunload = function (e) {
-  //   window.live.interaction.hangupInteraction()
-  // }
+  window.onunload = function () {
+    window.live.interaction.hangupInteraction()
+  }
+  window.onbeforeunload = function (e) {
+    window.live.interaction.hangupInteraction()
+  }
 
   // live player ready
   window._swfInit = function () {
