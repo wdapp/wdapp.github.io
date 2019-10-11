@@ -6,21 +6,32 @@
       </el-header>
       <el-main class="main">
         <el-row class="row">
-          <el-col class="left" :span="16">
+          <el-col class="left" :span="18">
 
           </el-col>
-          <el-col class="right" :span="8">
+          <el-col class="right" :span="6">
 
           </el-col>
         </el-row>
       </el-main>
     </el-container>
+    <remote-js @remoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>
   </div>
 </template>
 
 <script>
+import RemoteJs from 'common/remote-js/remote-js'
+
 export default {
-  name: 'live'
+  name: 'LiveComputer',
+  components: {
+    RemoteJs
+  },
+  methods: {
+    onRemoted () {
+
+    }
+  }
 }
 </script>
 
@@ -38,15 +49,16 @@ export default {
         bottom 0
         padding 29px 95px 100px
         .row
-          height 100%
-          width 100%
           background-color #0b97c4
+          height 100%
+          min-height 435px
+          width 100%
+          min-width 865px
           .left
             background-color #9c95ef
             height 100%
-            width 1230px
           .right
             background-color #b58900
             height 100%
-            width 480px
+            padding-left 20px
 </style>

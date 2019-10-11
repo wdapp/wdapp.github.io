@@ -1558,9 +1558,9 @@
     // 取消申请
     cancelRequestInteraction: function (type, callback) {
       var j = {
-        'viewerId': this.viewerid,
-        'viewerName': this.viewername,
-        'type': type
+        'viewerId': DWLive.viewerid,
+        'viewerName': DWLive.viewername,
+        'type': window.live.interaction.local.type
       }
 
       debug('interaction', '取消申请：' + JSON.stringify(j))
@@ -3347,6 +3347,13 @@
   window.live = live
   DWLive.isSupportInteraction = window.live.interaction.isSupportInteraction
 
+  window.onunload = function () {
+    window.live.interaction.hangupInteraction()
+  }
+  window.onbeforeunload = function () {
+    window.live.interaction.hangupInteraction()
+  }
+
   // live player ready
   window._swfInit = function () {
     if (typeof window.on_cc_live_player_ready === 'function') {
@@ -3414,9 +3421,4 @@
       }
     }
   }
-  window.onunload = function (e) {
-    if (live && live.interaction) {
-      live.interaction.hangupInteraction();
-    }
-  };
 })(window)

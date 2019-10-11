@@ -1407,9 +1407,9 @@
     // 取消申请
     cancelRequestInteraction: function (type, callback) {
       var j = {
-        'viewerId': this.viewerid,
-        'viewerName': this.viewername,
-        'type': type
+        'viewerId': DWLive.viewerid,
+        'viewerName': DWLive.viewername,
+        'type': window.live.interaction.local.type
       }
 
       debug('interaction', '取消申请：' + JSON.stringify(j))
@@ -3199,7 +3199,7 @@
   window.onunload = function () {
     window.live.interaction.hangupInteraction()
   }
-  window.onbeforeunload = function (e) {
+  window.onbeforeunload = function () {
     window.live.interaction.hangupInteraction()
   }
 
