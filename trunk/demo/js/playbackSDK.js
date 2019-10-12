@@ -1,9 +1,9 @@
 /**
  * CC playback video
- * v3.0.3 2019/09/10
+ * v3.0.0 2019/10/12
  */
 !(function ($, window, document) {
-  var VERSION = "2.9.2";
+  var VERSION = "3.0.0";
   !(function () {
     function startTestVersion(d) {
       log(d);
@@ -2514,6 +2514,7 @@
         }
       } else {
         $('#playbackVideo').attr('src', src)
+
       }
       if (opts.isShowBar) {
         video.removeAttribute('controls')

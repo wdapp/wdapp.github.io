@@ -1,14 +1,14 @@
 <template>
-  <el-row class="wrapper">
-    <el-row class="navigation" type="flex" align="middle">
-      <el-col class="title" :span="3">
+  <div class="wrapper">
+    <div class="navigation">
+      <div class="title-wrapper">
         <el-image
-          class="image"
+          class="title-image"
           :src="title"
           :fit="fit"
         ></el-image>
-      </el-col>
-      <el-col class="breadcrumb" :span="18">
+      </div>
+      <div class="breadcrumb">
         <el-breadcrumb separator="">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>技能大赛</el-breadcrumb-item>
@@ -16,18 +16,18 @@
           <el-breadcrumb-item>直播课程</el-breadcrumb-item>
           <el-breadcrumb-item>继续教育</el-breadcrumb-item>
         </el-breadcrumb>
-      </el-col>
-      <el-col class="header-wrapper" :span="3">
-        <i class="el-icon-caret-bottom"></i>
-        <div class="header-name">
-          {{name}}
-        </div>
+      </div>
+      <div class="header-wrapper">
         <el-avatar class="header-avatar" :size="40" :src="header">
           <i class="el-icon-user-solid"></i>
         </el-avatar>
-      </el-col>
-    </el-row>
-  </el-row>
+        <span class="header-name">
+          {{name}}
+        </span>
+        <i class="el-icon-caret-bottom"></i>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ export default {
   name: 'LiveHeader',
   data () {
     return {
-      name: '获得场景视频',
+      name: '获得场景视频获得场景视频',
       title: require('images/title.png'),
       header: require('images/header.png'),
       fit: 'contain'
@@ -49,51 +49,49 @@ export default {
   @import "~styles/varibles.styl"
 
   .wrapper
-    wrapper()
-    box-shadow 0px 2px 3px 0px rgba(221, 221, 221, 1)
-    z-index 1
+    height 80px
+    background-color $baseBackgroundColor
+    box-shadow: 0px 2px 3px 0px rgba(221, 221, 221, 1); /*no*/
     .navigation
-      min-width 1086px
       height 100%
       padding-left 44px
-      padding-right 44px
-      .title
-        min-width 216px
-        min-height 51px
-        .image
-          width 216px
-          height 51px
+      padding-right 43px
+      .title-wrapper
+        float left
+        width 216px
+        height 51px
+        margin-right 84px
+        position relative
+        top 50%
+        margin-top -25.5px
+        .title-image
+          width-height-full()
       .breadcrumb
-        min-width 467px
-        padding-left 84px
-        margin-top 10px
+        float left
+        margin-top 39px
         >>> .el-breadcrumb
           .el-breadcrumb__item
             .el-breadcrumb__inner
-              font-weight 500
               font-size 18px
-              color $darkTextColor
-              font-family PingFang SC
+              font-weight $generalFontWeight
+              color $generalTextColor
+              font-family $generalFontFamily
             .el-breadcrumb__separator
               margin 0 18px
       .header-wrapper
-        min-width 230px
+        float right
+        line-height 80px
         .header-avatar
           margin-right 12px
-          float right
+          vertical-align middle
         .header-name
           display inline-block
           max-width 145px
-          margin-top 13px
           margin-right 14px
-          font-size 16px
-          font-family PingFang SC
-          font-weight 500
-          color rgba(51, 51, 51, 1)
+          generalText()
           ellipsis()
-          float right
+          vertical-align middle
         .el-icon-caret-bottom
-          margin-top 13px
           color #BCBCBC
-          float right
+          vertical-align middle
 </style>

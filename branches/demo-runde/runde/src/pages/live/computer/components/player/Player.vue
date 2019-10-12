@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper">
-    <el-container class="container">
-      <el-header class="header" height="70px">
+    <div class="container">
+      <div class="header">
         <live-player-header></live-player-header>
-      </el-header>
-      <el-main class="main">
+      </div>
+      <div class="main">
 
-      </el-main>
-      <el-footer class="footer" height="80px">
+      </div>
+      <div class="footer">
 
-      </el-footer>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,13 +30,21 @@ export default {
 
   .wrapper
     wrapper()
-    min-width 886px
   .container
     width-height-full()
+    position relative
     .header
-      padding 0
+      position absolute
+      top 0
+      height 70px
+      width 100%
     .main
-      padding 0
+      background-color #9c95ef
+      layout-full(70px, 0, 80px, 0)
     .footer
+      position absolute
+      height 80px
+      width 100%
+      bottom 0
       background-color #4bb1cf
 </style>

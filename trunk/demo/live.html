@@ -64,12 +64,12 @@
 <!-- middle start -->
 <div class="video-middle" id="video-middle">
     <div class="video-m-top" id="doc-main" data-module="1">
-        <div class="document-main">
+        <!--<div class="document-main">-->
 
             <!-- 直播文档模块 -->
             <div id="drawPanel"></div>
 
-        </div>
+        <!--</div>-->
         <div id="ppt-tools" class="ppt-tools">
             <a href="javascript:;" id="full-ppt" class="btn-full"> </a>
         </div>
@@ -261,7 +261,7 @@
 <script src="js/handlebars.js"></script>
 <script src="js/base.js"></script>
 <script src="js/common.js"></script>
-<script src="//view.csslcloud.net/js/liveSDK.js?v=201903271101" type="text/javascript"></script>
+<script src="//view.csslcloud.net/js/sdk/3.0.0/liveSDK.js?v=201903271101" type="text/javascript"></script>
 <script src="js/live.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script src="js/ui.js"></script>
@@ -276,7 +276,7 @@
         viewercustomua: 'web',
         language: 'en',
         viewercustominfo: '',
-        fastMode: localStorage.fastmode,
+        fastMode: localStorage.fastmode,//可选参数默认为true
         forceNew: localStorage.forceNew === 'true' ? true : false
     });
 
@@ -297,6 +297,10 @@
         }
         marquee =$('#viewerMarquee').text();
     };
+    //设置文档模式
+    window.on_hdLive_drawPanel_complete = function(){
+      DWLive.docAdapt(true);
+    }
 
     window.on_cc_swf_loading_completed = function () {
         setTimeout(function () {
@@ -319,7 +323,7 @@
         }
     };
     DWLive.onLoginSuccess =function (data) {
-        DWLive.docAdapt(true);
+
         DWLive.groupId = data.viewer.groupId;
     };
     //动态显示登陆名

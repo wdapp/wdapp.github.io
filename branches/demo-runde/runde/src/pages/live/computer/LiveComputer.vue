@@ -1,20 +1,18 @@
 <template>
   <div class="wrapper">
-    <el-container class="container">
-      <el-header class="header" height="80px">
+    <div class="container">
+      <header class="header">
         <live-header></live-header>
-      </el-header>
-      <el-main class="main">
-        <el-row class="row">
-          <el-col class="left" :span="17">
-            <live-player></live-player>
-          </el-col>
-          <el-col class="right" :span="7">
-            <live-chat></live-chat>
-          </el-col>
-        </el-row>
-      </el-main>
-    </el-container>
+      </header>
+      <div class="main">
+        <div class="left">
+          <live-player></live-player>
+        </div>
+        <div class="right">
+          <live-chat></live-chat>
+        </div>
+      </div>
+    </div>
     <remote-js @onremoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>
   </div>
 </template>
@@ -47,24 +45,24 @@ export default {
   .wrapper
     .container
       .header
-        padding 0
+        min-width 831px; /*no*/
+        position absolute
+        width 100%
+        z-index 1
       .main
+        min-width 1441px; /*no*/
         background rgba(238, 233, 239, 1)
         layout-full(80px, 0, 0, 0)
+        box-sizing border-box
         padding 29px 95px 100px
-        .row
-          width-height-full()
-          min-width 869px
-          max-width 1730px
-          min-height 435px
-          max-height 871px
-          .left
-            min-width 615px
-            max-width 1230px
-            height 100%
-          .right
-            min-width 240px
-            max-width 500px
-            height 100%
-            padding-left 20px
+        .left
+          width 1230px
+          height 100%
+          float left
+        .right
+          box-sizing border-box
+          padding-left 20px
+          width 500px
+          height 100%
+          float left
 </style>

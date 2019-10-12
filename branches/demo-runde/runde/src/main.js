@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
-// import 'common/flexible'
+import 'common/flexible'
 import 'reset.css/reset.css'
 import 'element-ui/lib/theme-chalk/index.css'
 

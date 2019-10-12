@@ -1,3 +1,5 @@
+@import "~styles/varibles.styl"
+
 ellipsis()
   overflow hidden
   white-space nowrap
@@ -9,12 +11,19 @@ width-height-same($value)
   width $value
   height $value
 wrapper()
-  background-color #ffffff
+  background-color $baseBackgroundColor
   height 100%
   width 100%
-layout-full($top, $left, $right, $bottom)
+layout-full($top, $right, $bottom, $left)
   position absolute
   top $top
-  left $left
   right $right
   bottom $bottom
+  left $left
+generalText()
+  color $generalTextColor
+  font-family: $generalFontFamily
+  font-size $generalTextSize
+  font-weight $generalFontWeight
+
+

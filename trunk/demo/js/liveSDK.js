@@ -1,9 +1,9 @@
 /**
  * CC live video
- * v2.9.3 2019/09/10 */
+ * v3.0.0 2019/10/12 */
 (function () {
 
-  var VERSION = "2.9.3";
+  var VERSION = "3.0.0";
 
 
   !(function () {
@@ -22,7 +22,6 @@
           } else {
             warning(msg);
           }
-
         }
       }
       if (info.newVersion) {
@@ -163,7 +162,7 @@
     dpc: {},
     fastMode: true,
     init: function () {
-      this.dpc = new Dpc()
+        this.dpc = new Dpc()
     },
     appendDrawPanel: function () {
       var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>'
@@ -374,8 +373,8 @@
       if (!isIE) {
         scripts.push('//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js')
       }
-
-      if (DWDpc.fastMode) {
+      var drawPanel = document.getElementById("drawPanel");
+      if (DWDpc.fastMode && drawPanel) {
         scripts.push('//image.csslcloud.net/live/1.0.0/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
@@ -494,20 +493,14 @@
           DWLive.isBarrage = data.datas.room.barrage
           DWLive.liveCountdown = data.datas.room.liveCountdown
           DWLive.groupId = data.datas.viewer.groupId
-
-          var drawPanel = document.getElementById("drawPanel");
           //初始化极速动画对象
+          var drawPanel = document.getElementById("drawPanel");
           if (DWDpc.fastMode && drawPanel) {
             $('#documentDisplayMode').val(DWLive.documentDisplayMode)
-            var script = document.createElement("script");
-            script.src = '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000))
-            script.onload = function(){
-              DWDpc.appendDrawPanel()
-              DWDpc.init()
-              DWDpc.isDPReady = true;
-              window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
-            }
-            document.body.appendChild(script);
+            DWDpc.isDPReady = true;
+            DWDpc.appendDrawPanel()
+            DWDpc.init();
+            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
           }
           fn()
           var delay = data.datas.room.delayTime,

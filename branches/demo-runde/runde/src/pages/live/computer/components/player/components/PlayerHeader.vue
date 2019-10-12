@@ -20,7 +20,7 @@ export default {
   name: 'LivePlayerHeader',
   data () {
     return {
-      title: '【中】2019年终极保过班 | 中药学综合知识与技能',
+      title: '【中】2019年终极保过班 | 中药学综合知识与技能 | 学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习',
       number: 99999999999999
     }
   }
@@ -32,18 +32,17 @@ export default {
   @import "~styles/varibles.styl"
 
   .wrapper
-    width-height-full()
+    height 70px
     box-sizing border-box
     padding-left 37px
     padding-right 33px
     .title-wrapper
-      color $darkTextColor
+      color $generalTextColor
       font-size 20px
       font-family Microsoft YaHei
       font-weight bold
-      color rgba(51, 51, 51, 1)
       line-height 70px
-      max-width 500px /*431px*/
+      max-width 750px
       float left
       .text
         ellipsis()
@@ -52,9 +51,7 @@ export default {
       height 100%
       width 211px
       float right
-      color $darkTextColor
-      font-size 16px
-      font-weight 500
+      generalText()
       line-height 70px
       .users-icon
         display inline-block
@@ -62,22 +59,17 @@ export default {
         background-size 30px
         width-height-same(30px)
         margin-right 10px
-        position relative
-        top -25px
+        vertical-align middle
       .users-number
+        vertical-align middle
         display inline-block
         max-width 80px
         ellipsis()
       .users-text
-        display inline-block
-        overflow hidden
+        vertical-align middle
     .mobile-wrapper
-      height 100%
-      width 126px
       float right
-      color $darkTextColor
-      font-size 16px
-      font-weight 500
+      generalText()
       line-height 70px
       .mobile-icon
         margin-right 6px
@@ -85,5 +77,7 @@ export default {
         background-size 30px
         width-height-same(30px)
         background-image url("~images/phone.png")
-        vertical-align: text-bottom;
+        vertical-align: middle;
+      .mobile-text
+        vertical-align: middle;
 </style>
