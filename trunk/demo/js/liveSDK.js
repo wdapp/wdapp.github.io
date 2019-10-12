@@ -74,26 +74,31 @@
     }
     var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
     var xmlhttp = null;
-    if(window.XMLHttpRequest){
-      xmlhttp = new XMLHttpRequest();
-    }else if(window.ActiveXObject){
-      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    if(xmlhttp){
-      xmlhttp.open("GET",url,true);
-      xmlhttp.onreadystatechange = function(){
-        if(xmlhttp.readyState === 4){
-          if(xmlhttp.status === 200){
-            var versionInfo = JSON.parse(xmlhttp.responseText);
-            // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
-            if (versionInfo) {
-              startTestVersion(versionInfo)
+    try {
+      if(window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+      }else if(window.ActiveXObject){
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      if(xmlhttp){
+        xmlhttp.open("GET",url,true);
+        xmlhttp.onreadystatechange = function(){
+          if(xmlhttp.readyState === 4){
+            if(xmlhttp.status === 200){
+              var versionInfo = JSON.parse(xmlhttp.responseText);
+              // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+              if (versionInfo) {
+                startTestVersion(versionInfo)
+              }
             }
           }
         }
+        xmlhttp.send();
       }
-      xmlhttp.send();
+    }catch (e) {
+      log("访问版本信息失败");
     }
+
   })()
 
   var DELAY_TIME = 10 * 1000
@@ -371,7 +376,7 @@
       }
 
       if (DWDpc.fastMode) {
-        scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+        scripts.push('//image.csslcloud.net/live/1.0.0/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
@@ -3039,7 +3044,7 @@
     },
 
     appendVideo: function (s) {
-      var v = '<video id="player_live" webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      var v = '<video id="player_live" webkit-playsinline x5-video-player-type="h5-page" playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
       $('#' + LivePlayer.id).html(v)
       var video = document.getElementById('player_live')
       DWLive.onKickOut = function () {

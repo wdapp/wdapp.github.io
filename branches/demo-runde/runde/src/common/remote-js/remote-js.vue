@@ -30,7 +30,7 @@ export default {
   },
   mounted () {
     this.$refs.remote.$el.onload = () => {
-      this.$emit('remoted')
+      this.$emit('onremoted')
     }
   }
 }

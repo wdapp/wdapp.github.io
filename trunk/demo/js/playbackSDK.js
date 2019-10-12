@@ -76,26 +76,31 @@
     // log("当前浏览器是否是IE--》 " +util.isIE());
     // if(util.isIE()){
       var xmlhttp = null;
-      if(window.XMLHttpRequest){
-        xmlhttp = new XMLHttpRequest();
-      }else if(window.ActiveXObject){
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      if(xmlhttp){
-        xmlhttp.open("GET",url,true);
-        xmlhttp.onreadystatechange = function(){
-          if(xmlhttp.readyState === 4){
-            if(xmlhttp.status === 200){
-              var versionInfo = JSON.parse(xmlhttp.responseText);
-              // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
-              if (versionInfo) {
-                startTestVersion(versionInfo)
+      try{
+        if(window.XMLHttpRequest){
+          xmlhttp = new XMLHttpRequest();
+        }else if(window.ActiveXObject){
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if(xmlhttp){
+          xmlhttp.open("GET",url,true);
+          xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState === 4){
+              if(xmlhttp.status === 200){
+                var versionInfo = JSON.parse(xmlhttp.responseText);
+                // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+                if (versionInfo) {
+                  startTestVersion(versionInfo)
+                }
               }
             }
           }
+          xmlhttp.send();
         }
-        xmlhttp.send();
-       }
+      }catch (e) {
+        log("获取版本信息失败")
+      }
+
       // return;
     // }
     // jQuery.support.cors = true;
@@ -1864,11 +1869,13 @@
     // 初始化DW对象
     config: function (opts) {
       if (checkVideo()) {
-        if (opts.isH5play + '' === 'false') {
+        if ( opts.isH5play + '' === 'false') {
           this.isH5play = false
         } else {
           this.isH5play = true
         }
+      }else {
+        this.isH5play = false
       }
       if(!opts.recordId){
         throw new Error("未传入有效的recordId");
@@ -2490,8 +2497,11 @@
     appendVideo: function (src, opts) {
       var _this = this
 
-      var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
+      var v = '<video id="playbackVideo" x5-video-player-type="h5-page" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
       $('#' + playbackPlayer.id).html(v)
+      var playerContainer = document.getElementById(playbackPlayer.id);
+      console.log("当前父容齐对象-》"+playerContainer);
+      // playerContainer.innerHTML = v
       var video = document.getElementById('playbackVideo')
 
       if (this.useHls && !util.isMp4(src)) {

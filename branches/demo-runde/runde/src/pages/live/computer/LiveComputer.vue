@@ -2,29 +2,35 @@
   <div class="wrapper">
     <el-container class="container">
       <el-header class="header" height="80px">
-        Header
+        <live-header></live-header>
       </el-header>
       <el-main class="main">
         <el-row class="row">
-          <el-col class="left" :span="18">
-
+          <el-col class="left" :span="17">
+            <live-player></live-player>
           </el-col>
-          <el-col class="right" :span="6">
-
+          <el-col class="right" :span="7">
+            <live-chat></live-chat>
           </el-col>
         </el-row>
       </el-main>
     </el-container>
-    <remote-js @remoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>
+    <remote-js @onremoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>
   </div>
 </template>
 
 <script>
+import LiveHeader from './components/Header'
+import LivePlayer from './components/player/Player'
+import LiveChat from './components/Chat'
 import RemoteJs from 'common/remote-js/remote-js'
 
 export default {
   name: 'LiveComputer',
   components: {
+    LiveHeader,
+    LivePlayer,
+    LiveChat,
     RemoteJs
   },
   methods: {
@@ -36,29 +42,29 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+
   .wrapper
     .container
       .header
-        background pink
+        padding 0
       .main
         background rgba(238, 233, 239, 1)
-        position absolute
-        top 80px
-        left 0
-        right 0
-        bottom 0
+        layout-full(80px, 0, 0, 0)
         padding 29px 95px 100px
         .row
-          background-color #0b97c4
-          height 100%
+          width-height-full()
+          min-width 869px
+          max-width 1730px
           min-height 435px
-          width 100%
-          min-width 865px
+          max-height 871px
           .left
-            background-color #9c95ef
+            min-width 615px
+            max-width 1230px
             height 100%
           .right
-            background-color #b58900
+            min-width 240px
+            max-width 500px
             height 100%
             padding-left 20px
 </style>
