@@ -13,8 +13,7 @@
         </div>
       </div>
     </div>
-<!--    <remote-js src="//view.csslcloud.net/js/jquery-1.9.0.min.js"></remote-js>-->
-<!--    <remote-js @onremoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>-->
+    <dingtalk></dingtalk>
   </div>
 </template>
 
@@ -22,7 +21,6 @@
 import LiveHeader from './components/Header'
 import LivePlayer from './components/player/Player'
 import LiveChat from './components/Chat'
-import RemoteJs from 'common/remote-js/remote-js'
 import FlashTip from 'common/flashtip'
 import HD from 'common/websdk/live'
 
@@ -32,13 +30,21 @@ export default {
     LiveHeader,
     LivePlayer,
     LiveChat,
-    RemoteJs
+    'dingtalk': {
+      render(createElement) {
+        return createElement(
+          'script',
+          {
+            attrs: {
+              type: 'text/javascript',
+              src: 'https://g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js',
+            },
+          },
+        );
+      },
+    },
   },
-  methods: {
-    // onRemoted () {
-    //   HD.login()
-    // }
-  },
+  methods: {},
   mounted () {
     console.log(HD)
     HD.login()
