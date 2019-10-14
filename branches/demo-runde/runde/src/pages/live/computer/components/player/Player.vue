@@ -5,7 +5,7 @@
         <live-player-header></live-player-header>
       </div>
       <div class="main">
-
+        <live-player-player></live-player-player>
       </div>
       <div class="footer">
 
@@ -16,11 +16,13 @@
 
 <script>
 import LivePlayerHeader from './components/PlayerHeader'
+import LivePlayerPlayer from './components/PlayerPlayer'
 
 export default {
   name: 'LivePlayer',
   components: {
-    LivePlayerHeader
+    LivePlayerHeader,
+    LivePlayerPlayer
   }
 }
 </script>

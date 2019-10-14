@@ -13,7 +13,8 @@
         </div>
       </div>
     </div>
-    <remote-js @onremoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>
+<!--    <remote-js src="//view.csslcloud.net/js/jquery-1.9.0.min.js"></remote-js>-->
+<!--    <remote-js @onremoted="onRemoted" src="//view.csslcloud.net/js/liveSDK.js"></remote-js>-->
   </div>
 </template>
 
@@ -22,6 +23,8 @@ import LiveHeader from './components/Header'
 import LivePlayer from './components/player/Player'
 import LiveChat from './components/Chat'
 import RemoteJs from 'common/remote-js/remote-js'
+import FlashTip from 'common/flashtip'
+import HD from 'common/websdk/live'
 
 export default {
   name: 'LiveComputer',
@@ -32,9 +35,14 @@ export default {
     RemoteJs
   },
   methods: {
-    onRemoted () {
-
-    }
+    // onRemoted () {
+    //   HD.login()
+    // }
+  },
+  mounted () {
+    console.log(HD)
+    HD.login()
+    FlashTip.init('player')
   }
 }
 </script>
