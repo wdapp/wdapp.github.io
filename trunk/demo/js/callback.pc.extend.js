@@ -435,10 +435,6 @@ function on_cc_live_player_load() { // 播放器加载完成
     console.log("视频总时长:", $.DW.getDuration()); // 获取视频总时长
     var playTimer = setInterval(playTimerCallback, 500);
 
-    setTimeout(function () {
-        isPlay = !($("#playbackVideo")[0].paused);
-        console.log("isPlay", isPlay);
-    }, 500);
 }
 
 function on_player_start() { // 播放开始

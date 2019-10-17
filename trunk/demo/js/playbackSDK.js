@@ -6,28 +6,26 @@
   var VERSION = "3.0.0";
   !(function () {
     function startTestVersion(d) {
-      log(d);
       var info = d.h5 ? d.h5 : {};
-
-      if (info.lowVersion) {
-        if (isMax(info.lowVersion.v, VERSION)) {
-
-          var date = info.lowVersion.expiration;
-          var msg = (info.errorMsg ? info.errorMsg : "您的版本已低于最低支持版本，最后截止时间 ") + date;
+      if (info.lowyerVersion) {
+        if (isMax(info.lowyerVersion.v, VERSION)) {
+          var date = info.lowyerVersion.expiration;
+          var msg = info.errorMsg ;
           log(msg);
           if (Error) {
             throw new Error(msg)
           } else {
             warning(msg);
           }
-
+          return
         }
       }
-      if (info.newVersion) {
-        if (isMax(info.newVersion.v, VERSION)) {
-          var notifyMsg = (info.notify ? info.notify : "有新版本发布,请更新至新版本进行测试.新版本发布日期：") + info.newVersion.date;
+      if (info.latestVersion) {
+        if (isMax(info.latestVersion.v, VERSION)) {
+          var notifyMsg = info.notify ;
           // log(notifyMsg);
-           warning(notifyMsg);
+          warning(notifyMsg);
+          return
         }
       }
     }
@@ -51,7 +49,7 @@
       var index = 0;
       var len = v1s.length;
       var result = false;
-      while (index < len) {
+      while (index < len-1) {
         var vv1 = parseInt(v1s[index]);
         var vv2 = parseInt(v2s[index]);
         if (vv1 > vv2) {
@@ -1327,7 +1325,7 @@
         if (DWDpc.fastMode && drawPanel) {
            $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
           var script = document.createElement("script");
-          script.src = '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000))
+          script.src = '//image.csslcloud.net/live/1.0.0/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000))
           script.onload = function(){
             DWDpc.appendDrawPanel()
             DWDpc.init()

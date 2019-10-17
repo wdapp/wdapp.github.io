@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/pages/Index'
-import LiveComputer from '@/pages/live/computer/LiveComputer'
+import LiveBrowser from '@/pages/live/browser/LiveBrowser'
 import LiveMobile from '@/pages/live/mobile/LiveMobile'
-import ReplayComputer from '@/pages/replay/computer/ReplayComputer'
+import ReplayBrowser from '@/pages/replay/browser/ReplayBrowser'
 import ReplayMobile from '@/pages/replay/mobile/ReplayMobile'
 
 Vue.use(Router)
@@ -16,22 +16,22 @@ export default new Router({
       component: Index
     },
     {
-      path: '/LiveComputer',
-      name: 'LiveComputer',
-      component: LiveComputer
+      path: '/liveBrowser/:options',
+      name: 'LiveBrowser',
+      component: LiveBrowser
     },
     {
-      path: '/LiveMobile',
+      path: '/liveMobile/:options',
       name: 'LiveMobile',
       component: LiveMobile
     },
     {
-      path: '/ReplayComputer',
-      name: 'ReplayComputer',
-      component: ReplayComputer
+      path: '/replayBrowser/:options',
+      name: 'ReplayBrowser',
+      component: ReplayBrowser
     },
     {
-      path: '/ReplayMobile',
+      path: '/replayMobile/:options',
       name: 'ReplayMobile',
       component: ReplayMobile
     }

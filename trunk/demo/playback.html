@@ -251,9 +251,6 @@
         fastMode: localStorage.fastmode,//可选参数默认为true
         forceNew: localStorage.forceNew === 'true' ? true : false
     });
-    window.on_hdLive_drawPanel_complete = function(){
-      DWLive.docAdapt(true);
-    }
 
     function on_cc_login_error(){
        console.log('登录失败')

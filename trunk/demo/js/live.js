@@ -156,7 +156,6 @@ $(function () {
 
     };
 
-
     // 发布问题
     DWLive.onQaPublish = function (data) {
         var $q = $('#' + data.value.questionId).attr('isPublish', '1');

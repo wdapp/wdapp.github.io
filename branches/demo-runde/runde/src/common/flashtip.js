@@ -1,12 +1,14 @@
-/* eslint-disable */
+var $ = window.$
 
-// 提示浏览器安装Flash插件
-let FlashTip = {
+var flashTip = {
   show: function (type) {
     var tip = '<div class="flashtip" style="display: table;width: 100%;height: 100%"><p style="display: table-cell;text-align:center;vertical-align: middle;color: #eec227">您还没有安装flash播放器,请点击<a href="//www.adobe.com/go/getflash" target="_blank">这里</a>安装</p></div>'
-    if (type == 'player') {
+    if (type === 'player') {
       $('#callbackPlayer, #livePlayer, #playbackPlayer').html(tip)
+    } else if (type === 'drawPanel') {
+      $('#drawPanel, #playbackPanel').html(tip)
     } else {
+      $('#callbackPlayer, #livePlayer, #playbackPlayer').html(tip)
       $('#drawPanel, #playbackPanel').html(tip)
     }
   },
@@ -17,7 +19,6 @@ let FlashTip = {
 
     if (isIE) {
       try {
-        var objFlash = new ActiveXObject('ShockwaveFlash.ShockwaveFlash')
       } catch (e) {
         hasFlash = false
       }
@@ -30,10 +31,10 @@ let FlashTip = {
   },
 
   init: function (type) {
-    if (!FlashTip.checkFlash()) {
-      FlashTip.show(type)
+    if (!this.checkFlash()) {
+      this.show(type)
     }
   }
 }
 
-export default FlashTip
+export default flashTip

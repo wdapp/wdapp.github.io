@@ -1,15 +1,50 @@
-class HuodeScene {
-  constructor () {
+let DWLive = window.DWLive
 
+class HuodeScene {
+  login (options) {
+    DWLive.init({
+      userid: options.userId,
+      roomid: options.roomId,
+      viewername: options.viewerName,
+      viewertoken: options.viewerToken,
+      fastMode: true
+    })
+
+    DWLive.onLoginSuccess = function (result) {
+      options.success && options.success(result)
+    }
+
+    DWLive.onLoginError = function (error) {
+      options.fail && options.fail(error)
+    }
   }
 
-  login () {
-    DWLive.init({
-      userid: 'B693062ABB8020E0',
-      roomid: '20E2BEC88BEF3EEB9C33DC5901307461',
-      viewername: '获得场景视频',
-      viewertoken: ''
-    })
+  showControl (isShow) {
+    const _isShow = !!isShow
+    DWLive.showControl(_isShow)
+  }
+
+  docAdapt (adapt) {
+    const _adapt = !!adapt
+    DWLive.docAdapt(_adapt)
+  }
+
+  onLoginSuccess (callback) {
+    DWLive.onLoginSuccess = function (result) {
+      callback(result)
+    }
+  }
+
+  onLoginError (callback) {
+    DWLive.onLoginError = function (error) {
+      callback(error)
+    }
+  }
+
+  onPlayerLoad (callback) {
+    window.on_cc_swf_loading_completed = function () {
+      callback()
+    }
   }
 }
 

@@ -14,7 +14,7 @@ HDScene.ready(() => {
   let ui = new UserInterface()
   let params = Utils.parseUrl(localStorage.address)
   //配置自定义组件
-  HDScene.components([Player, Document, QuestionAnswer, Chat, Controls])
+  HDScene.components([Player, QuestionAnswer, Chat, Controls])
   HDScene.login({
     userId: params.userid || Utils.admin.live.userid, //用户id
     roomId: params.roomid || Utils.admin.live.roomid,//直播间id

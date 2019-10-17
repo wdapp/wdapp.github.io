@@ -11,7 +11,7 @@ width-height-same($value)
   width $value
   height $value
 wrapper()
-  background-color $baseBackgroundColor
+  background-color $baseWhiteColor
   height 100%
   width 100%
 layout-full($top, $right, $bottom, $left)
@@ -20,10 +20,15 @@ layout-full($top, $right, $bottom, $left)
   right $right
   bottom $bottom
   left $left
-generalText()
-  color $generalTextColor
-  font-family: $generalFontFamily
-  font-size $generalTextSize
-  font-weight $generalFontWeight
+baseTextStyle($fontSize = 16px, $color = #606266, $fontWeight = 500, $fontFamily = PingFang SC)
+  font-size $fontSize
+  color $color
+  font-weight $fontWeight
+  font-family $fontFamily
+break-world()
+  word-break break-all
+  white-space normal
+  word-wrap break-word
+
 
 
