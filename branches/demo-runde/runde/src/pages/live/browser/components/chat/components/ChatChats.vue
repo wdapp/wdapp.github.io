@@ -213,12 +213,12 @@ export default {
             width-height-full()
             background-size 30px
         .one-btn-wrap, .two-btn-wrap
-          width-height-same(25px)
+          width-height-same(30px)
+          transform scale(0.8)
           background-color $baseGreenColor
           border-radius: 50%
-          line-height 25px
+          line-height 30px
           text-align center
-          margin-top 2.5px
           .one-btn-text, .two-btn-text
             font-size 12px
             font-family $genelFontFamily
