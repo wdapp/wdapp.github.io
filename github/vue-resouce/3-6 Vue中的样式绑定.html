@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue中的样式绑定</title>
+  <script src="js/vue.js"></script>
+  <style>
+    .actived {
+      color: red;
+    }
+
+    .action {
+      border: 1px green solid;
+    }
+
+    .live {
+      color: pink;
+    }
+
+    .wrap {
+      border: 2px orange solid;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <p :class="{actived: isActived,action: isAction}"
+     @click="handleBtnClick">
+    通过对象绑定class
+  </p>
+  <p :class="[actived, action]" @click="handleBtn1Click">
+    通过数组绑定class
+  </p>
+  <p :style="styleObj">
+    通过style对象绑定样式
+  </p>
+  <p :style="[sty1,sty2,{color: 'blue'}]">
+    通过style数组对象绑定样式
+  </p>
+</div>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isActived: false,
+      isAction: true,
+      actived: 'live',
+      action: '',
+      styleObj: {
+        color: 'red',
+        width: '100px',
+        height: '100px',
+        border: '1px blue solid'
+      },
+      sty1: {
+        width: '200px',
+        height: '200px'
+      },
+      sty2: {
+        border: '10px red dotted'
+      }
+    },
+    methods: {
+      handleBtnClick () {
+        this.isActived = !this.isActived
+      },
+      handleBtn1Click () {
+        this.action = this.action == 'wrap' ? '' : 'wrap'
+      }
+    }
+  })
+</script>
+</body>
+</html>

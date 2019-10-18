@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue中多个元素或组件的过渡</title>
+  <style>
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity 2s;
+    }
+  </style>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <transition name="fade" mode="out-in">
+    <div v-if="isShow" key="en">Hello World</div>
+    <div v-else="isShow" key="ch">你好，世界</div>
+  </transition>
+  <transition name="fade" mode="out-in">
+    <child-a v-if="isShow" key="a"></child-a>
+    <child-b v-else="isShow" key="b"></child-b>
+  </transition>
+  <transition name="fade" mode="out-in">
+    <component :is="type"></component>
+  </transition>
+  <button @click="handleClick">toggle</button>
+</div>
+<script>
+  Vue.component('childA', {
+    template: '<div>childA</div>'
+  })
+  Vue.component('childB', {
+    template: '<div>childB</div>'
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isShow: true,
+      type: 'child-a'
+    },
+    methods: {
+      handleClick () {
+        this.isShow = !this.isShow
+        this.type = this.type == 'child-a' ? 'child-b' : 'child-a'
+      }
+    }
+  })
+</script>
+</body>
+</html>

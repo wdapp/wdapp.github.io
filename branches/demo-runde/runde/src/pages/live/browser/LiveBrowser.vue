@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="container">
       <header class="header">
-        <live-header></live-header>
+        <live-header :name="name"></live-header>
       </header>
       <div class="main">
         <div class="left">
@@ -20,7 +20,7 @@
 import LiveHeader from './components/Header'
 import LivePlayer from './components/player/Player'
 import LiveChat from './components/chat/Chat'
-import HD from 'common/websdk/live'
+import HuodeScene from 'common/websdk/live'
 import {log} from 'common/utils'
 import {mapMutations} from 'vuex'
 
@@ -31,13 +31,20 @@ export default {
     LivePlayer,
     LiveChat
   },
+  data () {
+    return {
+      name: ''
+    }
+  },
   methods: {
     login (options) {
+      const HD = new HuodeScene()
+
       HD.login({
         userId: options.userid,
         roomId: options.roomid,
-        viewerName: '获得场景视频11',
-        viewerToken: '',
+        viewerName: options.name || '获得场景视频',
+        viewerToken: options.token || '',
         success: (result) => {
           log('onLoginSuccess', result)
 
@@ -64,6 +71,7 @@ export default {
     setDatas (datas) {
       const viewer = datas.viewer
       this.setViewer(viewer)
+      this.name = viewer.name
     },
     ...mapMutations(['setViewer'])
   },

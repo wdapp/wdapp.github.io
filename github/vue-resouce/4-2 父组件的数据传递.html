@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>父组件的数据传递</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <counter :count="one" :str="str" :obj="objt" @change="handleChangeOne"></counter>
+  <counter :count="two" @change="handleChangeTwo"></counter>
+  <div>{{total}}</div>
+</div>
+<script>
+  // 1.父组件向子组件传值，子组件通过props接收。子组件向父父组件传值通过事件。
+  // 2.单向数据流，子组件不能直接修改父组件传过来值，需要在data中复制一份在修改
+  // https://cn.vuejs.org/v2/guide/components-props.html#ad
+  Vue.component('counter', {
+    // props: ['count'],
+    props: {
+      count: {
+        type: [Number, String],
+        default: 100
+      },
+      str: {
+        type: String,
+        // required: true
+      },
+      obj: {
+        type: Object,
+        default () {
+          return {
+            name: 'mmm'
+          }
+        }
+      }
+    },
+    watch: {
+      count (newVal, oldVal) {
+        console.log(newVal, oldVal)
+      }
+    },
+    data () {
+      return {
+        number: this.count
+      }
+    },
+    template: '<div @click="handleClick">{{number}} {{str}} {{obj.name}}</div>',
+    methods: {
+      handleClick () {
+        this.number++
+        this.$emit('change', this.number)
+      }
+    }
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      total: 0,
+      one: 0,
+      two: 0,
+      str: '{name: \'wangyi\'}',
+      objt: {name: 'wangyi'}
+    },
+    methods: {
+      handleChangeOne (value) {
+        this.one = value
+        this.computerTotal()
+      },
+      handleChangeTwo (value) {
+        this.two = value
+        this.computerTotal()
+      },
+      computerTotal () {
+        this.total = this.one + this.two
+      }
+    }
+  })
+</script>
+</body>
+</html>

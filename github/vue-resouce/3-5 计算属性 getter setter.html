@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性 getter setter</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  {{fullName}}
+</div>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      firstName: 'hello',
+      lastName: 'world'
+    },
+    computed: {
+      fullName: {
+        get () {
+          console.log('fullName get')
+          return this.firstName + ' ' + this.lastName
+        },
+        set (value) {
+          console.log('fullName set', value)
+          var arr = value.split(' ')
+          this.firstName = arr[0]
+          this.lastName = arr[1]
+        }
+      }
+    },
+    methods: {}
+  })
+</script>
+</body>
+</html>

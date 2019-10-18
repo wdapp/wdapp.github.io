@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue中的 循环 set方法</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <div v-for="(value, index) of list" :key="index">
+    {{value}} --- {{index}}
+  </div>
+  <div v-for="(value, key, index) in obj" :key="value">
+    {{value}} --- {{key}} --- {{index}}
+  </div>
+</div>
+<script>
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list: ['a', 'b', 'c'],
+      obj: {
+        id: '001',
+        name: 'hello',
+        content: '你好'
+      }
+    },
+    methods: {}
+  })
+
+  Vue.set(app.list,1,'hello')
+  app.$set(app.list,2,'hello')
+  Vue.set(app.obj, 'text','haha')
+  app.$set(app.obj, 'name','aaa')
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue生命周期钩子</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+<!--  <item>111</item>-->
+</div>
+
+<script>
+  // vue的生命周期函数就是vue实例在某一个时间点自动执行的函数
+  // vue实例运行过程中，某一个特定流程点需要执行的回调函数
+  // Vue.component('item', {
+  //   template: '<div>div</div>'
+  // })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello world'
+    },
+    template: '<div>hello world {{message}}</div>',
+    methods: {},
+    beforeCreate () {
+      console.log('beforeCreate')
+    },
+    created () {
+      console.log('created')
+    },
+    beforeMount () {
+      console.log('beforeMount', this.$el)
+    },
+    mounted () {
+      console.log('mounted', this.$el)
+    },
+    beforeDestroy () {
+      console.log('beforeDestory')
+    },
+    destroyed () {
+      console.log('destoryed')
+    },
+    beforeUpdate () {
+      console.log('beforeUpdate')
+    },
+    updated () {
+      console.log('updated')
+    }
+  })
+  // app.$mount('#app')
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>非父子组件之间的传值</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <child content="hello" @custom-change="handleCustomChange"></child>
+  <child content="world"></child>
+  <custom></custom>
+</div>
+<script>
+  // 1. Vue （发布订阅模式，Bus，总线，观察者模式）
+  // 2. 局部组件、组件嵌套
+  var custom = {
+    template: "<h1 @click='handleClick'>h1 111</h1>",
+    methods: {
+      handleClick () {
+        this.$emit('custom', 'custom test')
+      }
+    }
+  }
+
+  Vue.prototype.bus = new Vue()
+  Vue.component('child', {
+    props: {
+      content: String
+    },
+    components: {
+      custom
+    },
+    data () {
+      return {
+        selfContent: this.content,
+        msg: ''
+      }
+    },
+    template: '<div @click=\'handleClick\'>   <custom @custom="handleCustom"></custom> {{selfContent}}</div>',
+    methods: {
+      handleClick () {
+        this.bus.$emit('change', this.content)
+        this.$emit('custom-change', this.msg)
+      },
+      handleCustom (value) {
+        // console.log('handleCustom', value)
+        this.msg = value
+      }
+    },
+    mounted () {
+      this.bus.$on('change', (value)=>{
+        this.selfContent = value
+      })
+
+    }
+  })
+  // Vue.component("custom", {
+  //     template: "<h1 @click='handleClick'>h1 222</h1>",
+  //     methods: {
+  //       handleClick () {
+  //         this.$emit('custom', 'custom test')
+  //       }
+  //     }
+  // });
+
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    components: {
+      custom
+    },
+    methods: {
+      handleCustomChange (msg) {
+        console.log('handleCustomChange', msg)
+      }
+    }
+  })
+</script>
+</body>
+</html>

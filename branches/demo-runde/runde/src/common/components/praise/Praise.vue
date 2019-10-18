@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'Praise'
+  name: 'HDPraise'
 }
 </script>
 

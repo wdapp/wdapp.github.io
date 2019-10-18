@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性、方法、监听器</title>
+  <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <p>计算属性</p>
+  {{computedFullName}}
+  {{age}}
+  <p>方法</p>
+  {{methodFullName()}}
+  {{age}}
+  <p>监听器</p>
+  {{fullName}}
+  {{age}}
+</div>
+
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      firstName: 'hello',
+      lastName: ' world',
+      fullName: 'hello world',
+      age: 29
+    },
+    //计算属性 只有相关属性改变才计算
+    computed: {
+      computedFullName () {
+        console.log('computed fullName')
+        return this.firstName + this.lastName
+      }
+    },
+    //方法 只要有数据改变则计算
+    methods: {
+      methodFullName () {
+        console.log('methods methodFullName')
+        return this.firstName + this.lastName
+      }
+    },
+    //监听器 相关属性改变监听变化
+    watch: {
+      firstName () {
+        console.log('watch firstName')
+        this.fullName = this.firstName + this.lastName
+      },
+      lastName () {
+        console.log('watch lastName')
+        this.fullName = this.firstName + this.lastName
+      }
+    }
+  })
+</script>
+</body>
+</html>

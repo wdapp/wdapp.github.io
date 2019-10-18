@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ToList 双向绑定</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<!--视图中的值改变，会改变数据模型中的值，数据模型中的值改变会改变视图中的值，MVVM，双向绑定-->
+<div id="app">
+  <input type="text" v-model="inputValue">
+<!--  <p>{{inputValue}}</p>-->
+  <button @click="handleClick">添加</button>
+  <ul>
+    <li v-for="item in list">{{item}}</li>
+  </ul>
+</div>
+
+<script>
+  // MVVM
+  // V层 HTML DOM
+  // M层 Vue实例数据模型
+  // VM层 Vue
+  var app = new Vue({
+      el: "#app",
+      data: {
+        inputValue: '',
+        list: []
+      },
+      methods: {
+        handleClick () {
+          if (!this.inputValue) {
+            return
+          }
+          this.list.push(this.inputValue)
+          this.inputValue = ''
+        }
+      }
+  });
+</script>
+</body>
+</html>

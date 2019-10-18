@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件参数校验与非props特性</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <custom :prop-a="number" prop-b="2+5" prop-c="" prop-f="hello world" hello="123" :test="'tt'"></custom>
+</div>
+<script>
+  // https://cn.vuejs.org/v2/guide/components-props.html#ad
+  Vue.component('custom', {
+    props: {
+      // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+      propA: [Number],
+      // 多个可能的类型
+      propB: [String, Number],
+      // 必填的字符串
+      propC: {
+        type: String,
+        required: true
+      },
+      // 带有默认值的数字
+      propD: {
+        type: Number,
+        default: 100
+      },
+      // 带有默认值的对象
+      propE: {
+        type: Object,
+        // 对象或数组默认值必须从一个工厂函数获取
+        default: function () {
+          return {message: 'hello'}
+        }
+      },
+      // 自定义验证函数
+      propF: {
+        type: String,
+        validator: function (value) {
+          // 这个值必须匹配下列字符串中的一个
+          return value.length > 5
+        }
+      }
+    },
+    template: '<div>{{propA}} {{propB}} 1{{propC}}1 {{propD}} {{propE.message}}</div>'
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      number: 111
+    },
+    methods: {}
+  })
+</script>
+</body>
+</html>

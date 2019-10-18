@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue中的插槽</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <body-content>
+    <div slot="header">header content</div>
+    <h1>hello world</h1>
+    <div slot="footer">footer content</div>
+  </body-content>
+</div>
+<script>
+  // 1.插槽
+  // 2.插槽默认值
+  // 3.具名插槽
+  Vue.component("body-content", {
+      template: `<div>
+                  <slot name="header"></slot>
+                  <slot name="test">默认值</slot>
+                  <p>hello world</p>
+                  <slot></slot>
+                  <slot name="footer"></slot>
+                 </div>`
+  });
+  var app = new Vue({
+      el: "#app",
+      data: {},
+      methods: {}
+  });
+</script>
+</body>
+</html>

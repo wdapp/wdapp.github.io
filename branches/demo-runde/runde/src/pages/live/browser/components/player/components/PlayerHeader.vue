@@ -3,7 +3,7 @@
     <div class="title-wrapper">
       <p class="text">{{title}}</p>
     </div>
-    <div class="mobile-wrapper">
+    <div class="mobile-wrapper" @click="handleMobileClick">
       <span class="mobile-icon"></span>
       <span class="mobile-text">移动端观看</span>
       <div
@@ -22,23 +22,40 @@
     </div>
     <div class="online-users">
       <span class="users-icon"></span>
-      <span class="users-number">{{number}}</span>
+      <span class="users-number">{{count}}</span>
       <span class="users-text">人正在观看</span>
     </div>
   </div>
 </template>
 
 <script>
+import HuodeScene from '../../../../../../common/websdk/live'
+
 export default {
   name: 'PlayerHeader',
   data () {
     return {
       title: '【中】2019年终极保过班 | 中药学综合知识与技能',
-      number: 0,
+      count: 0,
       codeSrc: require('images/qrcode.png'),
       fit: 'contain',
       isShowQrcode: false
     }
+  },
+  methods: {
+    addEvents (hd) {
+      hd.onUserCount((count) => {
+        this.count = count
+      })
+    },
+    handleMobileClick () {
+      this.isShowQrcode = !this.isShowQrcode
+    }
+  },
+  mounted () {
+    const HD = new HuodeScene()
+
+    this.addEvents(HD)
   }
 }
 </script>
@@ -59,6 +76,7 @@ export default {
       .text
         ellipsis()
     .online-users
+      user-select none
       margin-right 48px
       height 100%
       width 211px
@@ -82,6 +100,7 @@ export default {
     .mobile-wrapper
       position relative
       float right
+      user-select none
       baseTextStyle()
       line-height 70px
       .mobile-icon
@@ -98,6 +117,7 @@ export default {
         z-index 1
         top 64px
         left -44px
+        user-select none
         border 1px solid $dullGreyColor; /*no*/
         border-radius 8px; /*no*/
         background-color $baseWhiteColor

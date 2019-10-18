@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件使用的细节点</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <table>
+    <tbody>
+    <tr is="row"></tr>
+    <tr is="row"></tr>
+    <tr is="row"></tr>
+    </tbody>
+  </table>
+  <select name="" id="">
+    <option is="options"></option>
+    <option is="options"></option>
+    <option is="options"></option>
+  </select>
+  <ul>
+    <!--    <li is="lis">a</li>-->
+    <!--    <li is="lis">a</li>-->
+    <!--    <li is="lis">a</li>-->
+    <lis></lis>
+    <lis></lis>
+    <lis></lis>
+  </ul>
+  <hr>
+  <div ref="div" @click="handleClick">hello world</div>
+  <computer ref="one" @change="onChange"></computer>
+  <computer ref="two" @change="onChange"></computer>
+  <div>{{total}}</div>
+</div>
+<script>
+  // 1. is 的使用，指定组件标签
+  // 2. 子组件中的data必须是有个有返回值的函数
+  // 3. ref的使用，在html标签中获取DOM元素，在自定义组件中获取子组件实例
+  Vue.component('row', {
+    data () {
+      return {
+        content: 'hello world'
+      }
+    },
+    template: '<tr>\n' +
+      '      <td>A</td>\n' +
+      '      <td>B</td>\n' +
+      '      <td>{{content}}</td>\n' +
+      '    </tr>'
+  })
+  Vue.component('options', {
+    template: '<option>内容</option>'
+  })
+  Vue.component('lis', {
+    template: '<li>li</li>'
+  })
+  Vue.component('computer', {
+    data () {
+      return {
+        number: 0
+      }
+    },
+    template: '<h1 @click="handleClick">{{number}}</h1>',
+    methods: {
+      handleClick () {
+        this.number++
+        this.$emit('change')
+      }
+    }
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      total: 0
+    },
+    methods: {
+      handleClick () {
+        console.log(this.$refs.div)
+        console.log(this.$refs.div.innerHTML)
+      },
+      onChange () {
+        console.log(this.$refs.one)
+        console.log(this.$refs.two)
+        console.log(this.$refs.one.number)
+        console.log(this.$refs.two.number)
+        this.total = this.$refs.one.number + this.$refs.two.number
+      }
+    }
+  })
+</script>
+</body>
+</html>

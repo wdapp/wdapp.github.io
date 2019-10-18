@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件化实现 ToList 全局和局部组件 父组件向子组件传值</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="text" v-model="inputValue">
+  <button @click="handleClick">添加</button>
+  <ul>
+    <todo-list v-bind:content="item" v-for="item in list"></todo-list>
+  </ul>
+</div>
+
+<!--<div id="root">-->
+<!--  <todo-list v-bind:content="'hello'"></todo-list>-->
+<!--</div>-->
+
+<script>
+  //全局组件
+  // Vue.component('TodoList', {
+  //   props: ['content'],
+  //   template: '<li>{{content}}</li>'
+  // })
+  //局部组件
+  var TodoList = {
+    props: ['content'],
+    template: '<li>{{content}}</li>'
+  }
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      inputValue: '',
+      list: []
+    },
+    components: {
+      TodoList
+    },
+    methods: {
+      handleClick () {
+        if (!this.inputValue) {
+          return
+        }
+        this.list.push(this.inputValue)
+        this.inputValue = ''
+      }
+    }
+  })
+
+  // var root = new Vue({
+  //   el: '#root',
+  //   data: {},
+  //   methods: {}
+  // })
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue实例</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <button @click="handleClick">{{message}}</button>
+  <item></item>
+</div>
+
+<script>
+  Vue.component("item", {
+      template: "<div>hello item</div>"
+  });
+  var app = new Vue({
+      el: "#app",
+      data: {
+        message: 'hello world'
+      },
+      methods: {
+        handleClick () {
+          console.log('click')
+        }
+      }
+  });
+  console.log(app)
+</script>
+</body>
+</html>

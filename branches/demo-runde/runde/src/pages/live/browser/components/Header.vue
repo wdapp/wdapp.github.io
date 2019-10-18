@@ -31,34 +31,17 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
-
 export default {
   name: 'LiveHeader',
+  props: {
+    name: ''
+  },
   data () {
     return {
-      name: '',
       title: require('images/title.png'),
       header: require('images/header.png'),
       fit: 'contain'
     }
-  },
-  computed: {
-    ...mapState(['viewer'])
-  },
-  methods: {
-    setName () {
-      console.log(this.name)
-      console.log(this.viewer.name)
-      this.name = this.viewer.name
-      console.log(this.name)
-    }
-  },
-  updated () {
-    this.setName()
-  },
-  mounted () {
-    this.setName()
   }
 }
 </script>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ToList MVP</title>
+  <script src="js/vue.js"></script>
+  <script src="js/jquery.js" type="text/javascript"></script>
+</head>
+<body>
+
+<input type="text" id="input">
+<button id="btn">按钮</button>
+<ul id="ul"></ul>
+
+<script>
+
+  // M 模型层 V 视图层 P 控制层
+  function Page () {
+
+  }
+
+  $.extend(Page.prototype, {
+    init: function () {
+      this.bindEvents()
+    },
+    bindEvents: function () {
+      var btn = $('#btn')
+      btn.on('click', $.proxy(this.handleBtnClick, this))
+    },
+    handleBtnClick: function () {
+      console.log('click')
+      var input = $('#input')
+      var inputValue = input.val()
+      if (!inputValue) {
+        return
+      }
+      var ul = $('#ul')
+      ul.append('<li>' + inputValue + '</li>')
+      input.val('')
+    }
+  })
+
+  var page = new Page()
+  page.init()
+
+</script>
+</body>
+</html>

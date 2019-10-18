@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="bottom">
-      <praise class="praise"></praise>
+      <hd-praise class="praise"></hd-praise>
       <div class="btn-group">
         <div class="btn-wrap emoticon-btn-wrap">
           <span class="emoticon-btn-icon"></span>
@@ -45,12 +45,12 @@
 
 <script>
 import BScroll from 'better-scroll'
-import Praise from 'common/components/praise/Praise'
+import hdPraise from 'common/components/praise/Praise'
 
 export default {
   name: 'ChatChats',
   components: {
-    Praise
+    hdPraise
   },
   data () {
     return {

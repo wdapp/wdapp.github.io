@@ -4,14 +4,14 @@
       class="actions-btn-group"
       v-show="isShowControl"
     >
-      <div class="switch-screen-btn">
-        <span :class="'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'"></span>
+      <div class="switch-screen-btn" @click="handleSwitchScreenClick">
+        <span :class="switchScreenIcon"></span>
       </div>
       <div
         v-show="isShowInteractionBtn"
         class="interaction-btn"
       >
-        <span :class="'icon ' + (this.toggleInteractionBtn ? 'interaction' : 'hangup') + '-icon'"></span>
+        <span :class="interactionIcon"></span>
       </div>
     </div>
     <slot></slot>
@@ -27,7 +27,7 @@
           <span class="btn-icon volume-icon"></span>
         </div>
         <div class="btn-item full-screen-btn">
-          <span :class="'btn-icon ' + (this.toggleFullScreenBtn ? 'full' : 'small') + '-screen-icon'"></span>
+          <span :class="fullScreenIcon"></span>
         </div>
       </div>
     </div>
@@ -46,14 +46,53 @@
 <script>
 export default {
   name: 'PlayerControl',
+  props: {
+    isShowControl: {
+      type: Boolean,
+      default: false
+    },
+    closeStatus: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
-      isShowControl: true,
       isShowInteractionBtn: false,
       toggleInteractionBtn: true,
       toggleSwitchScreenBtn: true,
+      switchStatus: true,
       toggleFullScreenBtn: true,
       isFullPlayer: false
+    }
+  },
+  computed: {
+    switchScreenIcon () {
+      return 'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'
+    },
+    interactionIcon () {
+      return 'icon ' + (this.toggleInteractionBtn ? 'interaction' : 'hangup') + '-icon'
+    },
+    fullScreenIcon () {
+      return 'btn-icon ' + (this.toggleFullScreenBtn ? 'full' : 'small') + '-screen-icon'
+    }
+  },
+  watch: {
+    closeStatus () {
+      console.log(this.closeStatus)
+      this.toggleInteractionBtn = !this.closeStatus
+    },
+    switchScreenIcon () {
+      return 'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'
+    }
+  },
+  methods: {
+    handleSwitchScreenClick () {
+      if (!this.toggleInteractionBtn) {
+        return
+      }
+      this.switchStatus = !this.switchStatus
+      this.$emit('switch', this.switchStatus)
     }
   }
 }

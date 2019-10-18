@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>列表渲染</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <div v-for="(item,  index) of list" :key="item.id">
+    {{item.id}} -- {{item.name}} -- {{index}}
+  </div>
+  <hr>
+  <template v-for="(item,  index) of list">
+    <div :key="item.id">
+      {{item.id}} -- {{item.name}} -- {{index}}
+    </div>
+    <span :key="index">
+    {{item.name}}
+    </span>
+  </template>
+  <hr>
+  <div v-for="(value, key, index) in obj">
+    {{value}} -- {{key}} -- {{index}}
+  </div>
+</div>
+<script>
+  // 变异方法 (mutation method)
+  // Vue 将被侦听的数组的变异方法进行了包裹，所以它们也将会触发视图更新。这些被包裹过的方法包括：
+  // push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+  // 编译方法才会触发vue的双向绑定，重新渲染数据
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      obj: {
+        id: '0001',
+        name: 'dajiahao',
+        text: 'hello world',
+        num: 123
+      },
+      list: [
+        {
+          id: '001',
+          name: 'hello'
+        },
+        {
+          id: '002',
+          name: 'world'
+        },
+        {
+          id: '003',
+          name: 58
+        },
+        {
+          id: '004',
+          name: '列表'
+        }
+      ],
+    },
+    methods: {}
+  })
+</script>
+</body>
+</html>

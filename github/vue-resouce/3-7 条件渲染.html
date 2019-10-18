@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>条件渲染</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <div v-if="isActived">hello world 1</div>
+  <div v-else>hello world 2</div>
+  <span v-show="actived">hello world 3</span>
+
+  <div v-if="result  == 'a'">
+    name: <input type="text" key="a">
+  </div>
+  <div v-else-if="result  == 'b'" key="b">
+    pass: <input type="text">
+  </div>
+  <div v-else>
+    adress: <input type="text">
+  </div>
+</div>
+<script>
+  var app = new Vue({
+      el: "#app",
+      data: {
+        actived: true,
+        isActived: true,
+        result: false
+      },
+      methods: {
+
+      }
+  });
+</script>
+</body>
+</html>

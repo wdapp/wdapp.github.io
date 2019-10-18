@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>前端组件化思想</title>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="text" v-model="inputValue">
+  <button @click="handleClick">添加</button>
+  <ul>
+    <todo-list v-bind:content="item" v-for="item in list"></todo-list>
+  </ul>
+</div>
+
+<script>
+  Vue.component('TodoList', {
+    props: ['content'],
+    template: '<li>{{content}}</li>'
+  })
+  var app = new Vue({
+    el: "#app",
+    data: {
+      inputValue: '',
+      list: []
+    },
+    methods: {
+      handleClick () {
+        if (!this.inputValue) {
+          return
+        }
+        this.list.push(this.inputValue)
+        this.inputValue = ''
+      }
+    }
+  });
+</script>
+</body>
+</html>

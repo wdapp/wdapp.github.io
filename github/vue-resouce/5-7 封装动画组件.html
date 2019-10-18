@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    /*.fade-enter, .fade-leave-to {*/
+    /*  opacity: 0;*/
+    /*}*/
+    /*.fade-enter-active, .fade-leave-active {*/
+    /*  transition: opacity 2s;*/
+    /*}*/
+  </style>
+  <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <fade v-bind:show="show">
+    <div>hello world</div>
+  </fade>
+  <fade v-bind:show="show">
+    <h1>hello world</h1>
+  </fade>
+  <button @click="handleClick">toggle</button>
+</div>
+<script>
+  Vue.component('fade', {
+    props: {
+      show: {
+        type: Boolean,
+        default: true
+      }
+    },
+    template: `
+              <transition
+                name="fade"
+                v-on:before-enter="handleBeforeEnter"
+                v-on:enter="handleEnter"
+                v-on:after-enter="handleAfterEnter"
+              >
+                 <div v-show="show">
+                  <slot></slot>
+                 </div>
+              </transition>
+                 `,
+    methods: {
+      handleBeforeEnter (element) {
+        element.style.color = 'red'
+      },
+      handleEnter (element, done) {
+        setTimeout(()=>{
+          element.style.color = 'blue'
+        },2000)
+        setTimeout(()=>{
+          done()
+        },4000)
+      },
+      handleAfterEnter (element) {
+        element.style.color = 'pink'
+      }
+    }
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      show: true
+    },
+    methods: {
+      handleClick () {
+        this.show = !this.show
+      }
+    }
+  })
+</script>
+</body>
+</html>

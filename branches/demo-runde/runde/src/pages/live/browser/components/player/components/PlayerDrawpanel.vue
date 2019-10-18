@@ -1,6 +1,6 @@
 <template>
-  <div class="player-drawpanel-wrapper">
-    <div v-show="isShowCloseBtn" class="drawpanel-close-btn">
+  <div class="player-drawpanel-wrapper" :class="size" v-show="!closeStatus">
+    <div v-show="isShowCloseBtn" class="drawpanel-close-btn" @click="onClose">
       <span class="drawpanel-close-icon"></span>
     </div>
     <div class="drawpanel">
@@ -12,14 +12,30 @@
 <script>
 export default {
   name: 'PlayerDrawpanel',
+  props: {
+    isShowClose: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String,
+      default: 'small'
+    }
+  },
+  computed: {
+    isShowCloseBtn () {
+      return this.size === 'small' && this.isShowClose
+    }
+  },
   data () {
     return {
-      isShowCloseBtn: true
+      closeStatus: false
     }
   },
   methods: {
-    handleClick () {
-      console.log(111)
+    onClose () {
+      this.closeStatus = true
+      this.$emit('close', this.closeStatus)
     }
   }
 }
@@ -30,10 +46,7 @@ export default {
 
   .player-drawpanel-wrapper
     background-color $baseWhiteColor
-    bottom 0
-    position absolute
-    width 290px
-    height 163px
+    width-height-full()
     .drawpanel
       width-height-full()
     .drawpanel-close-btn
@@ -45,4 +58,11 @@ export default {
         background url("~images/close.png") no-repeat
         background-size 30px
         width-height-same(30px)
+  .small
+    position absolute
+    width 290px
+    height 163px
+    bottom 0
+  .large
+    width-height-full()
 </style>

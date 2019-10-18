@@ -46,10 +46,12 @@ class HuodeScene {
       callback()
     }
   }
+
+  onUserCount (callback) {
+    DWLive.onUserCountMessage = function (count) {
+      callback(count)
+    }
+  }
 }
 
-let HD = new HuodeScene()
-
-window.HD = HD
-
-export default HD
+export default HuodeScene
