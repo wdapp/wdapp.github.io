@@ -6,12 +6,12 @@ $(function () {
     };
 
     window._onStart = function () {
-        console.log('直播中----');
+        // console.log('直播中----');
     };
 
     // 停止直播
     DWLive.onLiveEnd = function (j) {
-        console.log(j);
+        // console.log(j);
         DWLive.hangupInteraction();
 
         setTimeout(function () {
@@ -26,17 +26,17 @@ $(function () {
 
     // 开始直播后显示公告
     DWLive.onAnnouncementShow = function (j) {
-        console.log('公告:', j);
+        // console.log('公告:', j);
     };
 
     // 修改公告,发布公告
     DWLive.onAnnouncementRelease = function (j) {
-        console.log(j);
+        // console.log(j);
     };
 
     // 删除公告
     DWLive.onAnnouncementRemove = function (j) {
-        console.log(j);
+        // console.log(j);
     };
 
     // 系统消息
@@ -96,7 +96,15 @@ $(function () {
             if (o.userid === DWLive.viewerid) {
                 $('#chat-list li[uid = ' + o.userid + ']').addClass('me');
             }
-            DWLive.barrage(o.msg); // 发送弹幕
+            var status = o.status;
+            if(o.userid === DWLive.viewerid || status == '0'){
+              DWLive.barrage(o.msg); // 发送弹幕
+            }
+            //大量聊天数据优化
+            var rc = $("#chat-list").children().length - 500;
+            if (rc > 0) {
+              $("#chat-list> li:lt(" + rc + ")").remove();
+            }
         }
     };
 
@@ -108,6 +116,10 @@ $(function () {
         $.each(chatIds,function (index,data) {
             var cId='[chatId='+ data+']';
             $(cId).attr('status',status);
+            if(status == '0'){
+              var text = $(cId + ' .chat-content').text();
+              DWLive.barrage(text); // 发送弹幕
+            }
         });
         $('#chat-list').parent().scrollTop($('#chat-list').height());
     };
@@ -156,6 +168,7 @@ $(function () {
 
     };
 
+
     // 发布问题
     DWLive.onQaPublish = function (data) {
         var $q = $('#' + data.value.questionId).attr('isPublish', '1');
@@ -165,10 +178,10 @@ $(function () {
         }
     };
     DWLive.onBanChat = function (j) {
-        console.log('您已被禁言'+j);
+        // console.log('您已被禁言'+j);
     }
     DWLive.onUnBanChat = function (j) {
-        console.log('您已解禁'+j);
+        // console.log('您已解禁'+j);
     }
     // 提问
     DWLive.onQuestion = function (j) {
@@ -205,7 +218,7 @@ $(function () {
 
     // 接收回答
     DWLive.onAnswer = function (j) {
-        console.log(j);
+        // console.log(j);
         var o = JSON.parse(j);
         var answer = o.value;
         // 私密回答只能自己看
@@ -244,7 +257,7 @@ $(function () {
     };
     // 发布奖杯
     DWLive.onPrizeSend = function(j){
-        console.log('奖杯信息：' + j)
+        // console.log('奖杯信息：' + j)
     };
     // 禁言
     DWLive.onInformation = function (j) {
@@ -965,7 +978,6 @@ $(function () {
 
 });
 
-
 window.ALLOW_SPEAK_INTERACTION = false;
 DWLive.onRoomSetting = function (data) {
     window.ALLOW_SPEAK_INTERACTION = data.allow_speak_interaction == 'true';
@@ -974,7 +986,7 @@ DWLive.onRoomSetting = function (data) {
         return;
     }
 
-    if (!live.interaction.isSupportInteraction()) {
+    if (!DWLive.isSupportInteraction()) {
         // console.log(!live.interaction.isSupportInteraction());
         return;
     }
@@ -1002,55 +1014,23 @@ DWLive.onRoomSetting = function (data) {
 
 
 // 断开语音通话
-window.on_cc_live_interaction_disconnect = function (data) {
-    var uid = data.disconnectid;
-    var isPC = !!live.interaction.usersPcs[uid];
+window.on_cc_live_interaction_disconnect = function (data, type) {
+    $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
+    $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
+    $('li[name="interaction"]').removeClass('disable').show();
 
-    if (uid != DWLive.viewerid && !isPC) {
-        return;
-    }
-    if (uid != DWLive.viewerid && isPC) {
-        DWLive.hangupInteraction();
-    }
+    $('#interactionMsg').text('');
+    $('#videoInteraction').hide();
+    $('#btn-network').removeClass('wl-disable');
 
-    live.interaction.clearCallingTimer();
-    live.interaction.disconnectInteraction(uid);
-
-    // 与所有端断开连接
-    if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
-        live.interaction.stopLocalStream();
-
-        $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
-        $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
-
-        $('li[name="interaction"]').removeClass('disable').show();
-
-        $('#interactionMsg').text('');
-
-        $('#videoInteractions').empty();
-        $('#audioInteractions').empty();
-
-        $('#interactionLocalVideo')[0].src = '';
-
-        $('#videoInteraction').hide();
-
-        if (live.interaction.local.type.video) {
-            DWLive.livePlayerInit();
-            $('#videoInteractions').css('height', '0px');
-        }
-        $('#btn-network').removeClass('wl-disable');
-
-        if (!window.ALLOW_SPEAK_INTERACTION) {
-            $('li[name="interaction"]').hide();
-        }
-    } else {
-        // 断开其他人
+    if (!window.ALLOW_SPEAK_INTERACTION) {
+        $('li[name="interaction"]').hide();
     }
 };
 
 // 接受语音/连麦互动
-function on_cc_live_interaction_accept(p) {
-    if (p.video) {
+function on_cc_live_interaction_accept(type) {
+    if (type.video) {
         $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('calling');
         $('#videoInteraction .call-tit').hide();
     } else {
@@ -1062,17 +1042,16 @@ function on_cc_live_interaction_accept(p) {
 }
 
 
-function on_cc_live_interaction_interval(p, t) {
-    if (t < 0) {
+function on_cc_live_interaction_interval(type, time) {
+    if (time < 0) {
         return;
     }
 
-    var s = t % 60;
+    var s = time % 60;
     s = s < 10 ? ('0' + s) : s;
 
-    var m = parseInt(t / 60, 10);
+    var m = parseInt(time / 60, 10);
     m = m < 10 ? ('0' + m) : m;
-
 
     $('#interactionMsg').text('通话中 ' + m + ':' + s);
 }
@@ -1080,16 +1059,9 @@ function on_cc_live_interaction_interval(p, t) {
 /**
  * 获取本地流信息
  * */
-function on_cc_live_interaction_local_media(p, stream) {
-    // 视频+音频
-    if (p.video) {
-        $('#videoInteractio').show();
-        var $lv = $('#interactionLocalVideo')[0];
-        // $lv.src = URL.createObjectURL(stream); // 加载流信息
-        $lv.srcObject = stream;
-        $lv.volume = 0; // 静音
-    } else {
-
+function on_cc_live_interaction_local_media(type, stream) {
+    if (type.video) {
+        $('#videoInteraction').show();
     }
 }
 
@@ -1097,22 +1069,11 @@ function on_cc_live_interaction_local_media(p, stream) {
  * 远程互动流
  *
  * */
-function on_cc_live_interaction_remote_media(p, chatuser, stream) {
-    if (p.video) {
-        $('#livePlayer').replaceWith('<div id="livePlayer"></div>');
-
-        $('#videoInteractions').css('height', '100%');
-
-        var id = 'interactionRemoteVideo' + chatuser.id;
-        $('#videoInteractions').append('<video id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>');
-        // $('#' + id)[0].src = URL.createObjectURL(stream);
-        $('#' + id)[0].srcObject = stream;
+function on_cc_live_interaction_remote_media(type, chatuser, stream) {
+    if (type.video) {
         $('#videoInteraction').hide();
     } else {// 远程音频
-        var id = 'interactionRemoteAudio' + chatuser.id;
-        $('#audioInteractions').append('<audio id="' + id + '" autoplay controls></audio>');
-        // $('#' + id)[0].src = URL.createObjectURL(stream);
-        $('#' + id)[0].srcObject = stream;
+
     }
 }
 
@@ -1122,14 +1083,14 @@ function on_cc_live_interaction_remote_media(p, chatuser, stream) {
  *
  * @param p
  */
-function on_cc_live_interaction_request_timeout(p) {
+function on_cc_live_interaction_request_timeout(type) {
     // 音频通话
-    if (p.audio) {
+    if (type.audio) {
         $('li[name="interaction"][t="audio"] a').removeClass('audio applying calling').addClass('audio');
     }
 
     // 视频通话
-    if (p.video) {
+    if (type.video) {
         $('li[name="interaction"][t="video"] a').removeClass('audio applying calling').addClass('video');
         $('#videoInteraction').hide();
     }
@@ -1195,21 +1156,21 @@ function on_cc_swf_loading_completed(id) {
 }
 
 DWLive.onExternalQuestionnairePublish = function (data) {
-    console.log('第三方问卷:', data);
+    // console.log('第三方问卷:', data);
 };
 
 DWLive.onLoginSuccess = function () {
-    console.log('多清晰度:', DWLive.multiQuality);
-    console.log('文档显示模式:', DWLive.documentDisplayMode);
-    console.log('倒计时:', DWLive.liveCountdown);
+    // console.log('多清晰度:', DWLive.multiQuality);
+    // console.log('文档显示模式:', DWLive.documentDisplayMode);
+    // console.log('倒计时:', DWLive.liveCountdown);
 };
 
 //翻页信息
 DWLive.onPageChange = function (data) {
-    console.log(data);
+    // console.log(data);
 };
 
 //改名回掉
 DWLive.onChangeNickname = function (data) {
-    console.log(data);
+    // console.log(data);
 };

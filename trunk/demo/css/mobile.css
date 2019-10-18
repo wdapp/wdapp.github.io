@@ -228,7 +228,7 @@ a,button,input,li{-webkit-tap-highlight-color:rgba(255,0,0,0);}
 .imgbox .nodoc{width: 88px; height: 83px; position: absolute; background: url("../img/icon03.png") no-repeat; background-size: 100%; top: 50%; left: 50%; margin: -59px 0 0 -44px;}
 .imgbox .nodoc p{position: absolute; bottom: -30px; left: 0; width: 88px; text-align: center; font-size: 18px; color: #666;}
 .askmsg{word-break: break-word;display: block; padding: 0 0 5px 0; margin: 0 10px; border-bottom: 1px solid #e8e8e8;}
-.answermsg{display: block; padding: 0 0 5px 18px;word-break: break-word;white-space: normal}
+.answermsg{display: block; padding: 0 0 5px 18px;word-break: break-word;}
 .askname{color: #666; margin-left: 10px;}
 .qaanswer{border-bottom: 1px solid #e8e8e8; margin: 0 10px;}
 .answername{color: #666;}

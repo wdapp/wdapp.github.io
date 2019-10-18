@@ -22,7 +22,7 @@
           <i class="el-icon-user-solid"></i>
         </el-avatar>
         <span class="header-name">
-          {{name}}
+          {{this.name}}
         </span>
         <i class="el-icon-caret-bottom"></i>
       </div>
@@ -31,15 +31,34 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'LiveHeader',
   data () {
     return {
-      name: '获得场景视频获得场景视频',
+      name: '',
       title: require('images/title.png'),
       header: require('images/header.png'),
       fit: 'contain'
     }
+  },
+  computed: {
+    ...mapState(['viewer'])
+  },
+  methods: {
+    setName () {
+      console.log(this.name)
+      console.log(this.viewer.name)
+      this.name = this.viewer.name
+      console.log(this.name)
+    }
+  },
+  updated () {
+    this.setName()
+  },
+  mounted () {
+    this.setName()
   }
 }
 </script>

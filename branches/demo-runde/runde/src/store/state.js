@@ -1,4 +1,4 @@
-let defaultUrl = 'https://view.csslcloud.net/api/view/index?roomid=20E2BEC88BEF3EEB9C33DC5901307461&userid=B693062ABB8020E0'
+let defaultUrl = ''
 
 try {
   defaultUrl = localStorage.url
@@ -6,5 +6,6 @@ try {
 }
 
 export default {
-  url: defaultUrl
+  url: defaultUrl,
+  viewer: {}
 }

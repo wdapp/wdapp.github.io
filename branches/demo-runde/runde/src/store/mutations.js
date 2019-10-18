@@ -5,5 +5,8 @@ export default {
       localStorage.url = url
     } catch (e) {
     }
+  },
+  setViewer (state, viewer) {
+    state.viewer = viewer
   }
 }

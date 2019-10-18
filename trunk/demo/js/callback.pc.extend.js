@@ -117,7 +117,7 @@ function on_cc_callback_pages(data) {
     //    "encryptDocId": "73D088D5AC02E6B1",  文档ID
     //    "useSDK": false
     //}
-    console.log(data);
+    // console.log(data);
     datas = data;
 }
 
@@ -159,17 +159,17 @@ function qaScroll() {
 
 //翻页信息
 function on_cc_callback_pagechange(j) {
-    console.log("on_cc_callback_pagechange", j);
+    // console.log("on_cc_callback_pagechange", j);
 };
 
 //接受全部广播消息
 function on_cc_live_broadcast_msg(data) {
-    console.log("on_cc_live_broadcast_msg", data);
+    // console.log("on_cc_live_broadcast_msg", data);
 }
 
 //接受广播消息
 function on_cc_live_broadcast_msg_sync(datas) {
-    console.log("on_cc_live_broadcast_msg_sync", datas);
+    // console.log("on_cc_live_broadcast_msg_sync", datas);
     var cmHtml = "";
     $.each(datas, function (index, data) {
         cmHtml += "<li class=\"msg-admin\">系统消息：" + data.content + " </li>";
@@ -387,7 +387,7 @@ new scale({
     mouseup: function (e) {
         toggleProgress = true;
         var seek = $.DW.getDuration() * parseInt(e.percent) / 100;
-        console.log(seek);
+        // console.log(seek);
         $.DW.seek(seek);
     }
 });
@@ -432,26 +432,30 @@ function sec_to_time(s) {
 }
 
 function on_cc_live_player_load() { // 播放器加载完成
-    console.log("视频总时长:", $.DW.getDuration()); // 获取视频总时长
+    // console.log("视频总时长:", $.DW.getDuration()); // 获取视频总时长
     var playTimer = setInterval(playTimerCallback, 500);
 
+    setTimeout(function () {
+        isPlay = !($("#playbackVideo")[0].paused);
+        // console.log("isPlay", isPlay);
+    }, 500);
 }
 
 function on_player_start() { // 播放开始
-    console.log("播放开始");
+    // console.log("播放开始");
     isPlay = true;
     $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -70px");
     // 播放后再把视频缩小
 }
 
 function on_spark_player_pause() { // 播放暂停
-    console.log("播放暂停");
+    // console.log("播放暂停");
     isPlay = false;
     $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -170px");
 }
 
 function on_spark_player_resume() { // 恢复播放
-    console.log("恢复播放");
+    // console.log("恢复播放");
     isPlay = true;
     $("#btn-play").css("background", "url(images/newLive/icon-playbar.png) no-repeat -8px -70px");
 }

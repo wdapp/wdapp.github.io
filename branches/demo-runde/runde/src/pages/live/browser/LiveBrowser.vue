@@ -22,6 +22,7 @@ import LivePlayer from './components/player/Player'
 import LiveChat from './components/chat/Chat'
 import HD from 'common/websdk/live'
 import {log} from 'common/utils'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'LiveBrowser',
@@ -35,10 +36,12 @@ export default {
       HD.login({
         userId: options.userid,
         roomId: options.roomid,
-        viewerName: '获得场景视频',
+        viewerName: '获得场景视频11',
         viewerToken: '',
         success: (result) => {
           log('onLoginSuccess', result)
+
+          this.setDatas(result)
 
           this.$message({
             showClose: true,
@@ -57,7 +60,12 @@ export default {
           })
         }
       })
-    }
+    },
+    setDatas (datas) {
+      const viewer = datas.viewer
+      this.setViewer(viewer)
+    },
+    ...mapMutations(['setViewer'])
   },
   mounted () {
     const options = JSON.parse(decodeURIComponent(this.$route.params.options))
@@ -74,6 +82,9 @@ export default {
 
   .wrapper
     .container
+      width-height-full()
+      position absolute
+      overflow hidden
       .header
         min-width 831px; /*no*/
         position absolute

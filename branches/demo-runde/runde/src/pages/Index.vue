@@ -40,7 +40,7 @@ export default {
   name: 'Index',
   data () {
     return {
-      url: ''
+      url: 'https://view.csslcloud.net/api/view/index?roomid=20E2BEC88BEF3EEB9C33DC5901307461&userid=B693062ABB8020E0'
     }
   },
   computed: {

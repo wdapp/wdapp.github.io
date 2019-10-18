@@ -221,7 +221,7 @@ $('#left-bar').bind('click', function () {
                 'width': '+=260',
                 'left': 10
             }, 200);
-            console.log('当前主要内容是视频');
+            // console.log('当前主要内容是视频');
         }
     } else {
         $('#video-middle').animate({
@@ -241,7 +241,7 @@ $('#left-bar').bind('click', function () {
                 'width': '-=260',
                 'left': 270
             }, 200);
-            console.log('当前主要内容是视频');
+            // console.log('当前主要内容是视频');
         }
     }
     return;
@@ -273,7 +273,7 @@ $('#logout').click(function () {
                 window.location.href = './login';
             },
             error: function(data){
-                console.log(data.msg);
+                // console.log(data.msg);
             }
         })
     }
@@ -409,7 +409,7 @@ $('#btn-fullscreen').click(function () {
                 'width': '+=260',
                 'left': 10
             }, 80);
-            console.log('当前主要内容是视频');
+            // console.log('当前主要内容是视频');
         }
 
         $('#video-middle').animate({

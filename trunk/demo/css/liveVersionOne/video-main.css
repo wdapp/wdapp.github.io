@@ -66,7 +66,7 @@ body { overflow: hidden; }
 .live-left .l-b-m-list .peo-repeat { border-top: 1px solid #5a809f; width: 200px; margin-left: 45px; padding-top: .5em }
 .live-left .l-b-m-list .teacher-name { position: relative; margin-bottom: .1em; padding-left: 18px; font-family: '微软雅黑', Arial; font-size: 12px; font-size: 1.2rem; color: #b5e3ff }
 .live-left .l-b-m-list .teacher-name i { position: absolute; top: 4px; left: 0; width: 12px; height: 12px; background-image: url(../../images/newLive/live-icons.png); background-repeat: no-repeat; background-position: 0 -260px }
-.live-left .l-b-m-list .repeat-content { font-size: 14px; font-size: 1.4rem; color: #ffffff; line-height: 1.4; font-family: '微软雅黑', Arial ;word-break:break-all}
+.live-left .l-b-m-list .repeat-content { font-size: 14px; font-size: 1.4rem; color: #ffffff; line-height: 1.4; font-family: '微软雅黑', Arial }
 .question-user { position: absolute; left: 0; right: 0; bottom: 0; height: 85px; background-color: #27435B; }
 .question-user .llb-t { position: relative; width: 230px; height: 20px; margin: 10px auto; }
 .question-user .llb-t .o-t { position: absolute; left: 0; padding-left: 22px; color: #FFF; font-family: 'SimSun', Arial; font-size: 12px; line-height: 20px; cursor: pointer; }

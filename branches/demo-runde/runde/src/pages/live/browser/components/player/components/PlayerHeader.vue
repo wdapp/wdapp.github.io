@@ -33,8 +33,8 @@ export default {
   name: 'PlayerHeader',
   data () {
     return {
-      title: '【中】2019年终极保过班 | 中药学综合知识与技能 | 学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习学习',
-      number: 99999999999999,
+      title: '【中】2019年终极保过班 | 中药学综合知识与技能',
+      number: 0,
       codeSrc: require('images/qrcode.png'),
       fit: 'contain',
       isShowQrcode: false
