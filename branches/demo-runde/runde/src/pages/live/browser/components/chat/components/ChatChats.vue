@@ -236,6 +236,7 @@ export default {
                 border-radius 50%
               .el-checkbox__inner::after
                 width-height-same(5px)
+                border-width 1px; /*no*/
                 left 6px
                 top 4px
           >>> .el-checkbox.is-checked
@@ -244,6 +245,7 @@ export default {
                 background-color $baseRedColor
               .el-checkbox__inner::after
                 width-height-same(5px)
+                border-width 1px;/*no*/
                 left 6px
                 top 4px
             .el-checkbox__input.is-indeterminate

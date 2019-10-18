@@ -1,5 +1,5 @@
 <template>
-  <div class="player-player-wrapper" :class="size" v-show="!closeStatus">
+  <div class="player-player-wrapper" :class="size">
     <div v-show="isShowCloseBtn" class="player-close-btn" @click="onClose">
       <span class="player-close-icon"></span>
     </div>
@@ -22,7 +22,7 @@ export default {
   },
   data () {
     return {
-      closeStatus: false
+      status: true
     }
   },
   computed: {
@@ -32,8 +32,8 @@ export default {
   },
   methods: {
     onClose () {
-      this.closeStatus = true
-      this.$emit('close', this.closeStatus)
+      this.status = false
+      this.$emit('close', this.status)
     }
   }
 }

@@ -26,24 +26,27 @@
         <div class="btn-item volume-btn">
           <span class="btn-icon volume-icon"></span>
         </div>
-        <div class="btn-item full-screen-btn">
+        <div class="btn-item full-screen-btn" @click="onFullScreen">
           <span :class="fullScreenIcon"></span>
         </div>
       </div>
     </div>
     <div
-      class="full-player-wrap"
-      :class="{ 'full-player-active': isFullPlayer }"
+      class="bespread-wrap"
+      :class="{ 'bespread-active': isBespread }"
+      @click="handleBespreadClick"
     >
       <i
-        class="full-player-icon el-icon-arrow-right"
-        :class="{'el-icon-arrow-left': isFullPlayer}"
+        class="bespread-icon el-icon-arrow-right"
+        :class="{'el-icon-arrow-left': isBespread}"
       ></i>
     </div>
   </div>
 </template>
 
 <script>
+// import HuodeScene from 'common/websdk/live'
+
 export default {
   name: 'PlayerControl',
   props: {
@@ -51,24 +54,24 @@ export default {
       type: Boolean,
       default: false
     },
-    closeStatus: {
+    status: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data () {
     return {
       isShowInteractionBtn: false,
       toggleInteractionBtn: true,
-      toggleSwitchScreenBtn: true,
+      toggleSwitchScreenBtnStatus: true,
       switchStatus: true,
       toggleFullScreenBtn: true,
-      isFullPlayer: false
+      isBespread: false
     }
   },
   computed: {
     switchScreenIcon () {
-      return 'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'
+      return 'icon ' + (this.toggleSwitchScreenBtnStatus ? 'switch' : 'open') + '-screen-icon'
     },
     interactionIcon () {
       return 'icon ' + (this.toggleInteractionBtn ? 'interaction' : 'hangup') + '-icon'
@@ -78,21 +81,26 @@ export default {
     }
   },
   watch: {
-    closeStatus () {
-      console.log(this.closeStatus)
-      this.toggleInteractionBtn = !this.closeStatus
-    },
-    switchScreenIcon () {
-      return 'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'
+    status () {
+      this.toggleSwitchScreenBtnStatus = this.status
     }
   },
   methods: {
     handleSwitchScreenClick () {
-      if (!this.toggleInteractionBtn) {
-        return
+      if (this.toggleSwitchScreenBtnStatus) {
+        this.switchStatus = !this.switchStatus
+        this.$emit('switch', this.switchStatus)
+      } else {
+        const status = true
+        this.$emit('open', status)
       }
-      this.switchStatus = !this.switchStatus
-      this.$emit('switch', this.switchStatus)
+    },
+    handleBespreadClick () {
+      this.isBespread = !this.isBespread
+      this.$emit('bespread', this.isBespread)
+    },
+    onFullScreen () {
+      this.toggleFullScreenBtn = !this.toggleFullScreenBtn
     }
   }
 }
@@ -159,8 +167,9 @@ export default {
             background-image url("~images/full-screen.png")
           .small-screen-icon
             background-image url("~images/small-screen.png")
-    .full-player-wrap
+    .bespread-wrap
       position absolute
+      z-index 1
       right -35px
       top 50%
       margin-top -50px
@@ -170,11 +179,12 @@ export default {
       border-radius 0px 10px 10px 0px; /*no*/
       text-align center
       line-height 100px
-      .full-player-icon
+      .bespread-icon
         font-size 16px
         color $baseWhiteColor
         font-weight $baseFontWeight
-    .full-player-active
+    .bespread-active
       border-radius 10px 0px 0px 10px; /*no*/
       background rgba(221, 221, 221, 0.5)
+      right 0
 </style>

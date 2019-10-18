@@ -1,5 +1,5 @@
 <template>
-  <div class="player-drawpanel-wrapper" :class="size" v-show="!closeStatus">
+  <div class="player-drawpanel-wrapper" :class="size" v-show="status">
     <div v-show="isShowCloseBtn" class="drawpanel-close-btn" @click="onClose">
       <span class="drawpanel-close-icon"></span>
     </div>
@@ -15,7 +15,7 @@ export default {
   props: {
     isShowClose: {
       type: Boolean,
-      default: false
+      default: true
     },
     size: {
       type: String,
@@ -29,13 +29,13 @@ export default {
   },
   data () {
     return {
-      closeStatus: false
+      status: false
     }
   },
   methods: {
     onClose () {
-      this.closeStatus = true
-      this.$emit('close', this.closeStatus)
+      this.status = false
+      this.$emit('close', this.status)
     }
   }
 }

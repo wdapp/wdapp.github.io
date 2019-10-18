@@ -5,10 +5,10 @@
         <live-header :name="name"></live-header>
       </header>
       <div class="main">
-        <div class="left">
-          <live-player></live-player>
+        <div class="left" :class="{ 'bespread': isBespread }">
+          <live-player @bespread="onBespread"></live-player>
         </div>
-        <div class="right">
+        <div class="right" v-show="!isBespread">
           <live-chat></live-chat>
         </div>
       </div>
@@ -33,7 +33,8 @@ export default {
   },
   data () {
     return {
-      name: ''
+      name: '',
+      isBespread: false
     }
   },
   methods: {
@@ -73,6 +74,9 @@ export default {
       this.setViewer(viewer)
       this.name = viewer.name
     },
+    onBespread (status) {
+      this.isBespread = status
+    },
     ...mapMutations(['setViewer'])
   },
   mounted () {
@@ -108,6 +112,8 @@ export default {
           width 1230px
           height 100%
           float left
+        .bespread
+          width 1730px
         .right
           box-sizing border-box
           padding-left 20px

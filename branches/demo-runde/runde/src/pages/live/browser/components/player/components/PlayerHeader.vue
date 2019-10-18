@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import HuodeScene from '../../../../../../common/websdk/live'
+import HuodeScene from 'common/websdk/live'
 
 export default {
   name: 'PlayerHeader',

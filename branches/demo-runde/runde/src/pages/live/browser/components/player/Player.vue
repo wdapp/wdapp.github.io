@@ -10,15 +10,19 @@
       >
         <Live-player-control
           :isShowControl="isShowControl"
-          :closeStatus="closeStatus"
+          :status="status"
           @switch="onSwitch"
+          @open="onOpen"
+          @bespread="onBespread"
         >
           <live-player-player
+            v-show="isShowPlayer"
             :size="playerSize"
             :isShowClose="isShowControl"
             @close="onClose"
           ></live-player-player>
           <live-player-drawpanel
+            v-show="isShowDrawPanel"
             :size="drawPanelSize"
             :isShowClose="isShowControl"
             @close="onClose"
@@ -53,16 +57,30 @@ export default {
   data () {
     return {
       isShowControl: false,
-      status: true,
-      closeStatus: false
+      switchStatus: true,
+      status: true
     }
   },
   computed: {
     playerSize () {
-      return this.status ? 'large' : 'small'
+      return this.switchStatus ? 'large' : 'small'
     },
     drawPanelSize () {
-      return !this.status ? 'large' : 'small'
+      return !this.switchStatus ? 'large' : 'small'
+    },
+    isShowPlayer () {
+      if (this.playerSize === 'small') {
+        return this.status
+      } else {
+        return true
+      }
+    },
+    isShowDrawPanel () {
+      if (this.drawPanelSize === 'small') {
+        return this.status
+      } else {
+        return true
+      }
     }
   },
   methods: {
@@ -83,10 +101,16 @@ export default {
       this.isShowControl = false
     },
     onSwitch (status) {
+      this.switchStatus = status
+    },
+    onClose (status) {
       this.status = status
     },
-    onClose (closeStatus) {
-      this.closeStatus = closeStatus
+    onOpen (status) {
+      this.status = status
+    },
+    onBespread (status) {
+      this.$emit('bespread', status)
     }
   },
   mounted () {
