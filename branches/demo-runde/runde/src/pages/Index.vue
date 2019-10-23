@@ -4,9 +4,16 @@
     <el-button
       class="button"
       type="primary"
-      @click="handleClick('LiveBrowser')"
+      @click="handleClick('Live')"
     >
       PC端观看直播
+    </el-button>
+    <el-button
+      class="button"
+      type="primary"
+      @click="handleClick('Replay')"
+    >
+      PC端观看回放
     </el-button>
     <el-button
       class="button"
@@ -14,20 +21,6 @@
       @click="handleClick('LiveMobile')"
     >
       移动端观看直播
-    </el-button>
-    <el-button
-      class="button"
-      type="primary"
-      @click="handleClick('ReplayBrowser')"
-    >
-      PC端观看回放
-    </el-button>
-    <el-button
-      class="button"
-      type="primary"
-      @click="handleClick('ReplayMobile')"
-    >
-      移动端观看回放
     </el-button>
   </div>
 </template>
@@ -40,7 +33,8 @@ export default {
   name: 'Index',
   data () {
     return {
-      url: 'https://view.csslcloud.net/api/view/index?roomid=20E2BEC88BEF3EEB9C33DC5901307461&userid=B693062ABB8020E0'
+      // url: 'https://view.csslcloud.net/api/view/index?roomid=20E2BEC88BEF3EEB9C33DC5901307461&userid=B693062ABB8020E0'
+      url: ''
     }
   },
   computed: {

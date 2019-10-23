@@ -8,5 +8,8 @@ export default {
   },
   setViewer (state, viewer) {
     state.viewer = viewer
+  },
+  setOptions (state, options) {
+    state.options = options
   }
 }

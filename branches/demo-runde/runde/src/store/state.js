@@ -1,11 +1,17 @@
-let defaultUrl = ''
-
-try {
-  defaultUrl = localStorage.url
-} catch (e) {
+export default {
+  url: getDefaultUrl(),
+  viewer: {},
+  options: {}
 }
 
-export default {
-  url: defaultUrl,
-  viewer: {}
+function getDefaultUrl () {
+  let defaultUrl = ''
+
+  try {
+    defaultUrl = localStorage.url
+  } catch (e) {
+    console.log(e)
+  }
+
+  return defaultUrl
 }

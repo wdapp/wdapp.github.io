@@ -170,11 +170,17 @@
         dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>'
       }
       $('#drawPanel').parent().append(dp)
-      $('div#drawPanel').remove()
+      // $('div#drawPanel').remove()
 
       if (typeof window.on_cc_live_db_flip === 'function') {
         window.on_cc_live_db_flip()
       }
+    },
+    distroy:function(){
+      if(this.dpc){
+        this.dpc.dispose();
+      }
+      $('#dpa').remove();
     },
     pageChange: function (pc) {
       if( !this.isDPReady){
@@ -375,7 +381,7 @@
       }
       var drawPanel = document.getElementById("drawPanel");
       if (DWDpc.fastMode && drawPanel) {
-        scripts.push('//image.csslcloud.net/live/1.0.0/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+        scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
@@ -436,8 +442,8 @@
           $.DrawingBoard.config()
         }
       })
-    },
 
+    },
     login: function (fn) {
       $.ajax({
         url: '//view.csslcloud.net/api/room/login',
@@ -697,7 +703,20 @@
       }
       Pusher.socket.emit('change_nickname', name)
     },
-
+    distroy:function() {
+      if (DWDpc) {
+        DWDpc.distroy();
+      }
+      if (Pusher) {
+        Pusher.distroy()
+      }
+      if (live.interaction) {
+        live.interaction.disconnectInteraction(options.viewerId);
+      }
+      if(LivePlayer){
+        LivePlayer.distroy();
+      }
+    },
     sendPublicChatMsg: function (msg) {
       if (!msg || msg.length > 300) {
         return
@@ -1058,11 +1077,11 @@
   var options = {
     init: function () {
       this['userId'] = DWLive.userid,
-        this['roomId'] = DWLive.roomid,
-        this['groupId'] = DWLive.groupId,
-        this['liveId'] = DWLive.liveid,
-        this['viewerId'] = DWLive.viewerid,
-        this['upId'] = DWLive.upid
+      this['roomId'] = DWLive.roomid,
+      this['groupId'] = DWLive.groupId,
+      this['liveId'] = DWLive.liveid,
+      this['viewerId'] = DWLive.viewerid,
+      this['upId'] = DWLive.upid
     }
   }
 
@@ -1086,7 +1105,7 @@
     init: function () {
 
       var t = MobileLive.isMobile() == 'isMobile' ? 1 : 0
-
+      this.timeIntervalID = -1;
       if (!DWLive.forceNew) {
         this.socket = io.connect(this.options.pusherUrl, {
           query: {
@@ -1104,6 +1123,18 @@
       this.bind()
     },
 
+    distroy:function(){
+      this.hangupInteraction();
+      this.cancelRequestInteraction()
+      if(this.socket){
+        this.socket.disconnect()
+        // io.distroy();
+      }
+
+      if(this.timeIntervalID !=-1){
+        clearInterval(this.timeIntervalID);
+      }
+    },
     bind: function () {
       var currentLayout = false
 
@@ -1323,7 +1354,7 @@
       this.socket.on('room_setting', function (data) {
         data = toJson(data)
         if (typeof DWLive.onRoomSetting === 'function') {
-          console.log('room_setting', data)
+          // console.log('room_setting', data)
 
           window.allowSpeakThirdParty = data.allow_speak_third_party
 
@@ -1337,9 +1368,9 @@
           }
 
           if(window.isSpeakThirdParty) {
-            console.log('声网连麦', window.isSpeakThirdParty)
+            // console.log('声网连麦', window.isSpeakThirdParty)
           } else {
-            console.log('WebRTC连麦', window.isSpeakThirdParty)
+            // console.log('WebRTC连麦', window.isSpeakThirdParty)
           }
 
           DWLive.onRoomSetting(data)
@@ -1516,7 +1547,7 @@
         } catch (e) {
         }
       }, 1500)
-      setInterval(function () {
+      this.timeIntervalID = setInterval(function () {
         try {
           _this.socket.emit('room_user_count')
         } catch (e) {
@@ -2244,6 +2275,7 @@
 
       swfobject.embedSWF(this.swfUrl, this.id, '100%', '100%', '10.0.0',
         '/flash/expressInstall.swf', flashvars, params)
+      // swfobject.removeSWF()
 
     },
 
@@ -2252,7 +2284,7 @@
     },
 
     getPlayerTime: function () {
-      var t = parseInt(this.getFlash()._time?this.getFlash()._time():0)
+      var t = parseInt((typeof this.getFlash()._time==="function")?this.getFlash()._time():0)
       if (isNaN(t) || t < 0) {
         return 0
       }
@@ -2313,6 +2345,9 @@
       if (this.getFlash()._jsTOASbarrage) {
         this.getFlash()._jsTOASbarrage(m)
       }
+    },
+    distroy:function(){
+      this.end();
     },
 
     getLine: function () {

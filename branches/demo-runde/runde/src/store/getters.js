@@ -1,3 +1,12 @@
+export default {
+  getOptions (state) {
+    let options = {}
+    const url = state.url
+    options = parseUrl(url)
+    return options
+  }
+}
+
 function parseUrl (url = '') {
   if (!url && typeof url !== 'string') {
     return false
@@ -38,13 +47,4 @@ function parseUrl (url = '') {
   }
 
   return params
-}
-
-export default {
-  getOptions (state) {
-    let options = {}
-    const url = state.url
-    options = parseUrl(url)
-    return options
-  }
 }
