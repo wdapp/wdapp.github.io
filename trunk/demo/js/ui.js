@@ -498,5 +498,32 @@ function onSocketDisconnect(){
         console.log("socket 断开链接")
     }
 }
+//测试mime
+function _mime(option, value) {
+  var mimeTypes = navigator.mimeTypes;
+  for (var mt in mimeTypes) {
+    if (mimeTypes[mt][option] == value) {
+      return true;
+    }
+  }
+  return false;
+}
+//直播防360浏览器录屏
+window.onresize = function () {
+  //application/vnd.chromium.remoting-viewer 可能为360特有
+  var is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+
+  if (isChrome() && is360) {
+    //alert("检测到是360浏览器");
+    var _width = $('#livePlayer').width();
+    var _height = $('#livePlayer').height();
+    var winWidth = $(window).width();
+    var winHeight = $(window).height();
+    if (_width === winWidth && _height ===winHeight) {
+      console.log('视频不支持录屏模式下播放');
+      $('#main-video').remove();
+    }
+  }
+}
 
 

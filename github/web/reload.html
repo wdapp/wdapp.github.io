@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    iframe {
+      height: 500px !important;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <button id="loginLiveBtn">登录直播</button>
+  <button id="closeLiveBtn">退出直播</button>
+  <button id="loginReplayBtn">登录回放</button>
+  <button id="closeReplayBtn">退出回放</button>
+</div>
+
+<div style="float: left;width: 500px;border: 1px green solid">
+  直播：
+  <div style="width: 400px; border: 1px solid lightcoral" id="livePlayer"></div>
+  <div>
+    <div style="width: 100%; border: 1px solid lightblue" id="drawPanel"></div>
+  </div>
+  <div>
+    <input type="text" id="input">
+    <button id="inputBtn">发送</button>
+    <div id="liveMessage" style="max-height: 400px;overflow: auto"></div>
+  </div>
+</div>
+<div style="float: left;width: 500px;border: 1px green solid">
+  回放：
+  <div>
+    <div style="width: 100%; border: 1px solid lightblue" id="playbackPlayer"></div>
+  </div>
+  <div>
+    <div style="width: 400px; border: 1px solid lightcoral" id="playbackPanel"></div>
+  </div>
+  <div>
+    <div id="replayMessage" style="max-height: 400px;overflow: auto"></div>
+  </div>
+</div>
+
+<script src="//view.csslcloud.net/js/jquery-1.9.0.min.js"></script>
+<script src="//view.csslcloud.net/js/liveSDK.js"></script>
+<script src="//view.csslcloud.net/js/playbackSDK.js"></script>
+<script>
+var liveIndex = 0
+$('#loginLiveBtn').click(function () {
+  liveIndex++
+  DWLive.init({
+    userid: 'C783F0F7CB77E1F3',
+    roomid: '907DE174D77ED2C39C33DC5901307461',
+    viewername: '(直播' + liveIndex + ')',
+    viewertoken: '',
+    fastMode: 'true'
+  })
+})
+$('#closeLiveBtn').click(function () {
+  DWLive.destroy()
+  DWLive.logout({})
+  $('#liveMessage').html('')
+})
+$('#inputBtn').click(function () {
+  var val = $('#input').val()
+  DWLive.sendPublicChatMsg(val)
+})
+DWLive.onPublicChatMessage = function (data) {
+  var _data = JSON.parse(data)
+  var msg = '<p>' + _data.username + ':' + _data.msg + '</p>'
+  $('#liveMessage').append(msg)
+}
+DWLive.onLoginSuccess = function(data) {
+  console.log('直播',' - ',data.viewer.name,' - ',data.viewer.id)
+}
+
+var replayIndex = 0
+$('#loginReplayBtn').click(function () {
+  replayIndex++
+  $.DW.config({
+    userId: 'C783F0F7CB77E1F3',
+    roomId: '907DE174D77ED2C39C33DC5901307461',
+    recordId: 'E71FD944C7DD5187',
+    viewername: '(回放' + replayIndex + ')',
+    viewertoken: '',
+    isH5play: true,
+    fastMode: true
+  })
+})
+$('#closeReplayBtn').click(function () {
+  $.DW.destroy()
+  $.DW.logout()
+  $('#replayMessage').html('')
+})
+window.on_cc_live_chat_msg_sync = function (datas) {
+  var _datas = datas
+  for (var i = 0; i < _datas.length; i++) {
+    var _data = _datas[i]
+    var msg = '<p>' + _data.username + ':' + _data.msg + '</p>'
+    $('#replayMessage').append(msg)
+  }
+}
+window.on_cc_login_success = function (data) {
+  console.log('回放',' - ',data.viewer.name,' - ',data.viewer.id)
+}
+</script>
+
+</body>
+</html>

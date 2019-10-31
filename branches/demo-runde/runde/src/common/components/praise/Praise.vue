@@ -4,6 +4,7 @@
       @complete="onComplete"
     >
       <heart
+        class="heart-wrap"
         v-for="item of options"
         :key="item"
       ></heart>

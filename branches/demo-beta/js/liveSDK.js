@@ -162,7 +162,7 @@
     dpc: {},
     fastMode: true,
     init: function () {
-      this.dpc = new Dpc()
+        this.dpc = new Dpc()
     },
     appendDrawPanel: function () {
       var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>'
@@ -1081,11 +1081,11 @@
   var options = {
     init: function () {
       this['userId'] = DWLive.userid,
-        this['roomId'] = DWLive.roomid,
-        this['groupId'] = DWLive.groupId,
-        this['liveId'] = DWLive.liveid,
-        this['viewerId'] = DWLive.viewerid,
-        this['upId'] = DWLive.upid
+      this['roomId'] = DWLive.roomid,
+      this['groupId'] = DWLive.groupId,
+      this['liveId'] = DWLive.liveid,
+      this['viewerId'] = DWLive.viewerid,
+      this['upId'] = DWLive.upid
     }
   }
 
@@ -1849,9 +1849,9 @@
      * 请求语音互动
      *
      * t = {
-     *  video: true,
-     *  audio: true
-     * }
+         *  video: true,
+         *  audio: true
+         * }
      * */
     this.requestInteraction = function (t, callback) {
       debug('Interaction', '请求互动')

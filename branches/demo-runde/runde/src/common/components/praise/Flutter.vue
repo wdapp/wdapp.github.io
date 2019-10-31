@@ -24,22 +24,24 @@ export default {
 
     },
     onEnter (el, done) {
-      const top = (Math.random() * 50) + 150
+      const top = (Math.random() * 80) + 150
       const opacity = (Math.random() / 10) + 0.9
+      const duration = (Math.random() * 250) + 1000
       Velocity.RegisterEffect('shake', {
-        defaultDuration: 1500,
+        defaultDuration: duration,
         calls: [
-          [{opacity: opacity, top: -(0.1 * top), left: -(Math.random() * 10)}, 0.125],
-          [{opacity: 0.9, top: -(0.2 * top), left: (Math.random() * 10)}, 0.2],
-          [{opacity: 0.8, top: -(0.3 * top), left: -((Math.random() * 20) + 10)}, 0.15],
-          [{opacity: 0.7, top: -(0.4 * top), left: (Math.random() * 5)}, 0.2],
-          [{opacity: 0.5, top: -(0.5 * top), left: -((Math.random() * 35) + 5)}, 0.125],
-          [{opacity: 0.3, top: -(0.7 * top), left: (Math.random() * 5)}, 0.1],
-          [{opacity: 0.1, top: -(0.9 * top), left: -((Math.random() * 20) + 5)}, 0.5],
-          [{opacity: 0, top: -(1 * top), left: -(Math.random() * 10)}, 0.5]
+          [{opacity: opacity, left: -(Math.random() * 5)}, 0.125],
+          [{opacity: 0.9, left: (Math.random() * 5)}, 0.125],
+          [{opacity: 0.8, left: -((Math.random() * 5) + 5)}, 0.125],
+          [{opacity: 0.7, left: (Math.random() * 5) + 5}, 0.125],
+          [{opacity: 0.5, left: -((Math.random() * 5) + 5)}, 0.125],
+          [{opacity: 0.3, left: (Math.random() * 2.5)}, 0.125],
+          [{opacity: 0.1, left: -(Math.random() * 1.5)}, 0.125],
+          [{opacity: 0, left: (Math.random() * 1)}, 0.125]
         ]
       })
-      Velocity(el, 'shake', {complete: done, queue: false, easing: 'ease-out'})
+      Velocity(el, 'shake', {queue: false, easing: 'easeInOutQuad'})
+      Velocity(el, {top: -top}, {duration: duration, complete: done, queue: false, easing: 'easeOutQuad'})
     },
     onAfterEnter (el) {
       this.$emit('complete')

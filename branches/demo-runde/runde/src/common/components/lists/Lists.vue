@@ -47,13 +47,13 @@ export default {
       var as = isAddress(url)
       if (as) {
         this.changeUrl(url)
-        this.$router.push('/')
-        // this.$router.push({
-        //   name: name,
-        //   params: {
-        //     options: encodeURIComponent(JSON.stringify(this.getOptions))
-        //   }
-        // })
+        this.$router.push({
+          name: 'Transfer',
+          params: {
+            name: name,
+            options: encodeURIComponent(JSON.stringify(this.getOptions))
+          }
+        })
         // this.$router.go(0)
       } else {
         this.$message({
