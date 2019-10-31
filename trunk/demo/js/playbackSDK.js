@@ -1975,18 +1975,22 @@
       $('#playbackPanel').parent().append(dp)
       $('div#playbackPanel').hide()
     },
-    logout: function () {
+    logout: function (callback) {
       $.ajax({
         url: '//view.csslcloud.net/api/callback/logout',
         type: 'GET',
-        dataType: 'json',
+        dataType: 'jsonp',
         timeout: 5000,
         xhrFields: {
           withCredentials: true
         },
         success: function (data) {
+          if(!callback)return
+          callback.success && callback.success(data)
         },
         error: function (xhr, status, error) {
+          if(!callback)return
+          callback.error && callback.error(xhr, status, error)
         }
       })
     },
@@ -1996,7 +2000,6 @@
       var readyState = false,
         script = document.createElement('script')
       script.src = url
-
       script.onload = script.onreadystatechange = function () {
         if (!readyState && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
           readyState = true

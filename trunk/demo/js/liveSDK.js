@@ -176,11 +176,11 @@
         window.on_cc_live_db_flip()
       }
     },
-    distroy:function(){
+    destroy:function(){
       if(this.dpc){
         this.dpc.dispose();
       }
-      $('#dpa').remove();
+      $('#dpa').remove()
     },
     pageChange: function (pc) {
       if( !this.isDPReady){
@@ -703,18 +703,22 @@
       }
       Pusher.socket.emit('change_nickname', name)
     },
-    distroy:function() {
+    destroy:function() {
       if (DWDpc) {
-        DWDpc.distroy();
+        DWDpc.destroy();
       }
       if (Pusher) {
-        Pusher.distroy()
+        Pusher.destroy()
       }
       if (live.interaction) {
         live.interaction.disconnectInteraction(options.viewerId);
       }
       if(LivePlayer){
-        LivePlayer.distroy();
+        LivePlayer.destroy();
+      }
+      if (window.live && window.live.interaction) {
+        window.live.interaction.hangupInteraction && window.live.interaction.hangupInteraction()
+        window.live.interaction.leaveAgoraRTC()
       }
     },
     sendPublicChatMsg: function (msg) {
@@ -1123,12 +1127,12 @@
       this.bind()
     },
 
-    distroy:function(){
+    destroy:function(){
       this.hangupInteraction();
       this.cancelRequestInteraction()
       if(this.socket){
         this.socket.disconnect()
-        // io.distroy();
+        // io.destroy();
       }
 
       if(this.timeIntervalID !=-1){
@@ -2346,7 +2350,7 @@
         this.getFlash()._jsTOASbarrage(m)
       }
     },
-    distroy:function(){
+    destroy:function(){
       this.end();
     },
 

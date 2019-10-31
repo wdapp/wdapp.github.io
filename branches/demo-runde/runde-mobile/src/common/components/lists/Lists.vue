@@ -1,7 +1,12 @@
 <template>
   <div class="live-lists-wrapper" ref="wrapper">
     <ol class="list-wrap">
-      <li class="item" v-for="(list, index) of lists" :key="index">
+      <li
+        class="item"
+        v-for="(list, index) of lists"
+        :key="index"
+        @click="handleClick(list.name,  list.url)"
+      >
         <span class="list-index">{{index + 1}}</span>
         <div class="list-desc">
           <div class="list-title">{{list.title}}</div>
@@ -19,28 +24,50 @@
 </template>
 
 <script>
+import {mapState, mapMutations, mapGetters} from 'vuex'
+import {isAddress} from 'common/utils'
 import BScroll from 'better-scroll'
 
 export default {
   name: 'LiveLists',
   data () {
     return {
-      lists: [
-        {
-          title: '中药一闭关刷题直播（第1期）',
-          subhead: '8月14日  15:00 - 16:00 王波波',
-          tip: '已结束',
-          status: false
-        }, {
-          title: '中药一闭关刷题直播（第1期）',
-          subhead: '8月14日  15:00 - 16:00 王波波',
-          tip: '直播中',
-          status: true
-        }
-      ]
+      lists: []
     }
   },
+  computed: {
+    ...mapState({
+      currentUrl: 'url',
+      stateLists: 'lists'
+    }),
+    ...mapGetters(['getOptions'])
+  },
+  methods: {
+    handleClick (name, url) {
+      var as = isAddress(url)
+      if (as) {
+        this.changeUrl(url)
+        this.$router.push('/')
+        this.$router.push({
+          name: name,
+          params: {
+            options: encodeURIComponent(JSON.stringify(this.getOptions))
+          }
+        })
+        this.$router.go(0)
+      } else {
+        this.$message({
+          showClose: true,
+          message: '观看地址不正确',
+          type: 'warning'
+        })
+      }
+    },
+    ...mapMutations(['changeUrl'])
+  },
   mounted () {
+    this.lists = this.stateLists
+
     this.$nextTick(() => {
       this.scroll = new BScroll(this.$refs.wrapper, {
         mouseWheel: {

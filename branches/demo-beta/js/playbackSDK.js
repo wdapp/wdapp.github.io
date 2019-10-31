@@ -79,7 +79,11 @@
       }
       var t
       if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
-        t = this.getH5player().currentTime
+        if (this.getH5player() && this.getH5player().currentTime) {
+          t = this.getH5player().currentTime
+        } else {
+          t = 0
+        }
       } else {
         t = parseInt(this.getFlash().getPosition(), 10)
       }
@@ -1753,7 +1757,7 @@
       $.ajax({
         url: '//view.csslcloud.net/api/callback/logout',
         type: 'GET',
-        dataType: 'json',
+        dataType: 'jsonp',
         timeout: 5000,
         xhrFields: {
           withCredentials: true

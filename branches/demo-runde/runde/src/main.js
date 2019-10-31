@@ -8,6 +8,7 @@ import ElementUI from 'element-ui'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'common/flexible'
 import 'reset.css/reset.css'
+import 'animate.css/animate.css'
 import 'swiper/dist/css/swiper.css'
 import 'element-ui/lib/theme-chalk/index.css'
 

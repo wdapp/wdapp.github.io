@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/pages/Index'
-import Live from '@/pages/browser/live/Live'
-import Replay from '@/pages/browser/replay/Replay'
-import LiveMobile from '@/pages/mobile/Live'
+import Live from '@/pages/live/Live'
+import Replay from '@/pages/replay/Replay'
 
 Vue.use(Router)
 
@@ -23,11 +22,6 @@ export default new Router({
       path: '/replay/:options',
       name: 'Replay',
       component: Replay
-    },
-    {
-      path: '/liveMobile/:options',
-      name: 'LiveMobile',
-      component: LiveMobile
     }
   ]
 })

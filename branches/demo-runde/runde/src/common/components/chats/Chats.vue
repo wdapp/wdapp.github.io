@@ -91,6 +91,14 @@ export default {
         vertical-align middle
         margin 0 5px
         width-height-same(30px)
+      >>> .img
+        width-height-same(auto)
+      >>> .cem
+        width-height-same(40px)
+      >>> .em2
+        width-height-same(30px)
+      >>> .em2-q
+        width-height-same(45px)
   .chat-right
     overflow hidden
     .chat-header, .chat-content

@@ -1,7 +1,104 @@
 /**
  * CC live video
- * v2.9.2 2019/06/24 */
+ * v3.0.0 2019/10/12 */
 (function () {
+
+  var VERSION = "3.0.0";
+
+
+  !(function () {
+    function startTestVersion(d) {
+      var info = d.h5 ? d.h5 : {};
+
+      if (info.lowyerVersion) {
+        if (isMax(info.lowyerVersion.v, VERSION)) {
+          var date = info.lowyerVersion.expiration;
+          var msg = info.errorMsg ;
+          log(msg);
+          if (Error) {
+            throw new Error(msg)
+          } else {
+            warning(msg);
+          }
+          return
+        }
+      }
+      if (info.latestVersion) {
+        if (isMax(info.latestVersion.v, VERSION)) {
+          var notifyMsg = info.notify ;
+          // log(notifyMsg);
+          warning(notifyMsg);
+          return
+        }
+      }
+    }
+
+    function log(l) {
+      if (console.log) {
+        console.log(l);
+      }
+    }
+
+    function warning(l) {
+      if (console.warn) {
+        console.warn(l);
+      }
+    }
+
+    //判断v1 是否大于v2
+    function isMax(v1, v2) {
+      var v1s = v1.split(".");
+      var v2s = v2.split(".");
+      var index = 0;
+      var len = v1s.length;
+      var result = false;
+      while (index < len-1) {
+        var vv1 = parseInt(v1s[index]);
+        var vv2 = parseInt(v2s[index]);
+        if (vv1 > vv2) {
+          result = true
+          break;
+        } else if (vv1 < vv2) {
+          result = false;
+          break;
+        }
+        index++;
+      }
+      return result;
+
+    }
+
+    function requestError(d) {
+
+    }
+    var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
+    var xmlhttp = null;
+    try {
+      if(window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+      }else if(window.ActiveXObject){
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      if(xmlhttp){
+        xmlhttp.open("GET",url,true);
+        xmlhttp.onreadystatechange = function(){
+          if(xmlhttp.readyState === 4){
+            if(xmlhttp.status === 200){
+              var versionInfo = JSON.parse(xmlhttp.responseText);
+              // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+              if (versionInfo) {
+                startTestVersion(versionInfo)
+              }
+            }
+          }
+        }
+        xmlhttp.send();
+      }
+    }catch (e) {
+      log("访问版本信息失败");
+    }
+
+  })()
 
   var DELAY_TIME = 10 * 1000
 
@@ -61,8 +158,9 @@
   }
   var DWDpc = {
     DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
+    isDPReady:false,
     dpc: {},
-    fastMode: false,
+    fastMode: true,
     init: function () {
       this.dpc = new Dpc()
     },
@@ -72,85 +170,130 @@
         dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>'
       }
       $('#drawPanel').parent().append(dp)
-      $('div#drawPanel').remove()
+      // $('div#drawPanel').remove()
 
       if (typeof window.on_cc_live_db_flip === 'function') {
         window.on_cc_live_db_flip()
       }
     },
+    destroy:function(){
+      if(this.dpc){
+        this.dpc.dispose();
+      }
+      $('#dpa').remove()
+    },
     pageChange: function (pc) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
+      if (!this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.animationChange(ac)
     },
     history: function (h) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.history(h)
     },
     draw: function (d) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.draw(d)
     },
     clear: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.clear()
     },
     reload: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.reload()
     },
     setDocMode: function (t) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.setFreeDocMode(t)
     },
     getDocs: function (callback) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.getDocs(DWLive.roomid, DWLive.userid, callback)
     },
     changePageTo: function (dId, pI) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.changePageTo(dId, pI)
     },
     showMarquee: function (m) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.openMarquee(m)
     },
     closeMarquee: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.closeMarquee()
     },
     openBarrage: function (l) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.openBarrage()
     },
     insertBarrage: function (data) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
@@ -166,12 +309,18 @@
       this.dpc.insertBarrage(ifo)
     },
     closeBarrage: function () {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
       this.dpc.closeBarrage()
     },
     docAdapt: function (t) {
+      if( !this.isDPReady){
+        return
+      }
       if (!this.fastMode) {
         return
       }
@@ -189,6 +338,7 @@
       if (typeof option == 'undefined') {
         option = {}
       }
+
       this.userid = $.trim(option.userid)
       this.roomid = $.trim(option.roomid)
       this.groupid = $.trim(option.groupid)
@@ -210,7 +360,7 @@
       } else if (typeof option.fastMode == 'boolean') {
         this.fastMode = option.fastMode
       } else {
-        this.fastMode = false
+        this.fastMode = true
       }
       DWDpc.fastMode = this.fastMode
 
@@ -229,9 +379,9 @@
       if (!isIE) {
         scripts.push('//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js')
       }
-
-      if (DWDpc.fastMode) {
-        scripts.push('//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+      var drawPanel = document.getElementById("drawPanel");
+      if (DWDpc.fastMode && drawPanel) {
+        scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
@@ -292,8 +442,8 @@
           $.DrawingBoard.config()
         }
       })
-    },
 
+    },
     login: function (fn) {
       $.ajax({
         url: '//view.csslcloud.net/api/room/login',
@@ -307,7 +457,11 @@
           viewertoken: this.viewertoken,
           forcibly: this.forcibly,
           viewercustomua: this.viewercustomua,
-          viewercustominfo: this.viewercustominfo
+          viewercustominfo: this.viewercustominfo,
+          version:VERSION,
+          service:2,
+          client:4
+
         },
         success: function (data) {
           if (!data.success) {
@@ -345,15 +499,16 @@
           DWLive.isBarrage = data.datas.room.barrage
           DWLive.liveCountdown = data.datas.room.liveCountdown
           DWLive.groupId = data.datas.viewer.groupId
-
           //初始化极速动画对象
-          if (DWDpc.fastMode) {
+          var drawPanel = document.getElementById("drawPanel");
+          if (DWDpc.fastMode && drawPanel) {
             $('#documentDisplayMode').val(DWLive.documentDisplayMode)
+            DWDpc.isDPReady = true;
             DWDpc.appendDrawPanel()
-            DWDpc.init()
+            DWDpc.init();
+            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
           }
           fn()
-
           var delay = data.datas.room.delayTime,
             foreignPublish = data.datas.room.foreignPublish
           LivePlayer.delay = delay
@@ -548,7 +703,24 @@
       }
       Pusher.socket.emit('change_nickname', name)
     },
-
+    destroy:function() {
+      if (DWDpc) {
+        DWDpc.destroy();
+      }
+      if (Pusher) {
+        Pusher.destroy()
+      }
+      if (live.interaction) {
+        live.interaction.disconnectInteraction(options.viewerId);
+      }
+      if(LivePlayer){
+        LivePlayer.destroy();
+      }
+      if (window.live && window.live.interaction) {
+        window.live.interaction.hangupInteraction && window.live.interaction.hangupInteraction()
+        window.live.interaction.leaveAgoraRTC()
+      }
+    },
     sendPublicChatMsg: function (msg) {
       if (!msg || msg.length > 300) {
         return
@@ -937,7 +1109,7 @@
     init: function () {
 
       var t = MobileLive.isMobile() == 'isMobile' ? 1 : 0
-
+      this.timeIntervalID = -1;
       if (!DWLive.forceNew) {
         this.socket = io.connect(this.options.pusherUrl, {
           query: {
@@ -955,6 +1127,18 @@
       this.bind()
     },
 
+    destroy:function(){
+      this.hangupInteraction();
+      this.cancelRequestInteraction()
+      if(this.socket){
+        this.socket.disconnect()
+        // io.destroy();
+      }
+
+      if(this.timeIntervalID !=-1){
+        clearInterval(this.timeIntervalID);
+      }
+    },
     bind: function () {
       var currentLayout = false
 
@@ -1174,7 +1358,7 @@
       this.socket.on('room_setting', function (data) {
         data = toJson(data)
         if (typeof DWLive.onRoomSetting === 'function') {
-          console.log('room_setting', data)
+          // console.log('room_setting', data)
 
           window.allowSpeakThirdParty = data.allow_speak_third_party
 
@@ -1188,9 +1372,9 @@
           }
 
           if(window.isSpeakThirdParty) {
-            console.log('声网连麦', window.isSpeakThirdParty)
+            // console.log('声网连麦', window.isSpeakThirdParty)
           } else {
-            console.log('WebRTC连麦', window.isSpeakThirdParty)
+            // console.log('WebRTC连麦', window.isSpeakThirdParty)
           }
 
           DWLive.onRoomSetting(data)
@@ -1367,7 +1551,7 @@
         } catch (e) {
         }
       }, 1500)
-      setInterval(function () {
+      this.timeIntervalID = setInterval(function () {
         try {
           _this.socket.emit('room_user_count')
         } catch (e) {
@@ -1665,9 +1849,9 @@
      * 请求语音互动
      *
      * t = {
-         *  video: true,
-         *  audio: true
-         * }
+     *  video: true,
+     *  audio: true
+     * }
      * */
     this.requestInteraction = function (t, callback) {
       debug('Interaction', '请求互动')
@@ -2095,6 +2279,7 @@
 
       swfobject.embedSWF(this.swfUrl, this.id, '100%', '100%', '10.0.0',
         '/flash/expressInstall.swf', flashvars, params)
+      // swfobject.removeSWF()
 
     },
 
@@ -2103,7 +2288,7 @@
     },
 
     getPlayerTime: function () {
-      var t = parseInt(this.getFlash()._time())
+      var t = parseInt((typeof this.getFlash()._time==="function")?this.getFlash()._time():0)
       if (isNaN(t) || t < 0) {
         return 0
       }
@@ -2147,7 +2332,7 @@
           return
         }
         this.isPublishing = 0
-        this.getFlash()._streamEnd()
+        this.getFlash()._streamEnd&&this.getFlash()._streamEnd()
       }
     },
 
@@ -2165,9 +2350,12 @@
         this.getFlash()._jsTOASbarrage(m)
       }
     },
+    destroy:function(){
+      this.end();
+    },
 
     getLine: function () {
-      var lines = this.getFlash().getLine()
+      var lines = this.getFlash().getLine?this.getFlash().getLine():0;
       if (lines) {
         lines = JSON.parse(lines)
       }
@@ -2175,17 +2363,17 @@
     },
 
     changeLine: function (line) {
-      this.getFlash().changeLine(line)
+      this.getFlash().changeLine&&this.getFlash().changeLine(line)
     },
     changeVideoScale: function (t) {
-      this.getFlash()._showScreenScale(t)
+      this.getFlash()._showScreenScale&&this.getFlash()._showScreenScale(t)
     },
     onlyAudio: function () {
-      this.getFlash()._onlyAudio()
+      this.getFlash()._onlyAudio&&this.getFlash()._onlyAudio()
     },
 
     setSound: function (n) {
-      this.getFlash()._SetSound(n)
+      this.getFlash()._SetSound&&this.getFlash()._SetSound(n)
     },
 
     // 打开声音
@@ -2194,7 +2382,7 @@
         return
       }
 
-      this.getFlash()._onSound()
+      this.getFlash&&this.getFlash()._onSound()
     },
 
     // 关闭声音
@@ -2203,7 +2391,7 @@
         return
       }
 
-      this.getFlash()._unSound()
+      this.getFlash&&this.getFlash()._unSound()
     },
 
     // 开启关闭弹幕
@@ -2212,14 +2400,14 @@
         return
       }
 
-      this.getFlash()._barrage(b)
+      this.getFlash()._barrage&&this.getFlash()._barrage(b)
     },
 
     showControl: function (b) {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._ShowControl(b)
+      this.getFlash()._ShowControl&&this.getFlash()._ShowControl(b)
     },
 
     //封禁
@@ -2227,7 +2415,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._banLive()
+      this.getFlash()._banLive&&this.getFlash()._banLive()
     },
 
     //解禁
@@ -2235,7 +2423,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._unbanLive()
+      this.getFlash()._unbanLive&&this.getFlash()._unbanLive()
     },
 
     // 显示跑马灯功能
@@ -2248,13 +2436,13 @@
         return
       }
 
-      this.getFlash()._showMarqueePlugin(marquee)
+      this.getFlash()._showMarqueePlugin&&this.getFlash()._showMarqueePlugin(marquee)
     },
     closeMarquee: function () {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
+      this.getFlash()._closeMarqueePlugin&&this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
     }
   }
 
@@ -2888,7 +3076,7 @@
     },
 
     appendVideo: function (s) {
-      var v = '<video id="player_live" webkit-playsinline playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      var v = '<video id="player_live" webkit-playsinline x5-video-player-type="h5-page" playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
       $('#' + LivePlayer.id).html(v)
       var video = document.getElementById('player_live')
       DWLive.onKickOut = function () {
