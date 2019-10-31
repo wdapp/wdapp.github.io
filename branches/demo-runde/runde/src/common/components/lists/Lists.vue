@@ -5,7 +5,7 @@
         class="item"
         v-for="(list, index) of lists"
         :key="index"
-        @click="handleClick(list.name,  list.url)"
+        @click="handleClick(list.name, list.url)"
       >
         <span class="list-index">{{index + 1}}</span>
         <div class="list-desc">
@@ -25,7 +25,7 @@
 
 <script>
 import {mapState, mapMutations, mapGetters} from 'vuex'
-import {isAddress} from 'common/utils'
+import {isAddress, log} from 'common/utils'
 import BScroll from 'better-scroll'
 
 export default {
@@ -37,23 +37,25 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUrl: 'url',
       stateLists: 'lists'
     }),
     ...mapGetters(['getOptions'])
   },
   methods: {
+    ...mapMutations(['changeUrl']),
     handleClick (name, url) {
       var as = isAddress(url)
       if (as) {
         this.changeUrl(url)
-        this.$router.push({
-          name: 'Transfer',
-          params: {
-            name: name,
-            options: encodeURIComponent(JSON.stringify(this.getOptions))
-          }
-        })
+        const options = encodeURIComponent(JSON.stringify(this.getOptions))
+        const oldName = this.$route.name
+        if (oldName === name) {
+          this.routerToTransfer(name, options)
+          log('routerToTransfer')
+        } else {
+          this.routerTo(name, options)
+          log('routerTo')
+        }
         // this.$router.go(0)
       } else {
         this.$message({
@@ -63,7 +65,23 @@ export default {
         })
       }
     },
-    ...mapMutations(['changeUrl'])
+    routerToTransfer (name, options) {
+      this.$router.push({
+        name: 'Transfer',
+        params: {
+          name: name,
+          options: options
+        }
+      })
+    },
+    routerTo (name, options) {
+      this.$router.push({
+        name: name,
+        params: {
+          options: options
+        }
+      })
+    }
   },
   mounted () {
     this.lists = this.stateLists

@@ -68,6 +68,7 @@ export default {
     background-color $lightBlackColor
     width-height-full()
     .live-player
+      position absolute
       width-height-full()
     .player-close-btn
       position absolute
