@@ -381,7 +381,9 @@
       }
       var drawPanel = document.getElementById("drawPanel");
       if (DWDpc.fastMode && drawPanel) {
-        scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+        // scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+        // 测试
+        scripts.push('//github.wdapp.top/github/dp/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
