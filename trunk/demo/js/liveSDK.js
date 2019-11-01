@@ -1,7 +1,7 @@
 /**
  * CC live video
  * v3.0.0 2019/10/12 */
-(function () {
+(function HuodeSceneLive() {
 
   var VERSION = "3.0.0";
 
@@ -176,9 +176,9 @@
         window.on_cc_live_db_flip()
       }
     },
-    destroy:function(){
-      if(this.dpc){
-        this.dpc.dispose();
+    destroy: function () {
+      if (this.dpc && this.dpc.dispose) {
+        this.dpc.dispose()
       }
       $('#dpa').remove()
     },
@@ -659,7 +659,7 @@
         }
       })
 
-      Pusher.socket.disconnect()
+      Pusher.socket && Pusher.socket.disconnect()
     },
 
     getScript: function (url, success) {
@@ -703,7 +703,7 @@
       }
       Pusher.socket.emit('change_nickname', name)
     },
-    destroy:function() {
+    destroy: function () {
       if (DWDpc) {
         DWDpc.destroy();
       }
@@ -720,6 +720,7 @@
         window.live.interaction.hangupInteraction && window.live.interaction.hangupInteraction()
         window.live.interaction.leaveAgoraRTC()
       }
+      HuodeSceneLive(window)
     },
     sendPublicChatMsg: function (msg) {
       if (!msg || msg.length > 300) {
