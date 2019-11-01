@@ -22,6 +22,7 @@
     var wb = document.getElementById('whiteBoard')
     var wbContext = wb.getContext('2d')
 
+    this.currentPageNum = -1;
 
     //var parentNode = document.getElementById("dp");
     this.imgParentNode = document.getElementById('dp')
@@ -126,7 +127,6 @@
     this.db.resetDrawCurrentPage()
   }
   PC.prototype.animationCallback = function (data) {
-
     var currentPageChange = this.current
     if (currentPageChange.isAnimationFastestMode) {
       if (currentPageChange.pageNum == data.currentSlideIndex && data.currentStepIndex == 0) {
@@ -137,7 +137,23 @@
       // this.ifr.style.visibility = '';
       this.current.isReadyTriggerAnimation = true
     }
+      if (typeof window.dpAnimateLoadComplete === 'function') {
+          //console.log("222dp IOS 文档加载完成回调");
+          window.dpAnimateComplete(data)
+      }
+      if (window.android && typeof window.android.dpAnimateLoadComplete === 'function') {
+          //console.log("222dp ANDROID 文档加载完成回调");
+          window.android.dpAnimateComplete(data)
+      }
+      try {
+          window.webkit.messageHandlers.dpAnimateComplete.postMessage(data)
+      } catch (e) {
 
+      }
+      Utils.pmToParent({
+          action: 'dpAnimateComplete',
+          value:data
+      })
     this.current.triggerAnimationStep = data.currentStep
   }
 
@@ -147,10 +163,19 @@
    * */
   PC.prototype.animation = function (a) {
     if (this.current.isReadyTriggerAnimation) {
-      Utils.pmToIfr({
-        action: 'animation_change',
-        step: a.step
-      })
+      if(a.pageNum){   //TODO 小班课ios 端存在数据传输格式不正确问题兼容
+        if(this.currentPageNum == a.pageNum){
+          Utils.pmToIfr({
+            action: 'animation_change',
+            step: a.step
+          })
+        }
+      }else{
+        Utils.pmToIfr({
+          action: 'animation_change',
+          step: a.step
+        })
+      }
     } else {
       (function (p, a) {
         setTimeout(function () {
@@ -479,13 +504,13 @@
     pc.wbContext.fillStyle = '#FFF'
     pc.wbContext.fillRect(0, 0, wb.width, wb.height)
     if (typeof  window.dpwhiteBoardComplete === 'function') {
-      window.dpwhiteBoardComplete(displayedWidth, displayedHeight)
+      window.dpwhiteBoardComplete( d.width, d.height)
     }
     if (window.android && typeof  window.android.dpwhiteBoardComplete === 'function') {
       window.android.dpwhiteBoardComplete(displayedWidth, displayedHeight)
     }
     try {
-      window.webkit.messageHandlers.dpwhiteBoardComplete.postMessage({w: displayedWidth, h: displayedHeight})
+      window.webkit.messageHandlers.dpwhiteBoardComplete.postMessage({w: d.width, h: d.height})
     } catch (e) {
 
     }
@@ -509,54 +534,21 @@
     lastPageDoc = ''
   }
   var imgeLoadComplete = false
-  var timer = 0
-  var mytime = 0
-  // var img = new Image()
-  // alert("1.0.4")
-  console.log('1.0.15')
   PC.prototype.showJPG = function (d) {
     var t = this
     imgeLoadComplete = false
     var lastImg = document.getElementById('picture_one')
-    // if(img && img.src){
-    //   img.src = ''
-    // }
-    var nodelist = document.querySelectorAll('.picture_close')
-    var nodelistToArray = Array.apply(null, nodelist)
-    nodelistToArray.forEach(function (element, index) {
-      element.setAttribute('src', '')
-    })
-
     var img = creatImage(d.completeURI)
-    console.log('img===>>>', img)
-    img.className = 'picture_close'
-    console.log('size', img.size)
-    console.log('size', img.sizes)
-    console.log('size', img.fileSize)
 
     //创建图片加载对象
     function creatImage(url) {
-
-      timer = setInterval(function () {
-        mytime++
-      }, 1)
       var myImg = new Image()
-      //TODO
-      // image/auto-orient,1/resize,m_fixed,w_1800,h_200/quality,q_50
-      //
-      // w:宽    h:高   q:图片相对质量（取值1～100）
-
-      // myImg.remove()
-      // window.stop()
-      console.log('url===>', url)//                                       w_宽   原图片质量的压缩比 50%
-      myImg.src = url + '?x-oss-process=image/auto-orient,1/resize,m_lfit,w_1000/quality,q_50'
+      var w = parseInt(d.width, 10) ? parseInt(d.width, 10) : 1000
+      myImg.src = url + '?x-oss-process=image/auto-orient,1/resize,m_lfit,w_' + w + '/quality,q_50'
       var limitUrl = url.split('/')
       if (limitUrl.length >= 7 && limitUrl[limitUrl.length - 2].length >= 32) {
         myImg.src = url
       }
-
-      console.log('url===>', url)
-      myImg.id = 'picture_one'
       myImg.style = 'z-index:10;display:none;'
       myImg.onerror = imageLoadError
       myImg.onload = imageLoadComplate
@@ -565,11 +557,6 @@
 
     //图像加载失败
     function imageLoadError(e) {
-      clearInterval(timer)
-      // console.log("图片加载 失败 时长===>>>",mytime)
-      mytime = 0
-      // pc.imgParentNode.remove
-
       if (typeof window.dpImageLoadError === 'function') {
         window.dpImageLoadError(e)
       }
@@ -584,16 +571,11 @@
       })
       img.onerror = null
       img.onload = null
-      img = null
-
+      img = null;
     }
 
     //图像加载完成调用函数
-    function imageLoadComplate(e) {
-      clearInterval(timer)
-      console.log('图片加载 成功 时长===>>>', mytime)
-      console.log('图片加载 成功 imageLoadComplate ===>>>', e)
-      mytime = 0
+    function imageLoadComplate() {
       imgeLoadComplete = true
       // 画板展示的宽和高
       var dpDisplayedWidth = window.innerWidth
@@ -601,12 +583,27 @@
       var imgRo = this.width / this.height
       var w = this.width
       var h = this.height
+      // console.log('当前图片的宽高是-->' + w, h)
+      if (typeof window.dpImageLoadComplete === 'function') {
+        window.dpImageLoadComplete(w, h)
+      }
+      //android端
+      if (window.android && typeof window.android.dpImageLoadComplete === 'function') {
+        window.android.dpImageLoadComplete(displayedWidth, displayedHeight)//android回调方法
+      }
+      try {
+        window.webkit.messageHandlers.dpImageLoadComplete.postMessage({w: w, h: h})
+      } catch (e) {
+
+      }
       var pc = t
       var imageBd = img
-      if (pc.imgParentNode && lastImg) {
+      if (pc.imgParentNode&&lastImg) {
         pc.imgParentNode.removeChild(lastImg)
       }
+      this.id = 'picture_one'
       pc.imgParentNode.appendChild(img)
+
       if (this.width > dpDisplayedWidth) {
         w = dpDisplayedWidth
         h = w / imgRo
@@ -661,18 +658,7 @@
       imageBd.style.height = displayedHeight + 'px'
 
       pc.clearDoc()
-      if (typeof window.dpImageLoadComplete === 'function') {
-        window.dpImageLoadComplete(displayedWidth, displayedHeight)
-      }
-      //android端
-      if (window.android && typeof window.android.dpImageLoadComplete === 'function') {
-        window.android.dpImageLoadComplete(displayedWidth, displayedHeight)//android回调方法
-      }
-      try {
-        window.webkit.messageHandlers.dpImageLoadComplete.postMessage({w: displayedWidth, h: displayedHeight})
-      } catch (e) {
 
-      }
 
       //web端
       Utils.pmToParent({
@@ -765,6 +751,7 @@
         error: e
       })
     }
+    pc.currentPageNum = d.pageNum;
     //极速动画
     if (u && d.mode == 2 && ifs[0] === us[0]) {
       Utils.pmToIfr({
@@ -777,6 +764,7 @@
       this.current.isReadyTriggerAnimation = true//解决从图片切换至当前动画页时切换下个动画无效。
       //ifr.style.visibility = '';
     } else if (u && d.mode == 1 && u == ifr.src) {
+
       Utils.pmToIfr({
         action: 'animation_change',
         step: 0
@@ -790,6 +778,61 @@
     } else {
       this.clearDoc()
       ifr.setAttribute('src', u)
+/////////////////////小班课定制当文档加载失败跳转只失败页面//////////////////////////////////////
+      // Utils.ajax({
+      //   url: u,
+      //   method: 'GET',
+      //   success: function () {
+      //
+      //   },
+      //   fail: function (type) {
+      //     pc.wb.style.display = 'none'
+      //     pc.img.style.display = 'none'
+      //     ifr.style.display = "block"
+      //     if (typeof window.dpAnimateLoadError === 'function') {//提供给ios回调
+      //       window.dpAnimateLoadError("error"+type)
+      //
+      //     }
+      //     if (window.android && typeof window.android.dpAnimateLoadError === 'function') {//提供给android的回调
+      //       window.android.dpAnimateLoadError("error"+type)
+      //     }
+      //     Utils.pmToParent({
+      //       action: 'dpAnimateLoadError',
+      //       error: type,
+      //       type:"error"+type
+      //     })
+      //
+      //     if(parseInt(type,10) == 500||parseInt(type,10) === 503){
+      //       ifr.setAttribute('src', "//image.csslcloud.net/error/error-500.html")
+      //       return
+      //     }
+      //     if(parseInt(type,10) == 504){
+      //       ifr.setAttribute('src', "//image.csslcloud.net/error/error-timeout.html")
+      //       return;
+      //     }
+      //     ifr.setAttribute('src', "//image.csslcloud.net/error/error-404.html")
+      //
+      //   },
+      //   timeout: function () {
+      //     pc.wb.style.display = 'none'
+      //     pc.img.style.display = 'none'
+      //     ifr.style.display = "block"
+      //     if (typeof window.dpAnimateLoadError === 'function') {//提供给ios回调
+      //       window.dpAnimateLoadError("timeout")
+      //
+      //     }
+      //     if (window.android && typeof window.android.dpAnimateLoadError === 'function') {//提供给android的回调
+      //       window.android.dpAnimateLoadError("timeout")
+      //     }
+      //     Utils.pmToParent({
+      //       action: 'dpAnimateLoadError',
+      //       error: "error",
+      //       type:"timeout"
+      //     })
+      //     ifr.setAttribute('src', "//image.csslcloud.net/error/error-timeout.html")
+      //   }
+      // })
+
     }
   }
   //设置文档样式
@@ -803,7 +846,6 @@
   }
 
   PC.prototype.pageChange = function (d) {
-    console.log("v1.0.15")
     this.current = d
     this.isLoaded = false
 

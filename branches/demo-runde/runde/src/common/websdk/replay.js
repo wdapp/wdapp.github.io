@@ -1,6 +1,10 @@
 let $ = window.$
 
 class HuodeScene {
+  constructor () {
+    $ = window.$
+  }
+
   login (options) {
     if (typeof options !== 'object' || !$.DW || typeof $.DW.config !== 'function') {
       return false

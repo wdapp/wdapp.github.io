@@ -2,7 +2,7 @@
  * CC playback video
  * v3.0.0 2019/10/12
  */
-!(function ($, window, document) {
+!(function HuodeSceneReplay($, window, document) {
   var VERSION = "3.0.0";
   !(function () {
     function startTestVersion(d) {
@@ -157,7 +157,7 @@
     if (!DW.isH5play) {
       this.flashPlayerInit()
     }
-    this.destroy= function () {
+    this.destroy = function () {
       if(DW.isH5play&&MobileLive){
         MobileLive.destroy()
       }
@@ -370,7 +370,7 @@
       var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true})
       util.log('{forceNew: true}')
     }
-    this.destroy= function () {
+    this.destroy = function () {
 
       if(socket){
         socket.disconnect();
@@ -624,7 +624,7 @@
       } catch (e) {
       }
     }
-    this.destroy=function () {
+    this.destroy = function () {
       if(callback.drawPanel.intervalNum != -1){
         clearInterval( callback.drawPanel.intervalNum );
       }
@@ -1590,7 +1590,7 @@
     this.lastTimeRefresh = new Date().getTime()
 
     this.INTERVAL_TIME = setInterval(function () {
-      callback.broadcastCache.refresh()
+      callback.broadcastCache && callback.broadcastCache.refresh && callback.broadcastCache.refresh()
     }, 80)
 
     //
@@ -1653,7 +1653,7 @@
       callback.chatMessageCache.refresh()
     }, 80)
 
-    this.destroy=function () {
+    this.destroy = function () {
       if(this.INTERVAL_TIME !=-1){
           clearInterval(this.INTERVAL_TIME);
       }
@@ -1854,7 +1854,10 @@
         window.on_cc_live_db_flip()
       }
     },
-    destroy:function(){
+    destroy: function () {
+      this.clear()
+      this.dpc.dispose()
+      this.dpc.resetDpc();
       $("#dpa").remove();
     },
     pageChange: function (pc) {
@@ -2056,6 +2059,7 @@
         DWDpc.destroy();
       }
       clearAllInterval();
+      HuodeSceneReplay && HuodeSceneReplay(jQuery, window, document, undefined)
     },
 
     getDuration: function () {

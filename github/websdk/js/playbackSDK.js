@@ -1,8 +1,128 @@
 /**
  * CC playback video
- * v3.0.1 2019/06/24
+ * v3.0.0 2019/10/12
  */
-!(function ($, window, document) {
+!(function HuodeSceneReplay($, window, document) {
+  var VERSION = "3.0.0";
+  !(function () {
+    function startTestVersion(d) {
+      var info = d.h5 ? d.h5 : {};
+      if (info.lowyerVersion) {
+        if (isMax(info.lowyerVersion.v, VERSION)) {
+          var date = info.lowyerVersion.expiration;
+          var msg = info.errorMsg ;
+          log(msg);
+          if (Error) {
+            throw new Error(msg)
+          } else {
+            warning(msg);
+          }
+          return
+        }
+      }
+      if (info.latestVersion) {
+        if (isMax(info.latestVersion.v, VERSION)) {
+          var notifyMsg = info.notify ;
+          // log(notifyMsg);
+          warning(notifyMsg);
+          return
+        }
+      }
+    }
+
+    function log(l) {
+      if (console.log) {
+        console.log(l);
+      }
+    }
+
+    function warning(l) {
+      if (console.warn) {
+        console.warn(l);
+      }
+    }
+
+    //判断v1 是否大于v2
+    function isMax(v1, v2) {
+      var v1s = v1.split(".");
+      var v2s = v2.split(".");
+      var index = 0;
+      var len = v1s.length;
+      var result = false;
+      while (index < len-1) {
+        var vv1 = parseInt(v1s[index]);
+        var vv2 = parseInt(v2s[index]);
+        if (vv1 > vv2) {
+          result = true
+          break;
+        } else if (vv1 < vv2) {
+          result = false;
+          break;
+        }
+        index++;
+      }
+      return result;
+
+    }
+
+    function requestError(d) {
+
+    }
+
+    var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
+
+    // log("当前浏览器是否是IE--》 " +util.isIE());
+    // if(util.isIE()){
+      var xmlhttp = null;
+      try{
+        if(window.XMLHttpRequest){
+          xmlhttp = new XMLHttpRequest();
+        }else if(window.ActiveXObject){
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if(xmlhttp){
+          xmlhttp.open("GET",url,true);
+          xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState === 4){
+              if(xmlhttp.status === 200){
+                var versionInfo = JSON.parse(xmlhttp.responseText);
+                // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+                if (versionInfo) {
+                  startTestVersion(versionInfo)
+                }
+              }
+            }
+          }
+          xmlhttp.send();
+        }
+      }catch (e) {
+        log("获取版本信息失败")
+      }
+
+      // return;
+    // }
+    // jQuery.support.cors = true;
+    // $.ajax({
+    //   url: url,
+    //   method: "POST",
+    //   dataType: "json",
+    //   crossDomain:true,
+    //   success: function (data) {
+    //     log("版本信息加载完成-->" + data);
+    //     var versionInfo = data;
+    //     // log(versionInfo);
+    //     if (versionInfo) {
+    //       startTestVersion(versionInfo)
+    //     }
+    //   },
+    //   error: function (xhr,status,errorThrown) {
+    //     console.log("当前的数据"+ xhr.responseText,status,errorThrown);
+    //     requestError(xhr);
+    //   }
+    // })
+  })()
+
+
   // 直播播放器信息
   var CallbackPlayer = function (opts) {
     this.isReady = false
@@ -36,6 +156,11 @@
 
     if (!DW.isH5play) {
       this.flashPlayerInit()
+    }
+    this.destroy = function () {
+      if(DW.isH5play&&MobileLive){
+        MobileLive.destroy()
+      }
     }
 
     this.getFlash = function () {
@@ -81,7 +206,7 @@
       if (DW.isH5play || MobileLive.isMobile() == 'isMobile') {
         t = this.getH5player().currentTime
       } else {
-        t = parseInt(this.getFlash().getPosition(), 10)
+        t = parseInt((typeof this.getFlash().getPosition ==="function")?(this.getFlash().getPosition()):0, 10)
       }
       if (isNaN(t) || t < 0) {
         return 0
@@ -98,7 +223,7 @@
         if (!swf) {
           return
         }
-        return swf.getDuration()
+        return swf.getDuration?swf.getDuration():0;
       }
     }
 
@@ -119,7 +244,7 @@
         if (!swf) {
           return
         }
-        return swf.getBufferLength()
+        return swf.getBufferLength?swf.getBufferLength():0;
       }
 
     }
@@ -132,7 +257,11 @@
         if (!swf) {
           return
         }
-        return swf.setVolume(n)
+        if(swf.setVolume){
+          return swf.setVolume(n)
+        }
+        return 0;
+
       }
     }
 
@@ -144,7 +273,7 @@
         if (!swf) {
           return
         }
-        return swf.getVolume()
+        return swf.getVolume?swf.getVolume():0;
       }
     }
 
@@ -160,7 +289,7 @@
         if (!swf) {
           return
         }
-        return swf.isPlay()
+        return swf.isPlay?swf.isPlay():0;
       }
     }
 
@@ -221,13 +350,14 @@
       }
     }
 
+
     var terminal = 0
     if (MobileLive.isMobile() == 'isMobile') {
       terminal = 1
     }
-
+    var socket
     if (!DW.forceNew) {
-      var socket = io.connect(document.location.protocol + '//' + host + '/replay', {
+      socket = io.connect(document.location.protocol + '//' + host + '/replay', {
         query: {
           roomid: opts.roomId,
           sessionid: opts.viewer.sessionId,
@@ -239,6 +369,12 @@
     } else {
       var socket = io.connect(document.location.protocol + '//' + host + '/replay?roomid=' + opts.roomId + '&sessionid=' + opts.viewer.sessionId + '&platform=' + 1 + '&terminal=' + terminal, {forceNew: true})
       util.log('{forceNew: true}')
+    }
+    this.destroy = function () {
+
+      if(socket){
+        socket.disconnect();
+      }
     }
   }
 
@@ -488,6 +624,11 @@
       } catch (e) {
       }
     }
+    this.destroy = function () {
+      if(callback.drawPanel.intervalNum != -1){
+        clearInterval( callback.drawPanel.intervalNum );
+      }
+    }
 
     this.intervalPainting = function (callback) {
       callback.drawPanel.intervalNum = setInterval(function () {
@@ -554,7 +695,9 @@
       requestChatqaData: false,
       allRequests: 0,
     }
-
+    param.version = VERSION;
+    param.service = 3;
+    param.client = 4;
     // 登录
     substepRequest({
       url: '//view.csslcloud.net/api/room/replay/login',
@@ -1194,10 +1337,19 @@
 
       if (sub.requestLoginData) {
 
-        if (DWDpc.fastMode) {
-          $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
-          DWDpc.appendDrawPanel()
-          DWDpc.init()
+        var drawPanel = document.getElementById("playbackPanel");
+        //初始化极速动画对象
+        if (DWDpc.fastMode && drawPanel) {
+           $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
+          var script = document.createElement("script");
+          script.src = '//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
+          script.onload = function(){
+            DWDpc.appendDrawPanel()
+            DWDpc.init()
+            DWDpc.isDPReady = true;
+            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
+          }
+          document.body.appendChild(script);
         }
 
         opts.chat = {
@@ -1250,10 +1402,32 @@
 
         var pageChanges = meta.pageChange
         if (pageChanges && pageChanges.length) {
+          pageChanges.sort(function (a,b) {
+            return a.serverTime - b.serverTime
+          })
           pageChanges.sort(function (p1, p2) {
             return parseInt(p1.time) - parseInt(p2.time)
           })
-          callback.pageChanges = pageChanges
+
+          var len = pageChanges.length;
+          var lastTime = -1;
+          var pages=[];
+          for(var i=0 ;i<len;i++){
+            var obj = pageChanges[i];
+            if(obj.time == lastTime){
+              pages[pages.length - 1] = obj;
+
+            }else{
+              pages.push(obj);
+            }
+            lastTime = obj.time;
+          }
+          callback.pageChanges = pages;
+        }
+
+        //文档信息加载完成，首先渲染首页
+        if(callback.pageChanges && callback.pageChanges.length) {
+          callback.drawPanel.filp(callback.pageChanges[0])
         }
 
         var animations = meta.animation
@@ -1416,7 +1590,7 @@
     this.lastTimeRefresh = new Date().getTime()
 
     this.INTERVAL_TIME = setInterval(function () {
-      callback.broadcastCache.refresh()
+      callback.broadcastCache && callback.broadcastCache.refresh && callback.broadcastCache.refresh()
     }, 80)
 
     //
@@ -1426,6 +1600,11 @@
         return
       }
       this.cache.push(data)
+    }
+    this.destroy = function () {
+      if(this.INTERVAL_TIME !=-1){
+        clearInterval(this.INTERVAL_TIME);
+      }
     }
 
     this.ableRefresh = function () {
@@ -1474,6 +1653,11 @@
       callback.chatMessageCache.refresh()
     }, 80)
 
+    this.destroy = function () {
+      if(this.INTERVAL_TIME !=-1){
+          clearInterval(this.INTERVAL_TIME);
+      }
+    }
     //
     this.push = function (data) {
       // 缓存中超过5000条数据，则丢弃
@@ -1545,6 +1729,38 @@
     this.chatMessageCache = new ChatMessageCache()
     //广播
     this.broadcastCache = new BroadcastCache()
+    this.destroy = function () {
+      this.chatLogs = []
+      this.broadcasts = []
+      this.draws = []
+      this.pageChanges = []
+      // 获取历史数据成功
+      this.isHistoryReady = false
+      this.questions = []
+      this.answers = []
+      this.pageChanges = []
+      this.draws = []
+      this.animations = []
+      this.pageChangeIndex = -1
+      this.drawIndex = -1
+      this.animationIndex = -1
+      this.isRequestDraws = false
+
+      this.history =null;
+      if(this.drawPanel){
+        this.drawPanel.destroy();
+        this.drawPanel = null;
+      }
+      if(this.chatMessageCache){
+        this.chatMessageCache.destroy();
+        this.chatMessageCache = null
+      }
+      if(this.broadcastCache){
+        this.broadcastCache.destroy();
+        //广播
+        this.broadcastCache =null;
+      }
+    }
   }
 
   var callback = {}
@@ -1620,8 +1836,9 @@
 
   //极速文档模式
   var DWDpc = {
+    isDPReady:false,
     dpc: {},
-    fastMode: false,
+    fastMode: true,
     init: function () {
       this.dpc = new Dpc()
     },
@@ -1631,43 +1848,55 @@
         dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;pointer-events: none;"></iframe>'
       }
       $('#playbackPanel').parent().append(dp)
-      $('div#playbackPanel').remove()
+      // $('div#playbackPanel').remove()
 
       if (typeof window.on_cc_live_db_flip === 'function') {
         window.on_cc_live_db_flip()
       }
     },
+    destroy: function () {
+      this.clear()
+      this.dpc.dispose()
+      this.dpc.resetDpc();
+      $("#dpa").remove();
+    },
     pageChange: function (pc) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.animationChange(ac)
     },
     history: function (h) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.history(h)
     },
     draw: function (d) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.draw(d)
     },
     clear: function () {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
       this.dpc.clear()
     },
     docAdapt: function (t) {
+      if(!this.isDPReady)return
       if (!this.fastMode) {
         return
       }
@@ -1684,8 +1913,8 @@
   }
 
   var DW = {
-    isH5play: false,
-    fastMode: false,
+    isH5play: true,
+    fastMode: true,
     forceNew: false,
     setFastMode: function (opts) {
       if (typeof opts.fastMode == 'string') {
@@ -1697,17 +1926,23 @@
       } else if (typeof opts.fastMode == 'boolean') {
         this.fastMode = opts.fastMode
       } else {
-        this.fastMode = false
+        this.fastMode = true
       }
     },
     // 初始化DW对象
     config: function (opts) {
       if (checkVideo()) {
-        if (opts.isH5play + '' === 'true') {
-          this.isH5play = true
-        } else {
+        if ( opts.isH5play + '' === 'false') {
           this.isH5play = false
+        } else {
+          this.isH5play = true
         }
+      }else {
+        this.isH5play = false
+      }
+      if(!opts.recordId){
+        throw new Error("未传入有效的recordId");
+        return;
       }
 
       this.setFastMode(opts)
@@ -1717,7 +1952,6 @@
         // '//static.csslcloud.net/js/hls.min.js',
         '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/swfobject.js',
-        '//image.csslcloud.net/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)),
         '//static.csslcloud.net/js/json3.min.js',
         '//static.csslcloud.net/js/module/drawingBoard-2.0.0.js',
         '//static.csslcloud.net/js/module/drawingBoardPlayback.js',
@@ -1742,20 +1976,24 @@
       var dp = '<canvas id="drawPanel" width="1200" height="1200" style="position: absolute;z-index:2;top:0;left: 0"></canvas>'
         + '<iframe id="dpa" src="" frameborder="0" style="position: absolute;top:0;left: 0"></iframe>'
       $('#playbackPanel').parent().append(dp)
-      $('div#playbackPanel').remove()
+      $('div#playbackPanel').hide()
     },
-    logout: function () {
+    logout: function (callback) {
       $.ajax({
         url: '//view.csslcloud.net/api/callback/logout',
         type: 'GET',
-        dataType: 'json',
+        dataType: 'jsonp',
         timeout: 5000,
         xhrFields: {
           withCredentials: true
         },
         success: function (data) {
+          if(!callback)return
+          callback.success && callback.success(data)
         },
         error: function (xhr, status, error) {
+          if(!callback)return
+          callback.error && callback.error(xhr, status, error)
         }
       })
     },
@@ -1765,7 +2003,6 @@
       var readyState = false,
         script = document.createElement('script')
       script.src = url
-
       script.onload = script.onreadystatechange = function () {
         if (!readyState && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
           readyState = true
@@ -1807,6 +2044,22 @@
 
       return callback.callbackPlayer.getPlayerTime()
 
+    },
+    destroy:function(){
+      if(callback){
+        callback.destroy();
+        if(callback.socket){
+          callback.socket.destroy();
+        }
+        if(callback.callbackPlayer){
+          callback.callbackPlayer.destroy();
+        }
+      }
+      if(DWDpc){
+        DWDpc.destroy();
+      }
+      clearAllInterval();
+      HuodeSceneReplay && HuodeSceneReplay(jQuery, window, document, undefined)
     },
 
     getDuration: function () {
@@ -1864,8 +2117,12 @@
 
     openSettingPanel: function () {
       return callback.callbackPlayer.openSettingPanel()
+    },
+    getReplayPractice:function () {
+      practice.getReplayPracticeInfo({
+        recordId:options.recordId
+      })
     }
-
   }
 
   $.extend({
@@ -1899,7 +2156,8 @@
     options.recordId = data.encryptRecordId
     callback.callbackPlayer = new CallbackPlayer(options)
   }
-
+  var chatIntervalId = -1;
+  var broadcastsIntervalId = -1;
   // 播放器加载完成，开始播放
   window.on_cc_live_player_init = function () {
     callback.callbackPlayer.isReady = true
@@ -1907,8 +2165,14 @@
       callback.callbackPlayer.getFlash().start()
     } catch (e) {
     }
+    if(chatIntervalId !=-1){
+      clearInterval(chatIntervalId);
+    }
+    if(broadcastsIntervalId !=-1){
+      clearInterval(broadcastsIntervalId);
+    }
     // 同时开始实时显示聊天信息
-    setInterval(function () {
+    chatIntervalId =  setInterval(function () {
       var ft = 0
       try {
         ft = callback.callbackPlayer.getPlayerTime()
@@ -1949,7 +2213,7 @@
     }, 1000)
 
     // 同时开始实时显示广播
-    setInterval(function () {
+    broadcastsIntervalId = setInterval(function () {
       var ft = 0
       try {
         ft = callback.callbackPlayer.getPlayerTime()
@@ -1996,7 +2260,10 @@
   }
 
   function cc_live_callback_chat_interval() {
-    setInterval(function () {
+    if(chatIntervalId !=-1){
+      clearInterval(chatIntervalId);
+    }
+    chatIntervalId = setInterval(function () {
       var ft = 0
       try {
         ft = parseInt($('#playbackVideo')[0].currentTime, 10)
@@ -2036,8 +2303,12 @@
     }, 1000)
   }
 
+
   function cc_live_callback_broadcasts_interval() {
-    setInterval(function () {
+    if(broadcastsIntervalId !=-1){
+      clearInterval(broadcastsIntervalId);
+    }
+    broadcastsIntervalId = setInterval(function () {
       var ft = 0
       try {
         ft = parseInt($('#playbackVideo')[0].currentTime, 10)
@@ -2078,6 +2349,18 @@
       initDrawPanelInfo()
     }, 1500)
   }
+  //清除所有定时器
+   function clearAllInterval(){
+     if(chatIntervalId !=-1){
+       clearInterval(chatIntervalId);
+     }
+     if(broadcastsIntervalId !=-1){
+       clearInterval(broadcastsIntervalId);
+     }
+     // if(callback.drawPanel.intervalNum!=-1){
+     //   clearInterval(callback.drawPanel.intervalNum);
+     // }
+   }
 
   window.seekStart = function () {
     clearInterval(callback.drawPanel.intervalNum)
@@ -2119,15 +2402,18 @@
         if (typeof window.on_cc_request_snapshoot === 'function') {
           window.on_cc_request_snapshoot(pc)
         }
-        callback.drawPanel.filp(JSON.stringify({
-          'fileName': pc.docName,
-          'totalPage': pc.docTotalPage,
-          'docid': pc.encryptDocId,
-          'url': pc.url,
-          'page': pc.pageNum,
-          'useSDK': pc.useSDK
-        }))
-
+        if(DWDpc.fastMode){
+          callback.drawPanel.filp(pc);
+        }else{
+          callback.drawPanel.filp(JSON.stringify({
+            'fileName': pc.docName,
+            'totalPage': pc.docTotalPage,
+            'docid': pc.encryptDocId,
+            'url': pc.url,
+            'page': pc.pageNum,
+            'useSDK': pc.useSDK
+          }))
+        }
         meta.pageChange.push(pc)
       }
     }
@@ -2189,6 +2475,9 @@
 
     DWDpc.history(meta)
 
+    if(callback.drawPanel.intervalNum !=-1){
+      clearInterval(callback.drawPanel.intervalNum);
+    }
     callback.drawPanel.intervalNum = setInterval(function () {
       callback.drawPanel.interval()
     }, 1000)
@@ -2319,24 +2608,35 @@
       }
       getInfo(ots)
     },
+    destroy:function(){
+      if(this.hls){
+        this.hls.destroy();
+        this.hls=null;
+      }
+      $("#playbackVideo").remove();
 
+    },
     appendVideo: function (src, opts) {
       var _this = this
 
-      var v = '<video id="playbackVideo" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
+      var v = '<video id="playbackVideo" x5-video-player-type="h5-page" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
       $('#' + playbackPlayer.id).html(v)
+      var playerContainer = document.getElementById(playbackPlayer.id);
+      // console.log("当前父容齐对象-》"+playerContainer);
+      // playerContainer.innerHTML = v
       var video = document.getElementById('playbackVideo')
 
       if (this.useHls && !util.isMp4(src)) {
         if (Hls.isSupported()) {
-          var hls = new Hls()
-          hls.attachMedia(video)
-          hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-            hls.loadSource(src)
+          _this.hls = new Hls()
+          _this.hls.attachMedia(video)
+          _this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+            _this.hls.loadSource(src)
           })
         }
       } else {
         $('#playbackVideo').attr('src', src)
+
       }
       if (opts.isShowBar) {
         video.removeAttribute('controls')
@@ -2445,6 +2745,24 @@
       return navigator.userAgent.match(/Windows Phone/i) != null
     }
 
+  }
+  var practice = {
+    getReplayPracticeInfo:function (t) {
+      $.ajax({
+        url: "//eva.csslcloud.net/api/v1/practice/replay/info",
+        data: t,
+        type: options.type || "GET",
+        dataType: options.dataType || "jsonp",
+        timeout: options.timeout || 5000,
+        success: function (data) {
+          // console.log("请求回放随堂测数据-->" + JSON.stringify(data))
+          window.on_hdReplay_practice_info&&window.on_hdReplay_practice_info(data);
+        },
+        error: function (error) {
+          window.on_hdReplay_practice_info&&window.on_hdReplay_practice_info(error);
+        }
+      });
+    }
   }
 
 

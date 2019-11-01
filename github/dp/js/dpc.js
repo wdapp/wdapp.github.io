@@ -3,11 +3,11 @@
  *
  *  显示文档观看端JS代码
  *
- * Version 0.1.2
+ * Version 0.1.3
  *
- * Created by shanglt on 2018/05/21.
+ * Created by shanglt on 2019/10/22.
  */
-!(function (window, document) {
+!(function HuodeSceneDpc(window, document) {
 
     var Utils = {
         //TODO
@@ -52,16 +52,16 @@
             }
             return data;
         },
-      log:function (data) {
-        if(console.log){
-            console.log(data)
+        log:function (data) {
+            if(console.log){
+                console.log(data)
+            }
+        },
+        getDate:function (){
+            var date= new Date();
+            var t = date.getMonth()+"-"+date.getDay()+"_"+date.getHours()+"_"+date.getMinutes()+"_"+date.getSeconds();
+            return t;
         }
-      },
-      getDate:function (){
-        var date= new Date();
-         var t = date.getMonth()+"-"+date.getDay()+"_"+date.getHours()+"_"+date.getMinutes()+"_"+date.getSeconds();
-        return t;
-      }
 
     };
 
@@ -77,19 +77,57 @@
     var Dpc = function () {
         var df = document.getElementById(opts.dpc.id);
 
+        var timeIntervalId=-1
         if (!df) {
             Utils.log("未创建文档")
             // return;
             // throw new Error('iframe element is not exists');
         }
-
         this.df = df;
         this.isOpenBarrage = false;
         this.isOpenMarquee = false;
         (function (d) {
             if(!d.df)return;
+            if (window.addEventListener) {
+                timeIntervalId =  setInterval(function () {
+
+                    if (d.df&&d.df.contentWindow) {
+                        return;
+                    }
+                    d.df = document.getElementById(opts.dpc.id);
+                    if (window.attachEvent) {
+                        d.df.attachEvent('onload', function () {
+                            if (!this.src) {
+                                return;
+                            }
+
+                            if (!d.isLoaded) {
+                                d.isLoaded = true;
+                                d.pmBuffers();
+                            } else {
+                                d.resetWithMeta();
+                            }
+                        });
+                    } else {
+                        if(!d.df)return
+                        d.df.onload = function () {
+                            if (!this.src) {
+                                return;
+                            }
+
+                            if (!d.isLoaded) {
+                                d.isLoaded = true;
+                                d.pmBuffers();
+                            } else {
+                                d.resetWithMeta();
+                            }
+                        };
+                    }
+                }, 30);
+            }
             if (window.attachEvent) {
-              d.df.attachEvent('onload', function () {
+                if(!d.df)return
+                d.df.attachEvent('onload', function () {
                     // if (!this.src) {
                     //     return;
                     // }
@@ -102,7 +140,7 @@
                     }
                 });
             } else {
-
+                if(!d.df)return
                 d.df.onload = function () {
                     // console.log('dpc.js', 'dpc iframe is onload src ' + this.src);
                     if (!this.src) {
@@ -120,7 +158,7 @@
         })(this);
         var displayMode = $('#documentDisplayMode').val();
         if(this.df){
-          this.df.src = '//192.168.200.33/websdk/github/dp/dp/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
+            this.df.src = '//image.csslcloud.net/live/1.0.1/sdk/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
         }
 
         this.isLoaded = false;
@@ -142,7 +180,7 @@
         this.setDisplayMode = function (m) {
 
             if(!this.df)return;
-            this.df.src = '//192.168.200.33/websdk/github/dp/dp/dp.html?vertical=1&displayMode=' + m+'&hd_version='+Utils.getDate();
+            this.df.src = '//image.csslcloud.net/live/1.0.1/sdk/dp.html?vertical=1&displayMode=' + m+'&hd_version='+Utils.getDate();
         };
         this.resetWithMeta = function () {
             this.resetWithMeta();
@@ -166,10 +204,10 @@
          *
          * */
         this.pm = function (data) {
+
             if (window.attachEvent) {
                 this.isLoaded = true;
             }
-
             if (!this.isLoaded) {
                 return this.buffers.push(data);
             }
@@ -177,7 +215,6 @@
             if (typeof data != 'string') {
                 data = JSON.stringify(data);
             }
-
             if (this.df && this.df.contentWindow) {
                 this.df.contentWindow.postMessage(data, '*');
             } else {
@@ -211,6 +248,15 @@
             this.pm({action: 'show_default_page', value: ''});
         };
 
+        this.dispose = function () {
+            if(this.df){
+                this.df.src = "";
+            }
+            this.isLoaded = false;
+            if(timeIntervalId !=-1){
+                clearInterval(timeIntervalId);
+            }
+        };
         this.pageChange = function (data) {
             this.metaCache.pageChange.push(data);
             if (this.isFreedDocMode) {
@@ -286,10 +332,10 @@
             })
         };
         this.closeBarrage = function () {
-          this.pm({
-              action:'close_plugin_barrage',
-              value:''
-          })
+            this.pm({
+                action:'close_plugin_barrage',
+                value:''
+            })
         };
 
         this.draw = function (data) {
@@ -309,9 +355,9 @@
         };
         this.resizeDoc = function (data) {
             this.pm({
-                    action: 'resize_from_dpc_doc',
-                    value: data
-                }
+                  action: 'resize_from_dpc_doc',
+                  value: data
+              }
             )
         };
 
@@ -329,12 +375,13 @@
                 value: this.metaCache
             });
         };
-
+        this.resetDpc = function () {
+            HuodeSceneDpc(window, document, undefined)
+        }
         this.clear = function () {
             this.metaCache.pageChange = [];
             this.metaCache.animation = [];
             this.metaCache.draw = [];
-
             this.pm({
                 action: 'clear_from_dpc',
                 value: {}

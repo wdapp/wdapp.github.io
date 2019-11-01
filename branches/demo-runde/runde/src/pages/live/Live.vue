@@ -139,7 +139,6 @@ export default {
     ...mapMutations(['setViewer', 'setOptions'])
   },
   mounted () {
-    this.destroy()
     this.init()
   },
   destroyed () {

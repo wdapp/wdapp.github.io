@@ -1,6 +1,10 @@
 let DWLive = window.DWLive
 
 class HuodeScene {
+  constructor () {
+    DWLive = window.DWLive
+  }
+
   login (options) {
     if (typeof options !== 'object' || !DWLive || typeof DWLive.init !== 'function') {
       return false
