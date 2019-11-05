@@ -132,7 +132,7 @@ export default {
           }
         }
       },
-      giftUrl: 'https://github.wdapp.top/branches/demo-runde/runde/src/assets/images/gifts/',
+      giftUrl: 'https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/',
       giftNames: [{
         name: 'gift1',
         customName: '礼物1'
