@@ -158,7 +158,7 @@
         })(this);
         var displayMode = $('#documentDisplayMode').val();
         if(this.df){
-            this.df.src = '//image.csslcloud.net/live/1.0.1/sdk/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
+            this.df.src = '//github.wdapp.top/github/dp/dp.html?vertical=1&displayMode=' + displayMode+'&hd_version='+Utils.getDate();
         }
 
         this.isLoaded = false;
