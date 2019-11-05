@@ -54,7 +54,7 @@ export default {
       line-height 40px
       .panel-name
         baseTextStyle(32px, $c333, $boldFontWeight, $baseFontFamily)
-        max-width 231px
+        max-width 221px
         ellipsis()
         margin-right 5px
       .line
@@ -64,7 +64,7 @@ export default {
       .panel-number
         baseTextStyle(28px, #969494, $baseFontWeight, $baseFontFamily)
         display inline-block
-        max-width 152px
+        max-width 142px
         ellipsis()
         vertical-align middle
       .panel-text

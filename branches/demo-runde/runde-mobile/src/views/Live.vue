@@ -32,5 +32,4 @@ export default {
     height 462px
   .bottom
     layout(462px, 0, 0, 0)
-    background-color #9c95ef
 </style>

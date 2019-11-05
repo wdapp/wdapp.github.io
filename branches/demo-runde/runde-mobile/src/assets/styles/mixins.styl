@@ -44,6 +44,14 @@ bg-image($name, $size = 70)
   @media screen and (-webkit-min-device-pixel-ratio: 3), screen and (min--moz-device-pixel-ratio: 3) {
     background-image: url('~images/' + $name + '@3x.png')
   }
+active-image($name)
+  background-image url('~images/' + $name + '.png')
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min--moz-device-pixel-ratio: 2) {
+    background-image: url('~images/' + $name + '@2x.png')
+  }
+  @media screen and (-webkit-min-device-pixel-ratio: 3), screen and (min--moz-device-pixel-ratio: 3) {
+    background-image: url('~images/' + $name + '@3x.png')
+  }
 vertical-horizontally($height, $width, $position = relative)
   position $position
   top 50%

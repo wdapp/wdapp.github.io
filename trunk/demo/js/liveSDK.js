@@ -3,31 +3,31 @@
  * v3.0.0 2019/10/12 */
 (function HuodeSceneLive() {
 
-  var VERSION = "3.0.0";
+  var VERSION = '3.0.0'
 
 
   !(function () {
     function startTestVersion(d) {
-      var info = d.h5 ? d.h5 : {};
+      var info = d.h5 ? d.h5 : {}
 
       if (info.lowyerVersion) {
         if (isMax(info.lowyerVersion.v, VERSION)) {
-          var date = info.lowyerVersion.expiration;
-          var msg = info.errorMsg ;
-          log(msg);
+          var date = info.lowyerVersion.expiration
+          var msg = info.errorMsg
+          log(msg)
           if (Error) {
             throw new Error(msg)
           } else {
-            warning(msg);
+            warning(msg)
           }
           return
         }
       }
       if (info.latestVersion) {
         if (isMax(info.latestVersion.v, VERSION)) {
-          var notifyMsg = info.notify ;
+          var notifyMsg = info.notify
           // log(notifyMsg);
-          warning(notifyMsg);
+          warning(notifyMsg)
           return
         }
       }
@@ -35,56 +35,57 @@
 
     function log(l) {
       if (console.log) {
-        console.log(l);
+        console.log(l)
       }
     }
 
     function warning(l) {
       if (console.warn) {
-        console.warn(l);
+        console.warn(l)
       }
     }
 
     //判断v1 是否大于v2
     function isMax(v1, v2) {
-      var v1s = v1.split(".");
-      var v2s = v2.split(".");
-      var index = 0;
-      var len = v1s.length;
-      var result = false;
-      while (index < len-1) {
-        var vv1 = parseInt(v1s[index]);
-        var vv2 = parseInt(v2s[index]);
+      var v1s = v1.split('.')
+      var v2s = v2.split('.')
+      var index = 0
+      var len = v1s.length
+      var result = false
+      while (index < len - 1) {
+        var vv1 = parseInt(v1s[index])
+        var vv2 = parseInt(v2s[index])
         if (vv1 > vv2) {
           result = true
-          break;
+          break
         } else if (vv1 < vv2) {
-          result = false;
-          break;
+          result = false
+          break
         }
-        index++;
+        index++
       }
-      return result;
+      return result
 
     }
 
     function requestError(d) {
 
     }
-    var url = "//view.csslcloud.net/version/version.json?v=" + (new Date().getTime());
-    var xmlhttp = null;
+
+    var url = '//view.csslcloud.net/version/version.json?v=' + (new Date().getTime())
+    var xmlhttp = null
     try {
-      if(window.XMLHttpRequest){
-        xmlhttp = new XMLHttpRequest();
-      }else if(window.ActiveXObject){
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest()
+      } else if (window.ActiveXObject) {
+        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP')
       }
-      if(xmlhttp){
-        xmlhttp.open("GET",url,true);
-        xmlhttp.onreadystatechange = function(){
-          if(xmlhttp.readyState === 4){
-            if(xmlhttp.status === 200){
-              var versionInfo = JSON.parse(xmlhttp.responseText);
+      if (xmlhttp) {
+        xmlhttp.open('GET', url, true)
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              var versionInfo = JSON.parse(xmlhttp.responseText)
               // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
               if (versionInfo) {
                 startTestVersion(versionInfo)
@@ -92,10 +93,10 @@
             }
           }
         }
-        xmlhttp.send();
+        xmlhttp.send()
       }
-    }catch (e) {
-      log("访问版本信息失败");
+    } catch (e) {
+      log('访问版本信息失败')
     }
 
   })()
@@ -119,6 +120,7 @@
     }
     return hasFlash
   }
+
   //工具类
   var Util = {
     sendAjax: function (url, data, callBack) {
@@ -158,11 +160,11 @@
   }
   var DWDpc = {
     DocModeType: {NormalMode: 0, FreeMode: 1},//设置文档为自由模式或者为跟随模式（0为跟随，1为自由）
-    isDPReady:false,
+    isDPReady: false,
     dpc: {},
     fastMode: true,
     init: function () {
-        this.dpc = new Dpc()
+      this.dpc = new Dpc()
     },
     appendDrawPanel: function () {
       var dp = '<iframe id="dpa" allow-scripts allowfullscreen allowusermedia frameborder="0" style="width: 100%;height:100%;"></iframe>'
@@ -183,7 +185,7 @@
       $('#dpa').remove()
     },
     pageChange: function (pc) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -192,7 +194,7 @@
       this.dpc.pageChange(pc)
     },
     animationChange: function (ac) {
-      if (!this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -201,7 +203,7 @@
       this.dpc.animationChange(ac)
     },
     history: function (h) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -210,7 +212,7 @@
       this.dpc.history(h)
     },
     draw: function (d) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -219,7 +221,7 @@
       this.dpc.draw(d)
     },
     clear: function () {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -228,7 +230,7 @@
       this.dpc.clear()
     },
     reload: function () {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -237,7 +239,7 @@
       this.dpc.reload()
     },
     setDocMode: function (t) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -246,7 +248,7 @@
       this.dpc.setFreeDocMode(t)
     },
     getDocs: function (callback) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -255,7 +257,7 @@
       this.dpc.getDocs(DWLive.roomid, DWLive.userid, callback)
     },
     changePageTo: function (dId, pI) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -264,7 +266,7 @@
       this.dpc.changePageTo(dId, pI)
     },
     showMarquee: function (m) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -273,7 +275,7 @@
       this.dpc.openMarquee(m)
     },
     closeMarquee: function () {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -282,7 +284,7 @@
       this.dpc.closeMarquee()
     },
     openBarrage: function (l) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -291,7 +293,7 @@
       this.dpc.openBarrage()
     },
     insertBarrage: function (data) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -309,7 +311,7 @@
       this.dpc.insertBarrage(ifo)
     },
     closeBarrage: function () {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -318,7 +320,7 @@
       this.dpc.closeBarrage()
     },
     docAdapt: function (t) {
-      if( !this.isDPReady){
+      if (!this.isDPReady) {
         return
       }
       if (!this.fastMode) {
@@ -379,7 +381,7 @@
       if (!isIE) {
         scripts.push('//static.csslcloud.net/js/AgoraRTCSDK-2.7.1.js')
       }
-      var drawPanel = document.getElementById("drawPanel");
+      var drawPanel = document.getElementById('drawPanel')
       if (DWDpc.fastMode && drawPanel) {
         scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
@@ -458,9 +460,9 @@
           forcibly: this.forcibly,
           viewercustomua: this.viewercustomua,
           viewercustominfo: this.viewercustominfo,
-          version:VERSION,
-          service:2,
-          client:4
+          version: VERSION,
+          service: 2,
+          client: 4
 
         },
         success: function (data) {
@@ -492,7 +494,7 @@
           DWLive.sessionId = data.datas.viewer.key
           DWLive.viewername = data.datas.viewer.name
           DWLive.isBan = data.datas.room.isBan//禁播
-          DWLive.liveid = data.datas.liveId
+          DWLive.liveId = data.datas.liveId
           DWLive.upid = data.datas.upId
           DWLive.multiQuality = data.datas.room.multiQuality
           DWLive.documentDisplayMode = data.datas.room.documentDisplayMode
@@ -500,13 +502,13 @@
           DWLive.liveCountdown = data.datas.room.liveCountdown
           DWLive.groupId = data.datas.viewer.groupId
           //初始化极速动画对象
-          var drawPanel = document.getElementById("drawPanel");
+          var drawPanel = document.getElementById('drawPanel')
           if (DWDpc.fastMode && drawPanel) {
             $('#documentDisplayMode').val(DWLive.documentDisplayMode)
-            DWDpc.isDPReady = true;
+            DWDpc.isDPReady = true
             DWDpc.appendDrawPanel()
-            DWDpc.init();
-            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete();
+            DWDpc.init()
+            window.on_hdLive_drawPanel_complete && window.on_hdLive_drawPanel_complete()
           }
           fn()
           var delay = data.datas.room.delayTime,
@@ -591,7 +593,6 @@
           }
 
           Pusher.init()
-
           if (MobileLive.isMobile() == 'isMobile') {
             MobileLive.init()
           } else {
@@ -705,16 +706,16 @@
     },
     destroy: function () {
       if (DWDpc) {
-        DWDpc.destroy();
+        DWDpc.destroy()
       }
       if (Pusher) {
         Pusher.destroy()
       }
       if (live.interaction) {
-        live.interaction.disconnectInteraction(options.viewerId);
+        live.interaction.disconnectInteraction(options.viewerId)
       }
-      if(LivePlayer){
-        LivePlayer.destroy();
+      if (LivePlayer) {
+        LivePlayer.destroy()
       }
       if (window.live && window.live.interaction) {
         window.live.interaction.hangupInteraction && window.live.interaction.hangupInteraction()
@@ -1078,18 +1079,75 @@
       }
       Util.sendAjax(path, info, callback)
     },
+    //获取打卡信息
+    getHdInquirePunchInformation: function (callback) {
+      var liveId = DWLive.liveId || ''
+      var viewerid = DWLive.viewerid || ''
+      var viewerName = DWLive.viewername || ''
+      this.httpRequest({
+        url: '//interaction.csslcloud.net/servlet/punch/viewer',
+        data: {
+          'liveId': liveId,
+          'viewerId': viewerid,
+          'viewerName': viewerName
+        }, success: function (result) {
+          if (typeof callback === 'function') {
+            callback(result)
+          }
+        }, error: function (error) {
+          callback && callback(error)
+        }
+      })
+    },
+    hdCommitPunch: function (pid, callback) {
+      this.httpRequest({
+        url: '//interaction.csslcloud.net/servlet/punch/commit',
+        data: {
+          punchId: pid,
+          viewerId: DWLive.viewerid
+        }, success: function (result) {
+          callback && callback(result)
+        }, error: function (error) {
+          callback && callback(error)
+        }
+      })
+
+    },
+    httpRequest: function (options) {
+      $.ajax({
+        url: options.url || '',
+        data: options.data || {},
+        type: options.type || 'GET',
+        dataType: options.dataType || 'json',
+        timeout: options.timeout || 5000,
+        success: function (result) {
+          if (typeof options.success == 'function') {
+            options.success(result)
+          }
+        },
+        error: function (error) {
+          if (typeof options.error == 'function') {
+            options.error(error)
+          }
+        },
+        fail: function (fail) {
+          if (typeof options.fail == 'function') {
+            options.fail(fail)
+          }
+        },
+      })
+    },
   }
   var options = {
     init: function () {
       this['userId'] = DWLive.userid,
-      this['roomId'] = DWLive.roomid,
-      this['groupId'] = DWLive.groupId,
-      this['liveId'] = DWLive.liveid,
-      this['viewerId'] = DWLive.viewerid,
-      this['upId'] = DWLive.upid
+        this['roomId'] = DWLive.roomid,
+        this['groupId'] = DWLive.groupId,
+        this['liveId'] = DWLive.liveId,
+        this['viewerId'] = DWLive.viewerid,
+        this['upId'] = DWLive.upid
     }
   }
-
 
   // Pusher
   var Pusher = {
@@ -1110,7 +1168,7 @@
     init: function () {
 
       var t = MobileLive.isMobile() == 'isMobile' ? 1 : 0
-      this.timeIntervalID = -1;
+      this.timeIntervalID = -1
       if (!DWLive.forceNew) {
         this.socket = io.connect(this.options.pusherUrl, {
           query: {
@@ -1128,16 +1186,16 @@
       this.bind()
     },
 
-    destroy:function(){
-      this.hangupInteraction();
+    destroy: function () {
+      this.hangupInteraction()
       this.cancelRequestInteraction()
-      if(this.socket){
+      if (this.socket) {
         this.socket.disconnect()
         // io.destroy();
       }
 
-      if(this.timeIntervalID !=-1){
-        clearInterval(this.timeIntervalID);
+      if (this.timeIntervalID != -1) {
+        clearInterval(this.timeIntervalID)
       }
     },
     bind: function () {
@@ -1274,6 +1332,20 @@
           DWLive.onStartRollCall(data)
         }
       })
+      //打卡功能
+      this.socket.on('start_punch', function (data) {
+        data = toJson(data)
+        if (typeof  DWLive.onHdLiveStartPunch === 'function') {
+          DWLive.onHdLiveStartPunch(data)
+        }
+      })
+      //结束打卡
+      this.socket.on('stop_punch', function (data) {
+        data = toJson(data)
+        if (typeof  DWLive.onHdLiveStopPunch === 'function') {
+          DWLive.onHdLiveStopPunch(data)
+        }
+      })
 
       // 开始抽奖
       this.socket.on('start_lottery', function (data) {
@@ -1372,7 +1444,7 @@
             data.allow_speak_interaction = 'true'
           }
 
-          if(window.isSpeakThirdParty) {
+          if (window.isSpeakThirdParty) {
             // console.log('声网连麦', window.isSpeakThirdParty)
           } else {
             // console.log('WebRTC连麦', window.isSpeakThirdParty)
@@ -1407,8 +1479,8 @@
 
       // 互动信息
       this.socket.on('speak_message', function (data) {
-        if (!window.isSpeakThirdParty && typeof window.on_cc_live_interaction_message === "function") {
-          window.on_cc_live_interaction_message(toJson(data));
+        if (!window.isSpeakThirdParty && typeof window.on_cc_live_interaction_message === 'function') {
+          window.on_cc_live_interaction_message(toJson(data))
         }
       })
 
@@ -1426,9 +1498,9 @@
         }
       })
 
-      this.socket.on("speak_disconnect_third_party", function (data) {
-        if (typeof window.on_cc_live_interaction_disconnect_self === "function") {
-          window.on_cc_live_interaction_disconnect_self(toJson(data));
+      this.socket.on('speak_disconnect_third_party', function (data) {
+        if (typeof window.on_cc_live_interaction_disconnect_self === 'function') {
+          window.on_cc_live_interaction_disconnect_self(toJson(data))
         }
       })
 
@@ -1622,9 +1694,9 @@
       var err = undefined
       try {
         if (window.isSpeakThirdParty) {
-          this.socket.emit("hangup_interaction_third_party", JSON.stringify(j));
+          this.socket.emit('hangup_interaction_third_party', JSON.stringify(j))
         } else {
-          this.socket.emit("hangup_interaction", JSON.stringify(j));
+          this.socket.emit('hangup_interaction', JSON.stringify(j))
         }
       } catch (e) {
         err = e
@@ -1673,7 +1745,7 @@
         AgoraRTC.Logger.error('Your browser does not support WebRTC!')
       }
       if (AgoraRTC) {
-        AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR);
+        AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.ERROR)
       }
       if (!window.atob) {
         return
@@ -1711,21 +1783,21 @@
       self.joinAgoraRTC(options)
     }
 
-    this.hex2str = function(hex) {
-      var trimedStr = hex.trim();
-      var rawStr = trimedStr.substr(0,2).toLowerCase() === "0x" ? trimedStr.substr(2) : trimedStr;
-      var len = rawStr.length;
-      if(len % 2 !== 0) {
-        alert("Illegal Format ASCII Code!");
-        return "";
+    this.hex2str = function (hex) {
+      var trimedStr = hex.trim()
+      var rawStr = trimedStr.substr(0, 2).toLowerCase() === '0x' ? trimedStr.substr(2) : trimedStr
+      var len = rawStr.length
+      if (len % 2 !== 0) {
+        alert('Illegal Format ASCII Code!')
+        return ''
       }
-      var curCharCode;
-      var resultStr = [];
-      for(var i = 0; i < len;i = i + 2) {
-        curCharCode = parseInt(rawStr.substr(i, 2), 16);
-        resultStr.push(String.fromCharCode(curCharCode));
+      var curCharCode
+      var resultStr = []
+      for (var i = 0; i < len; i = i + 2) {
+        curCharCode = parseInt(rawStr.substr(i, 2), 16)
+        resultStr.push(String.fromCharCode(curCharCode))
       }
-      return resultStr.join("");
+      return resultStr.join('')
     }
 
     this.joinAgoraRTC = function (options) {
@@ -1733,7 +1805,7 @@
         AgoraRTC.Logger.error('Your browser does not support WebRTC!')
       }
       var self = this
-      AgoraRTC.Logger.enableLogUpload();
+      AgoraRTC.Logger.enableLogUpload()
       self.client = AgoraRTC.createClient({mode: 'live', codec: 'h264'})
       self.client.init(options.agora.appId, function () {
         self.client.join(options.agora.viewToken, options.agora.channelId, options.agora.uid, function (uid) {
@@ -1819,12 +1891,12 @@
         return
       }
       self.client.leave(function () {
-        $("#videoInteractions").empty();
-        $("#audioInteractions").empty();
-        $("#interactionLocalVideo")[0].src = "";
-        $('#agora_local').html('');
+        $('#videoInteractions').empty()
+        $('#audioInteractions').empty()
+        $('#interactionLocalVideo')[0].src = ''
+        $('#agora_local').html('')
       }, function (err) {
-      });
+      })
       window.isRequesting = false
     }
 
@@ -1850,9 +1922,9 @@
      * 请求语音互动
      *
      * t = {
-         *  video: true,
-         *  audio: true
-         * }
+     *  video: true,
+     *  audio: true
+     * }
      * */
     this.requestInteraction = function (t, callback) {
       debug('Interaction', '请求互动')
@@ -2066,10 +2138,10 @@
           that.local.audio.stream = stream
         }
 
-        var localVideo = $('#interactionLocalVideo')[0];
+        var localVideo = $('#interactionLocalVideo')[0]
         if (localVideo) {
-          localVideo.srcObject = stream;
-          localVideo.volume = 0; // 静音
+          localVideo.srcObject = stream
+          localVideo.volume = 0 // 静音
         }
 
         if (typeof window.on_cc_live_interaction_local_media === 'function') {
@@ -2289,7 +2361,7 @@
     },
 
     getPlayerTime: function () {
-      var t = parseInt((typeof this.getFlash()._time==="function")?this.getFlash()._time():0)
+      var t = parseInt((typeof this.getFlash()._time === 'function') ? this.getFlash()._time() : 0)
       if (isNaN(t) || t < 0) {
         return 0
       }
@@ -2333,7 +2405,7 @@
           return
         }
         this.isPublishing = 0
-        this.getFlash()._streamEnd&&this.getFlash()._streamEnd()
+        this.getFlash()._streamEnd && this.getFlash()._streamEnd()
       }
     },
 
@@ -2351,12 +2423,12 @@
         this.getFlash()._jsTOASbarrage(m)
       }
     },
-    destroy:function(){
-      this.end();
+    destroy: function () {
+      this.end()
     },
 
     getLine: function () {
-      var lines = this.getFlash().getLine?this.getFlash().getLine():0;
+      var lines = this.getFlash().getLine ? this.getFlash().getLine() : 0
       if (lines) {
         lines = JSON.parse(lines)
       }
@@ -2364,17 +2436,17 @@
     },
 
     changeLine: function (line) {
-      this.getFlash().changeLine&&this.getFlash().changeLine(line)
+      this.getFlash().changeLine && this.getFlash().changeLine(line)
     },
     changeVideoScale: function (t) {
-      this.getFlash()._showScreenScale&&this.getFlash()._showScreenScale(t)
+      this.getFlash()._showScreenScale && this.getFlash()._showScreenScale(t)
     },
     onlyAudio: function () {
-      this.getFlash()._onlyAudio&&this.getFlash()._onlyAudio()
+      this.getFlash()._onlyAudio && this.getFlash()._onlyAudio()
     },
 
     setSound: function (n) {
-      this.getFlash()._SetSound&&this.getFlash()._SetSound(n)
+      this.getFlash()._SetSound && this.getFlash()._SetSound(n)
     },
 
     // 打开声音
@@ -2383,7 +2455,7 @@
         return
       }
 
-      this.getFlash&&this.getFlash()._onSound()
+      this.getFlash && this.getFlash()._onSound()
     },
 
     // 关闭声音
@@ -2392,7 +2464,7 @@
         return
       }
 
-      this.getFlash&&this.getFlash()._unSound()
+      this.getFlash && this.getFlash()._unSound()
     },
 
     // 开启关闭弹幕
@@ -2401,14 +2473,14 @@
         return
       }
 
-      this.getFlash()._barrage&&this.getFlash()._barrage(b)
+      this.getFlash()._barrage && this.getFlash()._barrage(b)
     },
 
     showControl: function (b) {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._ShowControl&&this.getFlash()._ShowControl(b)
+      this.getFlash()._ShowControl && this.getFlash()._ShowControl(b)
     },
 
     //封禁
@@ -2416,7 +2488,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._banLive&&this.getFlash()._banLive()
+      this.getFlash()._banLive && this.getFlash()._banLive()
     },
 
     //解禁
@@ -2424,7 +2496,7 @@
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._unbanLive&&this.getFlash()._unbanLive()
+      this.getFlash()._unbanLive && this.getFlash()._unbanLive()
     },
 
     // 显示跑马灯功能
@@ -2437,13 +2509,13 @@
         return
       }
 
-      this.getFlash()._showMarqueePlugin&&this.getFlash()._showMarqueePlugin(marquee)
+      this.getFlash()._showMarqueePlugin && this.getFlash()._showMarqueePlugin(marquee)
     },
     closeMarquee: function () {
       if (!this.getFlash()) {
         return
       }
-      this.getFlash()._closeMarqueePlugin&&this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
+      this.getFlash()._closeMarqueePlugin && this.getFlash()._closeMarqueePlugin({name: 'PluginForMarquee'})
     }
   }
 
@@ -3031,6 +3103,7 @@
             _this.isHttps = window.location.protocol === 'https:'
             options.init()
             options.liveId = data.live.liveId
+            window.liveStart_s && window.liveStart_s(options.liveId)
             if (_this.isHttps && _this.secureHosts && _this.secureHosts.length) {
               _this.m3u8 = _this.secureHosts
             }
@@ -3182,7 +3255,7 @@
   // 接受语音互动请求
   window.on_cc_live_accept_interaction = function (data) {
     if (!window.isSpeakThirdParty && live && live.livePlayer) {
-      live.livePlayer.closeSound();
+      live.livePlayer.closeSound()
     }
 
     // 清除请求超时计时器
@@ -3224,10 +3297,10 @@
     if (uid == DWLive.viewerid || live.interaction.usersPcs.length == 0) {
       live.interaction.stopLocalStream()
       var type = live.interaction.local.type
-      $('#videoInteractions').empty();
-      $('#audioInteractions').empty();
+      $('#videoInteractions').empty()
+      $('#audioInteractions').empty()
       if ($('#interactionLocalVideo')[0]) {
-        $('#interactionLocalVideo')[0].src = '';
+        $('#interactionLocalVideo')[0].src = ''
       }
       if (type.video) {
         DWLive.livePlayerInit()
@@ -3249,13 +3322,13 @@
     if (type.video) {
       $('#livePlayer').replaceWith('<div id="livePlayer"></div>')
       var id = 'interactionRemoteVideo' + chatuser.id
-      if ($('#'+id).length < 1) {
+      if ($('#' + id).length < 1) {
         $('#videoInteractions').append('<video cc-data="0" id="' + id + '" style="height: 100%; width: 100%;" autoplay></video>')
         $('#' + id)[0].srcObject = stream
       }
     } else {// 远程音频
       var id = 'interactionRemoteAudio' + chatuser.id
-      if ($('#'+id).length < 1) {
+      if ($('#' + id).length < 1) {
         $('#audioInteractions').append('<audio cc-data="2" id="' + id + '" autoplay controls></audio>')
         $('#' + id)[0].srcObject = stream
       }
@@ -3381,6 +3454,17 @@
     return data
   }
 
+  //直播开始后接收liveid
+  window.liveStart_s = function (liveId) {
+    if (options.liveId === '') {
+      options.liveId = liveId
+      if (typeof Punch === 'object') {
+        Punch.init && Punch.init()
+      }
+      return
+    }
+    options.liveId = liveId
+  }
   window.DWLive = DWLive
   window.live = live
   DWLive.isSupportInteraction = window.live.interaction.isSupportInteraction
@@ -3430,7 +3514,6 @@
       }
     }
   }
-
 
   function getDelayTime() {
     var b = LivePlayer.delay

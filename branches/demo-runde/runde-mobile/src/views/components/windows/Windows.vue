@@ -10,7 +10,11 @@
         </div>
         <component :is="toggleComponent(!toggle)"></component>
       </div>
-      <div class="sub-panel" :class="{ 'sub-bespread': subBespread }">
+      <div
+        class="sub-panel"
+        :class="{ 'sub-bespread': subBespread }"
+        v-show="showPanel"
+      >
         <windows-panel :arrange="arrange"></windows-panel>
       </div>
     </div>
@@ -35,7 +39,8 @@ export default {
       mainComponent: "WindowsPlayer",
       subComponent: "WindowsDocument",
       toggle: true,
-      subBespread: false
+      subBespread: false,
+      showPanel: false
     };
   },
   computed: {
@@ -67,6 +72,7 @@ export default {
   .sub-wrap
     position absolute
     width 100%
+    height 168px
     top 462px
     left 0
     z-index 1
@@ -74,6 +80,7 @@ export default {
       width 300px
       height 168px
       position relative
+      z-index 1
       .close-wrap
         position absolute
         top 5px
@@ -82,8 +89,8 @@ export default {
           bg-image('close', 40)
     .sub-panel
       layout(0, 0, 0, 300px)
-      height 169px
-      border-bottom 1px solid $ddd
+      height 168px
+      border-bottom 1px $ddd solid
     .sub-bespread
       left 0
       height 84.5px

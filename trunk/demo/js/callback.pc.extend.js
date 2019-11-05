@@ -182,6 +182,37 @@ function on_cc_live_broadcast_msg_sync(datas) {
 
 //视频控制器
 
+//直播防360浏览器录屏
+window.onresize = function () {
+  //application/vnd.chromium.remoting-viewer 可能为360特有
+  var is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+
+  if (isChrome() && is360) {
+        var width =$("#playbackPlayer").width();
+        var height = $("#playbackPlayer").height()
+        var winW=$(window).width();
+        var winH=$(window).height();
+        function getCssText() {
+          return $("#playbackPlayer").css("margin-top") =="0px"
+              &&$("#playbackPlayer").css("margin-right") =="0px"
+              &&$("#playbackPlayer").css("margin-bottom") =="0px"
+              &&$("#playbackPlayer").css("margin-left") =="0px"
+
+        }
+        if(width == winW && height ==winH &&getCssText()){
+          $('body *').remove();
+          var fp = '<p style="position: absolute;top: 100px;left: 100px">视频不支持录屏模式下播放<br>请刷新重新观看</p>'
+          $('body').append(fp);
+          return
+        }
+        var str = document.querySelector("#playbackPlayer").style.cssText;
+        if (str.search('width') != -1 && str.search('height') != -1 && str.search('!important') != -1) {
+          $('body *').remove();
+          var fp = '<p style="position: absolute;top: 100px;left: 100px">视频不支持录屏模式下播放<br>请刷新重新观看</p>'
+          $('body').append(fp);
+        }
+  }
+}
 //播放暂停
 
 var isPlay = false;
