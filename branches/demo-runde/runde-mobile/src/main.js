@@ -1,34 +1,19 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import store from './store'
-import ElementUI from 'element-ui'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import Flexible from 'common/flexible'
-import 'reset.css/reset.css'
-import 'swiper/dist/css/swiper.css'
-import 'element-ui/lib/theme-chalk/index.css'
+import Vue from "vue";
+import App from "./App.vue";
+import "./registerServiceWorker";
+import router from "./router";
+import store from "./store";
+import "reset.css/reset.css";
+import "lib-flexible/flexible";
+import { Icon, Switch } from "vant";
 
-const flexible = new Flexible({
-  maxWidth: 1920,
-  minWidth: 1440
-})
-flexible.refreshRem()
+Vue.use(Icon);
+Vue.use(Switch);
 
-Vue.use(ElementUI)
-Vue.use(VueAwesomeSwiper)
+Vue.config.productionTip = false;
 
-Vue.config.productionTip = false
-
-Vue.prototype.bus = new Vue()
-
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
-  components: {App},
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount("#app");
