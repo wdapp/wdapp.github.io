@@ -34,8 +34,8 @@ cursor-pointer()
   user-select none
 bg-image($name, $size = 70)
   display inline-block
-  width unit($size, px)
-  height unit($size, px)
+  width unit($size/ 75, rem)
+  height unit($size/ 75, rem)
   background url('~images/' + $name + '.png') no-repeat
   background-size unit($size, px)
   @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min--moz-device-pixel-ratio: 2) {

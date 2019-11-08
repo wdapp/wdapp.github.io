@@ -34,9 +34,9 @@ export default {
 @import "~styles/mixins.styl"
 
 .controls-wrapper
-  top 0
   position absolute
   width-height-full()
+  top 0
   .controls-top
     layout(0, 0, 77px, 0)
     .controls-back
