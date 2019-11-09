@@ -1,6 +1,6 @@
 <template>
   <div class="player-wrapper">
-    <div id="livePlayer">player</div>
+    <div class="live-player" id="livePlayer"></div>
   </div>
 </template>
 
@@ -16,4 +16,6 @@ export default {
 .player-wrapper
   width-height-full()
   background-color $c333
+  .live-player
+    width-height-full()
 </style>

@@ -10,14 +10,14 @@
       <div class="input-wrap">
         <chats-input ref="field" @focus="onFocus" @blur="onBlur"></chats-input>
       </div>
+      <div class="gifts-one-wrap" @click="onGiftsOneClick">
+        <span class="gifts-one-icon" :class="giftsOneClassName"></span>
+      </div>
       <div class="plus-reduce-two-wrap" @click="onPlusReduceTwoClick">
         <span
           class="plus-reduce-two-icon"
           :class="plusReduceTwoClassName"
         ></span>
-      </div>
-      <div class="gifts-one-wrap" @click="onGiftsOneClick">
-        <span class="gifts-one-icon" :class="giftsOneClassName"></span>
       </div>
     </div>
   </div>
@@ -200,8 +200,10 @@ export default {
   .button-group
     height 70px
     width 100%
+    display flex
+    flex-direction row
+    justify-content space-between
     .curriculum-emoticon-keyboard-wrap
-      float left
       margin-right 20px
       width-height-same(70px)
       .curriculum-emoticon-keyboard-icon
@@ -214,17 +216,10 @@ export default {
       .keyboard
         active-image('keyboard')
     .input-wrap
-      float left
-      width 390px
-      height 70px
-      @media (min-width: 540px) and (max-width: 740px) {
-        width 60%
-      }
-      @media (min-width: 740px) {
-        width 70%
-      }
+      flex 1
+      margin-right 50px
     .gifts-one-wrap
-      float right
+      margin-right 20px
       width-height-same(70px)
       .gifts-one-icon
         width-height-same(70px)
@@ -234,8 +229,6 @@ export default {
       .one
         active-image('one')
     .plus-reduce-two-wrap
-      float right
-      margin-left 20px
       width-height-same(70px)
       .plus-reduce-two-icon
         width-height-same(70px)

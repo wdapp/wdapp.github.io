@@ -1,6 +1,6 @@
 <template>
   <div class="document-wrapper">
-    <div id="drawPanel">document</div>
+    <div id="drawPanel"></div>
   </div>
 </template>
 

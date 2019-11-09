@@ -46,9 +46,9 @@ class HuodeScene {
       });
   }
 
-  showControl(isShow) {
-    const _isShow = !!isShow;
-    DWLive.showControl && DWLive.showControl(_isShow);
+  showControl(show) {
+    const _show = !!show;
+    DWLive.showControl && DWLive.showControl(_show);
   }
 
   docAdapt(adapt) {

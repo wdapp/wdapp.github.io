@@ -7,16 +7,16 @@
         :key="index"
         @click="handleClick(list.name, list.url)"
       >
-        <span class="list-index">{{index + 1}}</span>
+        <span class="list-index">{{ index + 1 }}</span>
         <div class="list-desc">
-          <div class="list-title">{{list.title}}</div>
-          <span class="list-subhead">{{list.subhead}}</span>
-          <span
-            class="list-status"
-            :class="{'live': list.status}"
-          >
-            <span class="tip">{{list.tip}}</span>
+          <div class="list-title">{{ list.title }}</div>
+          <span class="list-subhead">{{ list.subhead }}</span>
+          <span class="list-status" :class="{ live: list.status }">
+            <span class="tip">{{ list.tip }}</span>
           </span>
+        </div>
+        <div class="list-control">
+          <span class="list-control-btn" :class="list.control"></span>
         </div>
       </li>
     </ol>
@@ -24,15 +24,13 @@
 </template>
 
 <script>
-import { log } from "common/utils";
 import BScroll from "better-scroll";
+import { mapState } from "vuex";
 
 export default {
   name: "Lists",
-  data() {
-    return {
-      lists: []
-    };
+  computed: {
+    ...mapState(["lists"])
   },
   methods: {
     handleClick(name, url) {
@@ -40,6 +38,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.lists);
     this.$nextTick(() => {
       this.scroll = new BScroll(this.$refs.wrapper, {
         mouseWheel: {
@@ -57,47 +56,57 @@ export default {
 @import "~styles/mixins.styl"
 
 .lists-wrapper
-  wrapper()
+  layout(0,0,0,0)
+  background-color $fff
   .list-wrap
-    padding-left 20px
+    padding-left 40px
     box-sizing border-box
     .item
-      height 90px
+      padding-right 26px
+      box-sizing border-box
+      height 150px
       border-bottom 1px solid $ddd
+      display flex
+      flex-direction row
+      align-items center
       .list-index
-        float left
-        line-height 90px
-        margin-right 25px
-        baseTextStyle(18px, $baseBlackColor, $boldFontWeight, $genelFontFamily)
+        margin-right 43px
+        baseTextStyle(30px, $c666, $boldFontWeight)
       .list-desc
-        float left
+        flex 1
+        min-width 0
         .list-title
-          width 300px
           ellipsis()
-          baseTextStyle(18px, $baseBlackColor, $boldFontWeight, $genelFontFamily)
-          margin-top 25px
-          margin-bottom 8px
+          baseTextStyle(30px, $c333, $boldFontWeight)
+          margin-bottom 21px
         .list-subhead
           vertical-align middle
           display inline-block
-          max-width 300px
           margin-right 14px
           ellipsis()
-          baseTextStyle(14px, $betterGreyColor, 400, $genelFontFamily)
+          baseTextStyle(24px, $c999)
         .list-status
           vertical-align middle
           display inline-block
-          width 51px
-          height 18px
-          border 1px solid $darkGrayColor
+          width 82px
+          height 34px
+          border 1px solid $c999
           border-radius 4px
-          baseTextStyle(12px, $betterGreyColor, 400, $genelFontFamily)
+          baseTextStyle(22px, $c999, 400, $boldFontWeight)
           text-align center
-          line-height 18px
-          .tip
-            display inline-block
-            transform scale(0.8)
+          line-height 34px
         .live
-          border-color $baseRedColor
-          color $baseRedColor
+          border-color $red
+          color $red
+      .list-control
+        width 50px
+        height 50px
+        .list-control-btn
+          bg-image('lists/play',50)
+        .playing
+          active-image('lists/playing')
+        .replay
+          active-image('lists/replay')
+        .replay_disabled
+          active-image('lists/replay_disabled')
 </style>

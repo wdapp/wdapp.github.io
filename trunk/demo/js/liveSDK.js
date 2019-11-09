@@ -878,7 +878,11 @@
       }
     },
     showControl: function (b) {
-      LivePlayer.showControl(b)
+      if (MobileLive.isMobile() == 'isMobile') {
+        MobileLive.showControl(b)
+      }else{
+        LivePlayer.showControl(b)
+      }
     },
 
     livePlayerInit: function () {
@@ -3083,6 +3087,7 @@
     src: '',
     audio: false,
     line: 0,
+    controls: true,
 
     init: function () {
       var _this = this
@@ -3151,6 +3156,9 @@
 
     appendVideo: function (s) {
       var v = '<video id="player_live" webkit-playsinline x5-video-player-type="h5-page" playsinline controls autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      if (!this.controls) {
+        v = '<video id="player_live" webkit-playsinline x5-video-player-type="h5-page" playsinline autoplay x-webkit-airplay="allow" x5-playsinline width="100%" height="100%" src="' + s + '"></video>'
+      }
       $('#' + LivePlayer.id).html(v)
       var video = document.getElementById('player_live')
       DWLive.onKickOut = function () {
@@ -3158,7 +3166,9 @@
       }
       this.report = new ReportLog(options, 1, 11, video, true)
     },
-
+    showControl (b) {
+      this.controls = b
+    },
     ban: function () {
       $('#livePlayer').css({
         'text-align': 'center',

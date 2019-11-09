@@ -1,5 +1,5 @@
 <template>
-  <div class="sub-windows-wrapper">
+  <div class="sub-windows-wrapper" :class="course">
     <div class="sub-wrap" v-show="show">
       <div class="close-wrap" v-show="closeable">
         <div class="close-icon"></div>
@@ -24,6 +24,10 @@ export default {
       type: Boolean,
       default: true
     },
+    type: {
+      type: String,
+      default: "public"
+    },
     closeable: {
       type: Boolean,
       default: true
@@ -31,6 +35,12 @@ export default {
     component: {
       type: String,
       default: "LivePlayer"
+    }
+  },
+  computed: {
+    course() {
+      const type = this.type;
+      return type + "-course";
     }
   }
 };
@@ -43,6 +53,7 @@ export default {
   position fixed
   top 462px
   left 0
+  z-index 1
   .sub-wrap
     width 300px
     height 168px
@@ -53,4 +64,6 @@ export default {
       right 5px
       .close-icon
         bg-image('close', 40)
+.special-course
+  top 542px
 </style>

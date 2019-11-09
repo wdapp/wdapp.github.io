@@ -16,7 +16,8 @@ import {
   Tag,
   Grid,
   GridItem,
-  Image
+  Image,
+  Notify
 } from "vant";
 
 Vue.use(Icon);
@@ -27,6 +28,7 @@ Vue.use(Popup);
 Vue.use(Card);
 Vue.use(Tag);
 Vue.use(Image);
+Vue.use(Notify);
 Vue.use(Grid).use(GridItem);
 
 Vue.prototype.bus = new Vue();

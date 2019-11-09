@@ -20,14 +20,17 @@
         :navigation="swiper.navigation"
       >
         <live-chats slot="chats"></live-chats>
-        <div slot="lists">lists</div>
-        <div slot="introduce">introduce</div>
+        <live-lists slot="lists"></live-lists>
+        <live-introduce slot="introduce"></live-introduce>
       </common-swiper>
     </div>
     <common-popup :show="popup.show" @closed="onClosed">
       <component :is="popup.component"></component>
     </common-popup>
     <sub-windows
+      :type="windows.type"
+      :show="windows.show"
+      :closeable="windows.closeable"
       :component="toggleMainSubComponent(!windows.toggle)"
     ></sub-windows>
   </div>
@@ -39,11 +42,15 @@ import SubWindows from "./components/windows/SubWindows";
 import LivePanel from "./components/panel/Index";
 import LiveControls from "./components/controls/Controls";
 import LiveChats from "./components/chats/Chats";
+import LiveLists from "./components/lists/Lists";
+import LiveIntroduce from "./components/introduce/Introduce";
 import CommonSwiper from "components/swiper/Swiper";
 import CommonPopup from "components/popup/Popup";
 import CommonCurriculum from "components/curriculum/Curriculum";
 import CommonGifts from "components/gifts/Gifts";
 import CommonReward from "components/reward/Reward";
+import HuodeScene from "common/websdk/live";
+import { log } from "common/utils";
 
 export default {
   name: "Live",
@@ -53,6 +60,8 @@ export default {
     LivePanel,
     LiveControls,
     LiveChats,
+    LiveLists,
+    LiveIntroduce,
     CommonSwiper,
     CommonPopup,
     CommonCurriculum,
@@ -64,7 +73,10 @@ export default {
       windows: {
         mainComponent: "LivePlayer",
         subComponent: "LiveDocument",
-        toggle: true
+        type: "public", //公开课 public 专题课 special
+        toggle: true,
+        show: true,
+        closeable: true
       },
       panel: {
         show: true,
@@ -98,6 +110,8 @@ export default {
   },
   methods: {
     init() {
+      this.hd = new HuodeScene();
+      this.login();
       this.onEvents();
     },
     on(event, callback) {
@@ -129,6 +143,24 @@ export default {
       const sub = this.windows.subComponent;
       const is = _toggle ? main : sub;
       return is;
+    },
+    login() {
+      this.hd.login({
+        userId: "7848DB3FB422057F",
+        roomId: "F2164D83B191B0049C33DC5901307461",
+        viewerName: "获得场景视频",
+        viewerToken: "",
+        success: result => {
+          // this.hd.showControl(false);
+          this.hd.docAdapt(true);
+          log("onLoginSuccess", result);
+          this.$notify({ type: "success", message: "登录成功" });
+        },
+        fail: error => {
+          log("onLoginError", error);
+          this.$notify({ type: "danger", message: "登录失败" });
+        }
+      });
     }
   },
   mounted() {
