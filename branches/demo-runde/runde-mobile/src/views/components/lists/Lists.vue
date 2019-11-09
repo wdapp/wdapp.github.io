@@ -38,7 +38,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.lists);
     this.$nextTick(() => {
       this.scroll = new BScroll(this.$refs.wrapper, {
         mouseWheel: {

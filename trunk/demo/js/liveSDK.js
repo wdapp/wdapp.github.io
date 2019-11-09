@@ -3161,6 +3161,7 @@
       }
       $('#' + LivePlayer.id).html(v)
       var video = document.getElementById('player_live')
+      DWLive.onPlayerLoad && DWLive.onPlayerLoad(video)
       DWLive.onKickOut = function () {
         $('#' + LivePlayer.id).html('')
       }

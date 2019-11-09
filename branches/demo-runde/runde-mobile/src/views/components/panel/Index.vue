@@ -32,6 +32,11 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  watch: {
+    showSubWindows() {
+      this.bus.$emit("scrollrefresh");
+    }
   }
 };
 </script>

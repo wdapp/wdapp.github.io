@@ -1,13 +1,16 @@
 <template>
-  <div class="controls-wrapper">
-    <div class="controls-top">
+  <div class="controls-wrapper" @click="handleControlsClick">
+    <div class="controls-top" v-show="show">
       <controls-back class="controls-back"></controls-back>
       <controls-button-group
         class="controls-button-group"
+        @switch="onSwitch"
+        @open="onOpen"
+        :isSubShow="isSubShow"
       ></controls-button-group>
       <controls-play class="controls-play"></controls-play>
     </div>
-    <div class="controls-bottom">
+    <div class="controls-bottom" v-show="show">
       <controls-control></controls-control>
     </div>
   </div>
@@ -18,14 +21,49 @@ import ControlsPlay from "./components/Play";
 import ControlsBack from "./components/Back";
 import ControlsControl from "./components/Control";
 import ControlsButtonGroup from "./components/ButtonGroup";
+import Mixins from "common/mixins";
 
 export default {
   name: "Controls",
+  mixins: [Mixins],
   components: {
     ControlsPlay,
     ControlsBack,
     ControlsControl,
     ControlsButtonGroup
+  },
+  props: {
+    isSubShow: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {
+      show: true
+    };
+  },
+  methods: {
+    onSwitch(toggle) {
+      this.$emit("switch", toggle);
+    },
+    onOpen() {
+      this.$emit("open");
+    },
+    handleControlsClick() {
+      this.show = true;
+      this.$emit("show", this.show);
+      this.start();
+    },
+    start() {
+      this.delay(() => {
+        this.show = false;
+        this.$emit("show", this.show);
+      });
+    }
+  },
+  mounted() {
+    this.start();
   }
 };
 </script>

@@ -1,10 +1,11 @@
 <template>
   <div class="sub-windows-wrapper" :class="course">
-    <div class="sub-wrap" v-show="show">
-      <div class="close-wrap" v-show="closeable">
+    <div class="sub-wrap" v-show="show" ref="subParent" @click="handleSubClick">
+      <div class="close-wrap" v-show="showClose" @click="onClose">
         <div class="close-icon"></div>
       </div>
-      <component :is="component"></component>
+      <!--      <component :is="component" ref="component"></component>-->
+      <live-document ref="document"></live-document>
     </div>
   </div>
 </template>
@@ -12,9 +13,11 @@
 <script>
 import LivePlayer from "../player/Player";
 import LiveDocument from "../document/Document";
+import Mixins from "common/mixins";
 
 export default {
   name: "SubWindows",
+  mixins: [Mixins],
   components: {
     LivePlayer,
     LiveDocument
@@ -37,10 +40,38 @@ export default {
       default: "LivePlayer"
     }
   },
+  data() {
+    return {
+      showClose: true
+    };
+  },
+  watch: {
+    closeable(newValue) {
+      this.showClose = newValue;
+    },
+    show(newValue) {
+      this.showClose = newValue;
+    }
+  },
   computed: {
     course() {
       const type = this.type;
       return type + "-course";
+    }
+  },
+  methods: {
+    onClose() {
+      this.$emit("close");
+    },
+    handleSubClick() {
+      this.showClose = !this.showClose;
+      if (this.showClose) {
+        this.delay(() => {
+          this.showClose = false
+        });
+      } else {
+        this.abort();
+      }
     }
   }
 };
@@ -62,6 +93,7 @@ export default {
       position absolute
       top 5px
       right 5px
+      z-index 1
       .close-icon
         bg-image('close', 40)
 .special-course

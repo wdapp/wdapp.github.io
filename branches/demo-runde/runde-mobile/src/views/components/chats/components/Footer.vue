@@ -26,9 +26,11 @@
 <script>
 import ChatsInput from "./Input";
 import STATE from "./state";
+import Mixins from "common/mixins";
 
 export default {
   name: "Footer",
+  mixins: [Mixins],
   components: {
     ChatsInput
   },
@@ -62,14 +64,6 @@ export default {
     }
   },
   methods: {
-    emit(event, options) {
-      this.bus.$emit(event, options);
-    },
-    on(event, callback) {
-      this.bus.$on(event, params => {
-        callback && callback(params);
-      });
-    },
     initialToUpperCase(str) {
       return str.replace(/^\S/, s => s.toUpperCase());
     },

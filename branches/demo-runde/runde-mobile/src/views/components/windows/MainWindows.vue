@@ -1,7 +1,8 @@
 <template>
   <div class="main-windows-wrapper">
-    <div class="main-wrap">
-      <component :is="component"></component>
+    <div class="main-wrap" ref="mainParent">
+<!--      <component :is="component"></component>-->
+      <live-player ref="player"></live-player>
     </div>
     <slot name="controls"></slot>
   </div>

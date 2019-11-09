@@ -1,8 +1,14 @@
 <template>
   <div class="wrapper">
     <div class="top">
-      <main-windows :component="toggleMainSubComponent(windows.toggle)">
-        <live-controls slot="controls"></live-controls>
+      <main-windows ref="player" :component="toggleMainSubComponent(windows.toggle)">
+        <live-controls
+          :isSubShow="windows.show"
+          @switch="onControlsSwitch"
+          @open="onControlsOpen"
+          @show="onControlsShow"
+          slot="controls"
+        ></live-controls>
       </main-windows>
     </div>
     <div class="center">
@@ -28,10 +34,12 @@
       <component :is="popup.component"></component>
     </common-popup>
     <sub-windows
+      ref="document"
       :type="windows.type"
       :show="windows.show"
       :closeable="windows.closeable"
       :component="toggleMainSubComponent(!windows.toggle)"
+      @close="onSubClose"
     ></sub-windows>
   </div>
 </template>
@@ -51,9 +59,11 @@ import CommonGifts from "components/gifts/Gifts";
 import CommonReward from "components/reward/Reward";
 import HuodeScene from "common/websdk/live";
 import { log } from "common/utils";
+import Mixins from "common/mixins";
 
 export default {
   name: "Live",
+  mixins: [Mixins],
   components: {
     MainWindows,
     SubWindows,
@@ -108,16 +118,21 @@ export default {
       }
     };
   },
+  computed: {
+    windowsShow() {
+      return this.windows.show;
+    }
+  },
+  watch: {
+    windowsShow(newValue) {
+      this.panel.showSubWindows = newValue;
+    }
+  },
   methods: {
     init() {
       this.hd = new HuodeScene();
       this.login();
       this.onEvents();
-    },
-    on(event, callback) {
-      this.bus.$on(event, params => {
-        callback && callback(params);
-      });
     },
     onEvents() {
       this.on("curriculumclick", options => {
@@ -151,8 +166,7 @@ export default {
         viewerName: "获得场景视频",
         viewerToken: "",
         success: result => {
-          // this.hd.showControl(false);
-          this.hd.docAdapt(true);
+          this.configPlayerAndDocument();
           log("onLoginSuccess", result);
           this.$notify({ type: "success", message: "登录成功" });
         },
@@ -161,6 +175,33 @@ export default {
           this.$notify({ type: "danger", message: "登录失败" });
         }
       });
+    },
+    configPlayerAndDocument() {
+      this.hd.showControl(false);
+      this.hd.docAdapt(true);
+    },
+    onControlsSwitch(toggle) {
+      let player = this.$refs.player.$refs.player.$el;
+      let panel = this.$refs.document.$refs.document.$el;
+      let mainParent = this.$refs.player.$refs.mainParent;
+      let subParent = this.$refs.document.$refs.subParent;
+      this.windows.toggle = toggle;
+      if (toggle) {
+        mainParent.appendChild(player);
+        subParent.appendChild(panel);
+      } else {
+        mainParent.appendChild(panel);
+        subParent.appendChild(player);
+      }
+    },
+    onControlsOpen() {
+      this.windows.show = true;
+    },
+    onControlsShow(show) {
+      this.windows.closeable = show;
+    },
+    onSubClose() {
+      this.windows.show = false;
     }
   },
   mounted() {

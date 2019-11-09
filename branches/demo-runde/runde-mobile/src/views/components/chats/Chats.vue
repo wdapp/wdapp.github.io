@@ -25,9 +25,11 @@ import CommonEmoticon from "components/emoticon/Emoticon";
 import CommonPlus from "components/plus/Plus";
 import { bind } from "size-sensor";
 import { log } from "common/utils";
+import Mixins from "common/mixins";
 
 export default {
   name: "Chats",
+  mixins: [Mixins],
   components: {
     ChatsContent,
     ChatsFooter,
@@ -47,9 +49,6 @@ export default {
     }
   },
   methods: {
-    emit(event, options) {
-      this.bus.$emit(event, options);
-    },
     onSizeSensor() {
       this.unbind = bind(this.Popup, element => {
         const height = element.clientHeight;

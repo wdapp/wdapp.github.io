@@ -15,9 +15,12 @@
 <script>
 import BScroll from "better-scroll";
 import ContentChat from "./Chat";
+import { log } from "common/utils";
+import Mixins from "common/mixins";
 
 export default {
   name: "Content",
+  mixins: [Mixins],
   components: {
     ContentChat
   },
@@ -97,16 +100,13 @@ export default {
     };
   },
   methods: {
-    on(event, callback) {
-      this.bus.$on(event, params => {
-        callback && callback(params);
-      });
-    },
     addEvents() {
       this.on("scrolltobottom", () => {
+        log("scrolltobottom");
         this.scrollToBottom();
       });
       this.on("scrollrefresh", () => {
+        log("scrollrefresh");
         this.scrollRefresh();
       });
     },
