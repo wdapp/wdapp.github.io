@@ -1,14 +1,23 @@
 <template>
-  <span class="play-wrapper" :class="{ active: playStatus }"></span>
+  <span
+    @click="handlePlayClick"
+    class="play-wrapper"
+    :class="{ active: playState }"
+  ></span>
 </template>
 
 <script>
 export default {
   name: "Play",
   props: {
-    playStatus: {
+    playState: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    handlePlayClick() {
+      this.$emit("toggleplay");
     }
   }
 };

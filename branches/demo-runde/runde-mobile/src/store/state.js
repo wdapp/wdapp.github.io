@@ -1,4 +1,8 @@
 export default {
+  playState: false,
+  screenState: false,
+  viewer: {},
+  template: {},
   lists: lists()
 };
 

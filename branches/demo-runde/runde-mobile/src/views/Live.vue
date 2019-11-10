@@ -1,7 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="top">
-      <main-windows ref="player" :component="toggleMainSubComponent(windows.toggle)">
+      <main-windows
+        ref="player"
+        :component="toggleMainSubComponent(windows.toggle)"
+      >
         <live-controls
           :isSubShow="windows.show"
           @switch="onControlsSwitch"
@@ -15,8 +18,7 @@
       <live-panel
         :show="panel.show"
         :showSubWindows="panel.showSubWindows"
-        :name="panel.name"
-        :number="panel.number"
+        @opengift="onOpenGift"
       ></live-panel>
     </div>
     <div class="bottom">
@@ -33,6 +35,7 @@
     <common-popup :show="popup.show" @closed="onClosed">
       <component :is="popup.component"></component>
     </common-popup>
+    <common-questionnaire :questionnaire="questionnaire"></common-questionnaire>
     <sub-windows
       ref="document"
       :type="windows.type"
@@ -40,6 +43,8 @@
       :closeable="windows.closeable"
       :component="toggleMainSubComponent(!windows.toggle)"
       @close="onSubClose"
+      @dragenter="onDragEnter"
+      @dragleave="onDragLeave"
     ></sub-windows>
   </div>
 </template>
@@ -58,6 +63,8 @@ import CommonCurriculum from "components/curriculum/Curriculum";
 import CommonGifts from "components/gifts/Gifts";
 import CommonReward from "components/reward/Reward";
 import HuodeScene from "common/websdk/live";
+import CommonQuestionnaire from "common/components/questionnaire/Questionnaire";
+import { mapMutations } from "vuex";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
 
@@ -76,7 +83,8 @@ export default {
     CommonPopup,
     CommonCurriculum,
     CommonGifts,
-    CommonReward
+    CommonReward,
+    CommonQuestionnaire
   },
   data() {
     return {
@@ -90,9 +98,7 @@ export default {
       },
       panel: {
         show: true,
-        showSubWindows: true,
-        name: "王波波老师王波波老师王波波老师王波波老师",
-        number: 9999999999999
+        showSubWindows: true
       },
       swiper: {
         disabled: true,
@@ -115,7 +121,8 @@ export default {
       popup: {
         show: false,
         component: ""
-      }
+      },
+      questionnaire: {}
     };
   },
   computed: {
@@ -129,6 +136,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setViewer", "setTemplate"]),
     init() {
       this.hd = new HuodeScene();
       this.login();
@@ -144,13 +152,27 @@ export default {
       this.on("rewardclick", options => {
         this.showPopup(options);
       });
+      this.on("closePopup", () => {
+        this.closePopup();
+      });
+      this.hd.onQuestionnairePublish((data) => {
+        console.log(data)
+        log("onQuestionnairePublish", data);
+        if (data.success && !data.datas.questionnaire.submitedAction) {
+          debugger
+          this.formateQuestionnaire(data.datas);
+        }
+      });
     },
     showPopup(options) {
       this.popup.show = true;
       this.popup.component = options.component;
     },
-    onClosed() {
+    closePopup() {
       this.popup.show = false;
+    },
+    onClosed() {
+      this.closePopup();
     },
     toggleMainSubComponent(toggle) {
       const _toggle = toggle;
@@ -167,6 +189,8 @@ export default {
         viewerToken: "",
         success: result => {
           this.configPlayerAndDocument();
+          this.setViewer(result.viewer);
+          this.setTemplate(result.template);
           log("onLoginSuccess", result);
           this.$notify({ type: "success", message: "登录成功" });
         },
@@ -193,6 +217,7 @@ export default {
         mainParent.appendChild(panel);
         subParent.appendChild(player);
       }
+      this.emit("play");
     },
     onControlsOpen() {
       this.windows.show = true;
@@ -202,6 +227,48 @@ export default {
     },
     onSubClose() {
       this.windows.show = false;
+    },
+    onDragEnter() {
+      this.panel.showSubWindows = true;
+    },
+    onDragLeave() {
+      this.panel.showSubWindows = false;
+    },
+
+    // 打开礼物面板
+
+    onOpenGift() {
+      const options = {
+        component: "CommonGifts"
+      };
+      this.showPopup(options);
+    },
+
+    // 问卷问答
+
+    formateQuestionnaire(data) {
+      const questionnaire = data.questionnaire;
+      const subjects = questionnaire.subjects[0];
+      const options = subjects.options;
+
+      const optionIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+      const _questionnaire = {};
+
+      _questionnaire.questionnaireId = questionnaire.id;
+      _questionnaire.subjectId = subjects.id;
+      _questionnaire.title = subjects.content;
+      _questionnaire.options = [];
+
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        option.key = optionIndex[i];
+        if (option.correct) {
+          _questionnaire.correct = option.key;
+        }
+        _questionnaire.options.push(option);
+      }
+
+      this.questionnaire = _questionnaire;
     }
   },
   mounted() {

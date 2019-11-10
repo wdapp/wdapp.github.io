@@ -13,6 +13,12 @@
 <script>
 export default {
   name: "Input",
+  props: {
+    message: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
       value: "",
@@ -23,6 +29,14 @@ export default {
   computed: {
     field() {
       return this.$refs.field;
+    }
+  },
+  watch: {
+    message(newValue) {
+      this.value = newValue;
+    },
+    value(newValue) {
+      this.$emit("change", newValue);
     }
   },
   methods: {

@@ -24,80 +24,13 @@ export default {
   components: {
     ContentChat
   },
-  data() {
-    return {
-      messages: [
-        {
-          userAvatar: require("images/header.png"),
-          userName: "1231232132131321321321",
-          content: "开始，大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "测试",
-          content: "12312321",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "测试",
-          content:
-            "大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好大家好",
-          type: "right"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "测试",
-          content: "大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "测试",
-          content:
-            "hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world ",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "测试",
-          content: "大家好大家好，right",
-          type: "right"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "sadfdsafdsafdsafdsafdasfds",
-          content: "大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName:
-            "&^%$#%^&*(UYFTYGHUJKHCVHU&^%$%^&*())(*&^%$#@!@#$%^&*&^%$#%^&*(UYFTYGHUJKHCVHU&^%$%^&*())(*&^%$#@!@#$%^&*",
-          content: "大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "sadfdsafdsafdsafdsafdasfds",
-          content: "大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "sadfdsafdsafdsafdsafdasfds",
-          content: "大家好大家好",
-          type: "left"
-        },
-        {
-          userAvatar: require("images/header.png"),
-          userName: "sadfdsafdsafdsafdsafdasfds",
-          content: "这里是测试的地方，结束",
-          type: "left"
-        }
-      ]
-    };
+  props: {
+    messages: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
   },
   methods: {
     addEvents() {
@@ -124,7 +57,12 @@ export default {
   },
   mounted() {
     const chatsBox = this.$refs.chatsBox;
-    this.scroll = new BScroll(chatsBox);
+    this.scroll = new BScroll(chatsBox, {
+      scrollbar: {
+        fade: true,
+        interactive: false
+      }
+    });
     this.scrollToBottom();
     this.addEvents();
   }

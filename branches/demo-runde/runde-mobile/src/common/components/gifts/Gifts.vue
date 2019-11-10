@@ -7,7 +7,11 @@
         :key="key"
         :disabled="disabled(tab.title)"
       >
-        <component :is="tab.component" :options="tab.options"></component>
+        <component
+          @gift="onGift"
+          :is="tab.component"
+          :options="tab.options"
+        ></component>
       </van-tab>
     </van-tabs>
     <div class="gifts-footer">
@@ -22,7 +26,7 @@
           <span class="number">{{ "x" + number }}</span>
         </li>
       </ul>
-      <div class="send-btn-wrap">
+      <div class="send-btn-wrap" @click="sendGift">
         <span class="send-btn-text">发送</span>
       </div>
     </div>
@@ -31,6 +35,7 @@
 
 <script>
 import GiftsList from "./List";
+import HuodeScene from "common/websdk/live";
 
 export default {
   name: "Gifts",
@@ -47,39 +52,48 @@ export default {
             component: "GiftsList",
             options: [
               {
-                url: require("images/gifts/flower.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift1.png",
                 title: "玫瑰"
               },
               {
-                url: require("images/gifts/heart.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift2.png",
                 title: "老师心"
               },
               {
-                url: require("images/gifts/like.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift3.png",
                 title: "666"
               },
               {
-                url: require("images/gifts/flower.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift1.png",
                 title: "玫瑰"
               },
               {
-                url: require("images/gifts/heart.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift2.png",
                 title: "老师心"
               },
               {
-                url: require("images/gifts/like.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift3.png",
                 title: "666"
               },
               {
-                url: require("images/gifts/flower.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift1.png",
                 title: "彩笔"
               },
               {
-                url: require("images/gifts/heart.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift2.png",
                 title: "金麦"
               },
               {
-                url: require("images/gifts/like.png"),
+                url:
+                  "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift3.png",
                 title: "流星雨"
               }
             ]
@@ -99,7 +113,9 @@ export default {
         ]
       },
       giftNumbers: [1, 5, 10],
-      active: 0
+      active: 0,
+      activeNumber: 1,
+      gift: {}
     };
   },
   methods: {
@@ -112,7 +128,21 @@ export default {
     },
     onNumberClick(key) {
       this.active = key;
+      this.activeNumber = this.giftNumbers[this.active];
+    },
+    onGift(gift) {
+      this.gift = gift;
+    },
+    sendGift() {
+      const msg = "赠送给老师[cem_" + this.gift.url + "]x" + this.activeNumber;
+      //发送礼物消息
+      this.hd.sendPublicChatMsg(msg);
+      //关闭弹窗
+      this.bus.$emit("closePopup");
     }
+  },
+  mounted() {
+    this.hd = new HuodeScene();
   }
 };
 </script>

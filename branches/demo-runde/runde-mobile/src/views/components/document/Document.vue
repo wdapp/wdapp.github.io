@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Document",
+  name: "Document"
 };
 </script>
 

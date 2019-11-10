@@ -1,7 +1,7 @@
 <template>
   <div class="main-windows-wrapper">
     <div class="main-wrap" ref="mainParent">
-<!--      <component :is="component"></component>-->
+      <!--      <component :is="component"></component>-->
       <live-player ref="player"></live-player>
     </div>
     <slot name="controls"></slot>
@@ -10,19 +10,46 @@
 
 <script>
 import LivePlayer from "../player/Player";
-import LiveDocument from "../document/Document";
+import FullScreen from "common/fullscreen";
+import Mixins from "common/mixins";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "MainWindows",
+  mixins: [Mixins],
   components: {
-    LivePlayer,
-    LiveDocument
+    LivePlayer
   },
   props: {
     component: {
       type: String,
       default: "LivePlayer"
     }
+  },
+  computed: {
+    ...mapState(["screenState"])
+  },
+  methods: {
+    ...mapMutations(["changeScreenState"])
+  },
+  mounted() {
+    const target = this.$refs.mainParent;
+    this.fullscreen = new FullScreen(
+      target,
+      () => {
+        this.changeScreenState(true);
+      },
+      () => {
+        this.changeScreenState(false);
+      }
+    );
+    this.on("fullscreenclick", () => {
+      if (this.screenState) {
+        this.fullscreen.exitFullscreen();
+      } else {
+        this.fullscreen.webFullScreen();
+      }
+    });
   }
 };
 </script>

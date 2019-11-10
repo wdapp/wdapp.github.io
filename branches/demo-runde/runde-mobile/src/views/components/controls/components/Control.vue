@@ -1,8 +1,8 @@
 <template>
   <div class="control-wrapper">
     <div class="control-left">
-      <div class="play-wrap">
-        <span class="play-icon" :class="{ active: playStatus }"></span>
+      <div class="play-wrap" @click="handlePlayClick">
+        <span class="play-icon" :class="{ active: playState }"></span>
       </div>
     </div>
     <div class="control-right">
@@ -11,12 +11,14 @@
           <span
             class="full-screen-icon"
             :class="{ active: screenStatus }"
+            @click="handleFullScreenClick"
           ></span>
         </li>
         <li class="item barrage-wrap">
           <van-switch
             class="barrage-btn"
             v-model="checked"
+            @change="onChange"
             size="0.53333rem"
             active-color="#2196F3"
             inactive-color="#999999"
@@ -31,7 +33,7 @@
 export default {
   name: "Control",
   props: {
-    playStatus: {
+    playState: {
       type: Boolean,
       default: false
     },
@@ -44,6 +46,17 @@ export default {
     return {
       checked: false
     };
+  },
+  methods: {
+    handlePlayClick() {
+      this.$emit("toggleplay");
+    },
+    handleFullScreenClick() {
+      this.$emit("fullscreenclick");
+    },
+    onChange(checked) {
+      this.$emit("change", checked);
+    }
   }
 };
 </script>

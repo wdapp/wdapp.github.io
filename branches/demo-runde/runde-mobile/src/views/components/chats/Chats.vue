@@ -2,18 +2,19 @@
   <div class="chats-wrapper">
     <div class="chats-container">
       <div class="chats-top">
-        <chats-content></chats-content>
+        <chats-content :messages="messages"></chats-content>
       </div>
       <div class="chats-bottom">
         <chats-footer
           @emoticonclick="onEmoticonClick"
           @plusclick="onPlusClick"
           @closepopup="onClosePopup"
+          @messages="onMessages"
         ></chats-footer>
       </div>
     </div>
     <div class="popup-bottom" ref="Popup">
-      <component :is="popup.component"></component>
+      <componen :is="popup.component"></componen>
     </div>
   </div>
 </template>
@@ -23,7 +24,7 @@ import ChatsContent from "./components/Content";
 import ChatsFooter from "./components/Footer";
 import CommonEmoticon from "components/emoticon/Emoticon";
 import CommonPlus from "components/plus/Plus";
-import { bind } from "size-sensor";
+import { bind, clear } from "size-sensor";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
 
@@ -40,7 +41,8 @@ export default {
     return {
       popup: {
         component: ""
-      }
+      },
+      messages: [] // 所有聊天信息
     };
   },
   computed: {
@@ -78,14 +80,16 @@ export default {
     },
     onClosePopup() {
       this.closePopup();
+    },
+    onMessages(messages) {
+      this.messages = messages;
     }
   },
   mounted() {
     this.onSizeSensor();
   },
   beforeDestroy() {
-    // import { bind, clear } from "size-sensor";
-    // clear(this.popup);
+    clear(this.Popup);
   }
 };
 </script>

@@ -22,12 +22,14 @@
     </div>
     <div class="list-footer">
       <p class="select-money">￥{{ money }}</p>
-      <div class="send-money">塞进红包</div>
+      <div class="send-money" @click="handleRewardClick">塞进红包</div>
     </div>
   </div>
 </template>
 
 <script>
+import HuodeScene from "common/websdk/live";
+
 export default {
   name: "List",
   props: {
@@ -42,14 +44,31 @@ export default {
     return {
       active: 0,
       value: "",
-      money: 0
+      money: 0,
+      icon:
+        "https://github.wdapp.top/branches/demo-runde/runde-web/src/assets/images/gifts/gift2.png"
     };
+  },
+  watch: {
+    value(newVal) {
+      this.money = newVal;
+    }
   },
   methods: {
     handleMoneyClick(key, money) {
       this.active = key;
       this.money = money;
+    },
+    handleRewardClick() {
+      const msg = "打赏给老师[cem_" + this.icon + "]￥" + this.money;
+      //发送打赏信息
+      this.hd.sendPublicChatMsg(msg);
+      //关闭弹窗
+      this.bus.$emit("closePopup");
     }
+  },
+  mounted() {
+    this.hd = new HuodeScene();
   }
 };
 </script>

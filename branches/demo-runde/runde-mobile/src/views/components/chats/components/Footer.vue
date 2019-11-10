@@ -8,18 +8,30 @@
         ></span>
       </div>
       <div class="input-wrap">
-        <chats-input ref="field" @focus="onFocus" @blur="onBlur"></chats-input>
+        <chats-input
+          ref="field"
+          @focus="onFocus"
+          @blur="onBlur"
+          @change="onChange"
+          :message="message"
+        ></chats-input>
       </div>
-      <div class="gifts-one-wrap" @click="onGiftsOneClick">
+      <div class="gifts-one-wrap" v-show="!message" @click="onGiftsOneClick">
         <span class="gifts-one-icon" :class="giftsOneClassName"></span>
       </div>
-      <div class="plus-reduce-two-wrap" @click="onPlusReduceTwoClick">
+      <div
+        class="plus-reduce-two-wrap"
+        v-show="!message"
+        @click="onPlusReduceTwoClick"
+      >
         <span
           class="plus-reduce-two-icon"
           :class="plusReduceTwoClassName"
         ></span>
       </div>
+      <div class="send-wrap" @click="sendMessage" v-show="message">发送</div>
     </div>
+    <common-slide class="conmmon-slide" :option="tipOption"></common-slide>
   </div>
 </template>
 
@@ -27,12 +39,17 @@
 import ChatsInput from "./Input";
 import STATE from "./state";
 import Mixins from "common/mixins";
+import HuodeScene from "common/websdk/live";
+import { showEm, formatRewardAndGiftToTip } from "common/utils";
+import { mapState } from "vuex";
+import CommonSlide from "common/components/slide/Slide";
 
 export default {
   name: "Footer",
   mixins: [Mixins],
   components: {
-    ChatsInput
+    ChatsInput,
+    CommonSlide
   },
   data() {
     return {
@@ -46,10 +63,38 @@ export default {
         state: STATE.PLUS_REDUCE_TWO.PLUS
       },
       popupup: false,
-      timer: 0
+      timer: 0,
+      message: "",
+      messages: [],
+      tipOption: {},
+      firstTips: false,
+      isScroll: false,
+      messagesLength: 100
     };
   },
+  watch: {
+    messages() {
+      this.$emit("messages", this.limitMessages);
+    }
+  },
   computed: {
+    ...mapState(["viewer"]),
+    limitMessages() {
+      const messages = [...this.messages];
+      return messages.splice(-this.messagesLength);
+    },
+    verify() {
+      const msg = this.message.trim();
+      if (!msg) {
+        this.$notify({ type: "warning", message: "聊天内容不能为空" });
+        return false;
+      }
+      if (msg.length >= 300) {
+        this.$notify({ type: "warning", message: "聊天内容不能超过300字" });
+        return false;
+      }
+      return true;
+    },
     curEmoKeyClassName() {
       return this.curEmoKey.state;
     },
@@ -116,6 +161,7 @@ export default {
       this.emit("giftsclick", options);
     },
     onOneClick() {
+      this.sendKou(1);
       this.$emit("closepopup");
       this.onBlur();
     },
@@ -145,7 +191,9 @@ export default {
       this.closePopup();
     },
     onTWOClick() {
+      this.sendKou(2);
       this.closePopup();
+      this.onBlur();
     },
     closePopup() {
       this.$emit("closepopup");
@@ -175,10 +223,75 @@ export default {
       this.on("popudown", () => {
         this.popupup = false;
       });
+      this.on("emoticon", mark => {
+        this.onEmoticon(mark);
+      });
+      this.hd.onPublicChatMessage(message => {
+        const _msg = JSON.parse(message);
+        const type = this.viewer.id === _msg.userid ? "right" : "left";
+        const formatMsg = {
+          userAvatar: _msg.useravatar || require("images/header.png"),
+          userName: _msg.username,
+          content: showEm(_msg.msg),
+          userId: _msg.userid,
+          userRole: _msg.userrole,
+          userCustomMark: _msg.usercustommark,
+          groupId: _msg.groupId,
+          time: _msg.time,
+          status: _msg.status,
+          chatId: _msg.chatId,
+          type: type
+        };
+        this.messages.push(formatMsg);
+        if (this.isScroll) {
+          this.emit("scrolltobottom");
+        }
+        this.sendTip(_msg);
+      });
+    },
+    sendTip(msg) {
+      if (!this.firstTips) {
+        this.$nextTick(() => {
+          this.firstTips = true;
+        });
+        return false;
+      }
+      const tip = formatRewardAndGiftToTip(msg);
+      if (!tip) {
+        return false;
+      }
+      this.tipOption = tip;
+    },
+    onChange(value) {
+      this.message = value;
+    },
+    onEmoticon(mark) {
+      this.message += "[em2_" + mark + "]";
+    },
+    sendKou(type) {
+      const msg = "[em2_q" + type + "]";
+      this.hd.sendPublicChatMsg(msg);
+    },
+    sendMessage() {
+      if (!this.verify) {
+        return false;
+      }
+      const message = this.message.trim();
+      this.hd.sendPublicChatMsg(message);
+      this.sendBarrage(message);
+      this.message = "";
+    },
+    sendBarrage(message) {
+      this.emit("danmaku", message);
     }
   },
   mounted() {
+    this.hd = new HuodeScene();
     this.addEvents();
+    this.delay(() => {
+      this.emit("scrolltobottom");
+      this.isScroll = true;
+    }, 2000);
   }
 };
 </script>
@@ -191,12 +304,18 @@ export default {
   padding 14px 30px
   box-sizing border-box
   border-top 1px solid $eee
+  .conmmon-slide
+    position absolute
+    top -400px
+    left 0
+    z-index 99
   .button-group
     height 70px
     width 100%
     display flex
     flex-direction row
     justify-content space-between
+    align-items center
     .curriculum-emoticon-keyboard-wrap
       margin-right 20px
       width-height-same(70px)
@@ -233,4 +352,12 @@ export default {
         active-image('reduce')
       .two
         active-image('two')
+    .send-wrap
+      width 160px
+      height 60px
+      background $red
+      border-radius 30px
+      baseTextStyle(32px, $fff)
+      line-height 60px
+      text-align center
 </style>

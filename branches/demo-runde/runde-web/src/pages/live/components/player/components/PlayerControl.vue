@@ -1,5 +1,6 @@
 <template>
   <div class="player-control-wrapper" ref="playerControlWrapper">
+    <common-danmaku class="danmaku-wrap" ref="danmaku"></common-danmaku>
     <div
       class="actions-btn-group"
       v-show="isShowControl"
@@ -27,7 +28,7 @@
             v-model="isBarrage"
             active-color="#444444"
             inactive-color="#444444"
-            @change="onBarrageChange">
+          >
           </el-switch>
         </div>
         <div class="btn-item setting-btn">
@@ -68,10 +69,14 @@
 <script>
 import FullScreen from 'common/fullscreen'
 import HuodeScene from 'common/websdk/live'
+import CommonDanmaku from 'common/components/danmaku/Danmaku'
 import {log} from 'common/utils'
 
 export default {
   name: 'PlayerControl',
+  components: {
+    CommonDanmaku
+  },
   props: {
     isShowControl: {
       type: Boolean,
@@ -110,6 +115,9 @@ export default {
     },
     fullScreenIcon () {
       return (this.toggleFullScreenBtn ? 'full' : 'small') + '-screen-icon'
+    },
+    danmaku () {
+      return this.$refs.danmaku
     }
   },
   watch: {
@@ -144,10 +152,6 @@ export default {
     },
     handleVolumeClick () {
       this.isShowVolumeSlider = !this.isShowVolumeSlider
-    },
-    onBarrageChange (val) {
-      this.HD.toggleBarrage(val)
-      log('onBarrageChange', val)
     },
     init () {
       this.HD = new HuodeScene()
@@ -185,6 +189,16 @@ export default {
         this.interactionStatus = 'interaction'
         log('onInteractionCancal')
       })
+      this.bus.$on('danmaku', msg => {
+        this.sendDanmaku(msg)
+      })
+    },
+    sendDanmaku (msg) {
+      if (this.isBarrage) {
+        this.danmaku.sendDanmaku({
+          msg: msg
+        })
+      }
     },
     handleInteractionClick () {
       if (this.interactionStatus === 'interaction') {
@@ -208,6 +222,9 @@ export default {
     position absolute
     top 0
     width-height-full()
+    .danmaku-wrap
+      position absolute
+      top 0
     .actions-btn-group
       position absolute
       top 28px

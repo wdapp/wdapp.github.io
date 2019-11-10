@@ -58,7 +58,6 @@ class HuodeScene {
 
   toggleBarrage (isBarrage) {
     const _isBarrage = !!isBarrage
-    console.log(_isBarrage)
     // 打开视频弹幕
     DWLive.openBarrage && DWLive.openBarrage(_isBarrage)
     // 打开关闭文档弹幕

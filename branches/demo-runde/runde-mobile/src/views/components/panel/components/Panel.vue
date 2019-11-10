@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="panel-right">
-      <div class="gift-btn-wrap">
+      <div class="gift-btn-wrap" @click="handleSendGiftClick">
         <span class="gift-icon"></span>
         <span class="gift-text">送礼物</span>
       </div>
@@ -31,6 +31,11 @@ export default {
     number: {
       type: Number,
       default: 0
+    }
+  },
+  methods: {
+    handleSendGiftClick() {
+      this.$emit("opengift");
     }
   }
 };
@@ -51,15 +56,15 @@ export default {
   align-items center
   .panel-left
     .panel-info
-      overflow hidden
+      display flex
+      flex-wrap wrap
+      align-items center
       .panel-name
-        float left
         baseTextStyle(32px, $c333, $boldFontWeight, $baseFontFamily)
         width 221px
         ellipsis()
         line-height 49px
       .panel-number-wrap
-        float left
         line-height 49px
         .panel-number
           baseTextStyle(28px, #969494, $baseFontWeight, $baseFontFamily)

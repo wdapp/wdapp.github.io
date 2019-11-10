@@ -7,11 +7,11 @@
       </li>
       <li class="evaluation-wrap item">
         <span class="evaluation-icon"></span>
-        <p class="evaluation-text text">打赏</p>
+        <p class="evaluation-text text">评价</p>
       </li>
       <li class="advisory-wrap item">
         <span class="advisory-icon"></span>
-        <p class="advisory-text text">打赏</p>
+        <p class="advisory-text text">咨询</p>
       </li>
     </ul>
   </div>

@@ -4,7 +4,10 @@
       <span class="share-btn-icon"></span>
     </li>
     <li class="item switch-btn-wrap" @click="handlSwitchClick">
-      <span class="switch-btn-icon" :class="{ 'switch-active': !isSubShow }"></span>
+      <span
+        class="switch-btn-icon"
+        :class="{ 'switch-active': !isSubShow }"
+      ></span>
     </li>
   </ul>
 </template>

@@ -4,7 +4,15 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import "reset.css/reset.css";
+import "animate.css/animate.css";
 import "lib-flexible/flexible";
+import { Checkbox, CheckboxGroup, MessageBox } from "element-ui";
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.prototype.$msgbox = MessageBox;
+
 import {
   Icon,
   Switch,

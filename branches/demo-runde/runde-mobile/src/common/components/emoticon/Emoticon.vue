@@ -36,7 +36,6 @@
 
 <script>
 import CommonSwiper from "components/swiper/Swiper";
-import { log } from "common/utils";
 
 export default {
   name: "Emoticon",
@@ -61,8 +60,8 @@ export default {
     }
   },
   methods: {
-    onEmoticonClick(tag) {
-      log(tag);
+    onEmoticonClick(mark) {
+      this.bus.$emit("emoticon", mark);
     },
     createTwoDimensionalArray() {
       const total = this.total;

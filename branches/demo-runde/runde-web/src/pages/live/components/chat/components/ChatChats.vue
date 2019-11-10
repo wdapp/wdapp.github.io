@@ -195,9 +195,12 @@ export default {
       }
       const text = this.text.trim()
       this.HD.sendPublicChatMsg(text)
-      this.HD.sendBarrage(text)
+      this.sendBarrage(text)
       this.text = ''
       this.isShowEmoticon = false
+    },
+    sendBarrage (text) {
+      this.bus.$emit('danmaku', text)
     },
     addEvents () {
       this.HD.onPublicChatMessage((message) => {

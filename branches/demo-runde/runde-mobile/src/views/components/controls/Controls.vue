@@ -1,17 +1,37 @@
 <template>
   <div class="controls-wrapper" @click="handleControlsClick">
-    <div class="controls-top" v-show="show">
-      <controls-back class="controls-back"></controls-back>
+    <common-danmaku class="danmaku-wrap" ref="danmaku"></common-danmaku>
+    <div
+      class="controls-top"
+      v-show="show"
+      @click.self.stop="onControlsTopClick"
+    >
+      <controls-back
+        class="controls-back"
+        @click="handleControlsClick"
+      ></controls-back>
       <controls-button-group
         class="controls-button-group"
+        @click="handleControlsClick"
         @switch="onSwitch"
         @open="onOpen"
         :isSubShow="isSubShow"
       ></controls-button-group>
-      <controls-play class="controls-play"></controls-play>
+      <controls-play
+        :playState="playState"
+        class="controls-play"
+        @toggleplay="onTogglePlay"
+        @click="handleControlsClick"
+      ></controls-play>
     </div>
     <div class="controls-bottom" v-show="show">
-      <controls-control></controls-control>
+      <controls-control
+        @toggleplay="onTogglePlay"
+        :playState="playState"
+        @fullscreenclick="onFullScreen"
+        :fullScreenState="screenState"
+        @change="onDanmakuChange"
+      ></controls-control>
     </div>
   </div>
 </template>
@@ -21,6 +41,8 @@ import ControlsPlay from "./components/Play";
 import ControlsBack from "./components/Back";
 import ControlsControl from "./components/Control";
 import ControlsButtonGroup from "./components/ButtonGroup";
+import CommonDanmaku from "common/components/danmaku/Danmaku";
+import { mapState } from "vuex";
 import Mixins from "common/mixins";
 
 export default {
@@ -30,7 +52,8 @@ export default {
     ControlsPlay,
     ControlsBack,
     ControlsControl,
-    ControlsButtonGroup
+    ControlsButtonGroup,
+    CommonDanmaku
   },
   props: {
     isSubShow: {
@@ -40,8 +63,15 @@ export default {
   },
   data() {
     return {
-      show: true
+      show: true,
+      checked: false
     };
+  },
+  computed: {
+    ...mapState(["playState", "screenState"]),
+    danmaku() {
+      return this.$refs.danmaku;
+    }
   },
   methods: {
     onSwitch(toggle) {
@@ -55,15 +85,43 @@ export default {
       this.$emit("show", this.show);
       this.start();
     },
+    onControlsTopClick() {
+      this.show = false;
+      this.$emit("show", this.show);
+      this.abort();
+    },
     start() {
       this.delay(() => {
         this.show = false;
         this.$emit("show", this.show);
       });
+    },
+    onTogglePlay() {
+      //自定义发布订阅事件，this.bus.$emit 用于组件之间全局通信，发送主动播放事件
+      this.emit("toggleplay");
+    },
+    onFullScreen() {
+      this.emit("fullscreenclick");
+    },
+    onDanmakuChange(checked) {
+      this.checked = checked;
+    },
+    sendDanmaku(msg) {
+      if (this.checked) {
+        this.danmaku.sendDanmaku({
+          msg: msg
+        });
+      }
+    },
+    addEvents() {
+      this.on("danmaku", msg => {
+        this.sendDanmaku(msg);
+      });
     }
   },
   mounted() {
     this.start();
+    this.addEvents();
   }
 };
 </script>
@@ -75,6 +133,9 @@ export default {
   position absolute
   width-height-full()
   top 0
+  .danmaku-wrap
+    position absolute
+    top 0
   .controls-top
     layout(0, 0, 77px, 0)
     .controls-back

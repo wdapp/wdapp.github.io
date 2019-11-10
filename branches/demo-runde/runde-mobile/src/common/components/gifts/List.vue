@@ -22,7 +22,6 @@
 
 <script>
 import CommonSwiper from "components/swiper/Swiper";
-import { log } from "common/utils";
 
 export default {
   name: "List",
@@ -74,7 +73,7 @@ export default {
     },
     handleGiftClick(index, key, gift) {
       this.active = this.currentIndex(index, key);
-      log(gift);
+      this.$emit("gift", gift);
     },
     currentIndex(index, key) {
       const total = this.total;

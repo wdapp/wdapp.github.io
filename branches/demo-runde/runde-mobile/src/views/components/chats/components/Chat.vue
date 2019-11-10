@@ -93,7 +93,8 @@ export default {
       margin 0 10px
       width-height-same(60px)
     >>> .img
-      width-height-same(auto)
+      width 100%
+      height auto
     >>> .cem
       width-height-same(80px)
     >>> .em2

@@ -63,7 +63,6 @@ class HuodeScene {
 
   toggleBarrage(isBarrage) {
     const _isBarrage = !!isBarrage;
-    console.log(_isBarrage);
     // 打开视频弹幕
     DWLive.openBarrage && DWLive.openBarrage(_isBarrage);
     // 打开关闭文档弹幕
@@ -152,13 +151,19 @@ class HuodeScene {
   }
 
   onPlayerLoad(callback) {
-    window.on_cc_swf_loading_completed = function() {
-      callback && callback();
+    DWLive.onPlayerLoad = function(video) {
+      callback && callback(video);
     };
   }
 
   onUserCount(callback) {
     DWLive.onUserCountMessage = function(count) {
+      callback && callback(count);
+    };
+  }
+
+  onOnlineTeachers(callback) {
+    DWLive.onOnlineTeachers = function(count) {
       callback && callback(count);
     };
   }
