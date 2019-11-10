@@ -156,10 +156,8 @@ export default {
         this.closePopup();
       });
       this.hd.onQuestionnairePublish((data) => {
-        console.log(data)
         log("onQuestionnairePublish", data);
         if (data.success && !data.datas.questionnaire.submitedAction) {
-          debugger
           this.formateQuestionnaire(data.datas);
         }
       });

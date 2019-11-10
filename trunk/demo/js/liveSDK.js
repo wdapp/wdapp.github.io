@@ -1040,11 +1040,9 @@
       })
 
     },
-    getPublishingQuestionnaire: function (opions) {
+    getPublishingQuestionnaire: function () {
       var path = '//eva.csslcloud.net/api/questionnaire/info'
-      var info = {
-        questionnaireid: opions.questionnaireId
-      }
+      var info = {}
       Util.sendAjax(path, info, DWLive.onQuestionnairePublish)
     },
     //获取随堂测数据
