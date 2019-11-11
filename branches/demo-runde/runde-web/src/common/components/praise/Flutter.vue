@@ -25,23 +25,22 @@ export default {
     },
     onEnter (el, done) {
       const top = (Math.random() * 80) + 150
-      const opacity = (Math.random() / 10) + 0.9
-      const duration = (Math.random() * 250) + 1000
-      Velocity.RegisterEffect('shake', {
-        defaultDuration: duration,
-        calls: [
-          [{opacity: opacity, left: -(Math.random() * 5)}, 0.125],
-          [{opacity: 0.9, left: (Math.random() * 5)}, 0.125],
-          [{opacity: 0.8, left: -((Math.random() * 5) + 5)}, 0.125],
-          [{opacity: 0.7, left: (Math.random() * 5) + 5}, 0.125],
-          [{opacity: 0.5, left: -((Math.random() * 5) + 5)}, 0.125],
-          [{opacity: 0.3, left: (Math.random() * 2.5)}, 0.125],
-          [{opacity: 0.1, left: -(Math.random() * 1.5)}, 0.125],
-          [{opacity: 0, left: (Math.random() * 1)}, 0.125]
-        ]
+      const duration = 1500
+      const left = (20 - (Math.random() * 80))
+      const rand = (Math.random() * 1000)
+
+      el.style.opacity = 1
+
+      Velocity(el, {top: -top, left: left, opacity: 0.8}, {
+        duration: duration,
+        queue: false,
+        easing: 'easeOutQuad',
+        complete: () => {
+          Velocity(el,
+            {opacity: 0, top: -top - (20 - (Math.random() * 80))},
+            {duration: rand, complete: done, queue: false, easing: 'easeInSine'})
+        }
       })
-      Velocity(el, 'shake', {queue: false, easing: 'easeInOutQuad'})
-      Velocity(el, {top: -top}, {duration: duration, complete: done, queue: false, easing: 'easeOutQuad'})
     },
     onAfterEnter (el) {
       this.$emit('complete')

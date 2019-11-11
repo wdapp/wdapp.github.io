@@ -155,7 +155,7 @@ export default {
       this.on("closePopup", () => {
         this.closePopup();
       });
-      this.hd.onQuestionnairePublish((data) => {
+      this.hd.onQuestionnairePublish(data => {
         log("onQuestionnairePublish", data);
         if (data.success && !data.datas.questionnaire.submitedAction) {
           this.formateQuestionnaire(data.datas);
@@ -181,8 +181,8 @@ export default {
     },
     login() {
       this.hd.login({
-        userId: "7848DB3FB422057F",
-        roomId: "F2164D83B191B0049C33DC5901307461",
+        userId: "B693062ABB8020E0",
+        roomId: "20E2BEC88BEF3EEB9C33DC5901307461",
         viewerName: "获得场景视频",
         viewerToken: "",
         success: result => {

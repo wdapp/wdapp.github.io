@@ -6,12 +6,6 @@ import store from "./store";
 import "reset.css/reset.css";
 import "animate.css/animate.css";
 import "lib-flexible/flexible";
-import { Checkbox, CheckboxGroup, MessageBox } from "element-ui";
-import 'element-ui/lib/theme-chalk/index.css';
-
-Vue.use(Checkbox);
-Vue.use(CheckboxGroup);
-Vue.prototype.$msgbox = MessageBox;
 
 import {
   Icon,
@@ -25,7 +19,13 @@ import {
   Grid,
   GridItem,
   Image,
-  Notify
+  Notify,
+  Checkbox,
+  CheckboxGroup,
+  RadioGroup,
+  Radio,
+  Cell,
+  CellGroup
 } from "vant";
 
 Vue.use(Icon);
@@ -38,6 +38,10 @@ Vue.use(Tag);
 Vue.use(Image);
 Vue.use(Notify);
 Vue.use(Grid).use(GridItem);
+Vue.use(Checkbox).use(CheckboxGroup);
+Vue.use(Cell).use(CellGroup);
+Vue.use(RadioGroup);
+Vue.use(Radio);
 
 Vue.prototype.bus = new Vue();
 

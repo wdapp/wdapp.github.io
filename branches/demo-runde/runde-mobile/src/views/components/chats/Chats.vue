@@ -2,9 +2,23 @@
   <div class="chats-wrapper">
     <div class="chats-container">
       <div class="chats-top">
-        <chats-content :messages="messages"></chats-content>
+        <chats-content :messages="messages" :checked="!checked"></chats-content>
       </div>
       <div class="chats-bottom">
+        <div class="leach-like-wrap">
+          <div class="leach-wrap">
+            <van-checkbox
+              class="leach"
+              v-model="checked"
+              @change="onChange"
+              checked-color="#FF454B"
+              >只看老师</van-checkbox
+            >
+          </div>
+          <div class="like-wrap">
+            <common-praise class="praise-wrap"></common-praise>
+          </div>
+        </div>
         <chats-footer
           @emoticonclick="onEmoticonClick"
           @plusclick="onPlusClick"
@@ -27,6 +41,7 @@ import CommonPlus from "components/plus/Plus";
 import { bind, clear } from "size-sensor";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
+import CommonPraise from "common/components/praise/Praise";
 
 export default {
   name: "Chats",
@@ -35,10 +50,12 @@ export default {
     ChatsContent,
     ChatsFooter,
     CommonEmoticon,
-    CommonPlus
+    CommonPlus,
+    CommonPraise
   },
   data() {
     return {
+      checked: false,
       popup: {
         component: ""
       },
@@ -83,6 +100,9 @@ export default {
     },
     onMessages(messages) {
       this.messages = messages;
+    },
+    onChange() {
+      this.emit("scrolltobottom");
     }
   },
   mounted() {
@@ -104,12 +124,33 @@ export default {
     position relative
     flex 1
     .chats-top
-      layout(0, 0, 98px, 0)
+      layout(0, 0, 198px, 0)
     .chats-bottom
       position absolute
       bottom 0
-      height 98px
+      height 198px
       width 100%
+      .leach-like-wrap
+        display flex
+        align-items center
+        justify-content space-between
+        flex-direction row
+        padding 0 30px
+        box-sizing border-box
+        height 100px
+        width 100%
+        background linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)
+        .leach-wrap
+          baseTextStyle(24px, $c666)
+          height 40px
+          .leach
+            height 40px
+            >>> .van-checkbox__icon
+              height 30px
+        .like-wrap
+          width-height-same(70px)
+          .praise-wrap
+            width-height-same(70px)
   .popup-bottom
     height auto
 </style>

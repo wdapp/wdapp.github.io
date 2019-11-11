@@ -46,11 +46,14 @@ export default {
   methods: {
     onTap () {
       this.isTap = !this.isTap
-      if (this.options.length > 10) {
+      if (this.options.length > 15) {
         return
       }
-      this.index++
-      this.options.push(this.index)
+      const rand = parseInt(Math.random() * 5) + 3
+      for (let i = 0; i < rand; i++) {
+        this.index++
+        this.options.push(this.index)
+      }
     },
     onComplete () {
       this.options.shift()

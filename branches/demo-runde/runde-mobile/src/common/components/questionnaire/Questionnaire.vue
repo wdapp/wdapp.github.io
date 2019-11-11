@@ -9,7 +9,7 @@
             </p>
           </div>
           <div class="questionnaire-header-close-wrap" @click="onClose">
-            <i class="el-icon-close questionnaire-header-close-btn"></i>
+            <van-icon class="questionnaire-header-close-btn" name="cross" />
           </div>
         </div>
         <div class="questionnaire-body-questions-result" v-show="isShowResult">
@@ -27,18 +27,26 @@
             class="questionnaire-body-questions-wrap"
             :class="{ 'question-active': isShowResult }"
           >
-            <el-checkbox-group v-model="result" :max="max" :disabled="disabled">
-              <el-checkbox
-                class="question-item"
-                :label="formatContent(option)"
-                v-for="(option, key) of questionnaire.options"
-                :key="key"
-                :class="{
-                  error: isError(option.key),
-                  right: isRight(option.key)
-                }"
-              ></el-checkbox>
-            </el-checkbox-group>
+            <van-radio-group v-model="result" :disabled="disabled">
+              <van-cell-group>
+                <van-cell
+                  class="question-item"
+                  :class="{ active: result === key }"
+                  :title="formatContent(option)"
+                  v-for="(option, key) of questionnaire.options"
+                  :key="key"
+                  clickable
+                  @click="onCellClick(key)"
+                >
+                  <van-radio
+                    class="van-radio"
+                    slot="right-icon"
+                    :name="key"
+                    v-show="false"
+                  />
+                </van-cell>
+              </van-cell-group>
+            </van-radio-group>
           </div>
           <div class="questionnaire-footer-wrap">
             <div
@@ -51,6 +59,10 @@
           </div>
         </div>
       </div>
+      <van-popup v-model="show" @closed="onClosed">
+        <span class="popup-icon" :class="popup.type"></span>
+        {{ popup.message }}
+      </van-popup>
     </div>
   </animation-fade>
 </template>
@@ -80,18 +92,22 @@ export default {
       messageBoxTimerInterval: 2000,
       isShowQuestionnaire: false,
       isShowResult: false,
-      result: [],
+      result: -1,
       max: 1,
-      disabled: false
+      disabled: false,
+      show: false,
+      success: true,
+      popup: {
+        type: "success",
+        message: "提交成功"
+      }
     };
   },
   computed: {
     formatResult() {
       const result = [];
-      for (let item of this.result) {
-        const character = item.trim()[0];
-        result.push(character);
-      }
+      const optionIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+      result.push(optionIndex[this.result]);
       return result;
     }
   },
@@ -99,44 +115,35 @@ export default {
     questionnaire() {
       this.isShowQuestionnaire = true;
       this.disabled = false;
+      this.result = -1;
     }
   },
   methods: {
+    onCellClick(key) {
+      if (this.disabled) {
+        return;
+      }
+      this.result = key;
+    },
     formatContent(option) {
       return option.key + "." + option.content;
     },
-    showMessageBox(type, message, callback) {
-      this.$msgbox({
-        customClass: `msgbox ${type}`, // type = success、fail
-        message: message,
-        showCancelButton: false,
-        showConfirmButton: false,
-        closeOnClickModal: true,
-        beforeClose: (action, instance, done) => {
-          done();
-          this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
-          this.messageBoxTimer = 0;
-        },
-        callback: () => {
-          callback();
-        }
-      })
-        .then(() => {
-        })
-        .catch(() => {
-        });
+    showMessageBox(type, message) {
+      this.show = true;
+      this.popup = {
+        type,
+        message
+      };
       this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
       this.messageBoxTimer = setTimeout(() => {
-        this.$msgbox.close();
+        this.show = false;
         this.messageBoxTimer = 0;
-        callback();
       }, this.messageBoxTimerInterval);
     },
     onClose() {
       this.isShowQuestionnaire = false;
     },
     onSubmit() {
-      this.isShowQuestionnaire = false;
       const select = this.formatResult[0];
       log("select", select);
       let selectedOptionId = "";
@@ -158,19 +165,24 @@ export default {
       this.HD.submitQuestionnaire(options, data => {
         log("submitQuestionnaire", data);
         if (data.success) {
-          this.showMessageBox("success", "提交成功", () => {
-            this.disabled = true;
-            this.isShowQuestionnaire = true;
-            this.isShowResult = true;
-          });
+          this.success = true;
+          this.showMessageBox("success", "提交成功");
         } else {
-          this.showMessageBox("fail", "提交失败", () => {
-            this.isShowQuestionnaire = false;
-            this.isShowResult = false;
-            this.disabled = false;
-          });
+          this.success = false;
+          this.showMessageBox("fail", "提交失败");
         }
       });
+    },
+    onClosed() {
+      this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
+      this.messageBoxTimer = 0;
+      if (this.success) {
+        this.isShowQuestionnaire = true;
+        this.isShowResult = true;
+        this.disabled = true;
+      } else {
+        this.stopQuestionnaire();
+      }
     },
     isError(key) {
       if (this.formatResult.indexOf(key) !== -1) {
@@ -192,7 +204,7 @@ export default {
       this.disabled = false;
       this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
       this.messageBoxTimer = 0;
-      this.$msgbox.close && this.$msgbox.close();
+      this.show = false;
     }
   },
   mounted() {
@@ -227,25 +239,26 @@ export default {
     border-radius 8px
     overflow hidden
     .questionnaire-header-wrap
-      width 620px
-      height 76px
-      box-shadow 0px 1px 0px 0px $ddd; /* no */
+      position relative
+      width 100%
+      height 100px
       background $fff
       padding-left 32px
       padding-right 15px
       box-sizing border-box
       .questionnaire-header-title-wrap
-        float left
-        height 100%
-        line-height 76px
+        width-height-full()
+        line-height 100px
+        text-align center
         .questionnaire-header-title-text
-          baseTextStyle(18px, $c333, $boldFontWeight)
+          baseTextStyle(36px, $red, $boldFontWeight)
       .questionnaire-header-close-wrap
-        float right
+        position absolute
         height 100%
-        line-height 56px
+        top 20px
+        right 20px
         .questionnaire-header-close-btn
-          font-size 14px
+          font-size 40px
           color #BBBBBB
     .questionnaire-body-questions-result
       width 100%
@@ -264,9 +277,9 @@ export default {
       .questionnaire-body-title-wrap
         margin-bottom 35px
         .questionnaire-body-title-text
-          baseTextStyle(16px, $c333, 400)
+          baseTextStyle(30px, $c333, $boldFontWeight)
           break-world()
-          line-height 24px
+          line-height 42px
     .question-active
       >>> .el-checkbox__input
         display inline-block
@@ -293,16 +306,23 @@ export default {
       max-height 515px
       overflow auto
       .question-item
+        position relative
+        width 540px
+        background rgba(245, 241, 246, 1)
+        border-radius 8px
         display block
-        margin-bottom 28px
+        margin-bottom 21px
         break-world()
-        baseTextStyle()
+        baseTextStyle(28px, $c333)
+        line-height 40px
         >>> .el-checkbox__label
           line-height 40px
         >>> .el-checkbox__input
           .el-checkbox__inner
             margin-right 17px
             top -1px
+      .active
+        color red
       >>> .is-checked
         .el-checkbox__label
           color $red
@@ -312,16 +332,33 @@ export default {
       width 100%
       .questionnaire-footer-btn-wrap
         margin 0 auto
-        width 150px
-        height 46px
+        width 400px
+        height 88px
         background $red
-        border-radius 4px
+        border-radius 44px
         margin-top 33px
         text-align center
-        line-height 46px
+        line-height 88px
         cursor-pointer()
         .questionnaire-footer-btn
-          baseTextStyle(18px, $fff)
+          baseTextStyle(36px, $fff)
+.van-popup
+  width 480px
+  height 330px
+  background rgba(255, 255, 255, 1)
+  border-radius 8px
+  baseTextStyle(36px, $c333, $boldFontWeight)
+  text-align center
+  line-height 400px
+  overflow visible
+  .popup-icon
+    bg-image("pop/success", 280)
+    horizontally(280, absolute)
+    top -120px
+  .success
+    active-image("pop/success")
+  .fail
+    active-image("pop/fail")
 </style>
 <style lang="stylus">
 @import "~styles/mixins.styl"

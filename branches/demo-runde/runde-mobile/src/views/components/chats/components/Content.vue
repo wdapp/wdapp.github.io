@@ -6,6 +6,7 @@
           v-for="(message, key) of messages"
           :message="message"
           :key="key"
+          :show="checked"
         ></content-chat>
       </div>
     </div>
@@ -30,6 +31,10 @@ export default {
       default() {
         return [];
       }
+    },
+    checked: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
