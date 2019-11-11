@@ -1,5 +1,6 @@
 module.exports = {
   lintOnSave: true,
+  publicPath: "/branches/demo-runde/runde-web/dist/",
   configureWebpack: {
     resolve: {
       alias: {
