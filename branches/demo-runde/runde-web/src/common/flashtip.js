@@ -2,7 +2,7 @@ var $ = window.$
 
 var flashTip = {
   show: function (type) {
-    var tip = '<div class="flashtip" style="display: table;width: 100%;height: 100%"><p style="display: table-cell;text-align:center;vertical-align: middle;color: #eec227">您还没有安装flash播放器,请点击<a href="//www.adobe.com/go/getflash" target="_blank">这里</a>安装</p></div>'
+    var tip = '<div class="flashtip" style="position: absolute;display: table;width: 100%;height: 100%"><p style="display: table-cell;text-align:center;vertical-align: middle;color: #eec227">您还没有安装flash播放器,请点击<a href="//www.adobe.com/go/getflash" target="_blank">这里</a>安装</p></div>'
     if (type === 'player') {
       $('#callbackPlayer, #livePlayer, #playbackPlayer').html(tip)
     } else if (type === 'drawPanel') {
