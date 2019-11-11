@@ -36,6 +36,7 @@
       <component :is="popup.component"></component>
     </common-popup>
     <common-questionnaire :questionnaire="questionnaire"></common-questionnaire>
+    <common-attendance></common-attendance>
     <sub-windows
       ref="document"
       :type="windows.type"
@@ -64,6 +65,7 @@ import CommonGifts from "components/gifts/Gifts";
 import CommonReward from "components/reward/Reward";
 import HuodeScene from "common/websdk/live";
 import CommonQuestionnaire from "common/components/questionnaire/Questionnaire";
+import CommonAttendance from "common/components/attendance/Attendance";
 import { mapMutations } from "vuex";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
@@ -84,7 +86,8 @@ export default {
     CommonCurriculum,
     CommonGifts,
     CommonReward,
-    CommonQuestionnaire
+    CommonQuestionnaire,
+    CommonAttendance
   },
   data() {
     return {
@@ -261,7 +264,7 @@ export default {
         const option = options[i];
         option.key = optionIndex[i];
         if (option.correct) {
-          _questionnaire.correct = option.key;
+          _questionnaire.correct = option.index;
         }
         _questionnaire.options.push(option);
       }

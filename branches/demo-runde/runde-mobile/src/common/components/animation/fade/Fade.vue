@@ -1,22 +1,12 @@
 <template>
-  <transition :style="'transition-duration: duration'">
+  <transition>
     <slot></slot>
   </transition>
 </template>
 
 <script>
 export default {
-  name: "Fade",
-  props: {
-    enterDuration: {
-      type: String,
-      default: ".3s"
-    },
-    leaveDuration: {
-      type: String,
-      default: ".8s"
-    }
-  }
+  name: "Fade"
 };
 </script>
 

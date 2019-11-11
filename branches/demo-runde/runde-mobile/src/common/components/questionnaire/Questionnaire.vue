@@ -1,70 +1,67 @@
 <template>
-  <animation-fade enterDuration="0s" leaveDuration=".3s">
-    <div class="questionnaire-wrapper" v-if="isShowQuestionnaire">
-      <div class="questionnaire-wrap">
-        <div class="questionnaire-header-wrap">
-          <div class="questionnaire-header-title-wrap">
-            <p class="questionnaire-header-title-text">
-              {{ title }}
-            </p>
+  <div class="questionnaire-wrapper" v-if="isShowQuestionnaireWrapper">
+    <animation-fade>
+      <div class="questionnaire-container" v-show="isShowQuestionnaire">
+        <div class="questionnaire-wrap">
+          <div class="questionnaire-header-wrap">
+            <div class="questionnaire-header-title-wrap">
+              <p class="questionnaire-header-title-text">
+                {{ isShowResult ? resultTitle : title }}
+              </p>
+            </div>
+            <div class="questionnaire-header-close-wrap" @click="onClose">
+              <van-icon class="questionnaire-header-close-btn" name="cross" />
+            </div>
           </div>
-          <div class="questionnaire-header-close-wrap" @click="onClose">
-            <van-icon class="questionnaire-header-close-btn" name="cross" />
-          </div>
-        </div>
-        <div class="questionnaire-body-questions-result" v-show="isShowResult">
-          <p class="questionnaire-body-questions-result-text">
-            正确答案：{{ questionnaire.correct }}
-          </p>
-        </div>
-        <div class="questionnaire-body-wrap">
-          <div class="questionnaire-body-title-wrap">
-            <p class="questionnaire-body-title-text">
-              {{ questionnaire.title }}
-            </p>
-          </div>
-          <div
-            class="questionnaire-body-questions-wrap"
-            :class="{ 'question-active': isShowResult }"
-          >
-            <van-radio-group v-model="result" :disabled="disabled">
-              <van-cell-group>
-                <van-cell
-                  class="question-item"
-                  :class="{ active: result === key }"
-                  :title="formatContent(option)"
-                  v-for="(option, key) of questionnaire.options"
-                  :key="key"
-                  clickable
-                  @click="onCellClick(key)"
-                >
-                  <van-radio
-                    class="van-radio"
-                    slot="right-icon"
-                    :name="key"
-                    v-show="false"
-                  />
-                </van-cell>
-              </van-cell-group>
-            </van-radio-group>
-          </div>
-          <div class="questionnaire-footer-wrap">
+          <div class="questionnaire-body-wrap">
+            <div class="questionnaire-body-title-wrap">
+              <p class="questionnaire-body-title-text">
+                {{ questionnaire.title }}
+              </p>
+            </div>
             <div
-              class="questionnaire-footer-btn-wrap"
-              @click="onSubmit"
-              v-show="!isShowResult"
+              class="questionnaire-body-questions-wrap"
+              :class="{ 'question-active': isShowResult }"
             >
-              <div class="questionnaire-footer-btn">确定提交</div>
+              <van-radio-group v-model="result" :disabled="disabled">
+                <van-cell-group>
+                  <van-cell
+                    class="question-item"
+                    :class="{active: isActive(key), select: isSelect(key), correct: isCorrect(key)}"
+                    :title="formatContent(option)"
+                    v-for="(option, key) of questionnaire.options"
+                    :key="key"
+                    clickable
+                    @click="onCellClick(key)"
+                  >
+                    <van-radio
+                      class="van-radio"
+                      slot="right-icon"
+                      :name="key"
+                      v-show="false"
+                    />
+                  </van-cell>
+                </van-cell-group>
+              </van-radio-group>
+            </div>
+            <div class="questionnaire-footer-wrap">
+              <div
+                class="questionnaire-footer-btn-wrap"
+                @click="onSubmit"
+                v-show="!isShowResult"
+              >
+                <div class="questionnaire-footer-btn">确定提交</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <van-popup v-model="show" @closed="onClosed">
-        <span class="popup-icon" :class="popup.type"></span>
-        {{ popup.message }}
-      </van-popup>
-    </div>
-  </animation-fade>
+    </animation-fade>
+    <van-popup v-model="show" @closed="onClosed">
+      <span class="popup-icon" :class="popup.type"></span>
+      {{ popup.message }}
+    </van-popup>
+  </div>
 </template>
 
 <script>
@@ -88,8 +85,10 @@ export default {
   data() {
     return {
       title: "问卷",
+      resultTitle: "答题结果",
       messageBoxTimer: 0,
       messageBoxTimerInterval: 2000,
+      isShowQuestionnaireWrapper: false,
       isShowQuestionnaire: false,
       isShowResult: false,
       result: -1,
@@ -113,12 +112,22 @@ export default {
   },
   watch: {
     questionnaire() {
+      this.isShowQuestionnaireWrapper = true
       this.isShowQuestionnaire = true;
       this.disabled = false;
       this.result = -1;
     }
   },
   methods: {
+    isActive(key) {
+      return this.result === key;
+    },
+    isSelect(key) {
+      return this.isShowResult && (this.result === key);
+    },
+    isCorrect(key) {
+      return this.isShowResult && (this.questionnaire.correct == key);
+    },
     onCellClick(key) {
       if (this.disabled) {
         return;
@@ -141,9 +150,13 @@ export default {
       }, this.messageBoxTimerInterval);
     },
     onClose() {
+      this.isShowQuestionnaireWrapper = false;
       this.isShowQuestionnaire = false;
     },
     onSubmit() {
+      if (this.result === -1) {
+        return false;
+      }
       const select = this.formatResult[0];
       log("select", select);
       let selectedOptionId = "";
@@ -162,6 +175,8 @@ export default {
           }
         ]
       };
+
+      this.isShowQuestionnaire = false;
       this.HD.submitQuestionnaire(options, data => {
         log("submitQuestionnaire", data);
         if (data.success) {
@@ -199,6 +214,7 @@ export default {
       }
     },
     stopQuestionnaire() {
+      this.isShowQuestionnaireWrapper = false;
       this.isShowQuestionnaire = false;
       this.isShowResult = false;
       this.disabled = false;
@@ -221,127 +237,136 @@ export default {
 @import "~styles/mixins.styl"
 
 .questionnaire-wrapper
-  position absolute
-  width-height-full()
   position fixed
-  background-color rgba(0, 0, 0, 0.7)
   z-index 2
-  .questionnaire-wrap
+  width-height-full()
+  .questionnaire-container
     position absolute
-    top 50%
-    left 50%
-    margin-top -194px
-    margin-left -310px
-    z-index 99
-    width 620px
-    background-color $fff
-    border 1px solid $ddd
-    border-radius 8px
-    overflow hidden
-    .questionnaire-header-wrap
-      position relative
-      width 100%
-      height 100px
-      background $fff
-      padding-left 32px
-      padding-right 15px
-      box-sizing border-box
-      .questionnaire-header-title-wrap
-        width-height-full()
-        line-height 100px
-        text-align center
-        .questionnaire-header-title-text
-          baseTextStyle(36px, $red, $boldFontWeight)
-      .questionnaire-header-close-wrap
-        position absolute
-        height 100%
-        top 20px
-        right 20px
-        .questionnaire-header-close-btn
-          font-size 40px
-          color #BBBBBB
-    .questionnaire-body-questions-result
-      width 100%
-      height 40px
-      background-color #FFFBC9
-      line-height 40px
-      padding-left 27px
-      box-sizing border-box
-      margin-top 1px; /*no*/
-      .questionnaire-body-questions-result-text
-        baseTextStyle(14px, $red, 400)
-    .questionnaire-body-wrap
-      min-height 215px
-      padding 30px
-      box-sizing border-box
-      .questionnaire-body-title-wrap
-        margin-bottom 35px
-        .questionnaire-body-title-text
-          baseTextStyle(30px, $c333, $boldFontWeight)
-          break-world()
-          line-height 42px
-    .question-active
-      >>> .el-checkbox__input
-        display inline-block
-        opacity 0
-        width-height-same(30px)
-        background url("~images/select/right.png") no-repeat
-        background-size 30px
-        margin-top -7px
-        margin-right 6px
-        .el-checkbox__inner
-          margin-right 17px
-          top -1px
-          display none
-      .error
-        >>> .el-checkbox__input
-          background-image url('~images/select/error.png')
-          opacity 1
-      .right
-        >>> .el-checkbox__input
-          background-image url('~images/select/right.png')
-          opacity 1
-    .questionnaire-body-questions-wrap
-      width 100%
-      max-height 515px
-      overflow auto
-      .question-item
+    width-height-full()
+    background-color rgba(0, 0, 0, 0.7)
+    .questionnaire-wrap
+      position absolute
+      top 50%
+      left 50%
+      margin-top -194px
+      margin-left -310px
+      z-index 99
+      width 620px
+      background-color $fff
+      border 1px solid $ddd
+      border-radius 8px
+      overflow hidden
+      .questionnaire-header-wrap
         position relative
-        width 540px
-        background rgba(245, 241, 246, 1)
-        border-radius 8px
-        display block
-        margin-bottom 21px
-        break-world()
-        baseTextStyle(28px, $c333)
+        width 100%
+        height 100px
+        background $fff
+        padding-left 32px
+        padding-right 15px
+        box-sizing border-box
+        .questionnaire-header-title-wrap
+          width-height-full()
+          line-height 100px
+          text-align center
+          .questionnaire-header-title-text
+            baseTextStyle(36px, $red, $boldFontWeight)
+        .questionnaire-header-close-wrap
+          position absolute
+          height 100%
+          top 20px
+          right 20px
+          .questionnaire-header-close-btn
+            font-size 40px
+            color #BBBBBB
+      .questionnaire-body-questions-result
+        width 100%
+        height 40px
+        background-color #FFFBC9
         line-height 40px
-        >>> .el-checkbox__label
-          line-height 40px
+        padding-left 27px
+        box-sizing border-box
+        margin-top 1px; /*no*/
+        .questionnaire-body-questions-result-text
+          baseTextStyle(14px, $red, 400)
+      .questionnaire-body-wrap
+        min-height 215px
+        padding 30px
+        box-sizing border-box
+        .questionnaire-body-title-wrap
+          max-height 90px
+          overflow-y auto
+          margin-bottom 35px
+          .questionnaire-body-title-text
+            baseTextStyle(30px, $c333, $boldFontWeight)
+            break-world()
+            line-height 42px
+      .question-active
         >>> .el-checkbox__input
+          display inline-block
+          opacity 0
+          width-height-same(30px)
+          background url("~images/select/right.png") no-repeat
+          background-size 30px
+          margin-top -7px
+          margin-right 6px
           .el-checkbox__inner
             margin-right 17px
             top -1px
-      .active
-        color red
-      >>> .is-checked
-        .el-checkbox__label
-          color $red
-      .question-item:last-child
-        margin-bottom 0
-    .questionnaire-footer-wrap
-      width 100%
-      .questionnaire-footer-btn-wrap
-        margin 0 auto
-        width 400px
-        height 88px
-        background $red
-        border-radius 44px
-        margin-top 33px
-        text-align center
-        line-height 88px
-        cursor-pointer()
-        .questionnaire-footer-btn
-          baseTextStyle(36px, $fff)
+            display none
+        .error
+          >>> .el-checkbox__input
+            background-image url('~images/select/error.png')
+            opacity 1
+        .right
+          >>> .el-checkbox__input
+            background-image url('~images/select/right.png')
+            opacity 1
+      .questionnaire-body-questions-wrap
+        width 100%
+        max-height 450px
+        overflow auto
+        .question-item
+          position relative
+          width 540px
+          background rgba(245, 241, 246, 1)
+          border-radius 8px
+          display block
+          margin-bottom 21px
+          break-world()
+          baseTextStyle(28px, $c333)
+          line-height 40px
+          >>> .el-checkbox__label
+            line-height 40px
+          >>> .el-checkbox__input
+            .el-checkbox__inner
+              margin-right 17px
+              top -1px
+        .active
+          color red
+        .select
+          background-color #FFDBDC
+          color $c333
+        .correct
+          background-color #CFFFDF
+        >>> .is-checked
+          .el-checkbox__label
+            color $red
+        .question-item:last-child
+          margin-bottom 0
+      .questionnaire-footer-wrap
+        width 100%
+        .questionnaire-footer-btn-wrap
+          margin 0 auto
+          width 400px
+          height 88px
+          background $red
+          border-radius 44px
+          margin-top 33px
+          text-align center
+          line-height 88px
+          cursor-pointer()
+          .questionnaire-footer-btn
+            baseTextStyle(36px, $fff)
 .van-popup
   width 480px
   height 330px
