@@ -61,7 +61,7 @@ export default {
     addEvents () {
       this.HD.onQuestionnairePublish((data) => {
         log('onQuestionnairePublish', data)
-        if (data.success && !data.datas.questionnaire.submitedAction) {
+        if (data.success) {
           this.formateQuestionnaire(data.datas)
         }
       })
@@ -75,6 +75,8 @@ export default {
       const _questionnaire = {}
 
       _questionnaire.questionnaireId = questionnaire.id
+      _questionnaire.forcibly = questionnaire.forcibly // 是否强制用户回答
+      _questionnaire.submitedAction = questionnaire.submitedAction // 是否显示正确答案
       _questionnaire.subjectId = subjects.id
       _questionnaire.title = subjects.content
       _questionnaire.options = []
@@ -113,8 +115,7 @@ export default {
           this.$message({
             showClose: true,
             message: error.msg,
-            type: 'error',
-            duration: 0
+            type: 'error'
           })
         }
       })

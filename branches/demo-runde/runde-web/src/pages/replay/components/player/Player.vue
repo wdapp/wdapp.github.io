@@ -9,8 +9,10 @@
            @mouseleave="onMouseLeave"
       >
         <player-control
+          :switchStatus="switchStatus"
           :isShowControl="isShowControl"
           :status="status"
+          :hideSwitchBtn="hideSwitchBtn"
           @switch="onSwitch"
           @open="onOpen"
           @bespread="onBespread"
@@ -45,6 +47,7 @@ import PlayerDrawpanel from './components/PlayerDrawpanel'
 import PlayerControl from './components/PlayerControl'
 import PlayerFooter from './components/PlayerFooter'
 import HuodeScene from 'common/websdk/replay'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Player',
@@ -58,11 +61,14 @@ export default {
   data () {
     return {
       isShowControl: false,
-      switchStatus: true,
-      status: true
+      switchStatus: false,
+      status: true,
+      isExsitPanel: true, // 单视频无文档模板需要隐藏文档和切换按钮
+      hideSwitchBtn: true // 是否有文档
     }
   },
   computed: {
+    ...mapState(['template']),
     playerSize () {
       return this.switchStatus ? 'large' : 'small'
     },
@@ -81,6 +87,25 @@ export default {
         return this.status
       } else {
         return true
+      }
+    }
+  },
+  watch: {
+    template (tem) {
+      /*
+      * 模板 1 ：视频
+      * 模板 2 ：视频、聊天、问答
+      * 模板 3 ：视频、聊天
+      * 模板 4 ：视频、文档、聊天
+      * 模板 5 ：视频、文档、聊天、问答
+      * 模板 6 ：视频、问答
+      * */
+
+      if (tem.type !== 4 && tem.type !== 5) {
+        this.hideSwitchBtn = false // 隐藏切换按钮
+        this.isExsitPanel = false// 是否为文档模式
+        this.switchStatus = true // 切换视频为主
+        this.status = false // 关闭小窗
       }
     }
   },

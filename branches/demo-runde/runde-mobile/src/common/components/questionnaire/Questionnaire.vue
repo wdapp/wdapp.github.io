@@ -9,7 +9,11 @@
                 {{ isShowResult ? resultTitle : title }}
               </p>
             </div>
-            <div class="questionnaire-header-close-wrap" @click="onClose">
+            <div
+              class="questionnaire-header-close-wrap"
+              @click="onClose"
+              v-show="isShowResult ? true : !questionnaire.forcibly"
+            >
               <van-icon class="questionnaire-header-close-btn" name="cross" />
             </div>
           </div>
@@ -195,7 +199,7 @@ export default {
     onClosed() {
       this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
       this.messageBoxTimer = 0;
-      if (this.success) {
+      if (this.success && this.questionnaire.submitedAction) {
         this.isShowQuestionnaire = true;
         this.isShowResult = true;
         this.disabled = true;

@@ -17,6 +17,7 @@
           <div
             class="questionnaire-header-close-wrap"
             @click="onClose"
+            v-show="isShowResult ? true : !questionnaire.forcibly"
           >
             <i class="el-icon-close questionnaire-header-close-btn"></i>
           </div>
@@ -150,8 +151,11 @@ export default {
       this.isShowQuestionnaire = false
     },
     onSubmit () {
-      this.isShowQuestionnaire = false
       const select = this.formatResult[0]
+      if (!select) {
+        return
+      }
+      this.isShowQuestionnaire = false
       log('select', select)
       let selectedOptionId = ''
       for (let option of this.questionnaire.options) {
@@ -173,18 +177,32 @@ export default {
         log('submitQuestionnaire', data)
         if (data.success) {
           this.showMessageBox('success', '提交成功', () => {
-            this.disabled = true
-            this.isShowQuestionnaire = true
-            this.isShowResult = true
+            console.log(this.questionnaire)
+            console.log(this.questionnaire.submitedAction)
+            if (this.questionnaire.submitedAction) {
+              this.configShowResult()
+            } else {
+              this.configStop()
+            }
           })
         } else {
           this.showMessageBox('fail', '提交失败', () => {
-            this.isShowQuestionnaire = false
-            this.isShowResult = false
-            this.disabled = false
+            this.configStop()
           })
         }
       })
+    },
+    configShowResult () {
+      this.disabled = true
+      this.isShowQuestionnaire = true
+      this.isShowResult = true
+      this.result = []
+    },
+    configStop () {
+      this.isShowQuestionnaire = false
+      this.isShowResult = false
+      this.disabled = false
+      this.result = []
     },
     isError (key) {
       if (this.formatResult.indexOf(key) !== -1) {

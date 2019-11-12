@@ -2,11 +2,12 @@
   <div class="wrapper">
     <div class="top">
       <main-windows
-        ref="player"
+        ref="document"
         :component="toggleMainSubComponent(windows.toggle)"
       >
         <live-controls
           :isSubShow="windows.show"
+          :hideSwitchBtn="hideSwitchBtn"
           @switch="onControlsSwitch"
           @open="onControlsOpen"
           @show="onControlsShow"
@@ -38,7 +39,7 @@
     <common-questionnaire :questionnaire="questionnaire"></common-questionnaire>
     <common-attendance></common-attendance>
     <sub-windows
-      ref="document"
+      ref="player"
       :type="windows.type"
       :show="windows.show"
       :closeable="windows.closeable"
@@ -94,7 +95,7 @@ export default {
       windows: {
         mainComponent: "LivePlayer",
         subComponent: "LiveDocument",
-        type: "public", //公开课 public 专题课 special
+        type: "public", // 公开课 public 专题课 special
         toggle: true,
         show: true,
         closeable: true
@@ -125,7 +126,8 @@ export default {
         show: false,
         component: ""
       },
-      questionnaire: {}
+      questionnaire: {},
+      hideSwitchBtn: true
     };
   },
   computed: {
@@ -160,7 +162,7 @@ export default {
       });
       this.hd.onQuestionnairePublish(data => {
         log("onQuestionnairePublish", data);
-        if (data.success && !data.datas.questionnaire.submitedAction) {
+        if (data.success) {
           this.formateQuestionnaire(data.datas);
         }
       });
@@ -186,12 +188,16 @@ export default {
       this.hd.login({
         userId: "B693062ABB8020E0",
         roomId: "20E2BEC88BEF3EEB9C33DC5901307461",
+        // userId: "B693062ABB8020E0",
+        // roomId: "EE66140EDA3F25CC9C33DC5901307461",
         viewerName: "获得场景视频",
         viewerToken: "",
         success: result => {
           this.configPlayerAndDocument();
           this.setViewer(result.viewer);
+          const template = result.template;
           this.setTemplate(result.template);
+          this.configTemplate(template);
           log("onLoginSuccess", result);
           this.$notify({ type: "success", message: "登录成功" });
         },
@@ -201,6 +207,23 @@ export default {
         }
       });
     },
+    configTemplate(tem) {
+      /*
+       * 模板 1 ：视频
+       * 模板 2 ：视频、聊天、问答
+       * 模板 3 ：视频、聊天
+       * 模板 4 ：视频、文档、聊天
+       * 模板 5 ：视频、文档、聊天、问答
+       * 模板 6 ：视频、问答
+       * */
+
+      if (tem.type !== 4 && tem.type !== 5) {
+        this.hideSwitchBtn = false; // 隐藏切换按钮
+        this.onControlsSwitch(false); // 切换视频为主
+        this.windows.show = false; // 关闭小窗
+        this.panel.showSubWindows = false; //隐藏小窗时候，panel收缩
+      }
+    },
     configPlayerAndDocument() {
       this.hd.showControl(false);
       this.hd.docAdapt(true);
@@ -208,15 +231,15 @@ export default {
     onControlsSwitch(toggle) {
       let player = this.$refs.player.$refs.player.$el;
       let panel = this.$refs.document.$refs.document.$el;
-      let mainParent = this.$refs.player.$refs.mainParent;
-      let subParent = this.$refs.document.$refs.subParent;
+      let mainParent = this.$refs.document.$refs.mainParent;
+      let subParent = this.$refs.player.$refs.subParent;
       this.windows.toggle = toggle;
       if (toggle) {
-        mainParent.appendChild(player);
-        subParent.appendChild(panel);
-      } else {
         mainParent.appendChild(panel);
         subParent.appendChild(player);
+      } else {
+        mainParent.appendChild(player);
+        subParent.appendChild(panel);
       }
       this.emit("play");
     },
@@ -256,6 +279,8 @@ export default {
       const _questionnaire = {};
 
       _questionnaire.questionnaireId = questionnaire.id;
+      _questionnaire.forcibly = questionnaire.forcibly; // 是否强制用户回答
+      _questionnaire.submitedAction = questionnaire.submitedAction; // 是否显示正确答案
       _questionnaire.subjectId = subjects.id;
       _questionnaire.title = subjects.content;
       _questionnaire.options = [];

@@ -28,13 +28,14 @@ export default {
     return {
       isTap: false,
       index: 0,
-      options: []
+      options: [],
+      max: 20 // 允许存在的最大心粒子数，心越少，越流畅，性能较差浏览器建议改小
     };
   },
   methods: {
     onTap() {
       this.isTap = !this.isTap;
-      if (this.options.length > 15) {
+      if (this.options.length > this.max) {
         return;
       }
       const rand = parseInt(Math.random() * 5) + 3;
@@ -43,9 +44,29 @@ export default {
         this.options.push(this.index);
       }
     },
+    activeFlutter() {
+      this.isTap = !this.isTap;
+      if (this.options.length > 5) {
+        return;
+      }
+      const rand = parseInt(Math.random() * 4) + 1;
+      for (let i = 0; i < rand; i++) {
+        this.index++;
+        this.options.push(this.index);
+      }
+    },
     onComplete() {
       this.options.shift();
     }
+  },
+  mounted() {
+    //每个10-19秒自动点赞
+    setInterval(() => {
+      const timeout = parseInt(Math.random() * 10);
+      setTimeout(() => {
+        this.activeFlutter();
+      }, timeout);
+    }, 10000);
   }
 };
 </script>

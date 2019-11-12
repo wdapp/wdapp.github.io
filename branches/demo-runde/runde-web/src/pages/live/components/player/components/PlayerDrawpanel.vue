@@ -1,17 +1,31 @@
 <template>
   <div class="player-drawpanel-wrapper" :class="size" v-show="status">
-    <div v-show="isShowCloseBtn" class="drawpanel-close-btn" @click="onClose">
-      <span class="drawpanel-close-icon"></span>
-    </div>
-    <div class="drawpanel">
-      <div id="drawPanel"></div>
-    </div>
+    <vue-drag-resize
+      ref="Drag"
+      class="drag-resize-wrap"
+      :isDraggable="drag.isDraggable"
+      :isActive="drag.active"
+      :isResizable="drag.resizable"
+      @dragging="onDragGing"
+      @clicked="onClicked($event)"
+      @touchend.native="onMouseup"
+    >
+      <div v-show="isShowCloseBtn" class="drawpanel-close-btn" @click="onClose">
+        <span class="drawpanel-close-icon"></span>
+      </div>
+      <div class="drawpanel">
+        <div id="drawPanel"></div>
+      </div>
+    </vue-drag-resize>
   </div>
 </template>
 
 <script>
+import Drag from './drag'
+
 export default {
   name: 'PlayerDrawpanel',
+  mixins: [Drag],
   props: {
     isShowClose: {
       type: Boolean,
@@ -22,14 +36,14 @@ export default {
       default: 'small'
     }
   },
-  computed: {
-    isShowCloseBtn () {
-      return this.size === 'small' && this.isShowClose
-    }
-  },
   data () {
     return {
       status: false
+    }
+  },
+  computed: {
+    isShowCloseBtn () {
+      return this.size === 'small' && this.isShowClose
     }
   },
   methods: {
@@ -45,24 +59,30 @@ export default {
   @import "~styles/mixins.styl"
 
   .player-drawpanel-wrapper
-    background-color $baseWhiteColor
     width-height-full()
-    .drawpanel
-      width-height-full()
-    .drawpanel-close-btn
-      position absolute
-      top 11px
-      right 11px
-      .drawpanel-close-icon
-        display inline-block
-        background url("~images/close.png") no-repeat
-        background-size 30px
-        width-height-same(30px)
+    .drag-resize-wrap
+      width 100% !important
+      height 100% !important
+      .drawpanel
+        width-height-full()
+      .drawpanel-close-btn
+        position absolute
+        top 11px
+        right 11px
+        .drawpanel-close-icon
+          display inline-block
+          background url("~images/close.png") no-repeat
+          background-size 30px
+          width-height-same(30px)
+    .drag-resize-wrap:before
+      content ''
+      display none
   .small
     position absolute
     width 290px
     height 163px
     bottom 0
+    z-index 1
   .large
     width-height-full()
 </style>

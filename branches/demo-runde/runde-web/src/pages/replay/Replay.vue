@@ -72,16 +72,17 @@ export default {
           this.$message({
             showClose: true,
             message: '登录失败',
-            type: 'error',
-            duration: 0
+            type: 'error'
           })
         }
       })
     },
     setDatas (datas) {
       const viewer = datas.viewer
-
       this.setViewer(viewer)
+
+      const template = datas.template
+      this.setTemplate(template)
 
       this.name = viewer.name
     },
@@ -98,7 +99,7 @@ export default {
         }
       })
     },
-    ...mapMutations(['setViewer', 'setOptions'])
+    ...mapMutations(['setViewer', 'setOptions', 'setTemplate'])
   },
   mounted () {
     this.destroy()

@@ -7,6 +7,7 @@
       <span
         class="switch-btn-icon"
         :class="{ 'switch-active': !isSubShow }"
+        v-show="hideSwitchBtn"
       ></span>
     </li>
   </ul>
@@ -17,6 +18,10 @@ export default {
   name: "ButtonGroup",
   props: {
     isSubShow: {
+      type: Boolean,
+      default: true
+    },
+    hideSwitchBtn: {
       type: Boolean,
       default: true
     }

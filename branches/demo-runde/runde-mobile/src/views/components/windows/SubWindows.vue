@@ -15,14 +15,14 @@
           <div class="close-icon"></div>
         </div>
         <!--      <component :is="component" ref="component"></component>-->
-        <live-document ref="document"></live-document>
+        <live-player ref="player"></live-player>
       </div>
     </vue-drag-resize>
   </div>
 </template>
 
 <script>
-import LiveDocument from "../document/Document";
+import LivePlayer from "../player/Player";
 import Mixins from "common/mixins";
 import VueDragResize from "vue-drag-resize";
 import { log } from "common/utils";
@@ -31,7 +31,7 @@ export default {
   name: "SubWindows",
   mixins: [Mixins],
   components: {
-    LiveDocument,
+    LivePlayer,
     VueDragResize
   },
   props: {

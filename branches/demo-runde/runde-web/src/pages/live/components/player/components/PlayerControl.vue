@@ -5,7 +5,7 @@
       class="actions-btn-group"
       v-show="isShowControl"
     >
-      <div class="switch-screen-btn" @click="handleSwitchScreenClick">
+      <div class="switch-screen-btn" @click="handleSwitchScreenClick" v-show="hideSwitchBtn">
         <span class="icon" :class="switchScreenIcon"></span>
       </div>
       <div
@@ -85,6 +85,14 @@ export default {
     status: {
       type: Boolean,
       default: true
+    },
+    hideSwitchBtn: {
+      type: Boolean,
+      default: true
+    },
+    switchStatus: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -92,7 +100,6 @@ export default {
       isShowInteractionBtn: false,
       interactionStatus: 'interaction',
       toggleSwitchScreenBtnStatus: true,
-      switchStatus: true,
       toggleFullScreenBtn: true,
       isBespread: false,
       volume: 1,
@@ -132,8 +139,8 @@ export default {
   methods: {
     handleSwitchScreenClick () {
       if (this.toggleSwitchScreenBtnStatus) {
-        this.switchStatus = !this.switchStatus
-        this.$emit('switch', this.switchStatus)
+        let status = !this.switchStatus
+        this.$emit('switch', status)
       } else {
         const status = true
         this.$emit('open', status)
@@ -260,6 +267,7 @@ export default {
       position absolute
       bottom 0
       box-sizing border-box
+      z-index 1
       .controls-btn-group
         position absolute
         top 50%

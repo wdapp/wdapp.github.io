@@ -2,14 +2,14 @@
   <div class="main-windows-wrapper">
     <div class="main-wrap" ref="mainParent">
       <!--      <component :is="component"></component>-->
-      <live-player ref="player"></live-player>
+      <live-document ref="document"></live-document>
     </div>
     <slot name="controls"></slot>
   </div>
 </template>
 
 <script>
-import LivePlayer from "../player/Player";
+import LiveDocument from "../document/Document";
 import FullScreen from "common/fullscreen";
 import Mixins from "common/mixins";
 import { mapState, mapMutations } from "vuex";
@@ -18,7 +18,7 @@ export default {
   name: "MainWindows",
   mixins: [Mixins],
   components: {
-    LivePlayer
+    LiveDocument
   },
   props: {
     component: {

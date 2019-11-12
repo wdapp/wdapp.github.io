@@ -30,7 +30,7 @@ export default {
 
   .hearts-wrapper
     position absolute
-    width-height-same(25px)
+    width-height-same(20px)
     display inline-block
   .heart-wrapper
     width-height-same(25px)

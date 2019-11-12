@@ -6,10 +6,13 @@
     >
       <div
         class="switch-screen-btn"
-        @click="handleSwitchScreenClick">
+        @click="handleSwitchScreenClick"
+        v-show="hideSwitchBtn"
+      >
         <span
           class="icon"
-          :class="switchScreenIcon"></span>
+          :class="switchScreenIcon"
+        ></span>
       </div>
       <div
         class="play-wrap"
@@ -118,12 +121,19 @@ export default {
     status: {
       type: Boolean,
       default: true
+    },
+    hideSwitchBtn: {
+      type: Boolean,
+      default: true
+    },
+    switchStatus: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
     return {
       toggleSwitchScreenBtnStatus: true,
-      switchStatus: true,
       toggleFullScreenBtn: true,
       isBespread: false,
       volume: 1,
@@ -177,8 +187,8 @@ export default {
     ...mapMutations(['changePlayerStatus']),
     handleSwitchScreenClick () {
       if (this.toggleSwitchScreenBtnStatus) {
-        this.switchStatus = !this.switchStatus
-        this.$emit('switch', this.switchStatus)
+        let status = !this.switchStatus
+        this.$emit('switch', status)
       } else {
         const status = true
         this.$emit('open', status)

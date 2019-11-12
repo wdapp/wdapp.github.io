@@ -16,6 +16,7 @@
         @switch="onSwitch"
         @open="onOpen"
         :isSubShow="isSubShow"
+        :hideSwitchBtn="hideSwitchBtn"
       ></controls-button-group>
       <controls-play
         :playState="playState"
@@ -57,6 +58,10 @@ export default {
   },
   props: {
     isSubShow: {
+      type: Boolean,
+      default: true
+    },
+    hideSwitchBtn: {
       type: Boolean,
       default: true
     }

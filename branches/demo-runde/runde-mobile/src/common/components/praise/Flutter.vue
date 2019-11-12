@@ -22,8 +22,8 @@ export default {
   methods: {
     onBeforeEnter() {},
     onEnter(el, done) {
-      const top = Math.random() * 80 + 150;
-      const duration = 1500;
+      const top = Math.random() * 80 + 50;
+      const duration = 2000;
       const left = 20 - Math.random() * 80;
       const rand = Math.random() * 1000;
 
@@ -56,7 +56,9 @@ export default {
     },
     onBeforeLeave() {},
     onLeave(done) {
-      done();
+      if (typeof done === "function") {
+        done();
+      }
     },
     onAfterLeave() {}
   }
