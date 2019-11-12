@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "93cf8ad648391fe3d665",
-    "url": "/branches/demo-runde/runde-mobile/dist/css/app.a7adc32e.css"
+    "revision": "5f59f20917baa6bf7ca3",
+    "url": "/branches/demo-runde/runde-mobile/dist/css/app.fe425973.css"
   },
   {
-    "revision": "d626a19b3bc00178df41",
+    "revision": "f2d46c63bc780e56e1e0",
     "url": "/branches/demo-runde/runde-mobile/dist/css/chunk-vendors.186cb7c3.css"
   },
   {
@@ -68,16 +68,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/branches/demo-runde/runde-mobile/dist/img/success@3x.f183870e.png"
   },
   {
-    "revision": "47e8022411b5d0423d398fd392510498",
+    "revision": "975504f974b9c369a76fafd3e55f35a1",
     "url": "/branches/demo-runde/runde-mobile/dist/index.html"
   },
   {
-    "revision": "93cf8ad648391fe3d665",
-    "url": "/branches/demo-runde/runde-mobile/dist/js/app.1eb678e7.js"
+    "revision": "5f59f20917baa6bf7ca3",
+    "url": "/branches/demo-runde/runde-mobile/dist/js/app.29ec66ad.js"
   },
   {
-    "revision": "d626a19b3bc00178df41",
-    "url": "/branches/demo-runde/runde-mobile/dist/js/chunk-vendors.6eca892e.js"
+    "revision": "f2d46c63bc780e56e1e0",
+    "url": "/branches/demo-runde/runde-mobile/dist/js/chunk-vendors.06d0cdc6.js"
   },
   {
     "revision": "eeff1ea639d6f1b62a7b56c27ef0a5eb",

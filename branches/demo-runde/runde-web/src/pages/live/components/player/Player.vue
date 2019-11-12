@@ -44,6 +44,7 @@ import PlayerControl from './components/PlayerControl'
 import PlayerFooter from './components/PlayerFooter'
 import HuodeScene from 'common/websdk/live'
 import FlashTip from 'common/flashtip'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Player',
@@ -57,11 +58,14 @@ export default {
   data () {
     return {
       isShowControl: false,
-      switchStatus: true,
-      status: true
+      switchStatus: true, // true 文档为主 ，false 视频为主
+      status: true // 是否显示小窗
     }
   },
   computed: {
+    ...mapState([{
+      tem: 'template'
+    }]),
     playerSize () {
       return this.switchStatus ? 'large' : 'small'
     },
@@ -92,6 +96,11 @@ export default {
       HD.onPlayerLoad(() => {
         HD.showControl(false)
         HD.docAdapt(true)
+        /*
+        * flash 窗口太小会被google浏览器认为是广告，无法自动播放，所以先让flash窗口在大窗视频为主模式下自动播放,
+        * 在让文档为主，满足初始化的时候文档大窗，视频小窗模式
+        * */
+        this.switchStatus = false
       })
     },
     onMouseEnter () {
@@ -115,6 +124,9 @@ export default {
   },
   mounted () {
     this.init()
+    console.log('===>>>', this)
+    console.log('===>>>', this.tem)
+    console.log('===>>>', this.template)
   }
 }
 </script>

@@ -69,7 +69,8 @@ export default {
       tipOption: {},
       firstTips: false,
       isScroll: false,
-      messagesLength: 100
+      messagesLength: 100,
+      focus: false
     };
   },
   watch: {
@@ -200,21 +201,26 @@ export default {
       this.onBlur();
     },
     onFocus() {
+      this.focus = true;
       this.curEmoKey.state = STATE.CUR_EMO_STATE.EMOTICON;
       this.giftsOne.state = STATE.GIFTS_ONE.ONE;
       this.plusReduceTwo.state = STATE.PLUS_REDUCE_TWO.TWO;
       this.$emit("closepopup");
     },
     onBlur() {
+      this.focus = false;
       this.timer && clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         if (!this.popupup) {
-          this.curEmoKey.state = STATE.CUR_EMO_STATE.CURRICULUM;
-          this.giftsOne.state = STATE.GIFTS_ONE.GIFTS;
-          this.plusReduceTwo.state = STATE.PLUS_REDUCE_TWO.PLUS;
+          this.initButtonState();
         }
         this.timer = 0;
-      }, 600);
+      }, 1000);
+    },
+    initButtonState() {
+      this.curEmoKey.state = STATE.CUR_EMO_STATE.CURRICULUM;
+      this.giftsOne.state = STATE.GIFTS_ONE.GIFTS;
+      this.plusReduceTwo.state = STATE.PLUS_REDUCE_TWO.PLUS;
     },
     addEvents() {
       this.on("popupup", () => {
@@ -222,6 +228,9 @@ export default {
       });
       this.on("popudown", () => {
         this.popupup = false;
+        if (!this.focus) {
+          this.plusReduceTwo.state = STATE.PLUS_REDUCE_TWO.PLUS;
+        }
       });
       this.on("emoticon", mark => {
         this.onEmoticon(mark);
@@ -280,6 +289,7 @@ export default {
       this.hd.sendPublicChatMsg(message);
       this.sendBarrage(message);
       this.message = "";
+      this.initButtonState();
     },
     sendBarrage(message) {
       this.emit("danmaku", message);
@@ -308,7 +318,6 @@ export default {
     position absolute
     top -400px
     left 0
-    z-index 99
   .button-group
     height 70px
     width 100%

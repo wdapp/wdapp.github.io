@@ -1,6 +1,9 @@
 module.exports = {
   lintOnSave: true,
-  publicPath: "/branches/demo-runde/runde-mobile/dist/",
+  publicPath:
+    process.env.NODE_ENV === "production"
+      ? "/branches/demo-runde/runde-mobile/dist/"
+      : "/",
   configureWebpack: {
     resolve: {
       alias: {

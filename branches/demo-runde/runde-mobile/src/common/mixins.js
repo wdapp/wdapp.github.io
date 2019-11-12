@@ -1,8 +1,8 @@
 export default {
   data() {
     return {
-      timer: 0,
-      timeout: 6000
+      cctimer: 0,
+      cctimeout: 6000
     };
   },
   methods: {
@@ -20,18 +20,18 @@ export default {
         return false;
       }
       if (typeof _timeout === "undefined") {
-        _timeout = this.timeout;
+        _timeout = this.cctimeout;
       }
       this.abort();
-      this.timer = setTimeout(() => {
+      this.cctimer = setTimeout(() => {
         callback && callback();
-        this.timer = 0;
+        this.cctimer = 0;
       }, _timeout);
     },
     abort() {
-      if (this.timer) {
-        clearTimeout(this.timer);
-        this.timer = 0;
+      if (this.cctimer) {
+        clearTimeout(this.cctimer);
+        this.cctimer = 0;
       }
     }
   }

@@ -27,7 +27,11 @@
                 <van-cell-group>
                   <van-cell
                     class="question-item"
-                    :class="{active: isActive(key), select: isSelect(key), correct: isCorrect(key)}"
+                    :class="{
+                      active: isActive(key),
+                      select: isSelect(key),
+                      correct: isCorrect(key)
+                    }"
                     :title="formatContent(option)"
                     v-for="(option, key) of questionnaire.options"
                     :key="key"
@@ -112,7 +116,7 @@ export default {
   },
   watch: {
     questionnaire() {
-      this.isShowQuestionnaireWrapper = true
+      this.isShowQuestionnaireWrapper = true;
       this.isShowQuestionnaire = true;
       this.disabled = false;
       this.result = -1;
@@ -123,10 +127,10 @@ export default {
       return this.result === key;
     },
     isSelect(key) {
-      return this.isShowResult && (this.result === key);
+      return this.isShowResult && this.result === key;
     },
     isCorrect(key) {
-      return this.isShowResult && (this.questionnaire.correct == key);
+      return this.isShowResult && this.questionnaire.correct == key;
     },
     onCellClick(key) {
       if (this.disabled) {

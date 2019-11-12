@@ -12,8 +12,9 @@
               v-model="checked"
               @change="onChange"
               checked-color="#FF454B"
-              >只看老师</van-checkbox
             >
+              只看老师
+            </van-checkbox>
           </div>
           <div class="like-wrap">
             <common-praise class="praise-wrap"></common-praise>
@@ -100,13 +101,20 @@ export default {
     },
     onMessages(messages) {
       this.messages = messages;
+      this.closePopup();
     },
     onChange() {
       this.emit("scrolltobottom");
+    },
+    addEvents() {
+      this.on("closeBottomPopup", () => {
+        this.closePopup();
+      });
     }
   },
   mounted() {
     this.onSizeSensor();
+    this.addEvents();
   },
   beforeDestroy() {
     clear(this.Popup);
@@ -145,8 +153,8 @@ export default {
           height 40px
           .leach
             height 40px
-            >>> .van-checkbox__icon
-              height 30px
+            .van-icon
+              width-height-same(40px)
         .like-wrap
           width-height-same(70px)
           .praise-wrap

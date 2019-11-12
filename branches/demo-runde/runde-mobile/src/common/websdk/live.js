@@ -36,14 +36,14 @@ class HuodeScene {
     DWLive.destroy && DWLive.destroy();
     // 退出登录
     DWLive.logout &&
-    DWLive.logout({
-      success(data) {
-        options.success && options.success(data);
-      },
-      error(data) {
-        options.fail && options.fail(data);
-      }
-    });
+      DWLive.logout({
+        success(data) {
+          options.success && options.success(data);
+        },
+        error(data) {
+          options.fail && options.fail(data);
+        }
+      });
   }
 
   showControl(show) {
@@ -135,11 +135,31 @@ class HuodeScene {
   onStartAttendance(callback) {
     //观看直播过程中，讲师发送打卡
     DWLive.onHdLiveStartPunch = function(result) {
-      callback && callback(result);
+      if (
+        !result ||
+        typeof result !== "object" ||
+        JSON.stringify(result) === "{}"
+      ) {
+        return;
+      }
+      const datas = {
+        pid: result.pid,
+        expireTime: result.expireTime,
+        remainDuration: result.remainDuration
+      };
+      callback && callback(datas);
     };
     // 打卡中刚进入直播间打开回调，无打卡无回调
     DWLive.getHDPunchInfo = function(result) {
-      callback && callback(result);
+      if (!result.success || !result.isExists) {
+        return;
+      }
+      const datas = {
+        pid: result.punch.pid,
+        expireTime: result.punch.expireTime,
+        remainDuration: result.punch.remainDuration
+      };
+      callback && callback(datas);
     };
   }
 

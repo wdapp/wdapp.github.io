@@ -14,6 +14,7 @@
       </div>
     </div>
     <live-questionnaire :questionnaire="questionnaire"></live-questionnaire>
+    <hd-attendance></hd-attendance>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ import LiveHeader from './components/header/Header'
 import LivePlayer from './components/player/Player'
 import LiveChat from './components/chat/Chat'
 import LiveQuestionnaire from './components/questionnaire/Questionnaire'
+import hdAttendance from 'common/components/attendance/Attendance'
 import HuodeScene from 'common/websdk/live'
 import {log} from 'common/utils'
 import {mapMutations} from 'vuex'
@@ -32,7 +34,8 @@ export default {
     LiveHeader,
     LivePlayer,
     LiveChat,
-    LiveQuestionnaire
+    LiveQuestionnaire,
+    hdAttendance
   },
   data () {
     return {
@@ -118,8 +121,10 @@ export default {
     },
     setDatas (datas) {
       const viewer = datas.viewer
-
       this.setViewer(viewer)
+
+      const template = datas.template
+      this.setTemplate(template)
 
       this.name = viewer.name
     },
@@ -136,7 +141,7 @@ export default {
         }
       })
     },
-    ...mapMutations(['setViewer', 'setOptions'])
+    ...mapMutations(['setViewer', 'setOptions', 'setTemplate'])
   },
   mounted () {
     this.init()

@@ -1,6 +1,7 @@
 export default {
   url: getDefaultUrl(),
   viewer: {},
+  template: {},
   options: {},
   playerStatus: false,
   lists: getLists()

@@ -143,6 +143,9 @@ export default {
   },
   mounted() {
     this.hd = new HuodeScene();
+    this.gift = this.tabOptions.tabs[this.active].options[
+      this.tabOptions.active
+    ];
   }
 };
 </script>

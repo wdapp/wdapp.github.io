@@ -9,6 +9,9 @@ export default {
   setViewer (state, viewer) {
     state.viewer = viewer
   },
+  setTemplate (state, template) {
+    state.template = template
+  },
   setOptions (state, options) {
     state.options = options
   },

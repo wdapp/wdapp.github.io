@@ -18,10 +18,11 @@
         type="number"
         v-model="value"
         placeholder="请输入随意金额"
+        maxlength="3"
       />
     </div>
     <div class="list-footer">
-      <p class="select-money">￥{{ money }}</p>
+      <p class="select-money">￥{{ money ? money : 0 }}</p>
       <div class="send-money" @click="handleRewardClick">塞进红包</div>
     </div>
   </div>
@@ -29,9 +30,11 @@
 
 <script>
 import HuodeScene from "common/websdk/live";
+import Mixins from "common/mixins";
 
 export default {
   name: "List",
+  mixins: [Mixins],
   props: {
     options: {
       type: Array,
@@ -60,15 +63,20 @@ export default {
       this.money = money;
     },
     handleRewardClick() {
+      if (!this.money || this.money <= 0) {
+        return;
+      }
       const msg = "打赏给老师[cem_" + this.icon + "]￥" + this.money;
       //发送打赏信息
       this.hd.sendPublicChatMsg(msg);
       //关闭弹窗
-      this.bus.$emit("closePopup");
+      this.emit("closePopup");
+      this.emit("closeBottomPopup");
     }
   },
   mounted() {
     this.hd = new HuodeScene();
+    this.money = this.options[this.active].money;
   }
 };
 </script>

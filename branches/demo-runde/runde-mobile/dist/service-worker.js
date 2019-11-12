@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/branches/demo-runde/runde-mobile/dist/precache-manifest.9e18c15ee537679d46e532a603cd7f6b.js"
+  "/branches/demo-runde/runde-mobile/dist/precache-manifest.3dca0d6799408589ba9f59bbf921a0fc.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "runde-mobile"});

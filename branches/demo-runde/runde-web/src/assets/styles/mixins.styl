@@ -32,6 +32,25 @@ break-world()
 cursor-pointer()
   cursor pointer
   user-select none
-
+bg-image($name, $size = 70)
+  display inline-block
+  width unit($size/ 192, rem)
+  height unit($size/ 192, rem)
+  background url('~images/' + $name + '.png') no-repeat
+  background-size unit($size, px)
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min--moz-device-pixel-ratio: 2) {
+    background-image: url('~images/' + $name + '@2x.png')
+  }
+  @media screen and (-webkit-min-device-pixel-ratio: 3), screen and (min--moz-device-pixel-ratio: 3) {
+    background-image: url('~images/' + $name + '@3x.png')
+  }
+active-image($name)
+  background-image url('~images/' + $name + '.png')
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min--moz-device-pixel-ratio: 2) {
+    background-image: url('~images/' + $name + '@2x.png')
+  }
+  @media screen and (-webkit-min-device-pixel-ratio: 3), screen and (min--moz-device-pixel-ratio: 3) {
+    background-image: url('~images/' + $name + '@3x.png')
+  }
 
 
