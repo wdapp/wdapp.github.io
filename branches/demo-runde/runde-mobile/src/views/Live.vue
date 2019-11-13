@@ -186,10 +186,10 @@ export default {
     },
     login() {
       this.hd.login({
-        // userId: "B693062ABB8020E0",
-        // roomId: "20E2BEC88BEF3EEB9C33DC5901307461",
-        userId: "2876043E67CBDC9D",
-        roomId: "D4A2E14A89D372399C33DC5901307461",
+        userId: "B693062ABB8020E0",
+        roomId: "20E2BEC88BEF3EEB9C33DC5901307461",
+        // userId: "2876043E67CBDC9D",
+        // roomId: "D4A2E14A89D372399C33DC5901307461",
         viewerName: "获得场景视频",
         viewerToken: "",
         success: result => {

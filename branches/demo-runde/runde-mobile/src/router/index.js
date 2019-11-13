@@ -12,7 +12,7 @@ const routes = [
     component: Index
   },
   {
-    path: "/",
+    path: "/live",
     name: "live",
     component: Live
   }
