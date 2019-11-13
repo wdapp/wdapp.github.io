@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a387c2937db664ae19fd",
-    "url": "/branches/demo-runde/runde-mobile/dist/css/app.421c3d0c.css"
+    "revision": "6811ccc3943415c354c1",
+    "url": "/branches/demo-runde/runde-mobile/dist/css/app.55de7cea.css"
   },
   {
     "revision": "f2d46c63bc780e56e1e0",
@@ -68,12 +68,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/branches/demo-runde/runde-mobile/dist/img/success@3x.f183870e.png"
   },
   {
-    "revision": "60a9f5680086e327dc46de4676d620f1",
+    "revision": "33a56189f7478a46c65f1ca652118fe5",
     "url": "/branches/demo-runde/runde-mobile/dist/index.html"
   },
   {
-    "revision": "a387c2937db664ae19fd",
-    "url": "/branches/demo-runde/runde-mobile/dist/js/app.bc98c291.js"
+    "revision": "6811ccc3943415c354c1",
+    "url": "/branches/demo-runde/runde-mobile/dist/js/app.37056ab1.js"
   },
   {
     "revision": "f2d46c63bc780e56e1e0",
