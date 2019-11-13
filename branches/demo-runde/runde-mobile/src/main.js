@@ -25,7 +25,8 @@ import {
   RadioGroup,
   Radio,
   Cell,
-  CellGroup
+  CellGroup,
+  Button
 } from "vant";
 
 Vue.use(Icon);
@@ -42,6 +43,7 @@ Vue.use(Checkbox).use(CheckboxGroup);
 Vue.use(Cell).use(CellGroup);
 Vue.use(RadioGroup);
 Vue.use(Radio);
+Vue.use(Button);
 
 Vue.prototype.bus = new Vue();
 

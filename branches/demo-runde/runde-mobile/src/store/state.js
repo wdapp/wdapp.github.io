@@ -1,10 +1,22 @@
 export default {
+  url: getDefaultUrl(),
   playState: false,
   screenState: false,
   viewer: {},
   template: {},
   lists: lists()
 };
+
+function getDefaultUrl() {
+  let defaultUrl = "";
+
+  try {
+    defaultUrl = localStorage.url;
+  } catch (e) {
+  }
+
+  return defaultUrl;
+}
 
 function lists() {
   const lists = [

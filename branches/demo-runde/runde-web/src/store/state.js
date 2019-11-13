@@ -21,6 +21,14 @@ function getDefaultUrl () {
 function getLists () {
   const lists = [
     {
+      title: '获得场景视频测试直播间',
+      subhead: '8月15日  15:00 - 16:00 CC詹姆斯',
+      tip: '直播中',
+      status: true,
+      name: 'Live',
+      url: 'https://view.csslcloud.net/api/view/index?roomid=D4A2E14A89D372399C33DC5901307461&userid=2876043E67CBDC9D'
+    },
+    {
       title: 'CC视频测试回放（第1期）',
       subhead: '8月14日  15:00 - 16:00 王波波',
       tip: '已结束',
