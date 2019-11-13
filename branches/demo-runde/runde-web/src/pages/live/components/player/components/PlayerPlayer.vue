@@ -8,7 +8,7 @@
       :isResizable="drag.resizable"
       @dragging="onDragGing"
       @clicked="onClicked($event)"
-      @touchend.native="onMouseup"
+      @mouseup.native="onMouseup"
     >
       <div v-show="isShowCloseBtn" class="player-close-btn" @click="onClose">
         <span class="player-close-icon"></span>
@@ -82,6 +82,7 @@ export default {
     .drag-resize-wrap
       width 100% !important
       height 100% !important
+      background-color #333333
       .live-player
         position absolute
         width-height-full()

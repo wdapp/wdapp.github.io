@@ -8,13 +8,13 @@
       :isResizable="drag.resizable"
       @dragging="onDragGing"
       @clicked="onClicked($event)"
-      @touchend.native="onMouseup"
+      @mouseup.native="onMouseup"
     >
       <div v-show="isShowCloseBtn" class="drawpanel-close-btn" @click="onClose">
         <span class="drawpanel-close-icon"></span>
       </div>
-      <div class="drawpanel">
-        <div id="drawPanel"></div>
+      <div class="drawpanel-wrap">
+        <div class="drawpanel" id="drawPanel"></div>
       </div>
     </vue-drag-resize>
   </div>
@@ -63,12 +63,18 @@ export default {
     .drag-resize-wrap
       width 100% !important
       height 100% !important
-      .drawpanel
+      background-color #DDDDDD
+      .drawpanel-wrap
+        position absolute
         width-height-full()
+        .drawpanel
+          position absolute
+          width-height-full()
       .drawpanel-close-btn
         position absolute
         top 11px
         right 11px
+        z-index 1
         .drawpanel-close-icon
           display inline-block
           background url("~images/close.png") no-repeat

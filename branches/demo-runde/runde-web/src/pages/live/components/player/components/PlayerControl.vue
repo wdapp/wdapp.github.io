@@ -232,6 +232,7 @@ export default {
     .danmaku-wrap
       position absolute
       top 0
+      z-index 1
     .actions-btn-group
       position absolute
       top 28px

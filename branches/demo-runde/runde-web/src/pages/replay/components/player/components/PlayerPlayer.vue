@@ -1,15 +1,29 @@
 <template>
   <div class="player-player-wrapper" :class="size">
-    <div v-show="isShowCloseBtn" class="player-close-btn" @click="onClose">
-      <span class="player-close-icon"></span>
-    </div>
-    <div class="replay-player" id="playbackPlayer"></div>
+    <vue-drag-resize
+      ref="Drag"
+      class="drag-resize-wrap"
+      :isDraggable="drag.isDraggable"
+      :isActive="drag.active"
+      :isResizable="drag.resizable"
+      @dragging="onDragGing"
+      @clicked="onClicked($event)"
+      @mouseup.native="onMouseup"
+    >
+      <div v-show="isShowCloseBtn" class="player-close-btn" @click="onClose">
+        <span class="player-close-icon"></span>
+      </div>
+      <div class="replay-player" id="playbackPlayer"></div>
+    </vue-drag-resize>
   </div>
 </template>
 
 <script>
+import Drag from './drag'
+
 export default {
   name: 'PlayerPlayer',
+  mixins: [Drag],
   props: {
     isShowClose: {
       type: Boolean,
@@ -59,25 +73,32 @@ export default {
   @import "~styles/mixins.styl"
 
   .player-player-wrapper
-    background-color $lightBlackColor
     width-height-full()
-    .replay-player
-      width-height-full()
-    .player-close-btn
-      position absolute
-      top 11px
-      right 11px
-      z-index 1
-      .player-close-icon
-        display inline-block
-        background url("~images/close.png") no-repeat
-        background-size 30px
-        width-height-same(30px)
+    .drag-resize-wrap
+      width 100% !important
+      height 100% !important
+      background-color #333333
+      .replay-player
+        width-height-full()
+      .player-close-btn
+        position absolute
+        top 11px
+        right 11px
+        z-index 1
+        .player-close-icon
+          display inline-block
+          background url("~images/close.png") no-repeat
+          background-size 30px
+          width-height-same(30px)
+    .drag-resize-wrap:before
+      content ''
+      display none
   .small
     position absolute
     width 290px
     height 163px
     bottom 0
+    z-index 1
   .large
     width-height-full()
 </style>

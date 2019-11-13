@@ -337,6 +337,7 @@ export default {
       background rgba(0, 0, 0, 0.7)
       position absolute
       bottom 0
+      z-index 1
       .slider-wrap
         position absolute
         top -4px
