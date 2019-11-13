@@ -10,6 +10,8 @@ export default {
         isDraggable: true,
         active: true,
         resizable: false,
+        width: 290,
+        height: 163,
         rectangle: {
           width: 0,
           height: 0,
@@ -22,6 +24,22 @@ export default {
   computed: {
     Drag () {
       return this.$refs.Drag
+    },
+    fontSize () {
+      const fontSize = document.getElementsByTagName('html')[0].style.fontSize
+      return parseFloat(fontSize)
+    },
+    dragWidth () {
+      let width = this.drag.width
+      const size = 192
+      width = (width / size) * this.fontSize
+      return width
+    },
+    dragHeight () {
+      let height = this.drag.height
+      const size = 192
+      height = (height / size) * this.fontSize
+      return height
     }
   },
   watch: {
@@ -55,12 +73,14 @@ export default {
       })
     },
     intersectsRect (options) {
+      const width = this.dragWidth
+      const height = this.dragHeight
+
       const rect = options.rect
-      const width = rect.width
-      const height = rect.height
       const rectLeft = rect.left
       const rectTop = rect.top
-      if (rectLeft >= 0 && rectLeft <= width && rectTop <= 0 && rectTop >= -height) {
+
+      if (rectLeft <= 0 && rectLeft >= -width && rectTop >= 0 && rectTop <= height) {
         options.enter && options.enter()
       } else {
         options.leave && options.leave()

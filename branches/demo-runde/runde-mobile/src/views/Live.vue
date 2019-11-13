@@ -184,8 +184,28 @@ export default {
       const is = _toggle ? main : sub;
       return is;
     },
+    configMold(type = "0") {
+      // "0" 公开课，"1" 专题课
+      if (type === "0") {
+        log("公开课");
+        this.windows.type = "public"; // 更新公开课小窗位置
+        this.panel.show = true; // 显示panel
+        this.swiper.disabled = true; // 禁用swiper
+        this.swiper.navigation = false; // 隐藏tabs
+      } else if (type === "1") {
+        log("专题课");
+        this.windows.type = "special"; // 更新专题课小窗位置
+        this.panel.show = false; // 隐藏panel
+        this.swiper.disabled = false; // 激活swiper
+        this.swiper.navigation = true; // 显示tabs
+      }
+    },
     login() {
       const options = this.$route.query;
+      log(options);
+
+      const type = options.type;
+      this.configMold(type);
 
       this.hd.login({
         userId: options.userid,
@@ -297,14 +317,15 @@ export default {
       this.questionnaire = _questionnaire;
     },
     destroy() {
-      this.hd && this.hd.destroy({
-        success: () => {
-          log("退出成功");
-        },
-        fail: () => {
-          log("退出失败");
-        }
-      });
+      this.hd &&
+        this.hd.destroy({
+          success: () => {
+            log("退出成功");
+          },
+          fail: () => {
+            log("退出失败");
+          }
+        });
     }
   },
   mounted() {

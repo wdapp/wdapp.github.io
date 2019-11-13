@@ -51,6 +51,12 @@ export default {
     ChatsInput,
     CommonSlide
   },
+  props: {
+    checked: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       curEmoKey: {
@@ -237,7 +243,22 @@ export default {
       });
       this.hd.onPublicChatMessage(message => {
         const _msg = JSON.parse(message);
-        const type = this.viewer.id === _msg.userid ? "right" : "left";
+        const self = this.viewer.id === _msg.userid;
+        const type = self ? "right" : "left";
+        let active = true; // 是否可被（只看讲师）控制,true 可控，false 常显
+        // 讲师 和 自己 不会被（只看讲师）控制
+        if (self || _msg.userrole === "publisher") {
+          active = false;
+        } else {
+          active = true;
+        }
+        let show = true; // 默认显示或隐藏，true显示，false 隐藏
+        const checked = this.checked; //是否开启只看讲师，true开启，false不开启
+        if (active && checked) {
+          show = false;
+        } else {
+          show = true;
+        }
         const formatMsg = {
           userAvatar: _msg.useravatar || require("images/header.png"),
           userName: _msg.username,
@@ -249,7 +270,9 @@ export default {
           time: _msg.time,
           status: _msg.status,
           chatId: _msg.chatId,
-          type: type
+          type: type,
+          show: show,
+          active: active
         };
         this.messages.push(formatMsg);
         if (this.isScroll) {

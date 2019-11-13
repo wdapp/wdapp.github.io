@@ -36,9 +36,8 @@
           type="info"
           size="large"
           @click="handleBtnClick(0)"
-        >登录公开课
-        </van-button
-        >
+          >登录公开课
+        </van-button>
       </van-cell>
       <van-cell>
         <van-button
@@ -46,9 +45,8 @@
           type="info"
           size="large"
           @click="handleBtnClick(1)"
-        >登录专题课
-        </van-button
-        >
+          >登录专题课
+        </van-button>
       </van-cell>
     </van-cell-group>
   </div>

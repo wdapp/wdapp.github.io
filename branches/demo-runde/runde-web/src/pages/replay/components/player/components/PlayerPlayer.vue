@@ -79,6 +79,7 @@ export default {
       height 100% !important
       background-color #333333
       .replay-player
+        position absolute
         width-height-full()
       .player-close-btn
         position absolute
@@ -97,8 +98,9 @@ export default {
     position absolute
     width 290px
     height 163px
-    bottom 0
-    z-index 1
+    top 0
+    right 0
+    z-index 3
   .large
     width-height-full()
 </style>

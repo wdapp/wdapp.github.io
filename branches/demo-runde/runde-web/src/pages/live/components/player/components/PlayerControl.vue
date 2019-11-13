@@ -235,7 +235,7 @@ export default {
       z-index 1
     .actions-btn-group
       position absolute
-      top 28px
+      top 228px
       right 22px
       z-index 1
       .switch-screen-btn

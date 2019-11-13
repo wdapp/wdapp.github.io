@@ -177,8 +177,6 @@ export default {
         log('submitQuestionnaire', data)
         if (data.success) {
           this.showMessageBox('success', '提交成功', () => {
-            console.log(this.questionnaire)
-            console.log(this.questionnaire.submitedAction)
             if (this.questionnaire.submitedAction) {
               this.configShowResult()
             } else {

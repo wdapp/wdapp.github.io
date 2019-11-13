@@ -205,7 +205,22 @@ export default {
     addEvents () {
       this.HD.onPublicChatMessage((message) => {
         const _msg = JSON.parse(message)
-        const type = (this.viewer.id === _msg.userid ? 'right' : 'left')
+        const self = this.viewer.id === _msg.userid
+        const type = self ? 'right' : 'left'
+        let active = true // 是否可被（只看讲师）控制,true 可控，false 常显
+        // 讲师 和 自己 不会被（只看讲师）控制
+        if (self || _msg.userrole === 'publisher') {
+          active = false
+        } else {
+          active = true
+        }
+        let show = true // 默认显示或隐藏，true显示，false 隐藏
+        const checked = this.checked // 是否开启只看讲师，true开启，false不开启
+        if (active && checked) {
+          show = false
+        } else {
+          show = true
+        }
         const formatMsg = {
           userAvatar: _msg.useravatar || require('images/header2.png'),
           userName: _msg.username,
@@ -217,7 +232,9 @@ export default {
           time: _msg.time,
           status: _msg.status,
           chatId: _msg.chatId,
-          type: type
+          type: type,
+          show: show,
+          active: active
         }
         this.messages.push(formatMsg)
         this.scrollTo()
@@ -272,7 +289,7 @@ export default {
       layout-full(0, 0, 132px, 0)
       .chat-wrap
         overflow hidden
-        width-height-full()
+        layout-full(0, 0, 20px, 0)
         box-sizing border-box
         padding 16px 20px 12px 20px
       .hd-slide-tip-wrap

@@ -46,12 +46,15 @@ export default {
   },
   watch: {
     show() {
-      if (this.message.userRole === "publisher") {
-        this.isShow = true;
-      } else {
+      if (this.message.active) {
         this.isShow = this.show;
+      } else {
+        this.isShow = true;
       }
     }
+  },
+  mounted() {
+    this.isShow = this.message.show;
   }
 };
 </script>

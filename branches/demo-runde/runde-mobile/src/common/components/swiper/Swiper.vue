@@ -16,7 +16,7 @@
         ></van-tab>
       </van-tabs>
     </div>
-    <div class="swiper-wrap">
+    <div class="swiper-wrap" :class="{ 'swiper-no-swiping': this.disabled }">
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(option, key) of options" :key="key">
           <slot :name="option.name"></slot>
@@ -56,8 +56,6 @@ export default {
     return {
       active: 0,
       swiperOption: {
-        allowSlidePrev: !this.disabled,
-        allowSlideNext: !this.disabled,
         on: {
           slideChangeTransitionStart: () => {
             this.active = this.swiper.activeIndex;

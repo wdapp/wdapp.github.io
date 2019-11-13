@@ -1,10 +1,7 @@
 export default {
   changeUrl(state, url) {
     state.url = url;
-    try {
-      localStorage.url = url;
-    } catch (e) {
-    }
+    localStorage.url = url;
   },
   changePlayState(state, status) {
     state.playState = status;

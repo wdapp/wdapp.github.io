@@ -1,7 +1,7 @@
 <template>
   <div class="content-wrapper">
-    <div class="chats-box" ref="chatsBox">
-      <div class="chats-group" ref="chatsGroup">
+    <div class="chats-container" ref="Container">
+      <div class="chats-group" ref="Group">
         <content-chat
           v-for="(message, key) of messages"
           :message="message"
@@ -37,6 +37,14 @@ export default {
       default: true
     }
   },
+  computed: {
+    Container() {
+      return this.$refs.Container;
+    },
+    Group() {
+      return this.$refs.Group;
+    }
+  },
   methods: {
     addEvents() {
       this.on("scrolltobottom", () => {
@@ -55,14 +63,18 @@ export default {
     },
     scrollToBottom() {
       this.$nextTick(() => {
+        const lastElementChild = this.Group.lastElementChild;
+        if (!lastElementChild) {
+          return false;
+        }
         this.scroll.refresh();
-        this.scroll.scrollToElement(this.$refs.chatsGroup.lastElementChild);
+        this.scroll.scrollToElement(lastElementChild);
       });
     }
   },
   mounted() {
-    const chatsBox = this.$refs.chatsBox;
-    this.scroll = new BScroll(chatsBox, {
+    const Container = this.Container;
+    this.scroll = new BScroll(Container, {
       scrollbar: {
         fade: true,
         interactive: false
@@ -79,7 +91,7 @@ export default {
 .content-wrapper
   wrapper()
   position relative
-  .chats-box
+  .chats-container
     width-height-full()
     padding 20px
     box-sizing border-box

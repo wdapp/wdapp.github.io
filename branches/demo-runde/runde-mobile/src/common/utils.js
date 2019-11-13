@@ -84,7 +84,6 @@ export function formatRewardAndGiftToTip(message) {
   var arrs = msg.split(tag);
   var content = arrs[0];
   var multiple = arrs[1][0];
-  // var number = arrs[1].replace(/[^0-9]/ig, "");
   var regNumber = new RegExp(/(\d+(\.\d+)?)/ig);
   var numbers = regNumber.exec(arrs[1]);
   var number = numbers[0];
@@ -95,7 +94,6 @@ export function formatRewardAndGiftToTip(message) {
     multiple: multiple,
     number: parseFloat(number)
   };
-  console.log(tip);
   return tip;
 }
 

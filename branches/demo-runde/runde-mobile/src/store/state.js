@@ -9,12 +9,7 @@ export default {
 
 function getDefaultUrl() {
   let defaultUrl = "";
-
-  try {
-    defaultUrl = localStorage.url;
-  } catch (e) {
-  }
-
+  defaultUrl = localStorage.url;
   return defaultUrl;
 }
 

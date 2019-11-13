@@ -26,7 +26,7 @@
 <script>
 import BScroll from "better-scroll";
 import { mapState } from "vuex";
-
+import { log } from "common/utils";
 export default {
   name: "Lists",
   computed: {
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     handleClick(name, url) {
-      console.log(name, url);
+      log(name, url);
     }
   },
   mounted() {

@@ -311,7 +311,7 @@ export default {
       layout-full(0, 0, 58px, 0)
       .switch-screen-btn
         position absolute
-        top 28px
+        top 228px
         right 22px
         z-index 1
         .icon

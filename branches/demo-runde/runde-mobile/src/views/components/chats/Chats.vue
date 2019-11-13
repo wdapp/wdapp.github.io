@@ -25,6 +25,7 @@
           @plusclick="onPlusClick"
           @closepopup="onClosePopup"
           @messages="onMessages"
+          :checked="checked"
         ></chats-footer>
       </div>
     </div>
