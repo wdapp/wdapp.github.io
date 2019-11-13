@@ -8,12 +8,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "index",
-    component: Index
-  },
-  {
-    path: "/live",
-    name: "live",
+    name: "Live",
     component: Live
   }
 ];

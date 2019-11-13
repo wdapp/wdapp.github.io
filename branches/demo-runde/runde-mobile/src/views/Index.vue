@@ -24,7 +24,13 @@
 
 <script>
 export default {
-  name: "Index"
+  name: "Index",
+  data() {
+    return {
+      username: '',
+      password: ''
+    }
+  }
 };
 </script>
 
