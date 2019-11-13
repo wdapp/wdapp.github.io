@@ -185,13 +185,13 @@ export default {
       return is;
     },
     login() {
+      const options = this.$route.query;
+
       this.hd.login({
-        userId: "B693062ABB8020E0",
-        roomId: "20E2BEC88BEF3EEB9C33DC5901307461",
-        // userId: "2876043E67CBDC9D",
-        // roomId: "D4A2E14A89D372399C33DC5901307461",
-        viewerName: "获得场景视频",
-        viewerToken: "",
+        userId: options.userid,
+        roomId: options.roomid,
+        viewerName: options.viewername,
+        viewerToken: options.viewertoken,
         success: result => {
           this.configPlayerAndDocument();
           this.setViewer(result.viewer);
@@ -295,10 +295,23 @@ export default {
       }
 
       this.questionnaire = _questionnaire;
+    },
+    destroy() {
+      this.hd && this.hd.destroy({
+        success: () => {
+          log("退出成功");
+        },
+        fail: () => {
+          log("退出失败");
+        }
+      });
     }
   },
   mounted() {
     this.init();
+  },
+  destroyed() {
+    this.destroy();
   }
 };
 </script>

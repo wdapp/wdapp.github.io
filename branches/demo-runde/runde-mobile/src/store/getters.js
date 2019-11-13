@@ -1,5 +1,5 @@
 export default {
-  getOptions(state) {
+  getParamas(state) {
     let options = {};
     const url = state.url;
     options = parseUrl(url);

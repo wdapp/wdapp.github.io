@@ -144,6 +144,7 @@ export default {
   .controls-top
     layout(0, 0, 77px, 0)
     .controls-back
+      display inline-block
       margin-left 20px
       margin-top 14px
     .controls-button-group

@@ -35,7 +35,7 @@
           class="btn"
           type="info"
           size="large"
-          @click="handleBtnClick(1)"
+          @click="handleBtnClick(0)"
         >登录公开课
         </van-button
         >
@@ -45,7 +45,7 @@
           class="btn"
           type="info"
           size="large"
-          @click="handleBtnClick(2)"
+          @click="handleBtnClick(1)"
         >登录专题课
         </van-button
         >
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       url: "",
-      viewername: "",
+      viewername: "获得场景视频",
       viewertoken: ""
     };
   },
@@ -70,7 +70,7 @@ export default {
     ...mapState({
       currentUrl: "url"
     }),
-    ...mapGetters(["getOptions"])
+    ...mapGetters(["getParamas"])
   },
   methods: {
     ...mapMutations(["changeUrl"]),
@@ -78,10 +78,11 @@ export default {
       const name = this.viewername;
       const token = this.viewertoken;
       const _type = type;
-      const params = `&viewername=${name}&viewertoken=${token}`
-      const url = this.url;
+      const params = `&viewername=${name}&viewertoken=${token}&type=${_type}`;
+      const url = this.url + params;
       this.changeUrl(url);
-      const options = this.getOptions();
+      const query = this.getParamas;
+      this.$router.push({ path: "live", query: query });
     }
   },
   mounted() {

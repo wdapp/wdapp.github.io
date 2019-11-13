@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Live from "views/Live.vue";
 import Index from "views/Index.vue";
+import Live from "views/Live.vue";
 
 Vue.use(VueRouter);
 
