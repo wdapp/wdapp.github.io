@@ -73,33 +73,33 @@
 
     // log("当前浏览器是否是IE--》 " +util.isIE());
     // if(util.isIE()){
-    var xmlhttp = null;
-    try{
-      if(window.XMLHttpRequest){
-        xmlhttp = new XMLHttpRequest();
-      }else if(window.ActiveXObject){
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      if(xmlhttp){
-        xmlhttp.open("GET",url,true);
-        xmlhttp.onreadystatechange = function(){
-          if(xmlhttp.readyState === 4){
-            if(xmlhttp.status === 200){
-              var versionInfo = JSON.parse(xmlhttp.responseText);
-              // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
-              if (versionInfo) {
-                startTestVersion(versionInfo)
+      var xmlhttp = null;
+      try{
+        if(window.XMLHttpRequest){
+          xmlhttp = new XMLHttpRequest();
+        }else if(window.ActiveXObject){
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if(xmlhttp){
+          xmlhttp.open("GET",url,true);
+          xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState === 4){
+              if(xmlhttp.status === 200){
+                var versionInfo = JSON.parse(xmlhttp.responseText);
+                // log("当前的响应信息-->" + xmlhttp.responseText,versionInfo)
+                if (versionInfo) {
+                  startTestVersion(versionInfo)
+                }
               }
             }
           }
+          xmlhttp.send();
         }
-        xmlhttp.send();
+      }catch (e) {
+        log("获取版本信息失败")
       }
-    }catch (e) {
-      log("获取版本信息失败")
-    }
 
-    // return;
+      // return;
     // }
     // jQuery.support.cors = true;
     // $.ajax({
@@ -887,7 +887,6 @@
 
     //初始化状态机
     this.init = function (options) {
-
       //分时间块，状态机记录
       for (var i = 0; i < this.drawRequestTime; i++) {
         var s = {
@@ -1340,10 +1339,9 @@
         var drawPanel = document.getElementById("playbackPanel");
         //初始化极速动画对象
         if (DWDpc.fastMode && drawPanel) {
-          $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
+           $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
           var script = document.createElement("script");
-          // script.src = '//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
-          script.src = '//github.wdapp.top/github/dp/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
+          script.src = '//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
           script.onload = function(){
             DWDpc.appendDrawPanel()
             DWDpc.init()
@@ -1656,7 +1654,7 @@
 
     this.destroy = function () {
       if(this.INTERVAL_TIME !=-1){
-        clearInterval(this.INTERVAL_TIME);
+          clearInterval(this.INTERVAL_TIME);
       }
     }
     //
@@ -2351,17 +2349,17 @@
     }, 1500)
   }
   //清除所有定时器
-  function clearAllInterval(){
-    if(chatIntervalId !=-1){
-      clearInterval(chatIntervalId);
-    }
-    if(broadcastsIntervalId !=-1){
-      clearInterval(broadcastsIntervalId);
-    }
-    // if(callback.drawPanel.intervalNum!=-1){
-    //   clearInterval(callback.drawPanel.intervalNum);
-    // }
-  }
+   function clearAllInterval(){
+     if(chatIntervalId !=-1){
+       clearInterval(chatIntervalId);
+     }
+     if(broadcastsIntervalId !=-1){
+       clearInterval(broadcastsIntervalId);
+     }
+     // if(callback.drawPanel.intervalNum!=-1){
+     //   clearInterval(callback.drawPanel.intervalNum);
+     // }
+   }
 
   window.seekStart = function () {
     clearInterval(callback.drawPanel.intervalNum)

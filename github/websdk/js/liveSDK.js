@@ -383,8 +383,7 @@
       }
       var drawPanel = document.getElementById('drawPanel')
       if (DWDpc.fastMode && drawPanel) {
-        // scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
-        scripts.push('//github.wdapp.top/github/dp/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
+        scripts.push('//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 10000)))
       }
 
       if (MobileLive.isMobile() == 'isMobile') {
@@ -594,6 +593,8 @@
           }
 
           Pusher.init()
+          //TODO 临时润德解决方案
+          getPLayAPI();
           if (MobileLive.isMobile() == 'isMobile') {
             MobileLive.init()
           } else {
@@ -1051,7 +1052,8 @@
       var path = '//eva.csslcloud.net/api/practice/info'
       var info = {
         practiceId: pId,
-        sessionId: Pusher.options.key
+        sessionId: Pusher.options.key,
+        mark:1
       }
       Util.sendAjax(path, info, callBack)
     },
@@ -1071,6 +1073,7 @@
       var info = {
         practiceId: pId,
         sessionId: Pusher.options.key
+
       }
       Util.sendAjax(path, info, callback)
     },
@@ -3529,6 +3532,26 @@
       }
     }
   }
+  function getPLayAPI() {
+    $.ajax({
+      url: '//zeus.csslcloud.net/api/hls/play',
+      type: 'GET',
+      dataType: 'json',
+      data: {roomid: DWLive.roomid, userid: DWLive.userid},
+      success: function (data) {
+        var status = data.live.status
+        if (status == 0) {
+          options.liveId = data.live.liveId
+          DWLive.liveId = data.live.liveId;
+          DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
+        }
+      },
+      error:function(){
+        DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
+      }
+    })
+  }
+
 
   function getDelayTime() {
     var b = LivePlayer.delay
