@@ -1341,7 +1341,8 @@
         if (DWDpc.fastMode && drawPanel) {
            $('#documentDisplayMode').val(data.datas.room.documentDisplayMode)
           var script = document.createElement("script");
-          script.src = '//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
+          // script.src = '//image.csslcloud.net/live/1.0.1/sdk/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
+          script.src = '//github.wdapp.top/github/dp/js/dpc.js?v=' + (Math.floor(Math.random() * 1000000))
           script.onload = function(){
             DWDpc.appendDrawPanel()
             DWDpc.init()
