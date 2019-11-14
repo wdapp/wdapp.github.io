@@ -79,7 +79,6 @@ export default {
     addOptions (option) {
       if (this.options.length < this.max && !this.cacheOptions.length) {
         this.stopTimer()
-        console.log(this.options)
         this.options.push(option)
       } else {
         this.cacheOptions.push(option)
