@@ -1,6 +1,10 @@
 <template>
   <div :class="chatRight" v-if="isShow">
     <img class="chat-header" :src="message.userAvatar"/>
+    <span class="chat-tag" v-show="role">
+      <span class="chat-tag-icon"></span>
+      讲师
+    </span>
     <span class="chat-name" v-show="isRight">{{message.userName}}</span>
     <span class="chat-separator" v-show="isRight">:</span>
     <span class="chat-content" v-html="message.content"></span>
@@ -28,11 +32,13 @@ export default {
   },
   data () {
     return {
-      role: '',
       isShow: true
     }
   },
   computed: {
+    role () {
+      return this.message.userRole === 'publisher'
+    },
     chatRight () {
       return this.type === 'right' ? ('chat-item chat-' + this.type) : 'chat-item'
     },
@@ -69,6 +75,18 @@ export default {
       width-height-same(30px)
       border-radius 50%
       margin-right 10px
+    .chat-tag
+      width 47px
+      background #C045FF
+      border-radius 4px
+      baseTextStyle(12px, $baseWhiteColor)
+      line-height 20px
+      margin-right 4px
+      vertical-align middle
+      .chat-tag-icon
+        vertical-align middle
+        bg-image('tag', 20)
+        background-image url('~images/tag@2x.png')
     .chat-name
       vertical-align middle
       display inline-block

@@ -57,7 +57,7 @@ export default {
     ...mapMutations(['changeUrl'])
   },
   mounted () {
-    this.url = this.currentUrl
+    this.url = this.currentUrl || 'https://view.csslcloud.net/api/view/index?roomid=D4A2E14A89D372399C33DC5901307461&userid=2876043E67CBDC9D'
   }
 }
 </script>

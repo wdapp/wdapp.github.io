@@ -115,7 +115,7 @@ export default {
       swiperOption: {
         slidesPerView: 6,
         slidesOffsetBefore: 0,
-        slidesOffsetAfter: 14,
+        slidesOffsetAfter: 0,
         on: {
           slideChange: () => {
             if (this.swiperLength <= 0) {
