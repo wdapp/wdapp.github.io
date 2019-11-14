@@ -42,12 +42,13 @@
         <swiper
           :options="swiperOption"
           ref="Swiper"
+          @click.native="handleSwiperClick"
         >
           <swiper-slide
             class="item"
             v-for="(option, index) in giftOptions"
             :key="index"
-            @click.native="handleClickGift(option.url, option.customName, index, $event)"
+            @click.native="handleClickGift(option.url, option.customName)"
             @mouseenter.native="mouseEnterGift"
           >
             <img
@@ -66,6 +67,7 @@
           class="gift-panel-wrap"
           v-show="isShowGiftPanel"
           @mouseleave="mouseLeaveGift"
+          ref="Panel"
         >
           <div class="gift-panel-left">
             <div class="gift-panel-img-wrap">
@@ -91,6 +93,7 @@
               </div>
             </div>
           </div>
+          <i class="el-icon-caret-bottom"></i>
         </div>
       </div>
     </div>
@@ -194,13 +197,23 @@ export default {
         options.push(option)
       })
       return options
+    },
+    Panel () {
+      return this.$refs.Panel
+    },
+    Swiper () {
+      return this.$refs.Swiper
+    },
+    fontSize () {
+      const fontSize = document.getElementsByTagName('html')[0].style.fontSize
+      return parseFloat(fontSize)
     }
   },
   methods: {
     init () {
       this.HD = new HuodeScene()
 
-      this.swiper = this.$refs.Swiper.swiper
+      this.swiper = this.Swiper.swiper
       this.swiperLength = this.giftOptions.length - this.swiperOption.slidesPerView
       if (this.swiperLength <= 0) {
         this.disabledLeft = true
@@ -226,6 +239,44 @@ export default {
         giftCustomName: customName
       }
       this.isShowGiftPanel = !this.isShowGiftPanel
+    },
+    handleSwiperClick (event) {
+      const offsetLeft = this.offset(this.Swiper.$el).left
+      const clientX = event.clientX
+      const targetX = clientX - offsetLeft
+      const swiperWidth = this.Swiper.$el.clientWidth
+      const space = swiperWidth / 6
+      const index = Math.floor(targetX / space)
+      const panelWidth = this.Panel.clientWidth
+      const offsetX = (78 + 30) / 192 * this.fontSize
+      const panelLeft = (index * space) - (panelWidth - offsetX) + 'px'
+      this.Panel.style.left = panelLeft
+    },
+    offset (curEle) {
+      let totalLeft = null
+      let totalTop = null
+      let par = curEle.offsetParent
+      // 首先把自己本身的进行累加
+      totalLeft += curEle.offsetLeft
+      totalTop += curEle.offsetTop
+
+      // 只要没有找到body，我们就把父级参照物的边框和偏移量累加
+      while (par) {
+        if (navigator.userAgent.indexOf('MSIE 8.0') === -1) {
+          // 不是标准的ie8浏览器，才进行边框累加
+          // 累加父级参照物边框
+          totalLeft += par.clientLeft
+          totalTop += par.clientTop
+        }
+        // 累加父级参照物本身的偏移
+        totalLeft += par.offsetLeft
+        totalTop += par.offsetTop
+        par = par.offsetParent
+      }
+      return {
+        left: totalLeft,
+        top: totalTop
+      }
     },
     mouseEnterGift () {
       this.isShowGiftPanel = false
@@ -385,6 +436,7 @@ export default {
           position absolute
           bottom 80px
           left 0
+          z-index 1
           width 378px
           min-height 136px
           border 1px solid $dullGreyColor; /*no*/
@@ -428,16 +480,10 @@ export default {
               .gift-active
                 background-color $baseRedColor
                 color $baseWhiteColor
-        .gift-panel-wrap:after
-          content ''
-          background-color $baseWhiteColor
-          width 10px; /*no*/
-          height 10px; /*no*/
-          border 1px solid $dullGreyColor; /*no*/
-          border-left-color transparent
-          border-top-color transparent
-          transform rotate(45deg)
-          position absolute
-          bottom -10px
-          right 78px
+          .el-icon-caret-bottom
+            color $baseWhiteColor
+            position absolute
+            bottom -15px
+            right 78px
+            font-size 25px
 </style>

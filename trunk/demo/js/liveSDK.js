@@ -714,7 +714,7 @@
       if (live.interaction) {
         live.interaction.disconnectInteraction(options.viewerId)
       }
-      if (LivePlayer) {
+      if (LivePlayer && LivePlayer.isReady) {
         LivePlayer.destroy()
       }
       if (window.live && window.live.interaction) {
@@ -2361,6 +2361,9 @@
     },
 
     getFlash: function () {
+      if (!this.isReady || !swfobject || !swfobject.getObjectById) {
+        return
+      }
       return swfobject.getObjectById(this.id)
     },
 
