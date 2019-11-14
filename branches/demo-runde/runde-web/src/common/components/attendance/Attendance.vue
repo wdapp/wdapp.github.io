@@ -64,7 +64,7 @@ export default {
     addEvents () {
       this.hd.onStartAttendance(result => {
         log('onStartAttendance', result)
-        this.info.pid = result.punchId
+        this.info.pid = result.pid
         this.info.expireTime = result.expireTime
         this.info.remainDuration = result.remainDuration
         this.show = true

@@ -116,7 +116,7 @@ class HuodeScene {
 
   // 提交打卡
   submitAttendance (pid, callback) {
-    if (typeof options !== 'string' || !DWLive.hdCommitPunch) {
+    if (typeof pid !== 'string' || !DWLive.hdCommitPunch) {
       return false
     }
     DWLive.hdCommitPunch(pid, function (result) {
@@ -136,7 +136,7 @@ class HuodeScene {
         return
       }
       const datas = {
-        pid: result.pid,
+        pid: result.punchId,
         expireTime: result.expireTime,
         remainDuration: result.remainDuration
       }
@@ -144,13 +144,14 @@ class HuodeScene {
     }
     // 打卡中刚进入直播间打开回调，无打卡无回调
     DWLive.getHDPunchInfo = function (result) {
-      if (!result.success || !result.isExists) {
+      const data = result.data
+      if (!result.success || !data.isExists) {
         return
       }
       const datas = {
-        pid: result.punch.pid,
-        expireTime: result.punch.expireTime,
-        remainDuration: result.punch.remainDuration
+        pid: data.punch.id,
+        expireTime: data.punch.expireTime,
+        remainDuration: data.punch.remainDuration
       }
       callback && callback(datas)
     }
