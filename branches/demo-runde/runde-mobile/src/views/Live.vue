@@ -22,7 +22,7 @@
         @opengift="onOpenGift"
       ></live-panel>
     </div>
-    <div class="bottom">
+    <div class="bottom" :style="bottomStyle">
       <common-swiper
         :options="swiper.options"
         :disabled="swiper.disabled"
@@ -47,6 +47,7 @@
       @close="onSubClose"
       @dragenter="onDragEnter"
       @dragleave="onDragLeave"
+      @reset="onReset"
     ></sub-windows>
   </div>
 </template>
@@ -92,6 +93,9 @@ export default {
   },
   data() {
     return {
+      bottomStyle: {
+        flex: 1
+      },
       windows: {
         mainComponent: "LivePlayer",
         subComponent: "LiveDocument",
@@ -278,7 +282,12 @@ export default {
     onDragLeave() {
       this.panel.showSubWindows = false;
     },
-
+    onReset() {
+      this.bottomStyle.flex = "auto";
+      this.$nextTick(() => {
+        this.bottomStyle.flex = "1";
+      });
+    },
     // 打开礼物面板
 
     onOpenGift() {

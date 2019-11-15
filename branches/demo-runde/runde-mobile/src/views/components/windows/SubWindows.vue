@@ -170,6 +170,7 @@ export default {
     reset() {
       this.Drag.$el.style.top = 0;
       this.Drag.$el.style.left = 0;
+      this.$emit("reset");
     }
   }
 };

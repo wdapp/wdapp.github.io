@@ -11,26 +11,34 @@ export function log(...info) {
   }
 }
 
+export function userAgent() {
+  return navigator.userAgent
+}
+
 export function isMobile() {
   if (this.isIPad() || this.isIPhone() || this.isAndroid() || this.isWindowsPhone()) {
     return "isMobile";
   }
 }
 
-export function isIPad() {
-  return navigator.userAgent.match(/iPad/i) != null;
+export function isWeiXin() {
+  return /MicroMessenger/ig.test(userAgent())
 }
 
-export function isIPhone() {
-  return navigator.userAgent.match(/iPhone/i) != null;
+export function isIPad() {
+  return userAgent().match(/iPad/i) != null;
+}
+
+export function isIOS() {
+  return userAgent().match(/iPhone/i) != null;
 }
 
 export function isAndroid() {
-  return navigator.userAgent.match(/Android/i) != null;
+  return userAgent().match(/Android/i) != null;
 }
 
 export function isWindowsPhone() {
-  return navigator.userAgent.match(/Windows Phone/i) != null;
+  return userAgent().match(/Windows Phone/i) != null;
 }
 
 export function showEm(message) {
