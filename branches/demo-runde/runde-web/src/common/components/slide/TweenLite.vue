@@ -17,6 +17,10 @@ export default {
     delay: {
       type: Number,
       default: 0
+    },
+    animate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -38,7 +42,14 @@ export default {
       if (!newValue) {
         return false
       }
-      TweenLite.to(this.$data, 1, {tweenedNumber: newValue, delay: this.delayTime})
+      if (this.animate) {
+        TweenLite.to(this.$data, 1, {
+          tweenedNumber: newValue,
+          delay: this.delayTime
+        })
+      } else {
+        this.tweenedNumber = newValue
+      }
     }
   },
   mounted () {

@@ -62,12 +62,19 @@ export function formatRewardAndGiftToTip (message) {
   var arrs = msg.split(tag)
   var content = arrs[0]
   var multiple = arrs[1][0]
-  var number = arrs[1].replace(/[^0-9]/ig, '')
+  var animate = true;
+  if (multiple === "￥") {
+    animate = false;
+  }
+  var regNumber = new RegExp(/(\d+(\.\d+)?)/ig)
+  var numbers = regNumber.exec(arrs[1])
+  var number = numbers[0]
   var tip = {
     name: message.username,
     content: content,
     imgSrc: imgSrc,
     multiple: multiple,
+    animate: animate,
     number: parseFloat(number)
   }
   return tip

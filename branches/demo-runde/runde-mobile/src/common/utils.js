@@ -12,7 +12,7 @@ export function log(...info) {
 }
 
 export function userAgent() {
-  return navigator.userAgent
+  return navigator.userAgent;
 }
 
 export function isMobile() {
@@ -22,7 +22,7 @@ export function isMobile() {
 }
 
 export function isWeiXin() {
-  return /MicroMessenger/ig.test(userAgent())
+  return /MicroMessenger/ig.test(userAgent());
 }
 
 export function isIPad() {
@@ -92,6 +92,10 @@ export function formatRewardAndGiftToTip(message) {
   var arrs = msg.split(tag);
   var content = arrs[0];
   var multiple = arrs[1][0];
+  var animate = true;
+  if (multiple === "￥") {
+    animate = false;
+  }
   var regNumber = new RegExp(/(\d+(\.\d+)?)/ig);
   var numbers = regNumber.exec(arrs[1]);
   var number = numbers[0];
@@ -100,6 +104,7 @@ export function formatRewardAndGiftToTip(message) {
     content: content,
     imgSrc: imgSrc,
     multiple: multiple,
+    animate: animate,
     number: parseFloat(number)
   };
   return tip;

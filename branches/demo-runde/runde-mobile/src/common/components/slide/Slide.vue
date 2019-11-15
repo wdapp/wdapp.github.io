@@ -28,6 +28,7 @@
         </span>
         <tween-lite
           class="tip-number"
+          :animate="tip.animate"
           :number="tip.number"
           :delay="duration"
         ></tween-lite>
