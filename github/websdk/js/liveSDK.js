@@ -2366,7 +2366,7 @@
     },
 
     getFlash: function () {
-      if (!this.isReady || !swfobject || !swfobject.getObjectById) {
+      if (!swfobject || !swfobject.getObjectById) {
         return
       }
       return swfobject.getObjectById(this.id)
