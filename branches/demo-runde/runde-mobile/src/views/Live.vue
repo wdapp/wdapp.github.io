@@ -56,21 +56,39 @@
 import MainWindows from "./components/windows/MainWindows";
 import SubWindows from "./components/windows/SubWindows";
 import LivePanel from "./components/panel/Index";
-import LiveControls from "./components/controls/Controls";
 import LiveChats from "./components/chats/Chats";
-import LiveLists from "./components/lists/Lists";
-import LiveIntroduce from "./components/introduce/Introduce";
 import CommonSwiper from "components/swiper/Swiper";
-import CommonPopup from "components/popup/Popup";
-import CommonCurriculum from "components/curriculum/Curriculum";
-import CommonGifts from "components/gifts/Gifts";
-import CommonReward from "components/reward/Reward";
 import HuodeScene from "common/websdk/live";
-import CommonQuestionnaire from "common/components/questionnaire/Questionnaire";
-import CommonAttendance from "common/components/attendance/Attendance";
 import { mapMutations } from "vuex";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
+const LiveControls = () => ({
+  component: import("./components/controls/Controls")
+});
+const CommonPopup = () => ({
+  component: import("components/popup/Popup")
+});
+const CommonCurriculum = () => ({
+  component: import("components/curriculum/Curriculum")
+});
+const CommonGifts = () => ({
+  component: import("components/gifts/Gifts")
+});
+const CommonReward = () => ({
+  component: import("components/reward/Reward")
+});
+const CommonQuestionnaire = () => ({
+  component: import("common/components/questionnaire/Questionnaire")
+});
+const CommonAttendance = () => ({
+  component: import("common/components/attendance/Attendance")
+});
+const LiveLists = () => ({
+  component: import("./components/lists/Lists")
+});
+const LiveIntroduce = () => ({
+  component: import("./components/introduce/Introduce")
+});
 
 export default {
   name: "Live",

@@ -25,9 +25,11 @@
 </template>
 
 <script>
-import Heart from './Heart'
 import Tap from './Tap'
 import Flutter from './Flutter'
+const Heart = () => ({
+  component: import('./Heart')
+})
 
 export default {
   name: 'HDPraise',

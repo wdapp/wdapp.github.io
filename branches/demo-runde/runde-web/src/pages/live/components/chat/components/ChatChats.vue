@@ -95,12 +95,16 @@
 
 <script>
 import BScroll from 'better-scroll'
-import hdPraise from 'common/components/praise/Praise'
 import hdChats from 'common/components/chats/Chats'
-import hdSlide from 'common/components/slide/Slide'
 import HuodeScene from 'common/websdk/live'
 import {showEm, formatRewardAndGiftToTip} from 'common/utils'
 import {mapState} from 'vuex'
+const hdSlide = () => ({
+  component: import('common/components/slide/Slide')
+})
+const hdPraise = () => ({
+  component: import('common/components/praise/Praise')
+})
 
 export default {
   name: 'ChatChats',

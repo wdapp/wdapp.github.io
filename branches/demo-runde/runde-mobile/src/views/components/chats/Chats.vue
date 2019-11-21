@@ -38,12 +38,18 @@
 <script>
 import ChatsContent from "./components/Content";
 import ChatsFooter from "./components/Footer";
-import CommonEmoticon from "components/emoticon/Emoticon";
-import CommonPlus from "components/plus/Plus";
 import { bind, clear } from "size-sensor";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
-import CommonPraise from "common/components/praise/Praise";
+const CommonEmoticon = () => ({
+  component: import("components/emoticon/Emoticon")
+});
+const CommonPlus = () => ({
+  component: import("components/plus/Plus")
+});
+const CommonPraise = () => ({
+  component: import("common/components/praise/Praise")
+});
 
 export default {
   name: "Chats",

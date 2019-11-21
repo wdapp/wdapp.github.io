@@ -39,14 +39,18 @@
 </template>
 
 <script>
-import PlayerHeader from './components/PlayerHeader'
 import PlayerPlayer from './components/PlayerPlayer'
 import PlayerDrawpanel from './components/PlayerDrawpanel'
 import PlayerControl from './components/PlayerControl'
-import PlayerFooter from './components/PlayerFooter'
 import HuodeScene from 'common/websdk/live'
 import FlashTip from 'common/flashtip'
 import { mapState } from 'vuex'
+const PlayerHeader = () => ({
+  component: import('./components/PlayerHeader')
+})
+const PlayerFooter = () => ({
+  component: import('./components/PlayerFooter')
+})
 
 export default {
   name: 'Player',

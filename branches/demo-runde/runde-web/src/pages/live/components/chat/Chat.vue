@@ -9,8 +9,12 @@
 
 <script>
 import ChatTabs from './components/ChatTabs'
-import ChatChats from './components/ChatChats'
-import hdLists from 'common/components/lists/Lists'
+const ChatChats = () => ({
+  component: import('./components/ChatChats')
+})
+const hdLists = () => ({
+  component: import('common/components/lists/Lists')
+})
 
 export default {
   name: 'Chat',
