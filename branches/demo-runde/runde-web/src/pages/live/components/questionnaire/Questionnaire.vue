@@ -243,7 +243,7 @@ export default {
     width-height-full()
     position fixed
     background-color rgba(0, 0, 0, 0.7)
-    z-index 2
+    z-index 3
     .questionnaire-wrap
       position absolute
       top 50%

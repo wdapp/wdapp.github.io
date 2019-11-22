@@ -121,7 +121,7 @@ export default {
         vertical-align middle
       .qrcode-wrapper
         position absolute
-        z-index 1
+        z-index 4
         top 64px
         left -44px
         border 1px solid $dullGreyColor; /*no*/

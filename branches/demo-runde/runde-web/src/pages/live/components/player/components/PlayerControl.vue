@@ -308,6 +308,8 @@ export default {
                 .el-slider__button-wrapper
                   .el-slider__button
                     border none
+        .setting-btn
+          display none
         .barrage-btn
           width 75px
           height 30px

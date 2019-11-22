@@ -419,6 +419,8 @@ export default {
             width-height-same(0)
           .rate-btn-active
             background-color $baseGreenColor
+        .setting-btn
+          display none
         .definition-btn
           height 30px
         .volume-btn

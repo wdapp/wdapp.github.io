@@ -38,6 +38,7 @@
             class="emoticon-em2-wrap"
             v-show="isShowEmoticon"
           >
+            <div class="emoticon-overlay" @click="handleEmoticonOverlayClick"></div>
             <ul class="em2-group">
               <li
                 class="item"
@@ -66,7 +67,7 @@
           <span class="two-btn-text">扣2</span>
         </div>
         <div class="only-read-wrap">
-          <el-checkbox v-model="checked" @change="onChange">
+          <el-checkbox v-model="checked" @change="onChange" fill="#333333">
             <span class="only-read-text">只看老师</span>
           </el-checkbox>
         </div>
@@ -78,7 +79,7 @@
           :rows="2"
           placeholder="在这里和老师互动哦"
           v-model="text"
-          @keyup.enter.native="sendMessage"
+          @keydown.enter.prevent.native="sendMessage"
         >
         </el-input>
         <el-button
@@ -169,6 +170,9 @@ export default {
     },
     handleEmoticonClick () {
       this.isShowEmoticon = !this.isShowEmoticon
+    },
+    handleEmoticonOverlayClick () {
+      this.isShowEmoticon = false
     },
     createBetterScroll () {
       this.$nextTick(() => {
@@ -330,7 +334,16 @@ export default {
             padding-top 16px
             padding-left 16px
             box-sizing border-box
+            .emoticon-overlay
+              position fixed
+              top 0
+              left  0
+              width 100%
+              height 100%
+              z-index 5
             .em2-group
+              position absolute
+              z-index 5
               width-height-full()
               overflow-y auto
               .item
@@ -369,22 +382,26 @@ export default {
             .el-checkbox__input
               .el-checkbox__inner
                 border-color $baseRedColor
-                width-height-same(20px)
+                width-height-same(22.5px)
                 border-radius 50%
               .el-checkbox__inner::after
-                width-height-same(5px)
-                border-width 1px; /*no*/
-                left 6px
-                top 4px
+                display none
           >>> .el-checkbox.is-checked
             .el-checkbox__input.is-checked
               .el-checkbox__inner
-                background-color $baseRedColor
+                background-color $baseWhiteColor
               .el-checkbox__inner::after
-                width-height-same(5px)
+                width-height-same(16px)
+                border-radius 50%
+                border-color $baseRedColor
+                background-color $baseRedColor
                 border-width 1px; /*no*/
-                left 6px
-                top 4px
+                transform none
+                left 50%
+                top 50%
+                margin-left -8px
+                margin-top -8.5px
+                display inline-block
             .el-checkbox__input.is-indeterminate
               .el-checkbox__inner
                 background-color $baseRedColor
