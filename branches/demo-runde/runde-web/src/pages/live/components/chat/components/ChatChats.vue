@@ -203,7 +203,6 @@ export default {
       }
       const text = this.text.trim()
       this.HD.sendPublicChatMsg(text)
-      this.sendBarrage(text)
       this.text = ''
       this.isShowEmoticon = false
     },
@@ -245,6 +244,7 @@ export default {
           active: active
         }
         this.messages.push(formatMsg)
+        this.sendBarrage(_msg.msg)
         this.scrollTo()
         this.sendTip(_msg)
       })

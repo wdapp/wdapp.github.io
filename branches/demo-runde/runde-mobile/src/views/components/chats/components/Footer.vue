@@ -275,6 +275,7 @@ export default {
           active: active
         };
         this.messages.push(formatMsg);
+        this.sendBarrage(_msg.msg);
         if (this.isScroll) {
           this.emit("scrolltobottom");
         }
@@ -310,7 +311,6 @@ export default {
       }
       const message = this.message.trim();
       this.hd.sendPublicChatMsg(message);
-      this.sendBarrage(message);
       this.message = "";
       this.initButtonState();
     },
