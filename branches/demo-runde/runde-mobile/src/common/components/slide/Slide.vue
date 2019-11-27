@@ -72,10 +72,18 @@ export default {
       this.addOptions(this.option);
     }
   },
+  computed: {
+    fontSize() {
+      return parseFloat(
+        document.getElementsByTagName("html")[0].style.fontSize
+      );
+    }
+  },
   methods: {
     top(index) {
-      const top = 80 * ((index - 1) % this.max);
-      return "top:" + top + "px";
+      const _top = 60 / this.fontSize;
+      const top = _top * ((index - 1) % this.max);
+      return "top:" + top + "rem";
     },
     addOptions(option) {
       if (this.options.length < this.max && !this.cacheOptions.length) {

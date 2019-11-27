@@ -27,30 +27,34 @@
               class="questionnaire-body-questions-wrap"
               :class="{ 'question-active': isShowResult }"
             >
-              <van-radio-group v-model="result" :disabled="disabled">
+              <van-checkbox-group
+                v-model="result"
+                :disabled="disabled"
+                :max="questionnaire.max"
+              >
                 <van-cell-group>
                   <van-cell
                     class="question-item"
                     :class="{
                       active: isActive(key),
                       select: isSelect(key),
-                      correct: isCorrect(key)
+                      correct: isCorrect(option)
                     }"
                     :title="formatContent(option)"
                     v-for="(option, key) of questionnaire.options"
                     :key="key"
                     clickable
-                    @click="onCellClick(key)"
+                    @click="onReset"
                   >
-                    <van-radio
-                      class="van-radio"
+                    <van-checkbox
+                      class="van-checkbox"
                       slot="right-icon"
                       :name="key"
-                      v-show="false"
+                      v-show="true"
                     />
                   </van-cell>
                 </van-cell-group>
-              </van-radio-group>
+              </van-checkbox-group>
             </div>
             <div class="questionnaire-footer-wrap">
               <div
@@ -99,7 +103,7 @@ export default {
       isShowQuestionnaireWrapper: false,
       isShowQuestionnaire: false,
       isShowResult: false,
-      result: -1,
+      result: [],
       max: 1,
       disabled: false,
       show: false,
@@ -114,7 +118,10 @@ export default {
     formatResult() {
       const result = [];
       const optionIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-      result.push(optionIndex[this.result]);
+      for (var i = 0; i < this.result.length; i++) {
+        const option = optionIndex[this.result[i]];
+        result.push(option);
+      }
       return result;
     }
   },
@@ -123,24 +130,32 @@ export default {
       this.isShowQuestionnaireWrapper = true;
       this.isShowQuestionnaire = true;
       this.disabled = false;
-      this.result = -1;
+      this.result = [];
     }
   },
   methods: {
     isActive(key) {
-      return this.result === key;
+      let active = false;
+      active = this.compareResult(key);
+      return active;
     },
     isSelect(key) {
-      return this.isShowResult && this.result === key;
+      let select = false;
+      select = this.compareResult(key);
+      return this.isShowResult && select;
     },
-    isCorrect(key) {
-      return this.isShowResult && this.questionnaire.correct == key;
-    },
-    onCellClick(key) {
-      if (this.disabled) {
-        return;
+    compareResult(key) {
+      let result = false;
+      for (let i = 0; i < this.result.length; i++) {
+        if (this.result[i] === key) {
+          result = true;
+        }
       }
-      this.result = key;
+      return result;
+    },
+    isCorrect(option) {
+      let correct = option.correct;
+      return this.isShowResult && correct;
     },
     formatContent(option) {
       return option.key + "." + option.content;
@@ -162,30 +177,44 @@ export default {
       this.isShowQuestionnaire = false;
     },
     onSubmit() {
-      if (this.result === -1) {
-        return false;
+      let selects = this.formatResult;
+      if (!selects.length) {
+        return;
       }
-      const select = this.formatResult[0];
-      log("select", select);
-      let selectedOptionId = "";
-      for (let option of this.questionnaire.options) {
-        if (select === option.key) {
-          selectedOptionId = option.id;
-          break;
+
+      this.isShowQuestionnaire = false;
+      log("select", selects);
+
+      let selectedOptionId = [];
+      const options = this.questionnaire.options;
+      for (var i = 0; i < selects.length; i++) {
+        const select = selects[i];
+        for (var j = 0; j < options.length; j++) {
+          const option = options[j];
+          if (select === option.key) {
+            selectedOptionId += option.id + ",";
+          }
         }
       }
-      const options = {
+      selectedOptionId = selectedOptionId.substring(
+        0,
+        selectedOptionId.length - 1
+      );
+      let _options = {
         questionnaireId: this.questionnaire.questionnaireId,
         subjectsAnswer: [
           {
-            selectedOptionId: selectedOptionId,
             subjectId: this.questionnaire.subjectId
           }
         ]
       };
-
+      if (this.questionnaire.max > 1) {
+        _options.subjectsAnswer[0].selectedOptionIds = selectedOptionId;
+      } else {
+        _options.subjectsAnswer[0].selectedOptionId = selectedOptionId;
+      }
       this.isShowQuestionnaire = false;
-      this.HD.submitQuestionnaire(options, data => {
+      this.HD.submitQuestionnaire(_options, data => {
         log("submitQuestionnaire", data);
         if (data.success) {
           this.success = true;
@@ -229,6 +258,11 @@ export default {
       this.messageBoxTimer && clearTimeout(this.messageBoxTimer);
       this.messageBoxTimer = 0;
       this.show = false;
+    },
+    onReset() {
+      if (!this.disabled && this.questionnaire.max === 1) {
+        this.result = [];
+      }
     }
   },
   mounted() {
@@ -343,6 +377,12 @@ export default {
           break-world()
           baseTextStyle(28px, $c333)
           line-height 40px
+          .van-checkbox
+            position absolute
+            top 0
+            height 100%
+            width 100%
+            opacity 0
           >>> .el-checkbox__label
             line-height 40px
           >>> .el-checkbox__input

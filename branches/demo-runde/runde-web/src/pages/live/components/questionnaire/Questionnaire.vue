@@ -42,7 +42,7 @@
           >
             <el-checkbox-group
               v-model="result"
-              :max="max"
+              :max="questionnaire.max"
               :disabled="disabled"
             >
               <el-checkbox
@@ -98,7 +98,6 @@ export default {
       isShowQuestionnaire: false,
       isShowResult: false,
       result: [],
-      max: 1,
       disabled: false
     }
   },
@@ -151,29 +150,40 @@ export default {
       this.isShowQuestionnaire = false
     },
     onSubmit () {
-      const select = this.formatResult[0]
-      if (!select) {
+      let selects = this.formatResult
+      if (!selects.length) {
         return
       }
+
       this.isShowQuestionnaire = false
-      log('select', select)
-      let selectedOptionId = ''
-      for (let option of this.questionnaire.options) {
-        if (select === option.key) {
-          selectedOptionId = option.id
-          break
+      log('select', selects)
+
+      let selectedOptionId = []
+      const options = this.questionnaire.options
+      for (var i = 0; i < selects.length; i++) {
+        const select = selects[i]
+        for (var j = 0; j < options.length; j++) {
+          const option = options[j]
+          if (select === option.key) {
+            selectedOptionId += option.id + ','
+          }
         }
       }
-      const options = {
+      selectedOptionId = selectedOptionId.substring(0, selectedOptionId.length - 1)
+      let _options = {
         questionnaireId: this.questionnaire.questionnaireId,
         subjectsAnswer: [
           {
-            selectedOptionId: selectedOptionId,
             subjectId: this.questionnaire.subjectId
           }
         ]
       }
-      this.HD.submitQuestionnaire(options, (data) => {
+      if (this.questionnaire.max > 1) {
+        _options.subjectsAnswer[0].selectedOptionIds = selectedOptionId
+      } else {
+        _options.subjectsAnswer[0].selectedOptionId = selectedOptionId
+      }
+      this.HD.submitQuestionnaire(_options, (data) => {
         log('submitQuestionnaire', data)
         if (data.success) {
           this.showMessageBox('success', '提交成功', () => {

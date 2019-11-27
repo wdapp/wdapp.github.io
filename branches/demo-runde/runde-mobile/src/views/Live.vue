@@ -62,6 +62,7 @@ import HuodeScene from "common/websdk/live";
 import { mapMutations } from "vuex";
 import { log } from "common/utils";
 import Mixins from "common/mixins";
+
 const LiveControls = () => ({
   component: import("./components/controls/Controls")
 });
@@ -321,16 +322,24 @@ export default {
       const questionnaire = data.questionnaire;
       const subjects = questionnaire.subjects[0];
       const options = subjects.options;
-
       const optionIndex = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
       const _questionnaire = {};
-
+      _questionnaire.type = subjects.type;
+      if (_questionnaire.type > 1) {
+        return;
+      }
       _questionnaire.questionnaireId = questionnaire.id;
       _questionnaire.forcibly = questionnaire.forcibly; // 是否强制用户回答
       _questionnaire.submitedAction = questionnaire.submitedAction; // 是否显示正确答案
       _questionnaire.subjectId = subjects.id;
       _questionnaire.title = subjects.content;
       _questionnaire.options = [];
+      _questionnaire.max = 0;
+      if (_questionnaire.type === 0) {
+        _questionnaire.max = 1;
+      } else {
+        _questionnaire.max = optionIndex.length;
+      }
 
       for (let i = 0; i < options.length; i++) {
         const option = options[i];

@@ -84,13 +84,16 @@ export default {
       height 60px
       border 1px solid $FE992A
       border-radius 8px
+      display flex
+      align-items center
       .gift-icon
         bg-image('gift', 40)
-        vertical-align middle
         margin-left 13px
       .gift-text
+        display inline-block
         baseTextStyle(28px, $FE992A, $boldFontWeight, $baseFontFamily)
-        line-height 60px
-        vertical-align middle
         margin-left 5px
+        height 100%
+        line-height 60px
+        vertical-align bottom
 </style>

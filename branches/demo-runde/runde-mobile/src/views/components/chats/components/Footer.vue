@@ -339,7 +339,7 @@ export default {
   border-top 1px solid $eee
   .conmmon-slide
     position absolute
-    top -400px
+    bottom 450px
     left 0
   .button-group
     height 70px
