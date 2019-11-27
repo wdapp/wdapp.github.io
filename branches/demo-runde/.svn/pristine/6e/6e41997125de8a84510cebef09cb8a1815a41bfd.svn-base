@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>CCSDK测试登录界面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="images/login.js"></script>
+    <link href="css/login2.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body{
+            width: 100%;
+            height: 100%;
+        }
+        .url-login{
+            height: 34px;
+            padding-left: 5px;
+            line-height: 34px;
+            border: 1px solid #D7D7D7;
+            background: #fff;
+            color: #333;
+            border-radius: 2px;
+            font-family: Verdana, Tahoma, Arial;
+            font-size: 16px;
+            border-radius: 2px;
+            width: 210px;
+        }
+        .url-login-box{
+            margin:10px 0px 10px 63px;
+        }
+        .url-login-text{
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>CCSDK测试登录界面<sup>V2018</sup></h1>
+
+<div class="login" style="margin-top:50px;padding: 25px;border-radius: 25px">
+
+    <div class="header">
+        <div class="switch" id="switch">
+            <a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);" tabindex="7">直播</a>
+            <a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">回放</a>
+            <a class="switch_btn" id="mobile" href="javascript:void(0);" tabindex="9">直播mobile</a>
+            <a class="switch_btn" id="playback-mobile" href="javascript:void(0);" tabindex="10">回放mobile</a>
+            <div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
+        </div>
+    </div>
+    <div class="url-login-box"><span class="url-login-text">链接登录:</span><input type="text" id="url" class="url-login"></div>
+
+    <div class="qlogin" id="live-menu" style="display: block; ">
+
+        <div class="web_login">
+            <form name="form2" accept-charset="utf-8" action="" method="post">
+                <input type="hidden" name="to" value="reg"/>
+                <input type="hidden" name="did" value="0"/>
+                <ul class="reg_form">
+                    <li>
+
+                        <label for="user" class="input-tips2">userid：</label>
+                        <div class="inputOuter2">
+                            <input id="live-userid" type="text" name="user"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">roomid：</label>
+                        <div class="inputOuter2">
+                            <input id="live-roomid" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">groupId：</label>
+                        <div class="inputOuter2">
+                            <input id="live-groupId" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="passwd2" class="input-tips2">viewername：</label>
+                        <div class="inputOuter2">
+                            <input id="live-viewername" value="学员001" type="text" name=""  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">viewertoken：</label>
+                        <div class="inputOuter2">
+
+                            <input id="live-viewertoken" type="text" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="live-fastmode" checked="checked" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <div class="inputArea">
+                            <input type="button" style="margin-top:10px;margin-left:85px;" class="button_blue"
+                                   value="登录"/>
+                        </div>
+
+                    </li>
+                    <div class="cl"></div>
+                </ul>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="qlogin" id="playback-menu" style="display: none; ">
+
+        <div class="web_login">
+            <form name="form2" accept-charset="utf-8" action="" method="post">
+                <input type="hidden" name="to" value="reg"/>
+                <input type="hidden" name="did" value="0"/>
+                <ul class="reg_form" id="">
+                    <li>
+
+                        <label for="user" class="input-tips2">userId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-userId" type="text" name="user"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">roomId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-roomId" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    </li>
+                    <li>
+                        <label for="passwd" class="input-tips2">groupId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-groupId" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    <li>
+
+                        <label for="passwd2" class="input-tips2">recordId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-recordId" type="text" name=""  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">viewername：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-viewername" value="学员001" type="text" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <label for="qq" class="input-tips2">viewertoken：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-viewertoken" type="text" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-fastmode" checked="checked" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+                    <li>
+                        <label for="qq" class="input-tips2">PC端观看回放开启H5模式：</label>
+                        <div class="inputOuter2">
+                            <input id="isH5play" checked="checked" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <div class="inputArea">
+                            <input type="button" style="margin-top:10px;margin-left:85px;" class="button_blue"
+                                   value="登录"/>
+                        </div>
+
+                    </li>
+
+                    <div class="cl"></div>
+                </ul>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="qlogin" id="mobile-menu" style="display: none; ">
+
+        <div class="web_login">
+            <form name="form2" accept-charset="utf-8" action="" method="post">
+                <input type="hidden" name="to" value="reg"/>
+                <input type="hidden" name="did" value="0"/>
+                <ul class="reg_form">
+                    <li>
+
+                        <label for="user" class="input-tips2">userid：</label>
+                        <div class="inputOuter2">
+                            <input id="mobile-userid" type="text" name="user"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">roomid：</label>
+                        <div class="inputOuter2">
+                            <input id="mobile-roomid" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">groupId：</label>
+                        <div class="inputOuter2">
+                            <input id="mobile-groupId" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd2" class="input-tips2">viewername：</label>
+                        <div class="inputOuter2">
+                            <input id="mobile-viewername" value="学员001" type="text" name=""  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+                    <li>
+                        <label for="qq" class="input-tips2">viewertoken：</label>
+                        <div class="inputOuter2">
+
+                            <input id="mobile-viewertoken" type="text" id="qq" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="mobile-fastmode" checked="checked" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="inputArea">
+                            <input type="button" style="margin-top:10px;margin-left:85px;" class="button_blue"
+                                   value="登录"/>
+                        </div>
+
+                    </li>
+                    <div class="cl"></div>
+                </ul>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="qlogin" id="playback-mobile-menu" style="display: none; ">
+
+        <div class="web_login">
+            <form name="form2" id="regUser" accept-charset="utf-8" action="" method="post">
+                <input type="hidden" name="to" value="reg"/>
+                <input type="hidden" name="did" value="0"/>
+                <ul class="reg_form" id="reg-ul">
+                    <li>
+
+                        <label for="user" class="input-tips2">userId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-mobile-userId" type="text" id="user" name="user"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">roomId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-mobile-roomId" type="text" id="passwd" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd" class="input-tips2">groupId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-mobile-groupId" type="text" name="passwd"  class="inputstyle2"/>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label for="passwd2" class="input-tips2">recordId：</label>
+                        <div class="inputOuter2">
+                            <input id="playback-mobile-recordId" type="text" id="passwd2" name=""  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">viewername：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-mobile-viewername" value="学员001" type="text" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <label for="qq" class="input-tips2">viewertoken：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-mobile-viewertoken" type="text" id="qq" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <label for="qq" class="input-tips2">极速模式：</label>
+                        <div class="inputOuter2">
+
+                            <input id="playback-mobile-fastmode" checked="checked" type="checkbox" name="qq"  class="inputstyle2"/>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <div class="inputArea">
+                            <input type="button" id="reg" style="margin-top:10px;margin-left:85px;" class="button_blue"
+                                   value="登录"/>
+                        </div>
+
+                    </li>
+
+                    <div class="cl"></div>
+                </ul>
+            </form>
+        </div>
+
+
+    </div>
+
+</div>
+<div class="options">
+    是否允许链接多个socket <input type="checkbox" id="forceNew"><br>
+</div>
+<script>
+
+    function scancode(url) {
+
+        var self = this;
+
+        var data = parseUrl(url);
+        return data;
+
+        function parseUrl(url) {
+            var querys = url.split('?');
+            if (!querys[1]) {
+                console.log('无效链接');
+                return false;
+            }
+            var query = url.split('?')[1];
+            var queryArr = query.split('&');
+            if (queryArr.length === 0) {
+                console.log('无效链接');
+                return false;
+            }
+            var obj = {};
+            queryArr.forEach(function (item) {
+                var key = item.split('=')[0];
+                var value = item.split('=')[1];
+                obj[key] = value;
+            });
+            return obj;
+        }
+
+    }
+
+    clear();
+
+    $('.inputArea').each(function (index) {
+        $(this).val(index);
+        $(this).click(function () {
+            clear();
+
+            var obj = {};
+            obj.forceNew = $('#forceNew')[0].checked;
+
+            switch ($(this).val()) {
+                case '0':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#live-userid').val(data['userid']);
+                        $('#live-roomid').val(data['roomid']);
+                    }
+
+//                    var obj = {};
+                    obj.userid = $('#live-userid').val();
+                    obj.roomid = $('#live-roomid').val();
+                    obj.groupid = !$('#live-groupId').val()?'':$('#live-groupId').val();
+                    obj.viewername = $('#live-viewername').val();
+                    obj.viewertoken = $('#live-viewertoken').val();
+                    obj.fastmode = $('#live-fastmode')[0].checked;
+                    setValue(obj);
+                    location.href = '../live.html';
+                    break;
+                case '1':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#playback-userId').val(data['userid']);
+                        $('#playback-roomId').val(data['roomid']);
+                        $('#playback-recordId').val(data['recordid']);
+                    }
+//                    var obj = {};
+                    obj.userid = $('#playback-userId').val();
+                    obj.roomid = $('#playback-roomId').val();
+                    obj.groupid = !$('#playback-groupId').val()?'':$('#playback-groupId').val();
+                    obj.recordid = $('#playback-recordId').val();
+                    obj.viewername = $('#playback-viewername').val();
+                    obj.viewertoken = $('#playback-viewertoken').val();
+                    obj.fastmode = $('#playback-fastmode')[0].checked;
+                    obj.isH5play = $('#isH5play')[0].checked;
+                    setValue(obj);
+                    location.href = '../playback.html';
+                    break;
+                case '2':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#mobile-userid').val(data['userid']);
+                        $('#mobile-roomid').val(data['roomid']);
+                    }
+//                    var obj = {};
+                    obj.userid = $('#mobile-userid').val();
+                    obj.roomid = $('#mobile-roomid').val();
+                    obj.groupid = !$('#mobile-groupId').val()?'':$('#mobile-groupId').val();
+                    obj.viewername = $('#mobile-viewername').val();
+                    obj.viewertoken = $('#mobile-viewertoken').val();
+                    obj.fastmode = $('#mobile-fastmode')[0].checked;
+                    setValue(obj);
+                    location.href = '../mobile.html';
+                    break;
+                case '3':
+                    if($('#url').val()){
+                        var data = scancode($('#url').val());
+                        $('#playback-mobile-userId').val(data['userid']);
+                        $('#playback-mobile-roomId').val(data['roomid']);
+                        $('#playback-mobile-recordId').val(data['recordid']);
+                    }
+//                    var obj = {};
+                    obj.userid = $('#playback-mobile-userId').val();
+                    obj.roomid = $('#playback-mobile-roomId').val();
+                    obj.groupid = !$('#playback-mobile-groupId').val()?'':$('#playback-mobile-groupId').val();
+                    obj.recordid = $('#playback-mobile-recordId').val();
+                    obj.viewername = $('#playback-mobile-viewername').val();
+                    obj.viewertoken = $('#playback-mobile-viewertoken').val();
+                    obj.fastmode = $('#playback-mobile-fastmode')[0].checked;
+                    setValue(obj);
+                    location.href = '../playback-mobile.html';
+                    break;
+            }
+        });
+    });
+
+    function setValue(obj) {
+        localStorage.userid = obj.userid;
+        localStorage.roomid = obj.roomid;
+        localStorage.groupid = obj.groupid;
+        localStorage.viewername = obj.viewername;
+        localStorage.viewertoken = obj.viewertoken;
+        localStorage.viewercustomua = obj.viewercustomua;
+        localStorage.language = obj.language;
+        localStorage.userId = obj.userid;
+        localStorage.roomId = obj.roomid;
+        localStorage.groupId = obj.groupid;
+        localStorage.recordId = obj.recordid;
+        localStorage.viewername = obj.viewername;
+        localStorage.viewertoken = obj.viewertoken;
+        localStorage.fastmode = obj.fastmode;
+        localStorage.forceNew = obj.forceNew;
+        localStorage.isH5play = obj.isH5play;
+    }
+
+    function clear(){
+        localStorage.userid = '';
+        localStorage.roomid = '';
+        localStorage.groupid = '';
+        localStorage.viewername = '';
+        localStorage.viewertoken = '';
+        localStorage.viewercustomua = '';
+        localStorage.language = '';
+        localStorage.userId = '';
+        localStorage.roomId = '';
+        localStorage.groupId = '';
+        localStorage.recordId = '';
+        localStorage.viewername = '';
+        localStorage.viewertoken = '';
+        localStorage.fastmode = '';
+        localStorage.forceNew = '';
+        localStorage.isH5play = '';
+    }
+
+</script>
+</body>
+</html>

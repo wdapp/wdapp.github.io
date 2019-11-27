@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+
+<div class="app" id="app">
+  <div class="top" id="top">
+    <div class="main">
+      <div class="video-wrapper">
+        <div id="player">
+          <!--视频-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom" id="bottom">
+    <div class="navigation">
+      <div id="navigation">
+        <!--导航-->
+      </div>
+    </div>
+    <div class="swiper">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div id="document">
+              <!--文档-->
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div id="chat">
+              <!--聊天-->
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div id="questionAnswer">
+              <!--问答-->
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div id="intro">
+              <!--简介-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="//view.csslcloud.net/js/jquery-1.9.0.min.js"></script>
+<script
+    src="//view.csslcloud.net/js/sdk/3.0.0/playbackSDK.js?hash=<%= htmlWebpackPlugin.files.chunks.replayMobile.hash %>"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+export default {
+  changePlayState(state, status) {
+    state.playState = status
+  },
+  changeScreenState(state, status) {
+    state.screenState = status
+  }
+};

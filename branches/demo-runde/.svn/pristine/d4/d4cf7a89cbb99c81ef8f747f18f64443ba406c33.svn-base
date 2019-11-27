@@ -1,0 +1,66 @@
+<template>
+  <div class="footer-wrapper">
+    <div class="button-group">
+      <div class="curriculum-emoticon-wrap">
+        <span class="curriculum-emoticon-icon"></span>
+      </div>
+      <div class="input-wrap">
+        <chats-input></chats-input>
+      </div>
+      <div class="multifunction-wrap">
+        <div class="multifunction-icon"></div>
+      </div>
+      <div class="gifts-wrap">
+        <div class="gifts-icon"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import ChatsInput from "./Input";
+
+export default {
+  name: "Input",
+  components: {
+    ChatsInput
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+@import '~styles/mixins.styl'
+
+.footer-wrapper
+  wrapper()
+  padding 14px 30px
+  box-sizing border-box
+  border-top 1px solid $eee
+  .button-group
+    height 70px
+    width 100%
+    .curriculum-emoticon-wrap
+      float left
+      margin-right 20px
+      width-height-same(70px)
+      .curriculum-emoticon-icon
+        width-height-same(70px)
+        bg-image('course')
+    .input-wrap
+      float left
+      width 390px
+      height 70px
+    .gifts-wrap
+      float right
+      width-height-same(70px)
+      .gifts-icon
+        width-height-same(70px)
+        bg-image('gifts')
+    .multifunction-wrap
+      float right
+      margin-left 20px
+      width-height-same(70px)
+      .multifunction-icon
+        width-height-same(70px)
+        bg-image('plus')
+</style>

@@ -1,0 +1,35 @@
+@import "~assets/styles/mixin.scss";
+
+.navigation {
+  @include width-height-full();
+  position: absolute;
+  z-index: 2;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: row;
+  .options-wrap {
+    @include width-height-full();
+    .options-box {
+      position: relative;
+      @include width-height-full();
+      @include flex(row, center, space-around);
+      li {
+        width: 100%;
+        height: 100%;
+        font-size: .3rem;
+        color: rgba(51, 51, 51, 1);
+        line-height: .8rem;
+        text-align: center;
+      }
+    }
+    .select {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 1rem;
+      height: 0;
+      border: .02rem solid rgba(61, 150, 245, 1);
+    }
+  }
+}

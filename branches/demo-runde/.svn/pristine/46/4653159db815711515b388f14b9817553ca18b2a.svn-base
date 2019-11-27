@@ -1,0 +1,15 @@
+<template>
+  <div class="live-lists-wrapper">
+    lists
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'LiveLists'
+}
+</script>
+
+<style scoped>
+
+</style>

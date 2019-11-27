@@ -98,7 +98,7 @@
 import BScroll from 'better-scroll'
 import hdChats from 'common/components/chats/Chats'
 import HuodeScene from 'common/websdk/live'
-import {showEm, formatRewardAndGiftToTip} from 'common/utils'
+import {showEm, formatRewardAndGiftToTip, shieldEmAndQ12} from 'common/utils'
 import {mapState} from 'vuex'
 const hdSlide = () => ({
   component: import('common/components/slide/Slide')
@@ -206,7 +206,16 @@ export default {
       this.text = ''
       this.isShowEmoticon = false
     },
-    sendBarrage (text) {
+    sendBarrage (msg) {
+      const isMessage = formatRewardAndGiftToTip(msg)
+      if (isMessage) {
+        return false
+      }
+      // 过滤表情和扣1、2
+      const text = shieldEmAndQ12(msg.msg)
+      if (!text.trim()) {
+        return false
+      }
       this.bus.$emit('danmaku', text)
     },
     addEvents () {
@@ -244,7 +253,7 @@ export default {
           active: active
         }
         this.messages.push(formatMsg)
-        this.sendBarrage(_msg.msg)
+        this.sendBarrage(_msg)
         this.scrollTo()
         this.sendTip(_msg)
       })

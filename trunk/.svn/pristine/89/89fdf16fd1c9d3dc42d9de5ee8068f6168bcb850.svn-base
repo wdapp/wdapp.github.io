@@ -1,0 +1,50 @@
+{
+  "_args": [
+    [
+      "es3ify-loader@0.2.0",
+      "/Users/niuqiang/Desktop/webSDK/websdk/trunk/demo"
+    ]
+  ],
+  "_development": true,
+  "_from": "es3ify-loader@0.2.0",
+  "_id": "es3ify-loader@0.2.0",
+  "_inBundle": false,
+  "_integrity": "sha1-i4QjV2vb0eo5xZvhMLzWxYxGEDY=",
+  "_location": "/es3ify-loader",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "es3ify-loader@0.2.0",
+    "name": "es3ify-loader",
+    "escapedName": "es3ify-loader",
+    "rawSpec": "0.2.0",
+    "saveSpec": null,
+    "fetchSpec": "0.2.0"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/es3ify-loader/-/es3ify-loader-0.2.0.tgz",
+  "_spec": "0.2.0",
+  "_where": "/Users/niuqiang/Desktop/webSDK/websdk/trunk/demo",
+  "author": {
+    "name": "chencheng",
+    "email": "sorrycc@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/sorrycc/es3ify-loader/issues"
+  },
+  "dependencies": {
+    "es3ify": "0.2.x"
+  },
+  "description": "ES3ify loader for webpack.",
+  "homepage": "https://github.com/sorrycc/es3ify-loader",
+  "license": "MIT",
+  "name": "es3ify-loader",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sorrycc/es3ify-loader.git"
+  },
+  "version": "0.2.0"
+}

@@ -1,0 +1,100 @@
+<template>
+  <div class="wrapper">
+    <div class="top">
+      <live-windows>
+        <live-controls slot="controls"></live-controls>
+      </live-windows>
+    </div>
+    <div class="bottom">
+      <live-swiper
+        :options="swiper.options"
+        :disabled="swiper.disabled"
+        :navigation="swiper.navigation"
+        :top="swiper.top"
+      >
+        <live-chats slot="chats"></live-chats>
+        <div slot="lists">lists</div>
+        <div slot="introduce">introduce</div>
+      </live-swiper>
+    </div>
+    <common-popup :show="showPopup">
+      <component :is="popupComponent"></component>
+    </common-popup>
+  </div>
+</template>
+
+<script>
+import LiveWindows from "./components/windows/Windows";
+import LiveControls from "./components/controls/Controls";
+import LiveSwiper from "./components/swiper/Swiper";
+import LiveChats from "./components/chats/Chats";
+import CommonPopup from "components/popup/Popup";
+import CommonCurriculum from "components/curriculum/Curriculum";
+
+export default {
+  name: "Live",
+  components: {
+    LiveWindows,
+    LiveControls,
+    LiveSwiper,
+    LiveChats,
+    CommonPopup,
+    CommonCurriculum
+  },
+  data() {
+    return {
+      swiper: {
+        disabled: true,
+        navigation: false,
+        top: 168,
+        options: [
+          {
+            name: "chats",
+            title: "聊天"
+          },
+          {
+            name: "lists",
+            title: "直播目录"
+          },
+          {
+            name: "introduce",
+            title: "讲师介绍"
+          }
+        ]
+      },
+      showPopup: false,
+      popupComponent: "CommonCurriculum"
+    };
+  },
+  methods: {
+    init() {
+      this.onEvents();
+    },
+    on(event, callback) {
+      this.bus.$on(event, (params) => {
+        callback && callback(params);
+      });
+    },
+    onEvents() {
+      this.on("curemoclick", (show) => {
+        this.showPopup = show;
+      });
+    }
+  },
+  mounted() {
+    this.init();
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+@import '~styles/mixins.styl'
+
+.wrapper
+  wrapper()
+  position absolute
+  .top
+    height 462px
+  .bottom
+    layout(462px, 0, 0, 0)
+</style>

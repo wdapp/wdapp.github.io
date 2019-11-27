@@ -1,0 +1,113 @@
+<template>
+  <div class="player-control-wrapper">
+    <div
+      class="actions-btn-group"
+      v-show="isShowControl"
+    >
+      <div class="switch-screen-btn">
+        <span :class="'icon ' + (this.toggleSwitchScreenBtn ? 'switch' : 'open') + '-screen-icon'"></span>
+      </div>
+      <div
+        v-show="isShowInteractionBtn"
+        class="interaction-btn"
+      >
+        <span :class="'icon ' + (this.toggleInteractionBtn ? 'interaction' : 'hangup') + '-icon'"></span>
+      </div>
+    </div>
+    <slot></slot>
+    <div
+      class="control-wrapper"
+      v-show="isShowControl"
+    >
+      <div class="controls-btn-group">
+        <div class="btn-item setting-btn">
+          <span class="btn-icon setting-icon"></span>
+        </div>
+        <div class="btn-item volume-btn">
+          <span class="btn-icon volume-icon"></span>
+        </div>
+        <div class="btn-item full-screen-btn">
+          <span :class="'btn-icon ' + (this.toggleFullScreenBtn ? 'full' : 'small') + '-screen-icon'"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PlayerControl',
+  data () {
+    return {
+      isShowControl: true,
+      isShowInteractionBtn: false,
+      toggleInteractionBtn: true,
+      toggleSwitchScreenBtn: true,
+      toggleFullScreenBtn: true
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+
+  .player-control-wrapper
+    position absolute
+    top 0
+    width-height-full()
+    .actions-btn-group
+      position absolute
+      top 28px
+      right 22px
+      .switch-screen-btn
+        margin-bottom 31px
+        .icon
+          background url("~images/switch-screen.png") no-repeat
+          display inline-block
+          background-size 70px
+          width-height-same(70px)
+        .switch-screen-icon
+          background-image url("~images/switch-screen.png")
+        .open-screen-icon
+          background-image url("~images/open-screen.png")
+      .interaction-btn
+        .icon
+          background url("~images/put-up-hands.png") no-repeat
+          display inline-block
+          background-size 70px
+          width-height-same(70px)
+        .interaction-icon
+          background-image url("~images/put-up-hands.png")
+        .hangup-icon
+          background-image url("~images/hangup.png")
+    .control-wrapper
+      width 100%
+      height 58px
+      background $controlBackgroundColor
+      opacity 0.7
+      position absolute
+      bottom 0
+      box-sizing border-box
+      .controls-btn-group
+        position absolute
+        top 50%
+        margin-top -15px
+        right 17px
+        .btn-item
+          float left
+          margin-left 32px
+          .btn-icon
+            display inline-block
+            width-height-same(30px)
+            background-size 30px
+            background-repeat no-repeat
+          .setting-icon
+            background-image url("~images/setting.png")
+          .volume-icon
+            background-image url("~images/volume.png")
+          .full-screen-icon
+            background-image url("~images/full-screen.png")
+          .small-screen-icon
+            background-image url("~images/small-screen.png")
+</style>

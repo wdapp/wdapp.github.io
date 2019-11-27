@@ -1,0 +1,16 @@
+$baseTextSize = 16px
+$baseFontWeight = 500
+$boldFontWeight = bold
+$baseFontFamily = PingFang SC
+$genelFontFamily = Microsoft YaHei
+
+$fff = #FFFFFF
+$ddd = #DDDDDD
+$eee = #EEEEEE
+$c333 = #333333
+$c000 = #000000
+$c999 = #999999
+$c666 = #666666
+$red = #FF454B
+$FE992A = #FE992A
+$F5F1F6 = #F5F1F6

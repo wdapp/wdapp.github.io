@@ -149,6 +149,14 @@ function parseEm(message) {
   return msg;
 }
 
+export function shieldEmAndQ12(message) {
+  let msg = message;
+  msg = msg.replace(/\[em2_(q[1]|q[2])\]/ig, " ");
+  msg = msg.replace(/\[em2_(0[1-9]|1[0-9]|20)\]/ig, " ");
+  msg = msg.replace(/\[em2_(20[1-9]|2[1-9][0-9]|300)\]/ig, " ");
+  return msg;
+}
+
 function defaultParse(message) {
   var msg = message;
 

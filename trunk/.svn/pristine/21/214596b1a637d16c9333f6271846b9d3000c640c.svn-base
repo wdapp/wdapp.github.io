@@ -1,0 +1,55 @@
+<div class="question-answer">
+  <div class="question-header">
+    <div class="question-icon-wrap">
+      <span class="question-icon"></span>
+    </div>
+    <p class="question-title">问答区</p>
+  </div>
+  <div class="question-body" id="question-body">
+    <ul class="question-answer-ul" id="question-answer">
+      <!--<li class="question-answer-wrap">-->
+      <!--<div class="question-wrap">-->
+      <!--<p class="question-name self">小小花：</p>-->
+      <!--<p class="question-content">刚刚那个问题有点没看懂。</p>-->
+      <!--</div>-->
+      <!--<div class="anwser-wrap">-->
+      <!--<span class="anwser-arrows"></span>-->
+      <!--<div class="anwser-box">-->
+      <!--<p class="anwser-name">刘老师:</p>-->
+      <!--<p class="anwser-content">刚刚那个问题有点没看懂再讲一遍吗？</p>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</li>-->
+      <!--<li class="question-answer-wrap">-->
+      <!--<div class="question-wrap">-->
+      <!--<p class="question-name">路人甲是个观众：</p>-->
+      <!--<p class="question-content">刚刚那个问题有点没看懂，可以再讲一遍吗？</p>-->
+      <!--</div>-->
+      <!--<div class="anwser-wrap">-->
+      <!--<span class="anwser-arrows"></span>-->
+      <!--<div class="anwser-box">-->
+      <!--<p class="anwser-name">刘老师:</p>-->
+      <!--<p class="anwser-content">刚刚那个问题有点没</p>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="anwser-wrap">-->
+      <!--<span class="anwser-arrows"></span>-->
+      <!--<div class="anwser-box">-->
+      <!--<p class="anwser-name">刘老师:</p>-->
+      <!--<p class="anwser-content">刚刚那个问题有点没</p>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</li>-->
+    </ul>
+  </div>
+  <div class="question-footer">
+    <div class="only-self-question-wrap">
+      <input class="only-self-question-checkbox" type="checkbox" id="onlySelfQuestionCheckbox">
+      <label class="only-self-question" for="onlySelfQuestionCheckbox">只看我的问答</label>
+    </div>
+    <div class="send-question-wrap" id="sendQuestionWrap">
+      <input class="send-question-input" id="sendQaMsg" type="text">
+      <button class="send-question-button" id="qaSendBtn">发送</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+{
+  "_from": "huode-scence-websdk",
+  "_id": "huode-scence-websdk@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-o16DWkQxBNvuOHbzcTTE+mwaRmvQEtjnqq3Dx2C2KdFqoJbGKbrtQl8lnuBIExRy1C/9cLItz2KoN5VZ6rwlkg==",
+  "_location": "/huode-scence-websdk",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "huode-scence-websdk",
+    "name": "huode-scence-websdk",
+    "escapedName": "huode-scence-websdk",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/huode-scence-websdk/-/huode-scence-websdk-1.0.0.tgz",
+  "_shasum": "ee511bb3b81c79eb6354bfb47c0b449ee46f3fcd",
+  "_spec": "huode-scence-websdk",
+  "_where": "/Users/ada/Documents/Mac/Project/Htdocs/websdk/branches/demo-webpack",
+  "author": "",
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "",
+  "license": "ISC",
+  "main": "liveSDK.js",
+  "name": "huode-scence-websdk",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}

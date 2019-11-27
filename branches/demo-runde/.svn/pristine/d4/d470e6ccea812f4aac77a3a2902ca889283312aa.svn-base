@@ -1,0 +1,18 @@
+<template>
+  <div>
+    <router-link to="/LiveComputer">PC端观看直播</router-link>
+    <router-link to="/LiveMobile">移动端观看直播</router-link>
+    <router-link to="/ReplayComputer">PC端观看回放</router-link>
+    <router-link to="/ReplayMobile">移动端观看回放</router-link>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Index'
+}
+</script>
+
+<style>
+
+</style>

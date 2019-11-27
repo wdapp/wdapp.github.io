@@ -1,0 +1,25 @@
+@import "assets/styles/mixin.scss";
+
+.player {
+  @include width-height-full();
+  background-color: #333333;
+  .live-player {
+    @include width-height-full();
+    position: relative;
+    .video-tip {
+      @include width-height-full();
+      position: absolute;
+      top: 0;
+      display: table;
+      .video-tip-text {
+        display: table-cell;
+        color: #eeeeee;
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+    video {
+      @include width-height-full();
+    }
+  }
+}

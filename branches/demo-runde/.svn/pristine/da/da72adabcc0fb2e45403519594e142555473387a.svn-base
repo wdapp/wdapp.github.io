@@ -1,0 +1,77 @@
+<template>
+  <div class="chats-wrapper">
+    <div class="chats-container">
+      <div class="chats-top">
+        <chats-content></chats-content>
+      </div>
+      <div class="chats-bottom">
+        <chats-footer @emoticonclick="onEmoticonClick"></chats-footer>
+      </div>
+    </div>
+    <div class="popup-bottom"></div>
+  </div>
+</template>
+
+<script>
+import ChatsContent from "./components/Content";
+import ChatsFooter from "./components/Footer";
+
+export default {
+  name: "Chats",
+  components: {
+    ChatsContent,
+    ChatsFooter
+  },
+  data() {
+    return {
+      bottom: 0
+    };
+  },
+  computed: {
+    popupStyle() {
+      let style = "";
+      const bottom = this.bottom;
+      if (bottom) {
+        style = {
+          height: bottom / 75 + "rem"
+        };
+      }
+      return style;
+    }
+  },
+  watch: {
+    bottom() {
+      this.emit("scrolltobottom");
+    }
+  },
+  methods: {
+    emit(event, options) {
+      this.bus.$emit(event, options);
+    },
+    onEmoticonClick() {
+      this.height = 413;
+    }
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+@import '~styles/mixins.styl'
+.chats-wrapper
+  width-height-full()
+  display flex
+  flex-direction column
+  .chats-container
+    position relative
+    flex 1
+    .chats-top
+      layout(0, 0, 98px, 0)
+    .chats-bottom
+      position absolute
+      bottom 0
+      height 98px
+      width 100%
+  .popup-bottom
+    height 100px
+    background-color green
+</style>

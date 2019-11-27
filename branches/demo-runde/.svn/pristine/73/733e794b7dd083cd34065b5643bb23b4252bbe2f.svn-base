@@ -1,0 +1,40 @@
+<template>
+  <van-popup
+    v-model="isShow"
+    closeable
+    close-icon="close"
+    position="bottom"
+    :style="style"
+  >
+    <slot></slot>
+  </van-popup>
+</template>
+
+<script>
+export default {
+  name: "Popup",
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      isShow: false
+    };
+  },
+  computed: {
+    style() {
+      return {
+        height: "auto"
+      };
+    }
+  },
+  watch: {
+    show() {
+      this.isShow = this.show;
+    }
+  }
+};
+</script>

@@ -1,0 +1,6 @@
+$baseTextColor = #303133
+$generalTextColor = #606266
+$generalFontFamily = PingFang SC
+$generalFontWeight = 500
+$generalTextSize = 16px
+$baseBackgroundColor = #FFFFFF

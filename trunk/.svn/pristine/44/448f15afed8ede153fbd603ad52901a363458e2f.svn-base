@@ -1,0 +1,143 @@
+<div class="chat">
+  <div class="chat-header">
+    <span class="chat-title-icon"></span>
+    <p class="chat-title">聊天区</p>
+  </div>
+  <div class="announcement-wrap">
+    <span class="announcement-button" id="announcement_btn"></span>
+    <div class="announcement-content-wrap">
+      <span class="announcement-icon"></span>
+      <span class="announcement-close"></span>
+      <div class="announcement-content" id="announcement_content">暂无公告</div>
+    </div>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <ul class="chat-message-wrap" id="chat-container">
+      <!--<li class="chat-content-wrap">-->
+      <!--<p class="chat-name teacher">刘老师</p>-->
+      <!--<div class="chat-message">-->
+      <!--Hello，美女，我们约在周二Hello，美女，我们约在周二Hello，美女，我们约在周二-->
+      <!--</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap">-->
+      <!--<p class="chat-name">张三</p>-->
+      <!--<div class="chat-message">不见不散啊</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap">-->
+      <!--<p class="chat-name">王五</p>-->
+      <!--<div class="chat-message">-->
+      <!--lkfajsdlfjldsjfljdslkfjlksjdflkjsdalkfjkldsajfljdslkfjldjslfjklsdajfkljsdklfjkldsajflkjdlsakjflkjsdlkfjlskdjfjsldkajflkajsl-->
+      <!--</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap chat-content-right">-->
+      <!--<p class="chat-name self">小花啊</p>-->
+      <!--<div class="chat-message">1111111111111111111111111111111111111111111111111111111111111111111111111111</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap chat-content-right">-->
+      <!--<p class="chat-name self">你好啊</p>-->
+      <!--<div class="chat-message">123</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap chat-content-right">-->
+      <!--<div class="chat-name-wrap">-->
+      <!--<p class="chat-name-from">王五</p>-->
+      <!--<p class="chat-name-to self">小花啊</p>-->
+      <!--</div>-->
+      <!--<div class="chat-message">不见不散</div>-->
+      <!--</li>-->
+      <!--<li class="chat-content-wrap chat-content-right">-->
+      <!--<div class="chat-name-wrap">-->
+      <!--<p class="chat-name-from">大大大</p>-->
+      <!--<p class="chat-name-to self">小花啊</p>-->
+      <!--</div>-->
+      <!--<div class="chat-message">&%&……%*&（&*……&%*……&%……%&%……&……&%…………&%……%……%￥%*（&*……&%……￥%…………</div>-->
+      <!--</li>-->
+    </ul>
+  </div>
+  <div class="chat-footer">
+    <div class="send-chat-wrap">
+      <div class="top">
+        <span class="chat-smile-icon" id="chat-smile"></span>
+        <span class="chat-switch-icon" id="chat-switch"></span>
+        <table class="emoji-table" id="chat-smile-list" border="0" cellspacing="0" cellpadding="0">
+          <tbody id="">
+          <tr>
+            <td index="01">
+              <img src="~assets/images/emoji/01.png" alt="">
+            </td>
+            <td index="02">
+              <img src="~assets/images/emoji/02.png" alt="">
+            </td>
+            <td index="03">
+              <img src="~assets/images/emoji/03.png" alt="">
+            </td>
+            <td index="04">
+              <img src="~assets/images/emoji/04.png" alt="">
+            </td>
+            <td index="05">
+              <img src="~assets/images/emoji/05.png" alt="">
+            </td>
+            <td index="06">
+              <img src="~assets/images/emoji/06.png" alt="">
+            </td>
+            <td index="07">
+              <img src="~assets/images/emoji/07.png" alt="">
+            </td>
+            <td index="08">
+              <img src="~assets/images/emoji/08.png" alt="">
+            </td>
+            <td index="09">
+              <img src="~assets/images/emoji/09.png" alt="">
+            </td>
+            <td index="10">
+              <img src="~assets/images/emoji/10.png" alt="">
+            </td>
+          </tr>
+          <tr>
+            <td index="11">
+              <img src="~assets/images/emoji/11.png" alt="">
+            </td>
+            <td index="12">
+              <img src="~assets/images/emoji/12.png" alt="">
+            </td>
+            <td index="13">
+              <img src="~assets/images/emoji/13.png" alt="">
+            </td>
+            <td index="14">
+              <img src="~assets/images/emoji/14.png" alt="">
+            </td>
+            <td index="15">
+              <img src="~assets/images/emoji/15.png" alt="">
+            </td>
+            <td index="16">
+              <img src="~assets/images/emoji/16.png" alt="">
+            </td>
+            <td index="17">
+              <img src="~assets/images/emoji/17.png" alt="">
+            </td>
+            <td index="18">
+              <img src="~assets/images/emoji/18.png" alt="">
+            </td>
+            <td index="19">
+              <img src="~assets/images/emoji/19.png" alt="">
+            </td>
+            <td index="20">
+              <img src="~assets/images/emoji/20.png" alt="">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="chat-select" id="chat-select">
+          <span class="chat-select-default" id="select-name">所有人</span>
+          <span class="chat-select-arrows"></span>
+          <ul class="chat-select-options" id="chat-options">
+            <li class="li-opt">所有人</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bottom" id="chatAlertTipWrap">
+        <input class="send-chat-input" id="send-chat-content" type="text">
+        <button class="send-chat-button" id="send-chat">发送</button>
+      </div>
+    </div>
+  </div>
+</div>

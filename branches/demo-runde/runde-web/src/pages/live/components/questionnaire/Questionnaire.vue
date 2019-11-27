@@ -27,7 +27,7 @@
           v-show="isShowResult"
         >
           <p class="questionnaire-body-questions-result-text">
-            正确答案：{{questionnaire.correct}}
+            正确答案：{{correct}}
           </p>
         </div>
         <div class="questionnaire-body-wrap">
@@ -98,6 +98,7 @@ export default {
       isShowQuestionnaire: false,
       isShowResult: false,
       result: [],
+      cacheResult: [],
       disabled: false
     }
   },
@@ -109,10 +110,21 @@ export default {
         result.push(character)
       }
       return result
+    },
+    correct () {
+      let corrects = ''
+      for (let i = 0; i < this.questionnaire.options.length; i++) {
+        const option = this.questionnaire.options[i]
+        if (option.correct) {
+          corrects += option.key + '、'
+        }
+      }
+      return corrects.substring(0, corrects.length - 1)
     }
   },
   watch: {
     questionnaire () {
+      log('questionnaire', this.questionnaire)
       this.isShowQuestionnaire = true
       this.disabled = false
     }
@@ -204,6 +216,7 @@ export default {
       this.disabled = true
       this.isShowQuestionnaire = true
       this.isShowResult = true
+      this.cacheResult = [...this.result]
       this.result = []
     },
     configStop () {
@@ -213,18 +226,27 @@ export default {
       this.result = []
     },
     isError (key) {
-      if (this.formatResult.indexOf(key) !== -1) {
-        return true
-      } else {
-        return false
+      let error = false
+      const results = this.cacheResult
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i]
+        const character = (result.trim())[0]
+        if (character === key) {
+          error = true
+        }
       }
+      return error
     },
     isRight (key) {
-      if (this.questionnaire.correct === key) {
-        return true
-      } else {
-        return false
+      let right = false
+      for (let i = 0; i < this.questionnaire.options.length; i++) {
+        const option = this.questionnaire.options[i]
+        if (option.key === key && option.correct) {
+          right = true
+          break
+        }
       }
+      return right
     },
     stopQuestionnaire () {
       this.isShowQuestionnaire = false
@@ -370,7 +392,7 @@ export default {
     background $baseWhiteColor
     border 1px solid $dullGreyColor; /* no */
     border-radius 8px
-    overflow visible
+    overflow visible !important
     position relative
     .el-message-box__content
       padding 0

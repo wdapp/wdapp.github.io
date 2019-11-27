@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="left" id="left">
+    <div class="video-wrapper">
+      <div id="player"></div>
+    </div>
+    <div class="question-wrapper">
+      <div id="questionAnswer"></div>
+    </div>
+  </div>
+  <div class="center" id="center">
+    <div class="left-bar" id="leftBar">
+      <span class="left-bar-swith"></span>
+    </div>
+    <div class="document-wrapper">
+      <div id="document"></div>
+    </div>
+    <div class="controls-wrapper">
+      <div id="controls"></div>
+    </div>
+    <div class="right-bar" id="rightBar">
+      <span class="right-bar-swith"></span>
+    </div>
+  </div>
+  <div class="right" id="right">
+    <div class="chat-wrapper">
+      <div id="chat"></div>
+    </div>
+  </div>
+</div>
+
+<script src="//view.csslcloud.net/js/jquery-1.9.0.min.js"></script>
+<script
+    src="//view.csslcloud.net/js/sdk/3.0.0/liveSDK.js?hash=<%= htmlWebpackPlugin.files.chunks.live.hash %>"></script>
+</body>
+</html>

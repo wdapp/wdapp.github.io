@@ -1,0 +1,7 @@
+export default {
+  CUR_EMO_STATE: {
+    CURRICULUM: "curriculum",
+    EMOTICON: "emoticon",
+    KEYBOARD: "keyboard"
+  }
+};

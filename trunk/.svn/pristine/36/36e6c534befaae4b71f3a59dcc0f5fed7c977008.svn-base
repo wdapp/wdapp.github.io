@@ -1,0 +1,15 @@
+{
+  "h5": {
+    "lowyerVersion": {
+      "v": "2.9.0",
+      "date": "2019-09-06 00:00:00",
+      "expiration": "2019-09-10 12:00:00"
+    },
+    "latestVersion": {
+      "v": "3.0.0",
+      "date": "2019-09-24 11:00:00"
+    },
+    "errorMsg": "您使用的SDK版本将于2019年11月20日停用，请尽快升级到最新版本！停止日期：",
+    "notify": "Web SDK3.0.0版本正式发布，更新内容参考：https://github.com/CCVideo/Live_Web_SDK。发布日期："
+  }
+}

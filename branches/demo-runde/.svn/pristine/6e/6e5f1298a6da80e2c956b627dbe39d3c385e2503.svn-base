@@ -1,0 +1,96 @@
+<template>
+  <el-row class="wrapper">
+    <el-row class="navigation" type="flex" align="middle">
+      <el-col class="title" :span="3">
+        <el-image
+          class="image"
+          :src="title"
+          :fit="fit"
+        ></el-image>
+      </el-col>
+      <el-col class="breadcrumb" :span="18">
+        <el-breadcrumb separator="">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>技能大赛</el-breadcrumb-item>
+          <el-breadcrumb-item>所有课程</el-breadcrumb-item>
+          <el-breadcrumb-item>直播课程</el-breadcrumb-item>
+          <el-breadcrumb-item>继续教育</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col class="header-wrapper" :span="3">
+        <el-avatar class="header-avatar" :size="40" :src="header">
+          <i class="el-icon-user-solid"></i>
+        </el-avatar>
+        <span class="header-name">
+          {{name}}
+        </span>
+        <i class="el-icon-caret-bottom"></i>
+      </el-col>
+    </el-row>
+  </el-row>
+</template>
+
+<script>
+export default {
+  name: 'LiveHeader',
+  data () {
+    return {
+      name: '获得场景视频获得场景视频',
+      title: require('images/title.png'),
+      header: require('images/header.png'),
+      fit: 'contain'
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+  @import "~styles/varibles.styl"
+
+  .wrapper
+    background-color #ffffff
+    height 80px
+    box-shadow 0px 2px 3px 0px rgba(221, 221, 221, 1) /*no*/
+    z-index 1
+    .navigation
+      min-width 1086px
+      height 100%
+      padding-left 44px
+      padding-right 44px
+      .title
+        min-width 216px
+        min-height 51px
+        .image
+          width 216px
+          height 51px
+      .breadcrumb
+        min-width 467px
+        padding-left 84px
+        margin-top 10px
+        >>> .el-breadcrumb
+          .el-breadcrumb__item
+            .el-breadcrumb__inner
+              font-size 18px
+              font-weight $generalFontWeight
+              color $generalTextColor
+              font-family $generalFontFamily
+            .el-breadcrumb__separator
+              margin 0 18px
+      .header-wrapper
+        min-width 242px
+        display flex
+        align-items center
+        .header-avatar
+          margin-right 12px
+          float right
+        .header-name
+          max-width 145px
+          margin-right 14px
+          generalText()
+          ellipsis()
+          float right
+        .el-icon-caret-bottom
+          color #BCBCBC
+          float right
+</style>

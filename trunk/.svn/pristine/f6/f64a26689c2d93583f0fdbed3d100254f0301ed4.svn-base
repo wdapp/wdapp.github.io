@@ -1,0 +1,33 @@
+<div class="setting" id="setting-panel">
+  <div class="model-full">
+    <div class="announcement-wrap">
+      <div class="header">
+        <span class="announcement-title">设置</span>
+        <span class="announcement-close" id="closeBtn"></span>
+      </div>
+      <div class="announcement-content-wrap">
+        <div class="announcement-content" id="announcement_content">公告内容，公告内容，公告内容，公告内容，公告内容，公告内容，hello world
+          hello
+          worldhello worldhello
+          worldhello worldhello world.1234567890
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="model-flex" id="mode-list">
+    <ul class="setting-options-wrap">
+      <li class="options" style="display: none">
+        <div class="setting-wrap" id="soundBtn">
+          <span class="live-model-toggle-icon"></span>
+          <p class="live-model-toggle-text">音频模式</p>
+        </div>
+      </li>
+      <li class="options" id="announcementBtn">
+        <div class="announcement-wrap" id="announcement_btn">
+          <span class="announcement-icon"></span>
+          <p class="announcement-text">公告</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

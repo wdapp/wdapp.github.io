@@ -40,7 +40,7 @@ import ChatsInput from "./Input";
 import STATE from "./state";
 import Mixins from "common/mixins";
 import HuodeScene from "common/websdk/live";
-import { showEm, formatRewardAndGiftToTip } from "common/utils";
+import { showEm, formatRewardAndGiftToTip, shieldEmAndQ12 } from "common/utils";
 import { mapState } from "vuex";
 import CommonSlide from "common/components/slide/Slide";
 
@@ -275,7 +275,7 @@ export default {
           active: active
         };
         this.messages.push(formatMsg);
-        this.sendBarrage(_msg.msg);
+        this.sendBarrage(_msg);
         if (this.isScroll) {
           this.emit("scrolltobottom");
         }
@@ -314,8 +314,17 @@ export default {
       this.message = "";
       this.initButtonState();
     },
-    sendBarrage(message) {
-      this.emit("danmaku", message);
+    sendBarrage(msg) {
+      const isMessage = formatRewardAndGiftToTip(msg);
+      if (isMessage) {
+        return false;
+      }
+      // 过滤表情和扣1、2
+      const text = shieldEmAndQ12(msg.msg);
+      if (!text.trim()) {
+        return false;
+      }
+      this.bus.$emit("danmaku", text);
     }
   },
   mounted() {

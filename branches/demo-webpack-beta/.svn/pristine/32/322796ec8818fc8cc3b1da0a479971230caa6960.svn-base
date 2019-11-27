@@ -1,0 +1,118 @@
+@import "~assets/styles/header.scss";
+
+.app {
+  position: absolute;
+  @include width-height-full();
+  overflow-x: auto;
+  min-width: 11.5rem;
+  .left {
+    width: 2.6rem;
+    overflow: hidden;
+    @include layout(0, unset, 0, 0);
+    .video-wrapper {
+      @include width-height(2.6rem, 1.96rem);
+      #player {
+        @include width-height-full();
+      }
+    }
+    .document-wrapper {
+      @include width-height(2.6rem, 1.96rem);
+      #document {
+        @include width-height-full();
+      }
+    }
+    .question-wrapper {
+      @include layout(1.96rem, 0, 0, 0);
+      min-width: 2.6rem;
+      #questionAnswer {
+        @include width-height-full();
+      }
+    }
+  }
+  .center {
+    @include layout(0, 2.6rem, 0, 2.6rem);
+    border-left: 1px solid rgba(241, 241, 241, 1);
+    border-right: 1px solid rgba(241, 241, 241, 1);
+    .left-bar {
+      opacity: 0;
+      width: .12rem;
+      background-color: #F2FAFF;
+      @include layout(0, unset, 0, -.12rem);
+      z-index: 1;
+      .left-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
+        @include width-height(.12rem, .46rem);
+        position: absolute;
+        left: 0;
+        top: 45%;
+      }
+    }
+    .left-bar:hover {
+      opacity: 1;
+    }
+    .left-bar-active {
+      opacity: 1;
+      left: -.12rem;
+      .left-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
+      }
+    }
+    .document-wrapper {
+      @include layout(0, 0, .8rem, 0);
+      #document {
+        @include width-height-full();
+      }
+    }
+    .video-wrapper {
+      @include layout(0, 0, .8rem, 0);
+      #player {
+        @include width-height-full();
+      }
+    }
+    .controls-wrapper {
+      @include layout(unset, .1rem, .15rem, .1rem);
+      height: .5rem;
+      background-color: #f1f1f1;
+      #controls {
+        @include width-height-full();
+      }
+    }
+    .right-bar {
+      opacity: 0;
+      width: .12rem;
+      @include layout(0, -.12rem, 0, unset);
+      background-color: #F2FAFF;
+      z-index: 1;
+      .right-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -111px -297px no-repeat;
+        @include width-height(.12rem, .46rem);
+        position: absolute;
+        left: 0;
+        top: 45%;
+      }
+    }
+    .right-bar:hover {
+      opacity: 1;
+    }
+    .right-bar-active {
+      opacity: 1;
+      right: -.12rem;
+      .right-bar-swith {
+        background: url(~assets/images/icon-playbar.png) -161px -297px no-repeat;
+      }
+    }
+  }
+  .right {
+    width: 2.6rem;
+    overflow: hidden;
+    @include layout(0, 0, 0, unset);
+    .chat-wrapper {
+      @include layout(0, 0, 0, 0);
+      min-width: 2.6rem;
+      #chat {
+        @include width-height-full();
+      }
+    }
+  }
+}
+

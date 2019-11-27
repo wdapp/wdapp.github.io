@@ -1,0 +1,12 @@
+<div class="player">
+  <div class="no-video" id="noVideo">
+    <img class="no-video-image" src="~assets/images/icon-novideo.png">
+    <span class="no-video-text">暂无视频</span>
+  </div>
+  <div class="live-player" id="livePlayer"></div>
+</div>
+<div class="video-tip" id="video-tip">
+  <div class="waiting-layer">
+    <p class="waiting-text" id="video-tip-content">直播正在准备中</p>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+<template>
+  <div class="player-footer-wrapper">
+    <div class="left">
+      <div class="reward-wrap">
+        <span class="reward-image"></span>
+        <span class="reward-text">打赏</span>
+      </div>
+      <div class="evaluation-wrap">
+        <span class="evaluation-image"></span>
+        <span class="evaluation-text">评价</span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="swiper-wrap">
+          <span class="arrow-left">
+            <i class="el-icon-arrow-left"></i>
+          </span>
+        <swiper :options="swiperOption">
+          <swiper-slide
+            class="item"
+            v-for="(url, index) in imageUrls"
+            :key="index"
+          >
+            <img
+              class="image"
+              :src="url"
+            />
+          </swiper-slide>
+        </swiper>
+        <span class="arrow-right active">
+          <i class="el-icon-arrow-right"></i>
+          </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PlayerFooter',
+  data () {
+    return {
+      swiperOption: {
+        slidesPerView: 6,
+        slidesOffsetBefore: 0,
+        slidesOffsetAfter: 14
+      },
+      imageUrls: [
+        require('images/gifts/gift1.png'),
+        require('images/gifts/gift2.png'),
+        require('images/gifts/gift3.png'),
+        require('images/gifts/gift1.png'),
+        require('images/gifts/gift2.png'),
+        require('images/gifts/gift3.png'),
+        require('images/gifts/gift1.png'),
+        require('images/gifts/gift2.png'),
+        require('images/gifts/gift3.png')
+      ]
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+
+  .player-footer-wrapper
+    wrapper()
+    padding-left 31px
+    padding-right 20px
+    box-sizing border-box
+    .left
+      float left
+      height 100%
+      .reward-wrap
+        float left
+        height 100%
+        line-height 80px
+        margin-right 44px
+        .reward-image
+          width-height-same(50px)
+          display inline-block
+          background url("~images/reward.png") no-repeat
+          background-size 50px
+          vertical-align middle
+          margin-right 9px
+        .reward-text
+          baseTextStyle(18px)
+          vertical-align middle
+      .evaluation-wrap
+        float left
+        height 100%
+        line-height 80px
+        .evaluation-image
+          width-height-same(50px)
+          display inline-block
+          background url("~images/evaluation.png") no-repeat
+          background-size 50px
+          vertical-align middle
+          margin-right 7px
+        .evaluation-text
+          baseTextStyle(18px)
+          vertical-align middle
+    .right
+      float right
+      height 100%
+      .swiper-wrap
+        width 448px
+        position relative
+        top 50%
+        left -30px
+        margin-top -30px
+        >>> .swiper-container
+          .swiper-wrapper
+            .item
+              width 60px !important
+              height 60px !important
+              background $baseWhiteColor
+              border 1px solid $dullGreyColor
+              margin-right 15px
+              .image
+                width-height-same(55px)
+                position relative
+                top 50%
+                left 50%
+                margin-left -27.5px
+                margin-top -27.5px
+        .arrow-left, .arrow-right
+          position absolute
+          top 50%
+          margin-top -30px
+          left -30px
+          width 15px
+          height 60px
+          display inline-block
+          text-align center
+          line-height 60px
+          background rgba(238, 238, 238, 1)
+          border-radius 10px 0px 0px 10px; /*no*/
+          .el-icon-arrow-left, .el-icon-arrow-right
+            font-size 15px
+            color $baseWhiteColor
+            font-weight 1000
+        .active
+          background rgba(255, 69, 75, 1)
+          border-radius 0px 10px 10px 0px; /*no*/
+          left unset
+          right -30px
+</style>

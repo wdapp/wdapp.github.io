@@ -1,0 +1,41 @@
+{
+  "_args": [
+    [
+      "border-1px.css@1.0.0",
+      "/Users/ada/Documents/Mac/Project/Htdocs/websdk/branches/demo-webpack"
+    ]
+  ],
+  "_from": "border-1px.css@1.0.0",
+  "_id": "border-1px.css@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-31ieTUw98U62oxs/UgZ34ahhC3TsarSBNlIvckyW6b5neWFlh5qlOAXYyszWwlBtNtn4EdAnNQ6SGp5Vv/Aoqg==",
+  "_location": "/border-1px.css",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "border-1px.css@1.0.0",
+    "name": "border-1px.css",
+    "escapedName": "border-1px.css",
+    "rawSpec": "1.0.0",
+    "saveSpec": null,
+    "fetchSpec": "1.0.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/border-1px.css/-/border-1px.css-1.0.0.tgz",
+  "_spec": "1.0.0",
+  "_where": "/Users/ada/Documents/Mac/Project/Htdocs/websdk/branches/demo-webpack",
+  "author": {
+    "name": "ada"
+  },
+  "description": "解决移动端1像素边框问题",
+  "license": "ISC",
+  "main": "border.css",
+  "name": "border-1px.css",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}

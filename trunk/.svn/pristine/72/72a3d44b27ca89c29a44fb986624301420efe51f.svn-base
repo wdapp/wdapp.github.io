@@ -1,0 +1,3 @@
+<div class="player">
+  <div class="live-player" id="playbackPlayer"></div>
+</div>

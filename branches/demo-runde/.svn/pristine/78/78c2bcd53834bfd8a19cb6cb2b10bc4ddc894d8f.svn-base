@@ -1,0 +1,39 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Index from '@/pages/Index'
+import LiveComputer from '@/pages/live/computer/LiveComputer'
+import LiveMobile from '@/pages/live/mobile/LiveMobile'
+import ReplayComputer from '@/pages/replay/computer/ReplayComputer'
+import ReplayMobile from '@/pages/replay/mobile/ReplayMobile'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
+    },
+    {
+      path: '/liveComputer/:options',
+      name: 'LiveComputer',
+      component: LiveComputer
+    },
+    {
+      path: '/liveMobile/:options',
+      name: 'LiveMobile',
+      component: LiveMobile
+    },
+    {
+      path: '/replayComputer/:options',
+      name: 'ReplayComputer',
+      component: ReplayComputer
+    },
+    {
+      path: '/replayMobile/:options',
+      name: 'ReplayMobile',
+      component: ReplayMobile
+    }
+  ]
+})

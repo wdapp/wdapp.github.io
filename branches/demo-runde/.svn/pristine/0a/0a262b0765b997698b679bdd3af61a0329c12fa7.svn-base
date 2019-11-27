@@ -1,0 +1,73 @@
+<template>
+  <div class="wrapper">
+    <div class="top">
+      <live-windows>
+        <live-controls slot="controls"></live-controls>
+      </live-windows>
+    </div>
+    <div class="bottom">
+      <live-swiper
+        :options="swiper.options"
+        :disabled="swiper.disabled"
+        :navigation="swiper.navigation"
+        :top="swiper.top"
+      >
+        <live-chats slot="chats"></live-chats>
+        <div slot="lists">lists</div>
+        <div slot="introduce">introduce</div>
+      </live-swiper>
+    </div>
+  </div>
+</template>
+
+<script>
+import LiveWindows from "./components/windows/Windows";
+import LiveControls from "./components/controls/Controls";
+import LiveSwiper from "./components/swiper/Swiper";
+import LiveChats from "./components/chats/Chats";
+
+export default {
+  name: "Live",
+  components: {
+    LiveWindows,
+    LiveControls,
+    LiveSwiper,
+    LiveChats
+  },
+  data() {
+    return {
+      swiper: {
+        disabled: true,
+        navigation: false,
+        top: 168,
+        options: [
+          {
+            name: "chats",
+            title: "聊天"
+          },
+          {
+            name: "lists",
+            title: "直播目录"
+          },
+          {
+            name: "introduce",
+            title: "讲师介绍"
+          }
+        ]
+      }
+    };
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+@import '~styles/mixins.styl'
+
+.wrapper
+  wrapper()
+  position absolute
+  .top
+    height 462px
+  .bottom
+    layout(462px, 0, 0, 0)
+</style>

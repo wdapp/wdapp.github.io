@@ -1,0 +1,30 @@
+@import "~styles/varibles.styl"
+
+ellipsis()
+  overflow hidden
+  white-space nowrap
+  text-overflow ellipsis
+width-height-full()
+  height 100%
+  width 100%
+width-height-same($value)
+  width $value
+  height $value
+wrapper()
+  background-color $baseWhiteColor
+  height 100%
+  width 100%
+layout-full($top, $right, $bottom, $left)
+  position absolute
+  top $top
+  right $right
+  bottom $bottom
+  left $left
+baseTextStyle($fontSize = 16px)
+  color $baseTextColor
+  font-size $fontSize
+  font-weight $baseFontWeight
+  font-family $baseFontFamily
+
+
+

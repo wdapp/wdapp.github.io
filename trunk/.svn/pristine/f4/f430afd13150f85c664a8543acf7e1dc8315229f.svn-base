@@ -1,0 +1,23 @@
+<div class="login">
+  <img class="logo" src="~assets/images/login/viewfile.png" alt="">
+  <input class="address" id="address" type="text" placeholder="address">
+  <input class="viewername" id="viewername" type="text" placeholder="viewername">
+  <input class="viewertoken" id="viewertoken" type="text" placeholder="viewertoken">
+
+  <button id="enterRoom">进入房间</button>
+  <!--<button id="liveButton">观看直播</button>-->
+  <!--<button id="replayButton">观看回放</button>-->
+  <!--<button id="mobileLiveButton">观看直播Mobile</button>-->
+  <!--<button id="mobileReplayButton">观看回放Mobile</button>-->
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="isH5play" checked="checked"> 回放开启H5播放器
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="fastMode" checked="checked"> 开启极速文档
+    </label>
+  </div>
+</div>

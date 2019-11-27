@@ -1,0 +1,267 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit"/>
+    <title>PC端观看回放</title>
+    <style>
+        #mask{width: 100%; height: 100%; background: #ccc; position: absolute; top: 0; left: 0; z-index: 100; display: none; opacity: 0.8;}
+        #mask img{max-width: 50%; max-height: 70%; cursor: pointer; position: absolute; top:0; bottom:0; left:0; right:0; margin:auto; z-index: 1001}
+        #mask p{display: block; position: fixed; top: 100px; right: 150px; font-size: 30px; cursor: pointer}
+
+    </style>
+    <link rel="stylesheet" href="css/index6.css">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            overflow-x: auto;
+        }
+
+        .chat-main, .document-main {
+            background: #fff;
+        }
+
+        @media (max-width: 1200px) {
+            body {
+                width: 1200px;
+                margin: 0 auto;
+                position: relative;
+                background: #ddd;
+                box-shadow: 0 0 10px 2px #ccc;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            body {
+                width: 1400px;
+                margin: 0 auto;
+                position: relative;
+                background: #ddd;
+                box-shadow: 0 0 10px 2px #ccc;
+            }
+        }
+
+        /* callback add*/
+        .live-right .l-r-m, .question-main {
+            bottom: 0
+        }
+
+        /**/
+        #callbackPanel, #callbackPanel img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<!-- left start -->
+<div class="video-left">
+    <div id="left-bar" class="left-bar">
+        <span id="left-switch" class="bar-switch left-icons"></span>
+    </div>
+    <div id="widget-video" class="widget-video">
+        <div id="main-video" class="main-video">
+
+            <!-- 回放视频模块 -->
+            <div id="playbackPlayer"></div>
+
+        </div>
+    </div>
+    <div id="question" class="question">
+        <div class="question-title">
+            <h2><i></i><span>问答区</span></h2>
+        </div>
+        <div class="question-main live-left">
+            <ul id="qas" class="l-b-m-list"></ul>
+        </div>
+    </div>
+</div>
+<!-- left end -->
+
+<!-- middle start -->
+<div class="video-middle" id="video-middle">
+    <div class="video-m-top" id="doc-main" data-module="1">
+        <div class="document-main">
+
+            <!-- 回放文档模块 -->
+            <div id="playbackPanel"></div>
+
+        </div>
+    </div>
+    <div class="l-m-b">
+        <div class="progress-box" id="progress-box">
+            <div class="background" id="background"></div>
+            <div class="buffer" id="buffer"></div>
+            <div class="progress" id="progress"></div>
+            <span class="dot" id="dot"></span>
+        </div>
+        <div class="controls">
+            <div class="left">
+                <div class="play">
+                    <a href="javascript:void(0);" class="btn-play" title="播放" id="btn-play"></a>
+                </div>
+                <div class="time">
+                    <span>00:00</span>/<span>00:00</span>
+                </div>
+                <div class="volume">
+                    <a href="javascript:void(0);" class="btn-volume" title="静音" id="btn-volume"></a>
+                </div>
+                <div class="volume-slider" id="volume-slider">
+                    <div class="v-progress" id="v-progress"></div>
+                    <div class="v-dot" id="v-dot"></div>
+                </div>
+            </div>
+            <div class="right">
+                <ul class="tools">
+                    <li class="rate" id="rate">
+                        <a href="javascript:void(0);" title="倍速" class="btn-rate" id="btn-rate">正常</a>
+                    </li>
+                    <li class="switch">
+                        <a href="javascript:void(0);" title="切换窗口" class="btn-switch" id="btn-switch"></a>
+                    </li>
+                    <li class="fullscreen">
+                        <a href="javascript:void(0);" title="网页全屏" class="btn-fullscreen" id="btn-fullscreen"></a>
+                    </li>
+                </ul>
+                <ul class="select" id="select">
+                    <li value="0"><a href="#">0.8X</a></li>
+                    <li value="1"><a href="#">正常</a></li>
+                    <li value="2"><a href="#">1.25X</a></li>
+                    <li value="3"><a href="#">1.5X</a></li>
+                    <li value="4"><a href="#">2.0X</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- middle end -->
+
+<!-- right start -->
+<div class="video-right live-right" id="video-right">
+    <div id="right-bar" class="right-bar">
+        <span id="right-switch" class="bar-switch right-icons"></span>
+    </div>
+    <div class="chat-main">
+        <div class="chat-title">
+            <h2><i></i><span>公共聊天区</span></h2>
+        </div>
+        <div class="chat-list l-r-m">
+            <ul id="chat-list" class="chat-list l-r-m-list" style="top: 0px;">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--蒙板-->
+<div id="mask">
+    <p>x</p>
+    <img src=""/>
+</div>
+
+<!-- right end -->
+<input id="initParam" type="hidden" value=""/>
+<!-- 聊天模板 -->
+<script id="chatMsgTemplate" type="text/x-handlebars-template">
+    <li {{#if isFromMe}}class="me" {{else}} chatId="{{chatId}}" status="{{status}}"{{/if}}>
+    <div class="peo-infos">
+        <p class="peo-names">
+            <span class="p-n-names">{{name}}</span>
+            <i class="peo-icons "></i>
+        </p>
+    </div>
+    <div class="peo-chat">
+        <i class="icons"></i>
+
+        <p class="chat-content">{{{content}}}</p>
+    </div>
+    </li>
+</script>
+<!-- 私聊 -->
+<script id="privateChatMsgTemplate" type="text/x-handlebars-template">
+    <li {{#if isFromMe}}class="me" {{/if}}>
+    <div class="peo-infos">
+        <p class="peo-names">
+            <span class="p-n-names pchat">{{fromUserName}}&nbsp;对&nbsp;{{toUserName}}&nbsp;说</span>
+            <i class="peo-icons "></i>
+        </p>
+    </div>
+    <div class="peo-chat">
+        <i class="icons"></i>
+
+        <p class="chat-content">{{{content}}}</p>
+    </div>
+    </li>
+</script>
+<!-- 提问 -->
+<script id="questionTemplate" type="text/x-handlebars-template">
+    <li id="{{id}}" questionUserId="{{questionUserId}}">
+        <div class="peo-infos">
+            <p class="peo-names">
+                <span class="p-n-names">{{questionUserName}}：</span>
+                <i class="peo-icons"></i>
+            </p>
+        </div>
+        <div class="peo-chat">
+            <p class="chat-content">{{content}}</p>
+        </div>
+    </li>
+</script>
+<!-- 回答 -->
+<script id="answerTemplate" type="text/x-handlebars-template">
+    <div class="peo-repeat">
+        <p class="teacher-name">
+            <i></i>
+            {{answerUserName}}：
+        </p>
+
+        <p class="repeat-content">{{content}}</p>
+    </div>
+</script>
+<input type="hidden" value="1" id="documentDisplayMode">
+<script src="js/jquery-1.9.0.min.js"></script>
+<script src="js/handlebars.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.jslider.js"></script>
+<script src="//view.csslcloud.net/js/sdk/3.0.0/playbackSDK.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/callback.pc.extend.js"></script>
+<script type="text/javascript">
+
+    // 视频为主
+    if ($('#initParam').val() == 1) {
+        $('#btn-switch').click();
+    }
+
+    //flash播放器隐藏倍速功能
+    var isH5play = true;
+    if (!isH5play) {
+        $('#rate').css('display', 'none');
+    }
+
+    $.DW.config({
+        userId: localStorage.userId,
+        roomId: localStorage.roomId,
+        recordId: localStorage.recordId,
+        groupId : localStorage.groupId,
+        viewername: localStorage.viewername,
+        viewertoken: localStorage.viewertoken,
+        isH5play: localStorage.isH5play,//可选参数默认为true
+        fastMode: localStorage.fastmode,//可选参数默认为true
+        forceNew: localStorage.forceNew === 'true' ? true : false
+    });
+
+    function on_cc_login_error(){
+       console.log('登录失败')
+    }
+
+    function on_cc_login_success(){
+        $.DW.docAdapt(true);
+        console.log('登录成功')
+    }
+
+</script>
+
+</body>
+</html>

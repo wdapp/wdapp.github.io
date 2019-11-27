@@ -1,0 +1,9 @@
+@import "~assets/styles/mixin.scss";
+
+.document {
+  background-color: #ffffff;
+  @include width-height-full();
+  .playback-panel {
+    @include width-height-full();
+  }
+}

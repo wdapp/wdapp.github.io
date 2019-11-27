@@ -1,0 +1,7 @@
+<div class="drawPanel">
+  <div class="no-doc" id="noDoc">
+    <img class="no-doc-image" src="~assets/images/icon-nodoc.png">
+    <span class="no-doc-text">暂无文档</span>
+  </div>
+  <div id="drawPanel"></div>
+</div>

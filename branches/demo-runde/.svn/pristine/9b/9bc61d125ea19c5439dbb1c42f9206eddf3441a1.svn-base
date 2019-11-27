@@ -1,0 +1,122 @@
+<template>
+  <div class="chat-chats-wrapper">
+    <div class="top">
+      <div class="chat-group">
+        <div class="chat-item" v-for="(message, index) of messages" :key="index">
+          <div class="chat-wrap">
+            <img class="header" :src="message.avatar"/>
+            <span class="name" :class="message.type">{{message.name}}</span>
+            <span class="separator" :class="message.type">:</span>
+            <span class="content" v-html="message.content"></span>
+          </div>
+        </div>
+
+        <div class="chat-item">
+          <div class="chat-wrap">
+            <span style="display: inline-block;float:right; clear: both;" align="center">
+              <span class="separator student">:</span>
+              <span class="name student">abcdefghigklmnopqrstuvwxyz</span>
+              <img class="header" :src="require('images/header2.png')"/>
+            </span>
+            -123456789123456789<img style="vertical-align: middle" src="//static.csslcloud.net/img/em2/02.png" border="0">10 11 12 13 14 15 16 17 1810 11 12 13 14 15 16 17 1810 11 12 13 14 15 16 17 1810 11 12 13 14 15 16 17 18
+<!--            <span class="content">-->
+<!--              -123456789123456789<img src="//static.csslcloud.net/img/em2/02.png" border="0">10 11 12 13 14 15 16 17 18-->
+<!--            </span>-->
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="bottom">
+
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ChatChats',
+  data () {
+    return {
+      messages: [
+        {
+          type: 'teacher',
+          avatar: require('images/header2.png'),
+          name: '讲师',
+          content: '大家好啊！！！'
+        }, {
+          type: 'assistant',
+          avatar: require('images/header2.png'),
+          name: '助教',
+          content: '123456789123456789<img src="//static.csslcloud.net/img/em2/02.png" border="0">123456789123456789123456789123456789123456789'
+        }, {
+          type: 'student',
+          avatar: require('images/header2.png'),
+          name: '学员',
+          content: 'abcdefghigklmnopqr stuvwxyzabcdefghigklmno pqrstuvwxyzabcdefgh igklmnopqrstuvwxyz'
+        }, {
+          type: 'student',
+          avatar: require('images/header2.png'),
+          name: '获得场景视频',
+          content: '<img src="//static.csslcloud.net/img/em2/02.png" border="0">'
+        }, {
+          type: 'self',
+          avatar: require('images/header2.png'),
+          name: 'vip hello world vip vip vip',
+          content: '恭喜你中奖啦<img src="//static.csslcloud.net/img/em2/02.png" border="0">x100'
+        }
+      ]
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+
+  .chat-chats-wrapper
+    wrapper()
+    position relative
+    .top
+      layout-full(0, 0, 132px, 0)
+      .chat-group
+        width-height-full()
+        box-sizing border-box
+        padding 16px 20px 12px 20px
+        .chat-item
+          margin-bottom 20px
+          width 100%
+          .chat-wrap
+            baseTextStyle()
+            .header
+              vertical-align middle
+              display inline-block
+              width-height-same(30px)
+              border-radius 50%
+              margin-right 10px
+            .name
+              vertical-align middle
+              display inline-block
+              max-width 120px
+              ellipsis()
+            .separator
+              margin-right 10px
+            .self
+              color orange
+            .teacher
+              color $baseRedColor
+            .assistant
+              color blue
+            .content
+              vertical-align middle
+              break-world()
+              line-height 28px
+              >>> img
+                vertical-align middle
+                margin 0 5px
+                width-height-same(20px)
+    .bottom
+      layout-full(unset, 0, 0, 0)
+      height 132px
+      background-color green
+</style>

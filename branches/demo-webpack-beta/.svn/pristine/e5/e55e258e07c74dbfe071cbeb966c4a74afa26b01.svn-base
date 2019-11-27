@@ -1,0 +1,22 @@
+<div id="thumbnailScrollWrap" class="thumbnail">
+  <ul id="thumbnailListGroup" class="thumbnail-list-group">
+    <!--<li class="thumbnail-list">-->
+    <!--<img class="thumbnail-list-img"-->
+    <!--src="http://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/CDD6277B1F24D91E9C33DC5901307461/0.jpg"-->
+    <!--alt="">-->
+    <!--<span class="thumbnail-list-time">00:01</span>-->
+    <!--</li>-->
+    <!--<li class="thumbnail-list active">-->
+    <!--<img class="thumbnail-list-img"-->
+    <!--src="https://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/0D1252DB6778DB1C9C33DC5901307461/1.jpg"-->
+    <!--alt="">-->
+    <!--<span class="thumbnail-list-time">04:99:99</span>-->
+    <!--</li>-->
+    <!--<li class="thumbnail-list">-->
+    <!--<img class="thumbnail-list-img"-->
+    <!--src="https://image.csslcloud.net/image/3115C441D8B66A719C33DC5901307461/0D1252DB6778DB1C9C33DC5901307461/1.jpg"-->
+    <!--alt="">-->
+    <!--<span class="thumbnail-list-time">125:99:99</span>-->
+    <!--</li>-->
+  </ul>
+</div>

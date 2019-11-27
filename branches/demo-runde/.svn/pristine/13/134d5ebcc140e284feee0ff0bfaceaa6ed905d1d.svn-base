@@ -1,0 +1,145 @@
+<template>
+  <div class="wrapper">
+    <div class="container">
+      <header class="header">
+        <live-header :name="name"></live-header>
+      </header>
+      <div class="main">
+        <div class="left" :class="{ 'bespread': isBespread }">
+          <live-player @bespread="onBespread"></live-player>
+        </div>
+        <div class="right" v-show="!isBespread">
+          <live-chat></live-chat>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import LiveHeader from './components/header/Header'
+import LivePlayer from './components/player/Player'
+import LiveChat from './components/chat/Chat'
+import HuodeScene from 'common/websdk/live'
+import {log} from 'common/utils'
+import {mapMutations} from 'vuex'
+
+export default {
+  name: 'Live',
+  components: {
+    LiveHeader,
+    LivePlayer,
+    LiveChat
+  },
+  data () {
+    return {
+      name: '',
+      isBespread: false
+    }
+  },
+  methods: {
+    init () {
+      const options = JSON.parse(decodeURIComponent(this.$route.params.options))
+      log('options', options)
+
+      this._setOptions(options)
+
+      this.HD = new HuodeScene()
+
+      this.login(options)
+    },
+    login (options) {
+      this.HD.login({
+        userId: options.userid,
+        roomId: options.roomid,
+        viewerName: options.name || '获得场景视频',
+        viewerToken: options.token || '',
+        success: (result) => {
+          log('onLoginSuccess', result)
+
+          this.setDatas(result)
+
+          this.$message({
+            showClose: true,
+            message: '登录成功',
+            type: 'success'
+          })
+        },
+        fail: (error) => {
+          log('onLoginError', error)
+
+          this.$message({
+            showClose: true,
+            message: error.msg,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
+    },
+    setDatas (datas) {
+      const viewer = datas.viewer
+
+      this.setViewer(viewer)
+
+      this.name = viewer.name
+    },
+    _setOptions (options) {
+      this.setOptions(options)
+    },
+    onBespread (status) {
+      this.isBespread = status
+    },
+    destroy () {
+      this.HD.destroy({
+        success: () => {
+          log('退出成功')
+        },
+        fail: () => {
+          log('退出失败')
+        }
+      })
+    },
+    ...mapMutations(['setViewer', 'setOptions'])
+  },
+  mounted () {
+    this.init()
+  },
+  destroyed () {
+    this.destroy()
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  @import "~styles/mixins.styl"
+
+  .wrapper
+    .container
+      width-height-full()
+      position absolute
+      overflow hidden
+      .header
+        min-width 831px; /*no*/
+        position absolute
+        width 100%
+        z-index 1
+      .main
+        min-width 1441px; /*no*/
+        background rgba(238, 233, 239, 1)
+        layout-full(80px, 0, 0, 0)
+        box-sizing border-box
+        padding 29px 95px 100px
+        .left
+          width 1230px
+          height 100%
+          float left
+        .bespread
+          width 1730px
+        .right
+          box-sizing border-box
+          padding-left 20px
+          width 500px
+          height 100%
+          float left
+</style>

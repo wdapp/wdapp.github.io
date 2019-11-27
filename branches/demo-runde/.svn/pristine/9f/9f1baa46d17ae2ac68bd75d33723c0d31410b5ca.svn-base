@@ -1,0 +1,18 @@
+$primaryTextColor = #303133 // #333333
+$baseTextColor = #606266
+$baseTextSize = 16px
+$baseFontWeight = 500
+$boldFontWeight = bold
+$baseFontFamily = PingFang SC
+$genelFontFamily = Microsoft YaHei
+
+$baseWhiteColor = #FFFFFF
+$grayColor = #EBEEF5
+$darkGrayColor = #E4E7ED
+$dullGreyColor = #DCDFE6 // #DDDDDD
+$betterGreyColor = #999999
+$baseBlackColor = #000000
+$lightBlackColor = #020C0A
+$baseRedColor = #FF454B
+$baseGreenColor = #00CC00
+$baseOrangeColor = #FE992A
