@@ -237,8 +237,13 @@ export default {
       let status = this.playerStatus
       HD.onPlayerLoad(() => {
         this.duration = HD.getDuration()
+        this.$emit('docAdapt')
         log('duration', this.duration)
         log('onPlayerLoad')
+      })
+      this.$once('docAdapt', () => {
+        HD.docAdapt(true)
+        log('docAdapt')
       })
       HD.onPlaying(() => {
         status = true

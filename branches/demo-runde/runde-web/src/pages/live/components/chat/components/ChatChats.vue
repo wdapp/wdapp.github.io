@@ -277,6 +277,9 @@ export default {
       }
       this.$nextTick(() => {
         this.scroll.refresh()
+        if (!this.$refs.chatGroup || !this.$refs.chatGroup.lastElementChild) {
+          return false
+        }
         this.scroll.scrollToElement(this.$refs.chatGroup.lastElementChild)
       })
     },

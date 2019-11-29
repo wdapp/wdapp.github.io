@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import HuodeScene from 'common/websdk/replay'
 import Drag from './drag'
 
 export default {
@@ -52,10 +51,6 @@ export default {
       this.status = false
       this.$emit('close', this.status)
     }
-  },
-  mounted () {
-    const HD = new HuodeScene()
-    HD.docAdapt(true)
   }
 }
 </script>

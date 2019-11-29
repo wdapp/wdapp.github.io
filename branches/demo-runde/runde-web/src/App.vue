@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <keep-alive include="PlayerHeader,PlayerFooter,PlayerControl,Header,ChatTabs,HDPraise,Slide">
       <router-view/>
     </keep-alive>
   </div>

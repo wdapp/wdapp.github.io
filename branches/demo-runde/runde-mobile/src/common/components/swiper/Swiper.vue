@@ -81,6 +81,7 @@ export default {
 @import "~styles/mixins.styl"
 
 .swiper-wrapper
+  position absolute
   width-height-full()
   display flex
   flex-direction column
@@ -103,6 +104,7 @@ export default {
               baseTextStyle(30px, $c666, $boldFontWeight, $baseFontFamily)
               color inherit
   .swiper-wrap
+    layout(80px, 0, 0, 0)
     flex 1
     >>> .swiper-container
       height 100%
