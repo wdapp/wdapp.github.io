@@ -3170,7 +3170,7 @@
       }
       this.report = new ReportLog(options, 1, 11, video, true)
     },
-    showControl (b) {
+    showControl: function(b) {
       this.controls = b
     },
     ban: function () {
