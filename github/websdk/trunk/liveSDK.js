@@ -3209,6 +3209,7 @@
     },
 
     changeLine: function (line) {
+      $('#' + LivePlayer.id).find('video')[0].pause()
       $('#' + LivePlayer.id).find('video').attr('src', this.m3u8[line])
       this.line = line
 

@@ -3544,11 +3544,11 @@
         if (status == 0) {
           options.liveId = data.live.liveId
           DWLive.liveId = data.live.liveId;
-          DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
+          // DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
         }
       },
       error:function(){
-        DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
+        // DWLive.getHdInquirePunchInformation(DWLive.getHDPunchInfo);
       }
     })
   }
