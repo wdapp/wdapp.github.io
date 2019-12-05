@@ -116,7 +116,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/branches/demo-runde/runde-mobile/dist/img/success@3x.f183870e.png"
   },
   {
-    "revision": "dbabc1b922f9c791bcba5b231b6e3f42",
+    "revision": "f6d7982f2e84bcc3e6c060ade61c6afb",
     "url": "/branches/demo-runde/runde-mobile/dist/index.html"
   },
   {
