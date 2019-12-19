@@ -423,6 +423,21 @@ new scale({
     }
 });
 
+$(document).keydown(function (event) {
+    var currentTime = parseInt($.DW.getPlayerTime())
+    var seek = 0
+    var interval = 5
+    switch (event.keyCode) {
+        case 37:
+            seek = currentTime - interval
+            break;
+        case 39:
+            seek = currentTime + interval
+            break;
+    }
+    $.DW.seek(seek)
+})
+
 function playTimerCallback() {
     if (!toggleProgress) {
         return;

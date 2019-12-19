@@ -174,14 +174,14 @@
 <script src="js/touchSlide.js"></script>
 <script src="js/jquery.panzoom.min.js"></script>
 <script src="js/main.js"></script>
-<script src="js/liveSDK.js"></script>
+<script src="//view.csslcloud.net/js/sdk/3.0.0/liveSDK.js"></script>
 <script src="js/chat_qa.js"></script>
 <script src="js/cc.questionnaire.js"></script>
 <script type="text/javascript">
     $(function () {
         DWLive.init({
-            userid: "AB564554C11217A4",
-            roomid: "2E55F9B3E973AD519C33DC5901307461",
+            userid: localStorage.userid,
+            roomid: localStorage.roomid,
             groupid:localStorage.groupid,
             viewername: localStorage.viewername,
             viewertoken: localStorage.viewertoken,

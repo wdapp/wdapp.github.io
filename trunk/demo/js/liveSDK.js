@@ -3211,6 +3211,7 @@
     changeLine: function (line) {
       $('#' + LivePlayer.id).find('video')[0].pause()
       $('#' + LivePlayer.id).find('video').attr('src', this.m3u8[line])
+      $('#' + LivePlayer.id).find('video')[0].play()
       this.line = line
 
       if (MobileLive.audio) {
