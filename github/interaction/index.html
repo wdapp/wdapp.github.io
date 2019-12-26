@@ -148,7 +148,7 @@ $("#hangup").click(function() {
   DWLive.hangupInteraction();
 });
 
-// 挂断连麦回调 (data 挂断连麦数据, type 连麦类型)
+// 挂断连麦回调 (data 挂断信息, type 连麦类型)
 window.on_cc_live_interaction_disconnect = function(data, type) {
   console.log("连麦已挂断", data, type);
 };
@@ -168,7 +168,7 @@ function on_cc_live_interaction_local_media(type, stream) {
   console.log("获取本地流信息", type, stream);
 }
 
-// 获取远程互动 (type 连麦类型, chatuser 连麦用户列表, stream 远程流地址)
+// 获取远程互动 (type 连麦类型, chatuser 讲师信息, stream 远程流地址)
 function on_cc_live_interaction_remote_media(type, chatuser, stream) {
   console.log("获取远程互动", type, chatuser, stream);
 }
