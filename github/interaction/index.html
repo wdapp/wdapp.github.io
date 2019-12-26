@@ -155,9 +155,9 @@ window.on_cc_live_interaction_accept = function(type) {
   console.log("接受连麦回调", type);
 };
 
-// 申请连麦后，等待接受连麦计时器 (type 连麦类型, time 等待时间ms)，每1000ms触发一次回调
+// 连麦计时器 (type 连麦类型, time 时间)，每 1000 ms 触发一次回调
 function on_cc_live_interaction_interval(type, time) {
-  console.log("连麦计时器", type, time);
+  // console.log("连麦计时器", type, time);
 }
 
 // 获取本地流信息 (type 连麦类型, stream 本地流地址)
