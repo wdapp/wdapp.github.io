@@ -22,7 +22,7 @@
     display: none;
   }
 
-  .interaction-local-video {
+  .interaction-local-video-wrap {
     position: absolute;
     top: 0;
     left: 430px;
@@ -55,7 +55,10 @@
   <!--  连麦音频组件-->
   <div class="audio-interactions" id="audioInteractions"></div>
   <!--  连麦预览组件-->
-  <video class="interaction-local-video" id="interactionLocalVideo" autoplay></video>
+  <div class="interaction-local-video-wrap">
+    <p>预览</p>
+    <video class="interaction-local-video" id="interactionLocalVideo" autoplay></video>
+  </div>
 </div>
 
 <div class="btn-group">
