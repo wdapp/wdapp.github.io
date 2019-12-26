@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+  .live-player-wrap {
+    width: 400px;
+    height: 300px;
+    background-color: #333333;
+  }
+
+  .video-interactions {
+    width: 100%;
+    height: 100%;
+  }
+
+  .audio-interactions {
+    display: none;
+  }
+
+  .interaction-local-video {
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+</head>
+<body>
+<h1>获得场景视频 WEB SDK 连麦DEMO</h1>
+<h3>推荐使用google浏览器进行连麦，连麦功能仅支持https协议下使用</h3>
+
+<!--视频组件-->
+<div class="live-player-wrap">
+  <div id="livePlayer"></div>
+  <!--  连麦视频组件-->
+  <div class="video-interactions" id="videoInteractions"></div>
+  <!--  连麦音频组件-->
+  <div class="audio-interactions" id="audioInteractions"></div>
+  <!--  连麦预览组件-->
+  <video class="interaction-local-video" id="interactionLocalVideo" autoplay></video>
+</div>
+
+<button id="videoBtn">申请视频连麦</button>
+<button id="audioBtn">申请音频连麦</button>
+<button id="hangup">挂断连麦</button>
+<div>
+  <span>连麦状态：</span>
+  <span id="info">客户端未开启连麦</span>
+</div>
+<h3>连麦功能浏览器支持情况如图：</h3>
+<img src="support.png">
+
+<script src="//view.csslcloud.net/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="common.js"></script>
+<script src="//view.csslcloud.net/js/sdk/3.1.0/liveSDK.js" type="text/javascript"></script>
+<script>
+
+// 设置默认直播间地址
+var address = "https://view.csslcloud.net/api/view/index?roomid=20E2BEC88BEF3EEB9C33DC5901307461&userid=B693062ABB8020E0";
+
+if (!address) {
+  address = prompt("请输入直播间地址");
+}
+
+// 解析参数
+address = parseUrl(address);
+
+console.log(address);
+
+// 登录
+DWLive.init({
+  userid: address.userid,
+  roomid: address.roomid,
+  viewername: "获得场景视频",
+  viewertoken: ""
+});
+
+// 登录成功回调
+DWLive.onLoginSuccess = function(data) {
+  console.log("登录成功", data);
+};
+
+// 监听客户端是否开启连麦回调
+DWLive.onRoomSetting = function(data) {
+  if (data.allow_speak_interaction == "true") {
+    console.log("开启连麦");
+    $("#info").text("客户端允许连麦");
+  } else {
+    console.log("关闭连麦");
+    $("#info").text("客户端未开启连麦");
+    // 挂断连麦
+    DWLive.hangupInteraction();
+  }
+
+  //检查当前浏览器是否支持连麦和是否满足连麦条件，支持返回 true，不支持返回 false
+  if (!DWLive.isSupportInteraction()) {
+    console.log("当前浏览器不支持连麦功能");
+    return;
+  }
+};
+
+// 申请视频连麦
+$("#videoBtn").click(function() {
+  DWLive.requestInteraction({
+    video: true,
+    audio: true
+  });
+});
+
+// 申请语音连麦
+$("#audioBtn").click(function() {
+  DWLive.requestInteraction({
+    video: false,
+    audio: true
+  });
+});
+
+// 主动挂断连麦
+$("#hangup").click(function() {
+  DWLive.hangupInteraction();
+});
+
+// 挂断连麦回调 (data 挂断连麦数据, type 连麦类型)
+window.on_cc_live_interaction_disconnect = function(data, type) {
+  console.log("连麦已挂断", data, type);
+};
+
+// 接受连麦回调 (type 连麦类型)
+window.on_cc_live_interaction_accept = function(type) {
+  console.log("接受连麦回调", type);
+};
+
+// 申请连麦后，等待接受连麦计时器 (type 连麦类型, time 等待时间ms)，每1000ms触发一次回调
+function on_cc_live_interaction_interval(type, time) {
+  console.log("连麦计时器", type, time);
+}
+
+// 获取本地流信息 (type 连麦类型, stream 本地流地址)
+function on_cc_live_interaction_local_media(type, stream) {
+  console.log("获取本地流信息", type, stream);
+}
+
+// 获取远程互动 (type 连麦类型, chatuser 连麦用户列表, stream 远程流地址)
+function on_cc_live_interaction_remote_media(type, chatuser, stream) {
+  console.log("获取远程互动", type, chatuser, stream);
+}
+
+// 请求连麦60秒内没有接受，超时断开回调 (type 连麦类型)
+function on_cc_live_interaction_request_timeout(type) {
+  console.log("请求超时", type);
+}
+
+// 解析直播间地址
+function parseUrl(url) {
+  var querys = url.split("?");
+  if (!querys[1]) {
+    console.log("无效链接");
+    return false;
+  }
+  var query = url.split("?")[1];
+  var queryArr = query.split("&");
+  if (queryArr.length === 0) {
+    console.log("无效链接");
+    return false;
+  }
+  var obj = {};
+  queryArr.forEach(function(item) {
+    var key = item.split("=")[0];
+    var value = item.split("=")[1];
+    obj[key] = value;
+  });
+  return obj;
+}
+</script>
+</body>
+</html>

@@ -182,13 +182,13 @@
 
     $(function () {
         DWLive.init({
-            userid: 'AB564554C11217A4',
-            roomid: '2E55F9B3E973AD519C33DC5901307461',
-            groupid: '',
-            viewername: 'test',
-            viewertoken: '',
-            fastMode: true,
-            forceNew: true
+            userid: localStorage.userid,
+            roomid: localStorage.roomid,
+            groupid:localStorage.groupid,
+            viewername: localStorage.viewername,
+            viewertoken: localStorage.viewertoken,
+            fastMode: localStorage.fastmode,
+            forceNew: localStorage.forceNew === 'true' ? true : false
         });
 
         DWLive.onLiveTime = function (e) {
