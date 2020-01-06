@@ -766,10 +766,26 @@
                     packet.id = this.ids++;
                 }
 
+                var length = arguments.length;
+                var opts = arguments[2];
+                var isOpts = (length > 2 && typeof opts === "object");
+
                 if (this.connected) {
                     this.packet(packet);
+                    if (isOpts) {
+                        opts.success && opts.success();
+                    }
                 } else {
-                    this.sendBuffer.push(packet);
+                    if (isOpts) {
+                        if (typeof opts.isBuffer !== 'undefined' && !opts.isBuffer) {
+                            opts.fail && opts.fail();
+                        } else {
+                            this.sendBuffer.push(packet);
+                            opts.fail && opts.fail();
+                        }
+                    } else {
+                        this.sendBuffer.push(packet);
+                    }
                 }
 
                 return this;

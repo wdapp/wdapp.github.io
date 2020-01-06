@@ -374,7 +374,7 @@
 
       var _this = this
       var scripts = [
-        '//static.csslcloud.net/js/socket.io.js',
+        './js/socket.io.js',
         '//static.csslcloud.net/js/report.js'
       ]
       var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
@@ -728,6 +728,27 @@
         return
       }
       Pusher.socket.emit('chat_message', msg)
+    },
+    sendChatMessage: function (msg, options) {
+      if (!msg || msg.length > 300) {
+        return
+      }
+      var opts = {};
+      if (typeof options === 'object') {
+        opts = {
+          isBuffer: options.isBuffer,
+          complete: options.complete,
+          fail: options.fail
+        };
+      } else {
+        opts = {
+          isBuffer: false,
+          complete: false,
+          fail: false
+        };
+      }
+
+      Pusher.socket.emit('chat_message', msg, opts)
     },
 
     sendPrivateChatMsg: function (touserid, tousername, msg) {
