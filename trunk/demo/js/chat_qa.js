@@ -254,7 +254,17 @@ function chatSend() {
 
     if ($("#chatlistbtn").attr("for") === "all") {
 
-        DWLive.sendPublicChatMsg(msg); // 发送公聊
+        // DWLive.sendPublicChatMsg(msg); // 发送公聊
+
+        DWLive.sendChatMessage(msg, {
+            isBuffer: false, // 无缓存buffer，socket重连成功不会重新发送发送失败的消息
+            complete: function () {
+                console.log("发送成功")
+            },
+            fail: function () {
+                console.log("发送失败")
+            }
+        })
 
     } else {
 
