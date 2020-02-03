@@ -3137,7 +3137,7 @@
               _this.m3u8 = _this.secureHosts
             }
 
-            _this.appendVideo(_this.m3u8[0])
+            _this.appendVideo(_this.m3u8[1])
 
             if (typeof DWLive.onLiveStarting === 'function') {
               DWLive.onLiveStarting()
