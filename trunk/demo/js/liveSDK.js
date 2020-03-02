@@ -374,7 +374,7 @@
 
       var _this = this
       var scripts = [
-        './js/socket.io.js',
+        '//static.csslcloud.net/js/socket.io.js',
         '//static.csslcloud.net/js/report.js'
       ]
       var isIE = (navigator.appVersion.indexOf('MSIE') >= 0)
@@ -728,27 +728,6 @@
         return
       }
       Pusher.socket.emit('chat_message', msg)
-    },
-    sendChatMessage: function (msg, options) {
-      if (!msg || msg.length > 300) {
-        return
-      }
-      var opts = {};
-      if (typeof options === 'object') {
-        opts = {
-          isBuffer: options.isBuffer,
-          complete: options.complete,
-          fail: options.fail
-        };
-      } else {
-        opts = {
-          isBuffer: false,
-          complete: false,
-          fail: false
-        };
-      }
-
-      Pusher.socket.emit('chat_message', msg, opts)
     },
 
     sendPrivateChatMsg: function (touserid, tousername, msg) {
@@ -1494,6 +1473,23 @@
           DWLive.onSilenceUserChatMessage(toJson(data))
         }
       })
+
+      /**
+       * 禁言或删除聊天记录
+       * {
+       *     'ns' : 'DA8775CFA03D938B9C33DC5901307461',
+       *     'action' : 'ban_delete_chat',
+       *     'msg' : {
+       *         'viewerId':'DA8775CFA03D938B9C33DC5901307461'
+       *     }
+       * }
+       * */
+      this.socket.on("ban_delete_chat", function (data) {
+        data = JSON.parse(data)
+        if (typeof window.on_cc_live_ban_delete_chat === "function") {
+          window.on_cc_live_ban_delete_chat(data);
+        }
+      });
 
       // 讲师接受互动信息
       this.socket.on('accept_speak', function (data) {
@@ -3137,7 +3133,7 @@
               _this.m3u8 = _this.secureHosts
             }
 
-            _this.appendVideo(_this.m3u8[1])
+            _this.appendVideo(_this.m3u8[0])
 
             if (typeof DWLive.onLiveStarting === 'function') {
               DWLive.onLiveStarting()
@@ -3230,9 +3226,7 @@
     },
 
     changeLine: function (line) {
-      $('#' + LivePlayer.id).find('video')[0].pause()
       $('#' + LivePlayer.id).find('video').attr('src', this.m3u8[line])
-      $('#' + LivePlayer.id).find('video')[0].play()
       this.line = line
 
       if (MobileLive.audio) {

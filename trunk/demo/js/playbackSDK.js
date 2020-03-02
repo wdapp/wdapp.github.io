@@ -2619,7 +2619,7 @@
     appendVideo: function (src, opts) {
       var _this = this
 
-      var v = '<video id="playbackVideo" controlslist="nodownload" x5-video-player-type="h5-page" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
+      var v = '<video id="playbackVideo" x5-video-player-type="h5-page" webkit-playsinline playsinline controls autoplay x-webkit-airplay="deny" x5-playsinline width="100%" height="100%" src="' + src + '"></video>'
       $('#' + playbackPlayer.id).html(v)
       var playerContainer = document.getElementById(playbackPlayer.id);
       // console.log("当前父容齐对象-》"+playerContainer);

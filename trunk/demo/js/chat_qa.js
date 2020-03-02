@@ -34,12 +34,12 @@ $(function () {
             var name = escapeHTML(msg['username']), msgStr = showEm(msg['msg']
                 || ''), userId = msg['userid'], divEl,chatId=msg['chatId'],status=msg['status'];
             if (name == DWLive.viewername) {
-                divEl = '<li class="message msg-send"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
+                divEl = '<li uid="'+ msg.userid +'" class="message msg-send"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
                     + name
                     + ':</span><span class="msg-time">' + msg.time + '</span></div><div class="msg-content">'
                     + msgStr + '</div></li>';
             } else {
-                divEl = '<li  class="message message-received"chatId="'+chatId+'" status="'+status+'"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
+                divEl = '<li uid="'+ msg.userid +'"     class="message message-received"chatId="'+chatId+'" status="'+status+'"><div class="msg-info"><span class="user-name ' + adminClass + '">' + adminText
                     + name
                     + ':</span><span class="msg-time">' + msg.time + '</span></div><div class="msg-content">'
                     + msgStr + '</div></li>';
@@ -254,17 +254,7 @@ function chatSend() {
 
     if ($("#chatlistbtn").attr("for") === "all") {
 
-        // DWLive.sendPublicChatMsg(msg); // 发送公聊
-
-        DWLive.sendChatMessage(msg, {
-            isBuffer: false, // 无缓存buffer，socket重连成功不会重新发送发送失败的消息
-            complete: function () {
-                console.log("发送成功")
-            },
-            fail: function () {
-                console.log("发送失败")
-            }
-        })
+        DWLive.sendPublicChatMsg(msg); // 发送公聊
 
     } else {
 
@@ -863,3 +853,15 @@ DWLive.onQaPublish = function (data) {
         $q.show();
     }
 };
+
+window.on_cc_live_ban_delete_chat = function (data) {
+    var viewerId = data.viewerId
+    if (viewerId == DWLive.viewerid) {
+        return false
+    }
+    $('#chat_container > li').each(function (index, item) {
+        if ($(item).attr('uid') == viewerId) {
+            $(item).remove()
+        }
+    })
+}

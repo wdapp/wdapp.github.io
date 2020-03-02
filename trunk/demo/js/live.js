@@ -314,16 +314,7 @@ $(function () {
         var touserid = $('.select-current').attr('id');
         var tousername = $('.select-current').html();
         if (touserid == 'all') {
-            // DWLive.sendPublicChatMsg(nmsg); // 发送公聊
-            DWLive.sendChatMessage(nmsg, {
-                isBuffer: false, // 无缓存buffer，socket重连成功不会重新发送发送失败的消息
-                complete: function () {
-                    console.log("发送成功")
-                },
-                fail: function () {
-                    console.log("发送失败")
-                }
-            })
+            DWLive.sendPublicChatMsg(nmsg); // 发送公聊
         } else {
             DWLive.sendPrivateChatMsg(touserid, tousername, nmsg); // 发送私聊
         }
@@ -1183,3 +1174,15 @@ DWLive.onPageChange = function (data) {
 DWLive.onChangeNickname = function (data) {
     // console.log(data);
 };
+
+window.on_cc_live_ban_delete_chat = function (data) {
+    var viewerId = data.viewerId
+    if (viewerId == DWLive.viewerid) {
+        return false
+    }
+    $('#chat-list > li').each(function (index, item) {
+        if ($(item).attr('uid') == viewerId) {
+            $(item).remove()
+        }
+    })
+}
