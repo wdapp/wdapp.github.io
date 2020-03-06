@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .player {
+      width: 100%;
+      height: 200px;
+    }
+
+    .panel {
+      border: 1px green solid;
+      max-height: 500px;
+      overflow: auto;
+      word-break: break-all;
+      white-space: normal;
+    }
+  </style>
+</head>
+<body>
+
+<video class="player" id="player" playsinline autoplay controls src="//vjs.zencdn.net/v/oceans.mp4">
+  不支持video
+</video>
+<div class="panel" id="panel">
+
+</div>
+<!--<video controls autoplay src="https://stream-ali1.csslcloud.net/src/3115C441D8B66A719C33DC5901307461/playlist.m3u8"></video>-->
+<!--<video style="width: 90%;height: 600px" id="live_video" class="video-widget iphone-live"  controls="" autoplay=""  src="https://stream-ali1.csslcloud.net/src/3115C441D8B66A719C33DC5901307461/playlist.m3u8"></video>-->
+<!--<video id="live_video" style="width: 90%;height: 600px" class="video-widget iphone-live" webkit-playsinline="" playsinline="" controls="" autoplay="" x-webkit-airplay="allow" x5-playsinline="" src="https://sslhls-ws1.csslcloud.net/src/3115C441D8B66A719C33DC5901307461/playlist.m3u8"></video>-->
+
+<script>
+  // https://vjs.zencdn.net/v/oceans.mp4
+  // https://github.wdapp.top/github/res/video/min.mp4
+
+  var player = document.getElementById('player')
+  var panel = document.getElementById('panel')
+  addEvents(player, 'seeked')
+  addEvents(player, 'seeking')
+  addEvents(player, 'timeupdate')
+  panel.append("1.0.0")
+
+  function addEvents (target, event) {
+    target.addEventListener(event, function (e) {
+      console.log(event, e)
+      var info = ""
+      // info = event + " " + e.type + player.currentTime +" - "
+      var currentTime = player.currentTime
+      var duration = player.duration
+      info = currentTime + "/" + duration
+      // for (var key in e.target) {
+      //   var p = document.createElement("p")
+      //   p.innerText = key
+      //   panel.append(p)
+      // }
+      // info += "==============="
+      panel.append(info)
+    })
+  }
+</script>
+
+</body>
+</html>
