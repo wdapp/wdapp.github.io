@@ -94,11 +94,13 @@ class App extends React.Component {
       <div className="wrap">
         <div className="button-group">
           <Button onClick={this.isSupportNFC}>检查设备是否支持NFC</Button>
+          <Button onClick={this.openNFC}>启用设备NFC功能</Button>
           <Button onClick={this.readNFCInfo}>读取NFC信息</Button>
           <Button onClick={this.writeNFCInfo}>写入NFC信息</Button>
+          <Button onClick={this.closeScanNFC}>关闭NFC识别</Button>
         </div>
         <div className="event-wrap">
-          <div  className="title">NFC扫描回调 window.onNFCScan</div>
+          <div  className="title">NFC扫描回调 window.onScanNFC</div>
         </div>
       </div>
 
@@ -106,8 +108,8 @@ class App extends React.Component {
   }
 
   addEvents () {
-    window.onNFCScan = ((data) => {
-      console.log('onNFCScan', data);
+    window.onScanNFC = ((data) => {
+      console.log('onScanNFC', data);
     });
   }
 
@@ -118,11 +120,23 @@ class App extends React.Component {
     });
   }
 
-  readNFCInfo() {
-    console.log("读取NFC信息", "window.readNFCInfo((res) => {})");
-    window.readNFCInfo && window.readNFCInfo((data) => {
-      console.log('readNFCInfo', data);
+  openNFC () {
+    console.log("启用设备NFC功能", "window.openNFC((res) => {})");
+    window.openNFC && window.openNFC((data) => {
+      console.log('openNFC', data);
     });
+  }
+
+  closeScanNFC () {
+    console.log("关闭NFC识别", "window.closeScanNFC((res) => {})");
+    window.closeScanNFC && window.closeScanNFC((data) => {
+      console.log('openNFC', data);
+    });
+  }
+
+  readNFCInfo() {
+    console.log("读取NFC信息", "window.readNFCInfo()");
+    window.readNFCInfo && window.readNFCInfo();
   }
 
   writeNFCInfo() {
