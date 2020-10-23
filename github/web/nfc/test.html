@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Test</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .wrap {
+    padding: 10px;
+  }
+
+  .button {
+    height: 56px;
+    background-color: #409eff;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    line-height: 56px;
+    text-align: center;
+    margin-top: 30px;
+    outline: none;
+  }
+
+  .button.active {
+    background-color: #3177c0;
+  }
+
+  .event-wrap .title {
+    margin-top: 30px;
+    text-align: center;
+  }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script src="//wechatfe.github.io/vconsole/lib/vconsole.min.js?v=3.3.0"></script>
+<script type="text/babel">
+var vConsole = new VConsole();
+console.log(vConsole);
+
+class Button extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      className: "button"
+    };
+  }
+
+  render () {
+    return (
+      <div
+        className={this.state.className}
+        onClick={this.onClick.bind(this)}
+      >
+        {this.props.children}
+      </div>
+    );
+  }
+
+  onClick () {
+    this.setState({
+      className: "button"
+    });
+    this.props.onClick();
+  }
+}
+
+const getType = o => Object.prototype.toString.call(o).slice(8, -1);
+
+class App extends React.Component {
+  constructor () {
+    super();
+    this.isSupportNFC = this.isSupportNFC.bind(this);
+    this.addEvents();
+
+    window.index1 = 0;
+    window.index2 = 0;
+
+    window.Seller = {
+      allSelect: [],
+      ids: [],
+      allSelectLists: [],
+      datas: {"code":0,"message":"Success","data":[{"pId":null,"id":75063545,"name":"Pets","status":1,"level":1,"childList":[{"pId":75063545,"id":75063494,"name":"Bird","status":1,"level":2,"childList":[{"pId":75063494,"id":75063501,"name":"Cages & Accessories","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75061498,"name":"Clothes, Shoes, & Accessories","status":1,"level":1,"childList":[{"pId":75061498,"id":75061815,"name":"Costumes","status":1,"level":2,"childList":[{"pId":75061815,"id":75062078,"name":"Men's Costume","status":1,"level":3,"childList":[]},{"pId":75061815,"id":75062080,"name":"Kids' Costume","status":1,"level":3,"childList":[]}]},{"pId":75061498,"id":75061935,"name":"Boy","status":1,"level":2,"childList":[{"pId":75061935,"id":75061945,"name":"Boy's Footwear","status":1,"level":3,"childList":[]},{"pId":75061935,"id":75061946,"name":"Boy's Accessories","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75061582,"name":"Virtual","status":1,"level":1,"childList":[{"pId":75061582,"id":75063357,"name":"SIM Card","status":1,"level":2,"childList":[{"pId":75063357,"id":75063358,"name":"SIM Card","status":1,"level":3,"childList":[]}]},{"pId":75061582,"id":75061583,"name":"Ticket","status":1,"level":2,"childList":[{"pId":75061583,"id":75062007,"name":"Movie Ticket","status":1,"level":3,"childList":[]}]},{"pId":75061582,"id":75061603,"name":"MultiBiller","status":1,"level":2,"childList":[{"pId":75061603,"id":75063423,"name":"Credit Card","status":0,"level":3,"childList":[]}]}]},{"pId":null,"id":75060929,"name":"Online Test(1)-en","status":1,"level":1,"childList":[{"pId":75060929,"id":75061641,"name":"XXX2","status":1,"level":2,"childList":[{"pId":75061641,"id":75062092,"name":"FullGift","status":1,"level":3,"childList":[]}]},{"pId":75060929,"id":75062021,"name":"Online Test(2-2)","status":1,"level":2,"childList":[{"pId":75062021,"id":75061987,"name":"testcat","status":1,"level":3,"childList":[]},{"pId":75062021,"id":75063559,"name":"TestAttribute","status":1,"level":3,"childList":[]}]},{"pId":75060929,"id":75062020,"name":"Online Test(2-1)","status":1,"level":2,"childList":[{"pId":75062020,"id":75061625,"name":"BackpackTest","status":1,"level":3,"childList":[]},{"pId":75062020,"id":75061118,"name":"ClutchbagTest","status":1,"level":3,"childList":[]},{"pId":75062020,"id":75063599,"name":"wangtest","status":1,"level":3,"childList":[]},{"pId":75062020,"id":75062094,"name":"shoetest","status":1,"level":3,"childList":[]},{"pId":75062020,"id":75062083,"name":"testtest","status":1,"level":3,"childList":[]},{"pId":75062020,"id":75060931,"name":"Online Test(3-1)","status":1,"level":3,"childList":[]}]},{"pId":75060929,"id":75062180,"name":"Op Test","status":1,"level":2,"childList":[{"pId":75062180,"id":75062181,"name":"Ops Test","status":1,"level":3,"childList":[]},{"pId":75062180,"id":75063974,"name":"Category test &","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75061249,"name":"Sports, Hobbies & Outdoor","status":1,"level":1,"childList":[{"pId":75061249,"id":75062109,"name":"Drum & Percussion","status":1,"level":2,"childList":[{"pId":75062109,"id":75062112,"name":"Drum Accessories","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75060992,"name":"Audio","status":1,"level":1,"childList":[{"pId":75060992,"id":75061000,"name":"Recording Devices","status":1,"level":2,"childList":[{"pId":75061000,"id":75061035,"name":"Other Recording Devices","status":1,"level":3,"childList":[]},{"pId":75061000,"id":75061028,"name":"Voice Recorders","status":1,"level":3,"childList":[]},{"pId":75061000,"id":75061030,"name":"Microphones","status":1,"level":3,"childList":[]}]},{"pId":75060992,"id":75060999,"name":"Audio Devices","status":1,"level":2,"childList":[{"pId":75060999,"id":75061025,"name":"Amplifiers","status":1,"level":3,"childList":[]},{"pId":75060999,"id":75061027,"name":"Other Audio Devices & Accessories","status":1,"level":3,"childList":[]},{"pId":75060999,"id":75061023,"name":"MP3 & MP4","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75061491,"name":"API Test","status":1,"level":1,"childList":[{"pId":75061491,"id":75061218,"name":"API Test lv.21","status":1,"level":2,"childList":[{"pId":75061218,"id":75061802,"name":"API Test lv.3","status":1,"level":3,"childList":[]}]}]},{"pId":null,"id":75063751,"name":"online_comp","status":1,"level":1,"childList":[{"pId":75063751,"id":75063752,"name":"zjh_cat_2_1","status":1,"level":2,"childList":[{"pId":75063752,"id":75063753,"name":"zjh_cat_3_1","status":1,"level":3,"childList":[]}]}]}],"success":true},
+      lists: [],
+      deepClone (obj) {
+        let result;
+        if (getType(obj) === "Object") {
+          result = {};
+          for (const key in obj) {
+            if (getType(obj[key]) === "Object" || getType(obj[key]) === "Array") {
+              result[key] = this.deepClone(obj[key]);
+            } else {
+              result[key] = obj[key];
+            }
+          }
+        } else if (Object.prototype.toString.call(obj).slice(8, -1) === "Array") {
+          result = [];
+          for (const key of obj) {
+            if (getType(obj[key]) === "Object" || getType(obj[key]) === "Array") {
+              result.push(this.deepClone(key));
+            } else {
+              result.push(this.deepClone(key));
+            }
+          }
+        } else {
+          return obj;
+        }
+        return result;
+      },
+      configLists () {
+        return new Promise((resolve, reject) => {
+          this.lists = this.datas.data;
+          let bases = this.deepClone(this.lists);
+          let ids = [75061028,75061118,75061987,75062080,75063559,75063599];
+          console.log("bases", this.deepClone(bases));
+          console.log("ids", this.deepClone(ids));
+          this.splitRecursion(bases, ids).then(() => {
+            resolve(bases);
+          });
+        });
+      },
+      splitRecursion (bases, ids) {
+        return new Promise((resolve, reject) => {
+          const max = 20;
+          const length = ids.length;
+          const num = Math.ceil(length / max);
+          if (length >= max) {
+            this.ids = this.deepClone(ids);
+            let iterable = [];
+            for (let i = 0; i < num; i++) {
+              const _ids = ids.splice(0, max);
+              iterable.push(this.throttleRecursion(bases, _ids));
+            }
+            Promise.allSettled(iterable).then(() => {
+              // this.ids = [...new Set(this.ids)];
+              this.recursion(bases, this.ids);
+              this.isHalfChecked(bases);
+              resolve(bases);
+
+              console.log("split---");
+              console.log("new bases", bases);
+              console.log("new this.ids", this.ids);
+              console.log("index1", window.index1);
+              console.log("index2", window.index2);
+            });
+          } else {
+            this.recursionSelectIds(bases, ids);
+            // this.ids = [...new Set(this.ids)];
+            this.recursion(bases, this.ids);
+            this.isHalfChecked(bases);
+            resolve(bases);
+
+            console.log("new bases", bases);
+            console.log("new this.ids", this.ids);
+            console.log("index1", window.index1);
+            console.log("index2", window.index2);
+          }
+        });
+      },
+      async throttleRecursion (bases, ids) {
+        await new Promise((resolve) => {
+          this.recursionSelectIds(bases, ids);
+          setTimeout(() => {
+            resolve();
+          });
+        });
+        return bases;
+        // return new Promise((resolve, reject) => {
+        //     try {
+        //     } catch (e) {
+        //         reject(e);
+        //     }
+        // })
+      },
+      recursionSelectIds (bases, ids) {
+        for (let i = 0; i < bases.length; i++) {
+          const base = bases[i];
+          for (let j = 0; j < ids.length; j++) {
+            window.index1++;
+            const id = ids[j];
+            if (base.childList) {
+              this.recursionSelectIds(base.childList, ids);
+            }
+            if (base.id === id && this.ids.indexOf(base.pValue) === -1 && base.pValue) {
+              this.ids.push(base.pValue);
+            }
+          }
+        }
+      },
+      recursion (bases, ids) {
+        bases.forEach((base) => {
+          ids.forEach((id) => {
+            window.index2++;
+            if (base.value === id) {
+              base.checked = true;
+              this.allSelectLists.push(base.value);
+            } else {
+              this.allSelect = false;
+            }
+            if (base.childList) {
+              this.recursion(base.childList, ids);
+            }
+          });
+        });
+      },
+      checkedAll (list) {
+        list.forEach((item) => {
+          item.checked = true;
+          if (item.childList) {
+            this.checkedAll(item.childList);
+          }
+        });
+      },
+      isHalfChecked (bases) {
+        bases.forEach((base) => {
+          if (base.checked && base.childList) {
+            let half = base.childList.every((item) => {
+              return item.checked;
+            });
+            base.halfChecked = !half;
+          }
+          if (base.checked && base.childList && base.childList.length) {
+            this.isHalfChecked(base.childList);
+          }
+        });
+      }
+    }
+  }
+
+  render () {
+    return (
+      <div className="wrap">
+        <div className="button-group">
+          <Button onClick={this.startTest}>测试</Button>
+        </div>
+      </div>
+
+    );
+  }
+
+  startTest () {
+    window.Seller.configLists().then((res) => {
+      console.log('Seller.configLists', res);
+    });
+  }
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById("app")
+);
+</script>
+
+</body>
+</html>
