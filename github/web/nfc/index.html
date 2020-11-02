@@ -98,9 +98,10 @@ class App extends React.Component {
           <Button onClick={this.readNFCInfo}>读取NFC信息</Button>
           <Button onClick={this.writeNFCInfo}>写入NFC信息</Button>
           <Button onClick={this.closeScanNFC}>关闭NFC识别</Button>
+          <Button onClick={this.beginScanNFC}>beginScanNFC</Button>
         </div>
         <div className="event-wrap">
-          <div  className="title">NFC扫描回调 window.onScanNFC</div>
+          <div className="title">NFC扫描回调 window.onScanNFC</div>
         </div>
       </div>
 
@@ -109,40 +110,45 @@ class App extends React.Component {
 
   addEvents () {
     window.onScanNFC = ((data) => {
-      console.log('onScanNFC', data);
+      console.log("onScanNFC", data);
     });
   }
 
   isSupportNFC () {
     console.log("检查设备是否支持NFC", "window.isSupportNFC((res) => {})");
     window.isSupportNFC && window.isSupportNFC((data) => {
-      console.log('isSupportNFC', data);
+      console.log("isSupportNFC", data);
     });
   }
 
   openNFC () {
     console.log("启用设备NFC功能", "window.openNFC((res) => {})");
     window.openNFC && window.openNFC((data) => {
-      console.log('openNFC', data);
+      console.log("openNFC", data);
     });
   }
 
   closeScanNFC () {
     console.log("关闭NFC识别", "window.closeScanNFC((res) => {})");
     window.closeScanNFC && window.closeScanNFC((data) => {
-      console.log('openNFC', data);
+      console.log("openNFC", data);
     });
   }
 
-  readNFCInfo() {
-    console.log("读取NFC信息", "window.readNFCInfo()");
-    window.readNFCInfo && window.readNFCInfo();
+  beginScanNFC () {
+    debugger
+    console.log("beginScanNFC", "window.beginScanNFC({'callback': (data) => {}})");
+    window.beginScanNFC && window.beginScanNFC({
+      "callback": (data) => {
+        console.log("beginScanNFC", data);
+      }
+    });
   }
 
-  writeNFCInfo() {
+  writeNFCInfo () {
     console.log("写入NFC信息", "window.writeNFCInfo((res) => {})");
     window.writeNFCInfo && window.writeNFCInfo((data) => {
-      console.log('readNFCInfo', data);
+      console.log("readNFCInfo", data);
     });
   }
 }
