@@ -137,14 +137,18 @@ class App extends React.Component {
 
   beginScanNFC () {
     console.log("beginScanNFC", "window.beginScanNFC({'callback': (data) => {}})");
+    console.log("v0.0.1");
     // window.webkit.messageHandlers.beginScanNFC.postMessage({
     //   callback: () => {}
     // });
+
+    window.beginScanNFCCallback = (data) => {
+      console.log("beginScanNFCCallback", data);
+    }
+
     const beginScanNFC = window.webkit.messageHandlers.beginScanNFC;
     beginScanNFC && beginScanNFC.postMessage({
-      "callback": (data) => {
-        console.log("beginScanNFC", data);
-      }
+      "callback": "beginScanNFCCallback"
     });
   }
 
