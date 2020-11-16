@@ -124,10 +124,10 @@ class App extends React.Component {
       "callback": "isSupportNFC"
     })
 
-    const isSupportNFC = window.webkit.messageHandlers.isSupportNFC;
-    isSupportNFC && isSupportNFC.postMessage({
-      "callback": "isSupportNFC"
-    });
+    // const isSupportNFC = window.webkit.messageHandlers.isSupportNFC;
+    // isSupportNFC && isSupportNFC.postMessage({
+    //   "callback": "isSupportNFC"
+    // });
   }
 
   openNFC () {
