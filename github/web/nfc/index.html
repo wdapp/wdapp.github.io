@@ -119,6 +119,11 @@ class App extends React.Component {
     window.isSupportNFC && window.isSupportNFC((data) => {
       console.log("isSupportNFC", data);
     });
+
+    const isSupportNFC = window.webkit.messageHandlers.isSupportNFC;
+    isSupportNFC && isSupportNFC.postMessage({
+      "callback": "isSupportNFC"
+    });
   }
 
   openNFC () {
