@@ -120,6 +120,10 @@ class App extends React.Component {
       console.log("isSupportNFC", data);
     });
 
+    window.androidpassport && window.androidpassport.isSupportNFC && window.androidpassport.isSupportNFC({
+      "callback": "isSupportNFC"
+    })
+
     const isSupportNFC = window.webkit.messageHandlers.isSupportNFC;
     isSupportNFC && isSupportNFC.postMessage({
       "callback": "isSupportNFC"
