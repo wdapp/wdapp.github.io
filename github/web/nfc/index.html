@@ -115,13 +115,13 @@ class App extends React.Component {
   }
 
   isSupportNFC () {
-    console.log("检查设备是否支持NFC", "window.isSupportNFC((res) => {})", window.androidpassport, window.androidpassport.isSupportNFC);
+    console.log("检查设备是否支持NFC", "window.isSupportNFC((res) => {})", window.androidnfc, window.androidnfc.isSupportNFC);
 
     window.isSupportNFCCallback = (data) => {
       console.log("isSupportNFCCallback", data);
     };
 
-    window.androidpassport && window.androidpassport.isSupportNFC && window.androidpassport.isSupportNFC({
+    window.androidnfc && window.androidnfc.isSupportNFC && window.androidnfc.isSupportNFC({
       "callback": "isSupportNFCCallback"
     })
 
