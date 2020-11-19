@@ -91,8 +91,10 @@ class App extends React.Component {
     this.isSupportNFC = this.isSupportNFC.bind(this);
     this.beginScanNFC = this.beginScanNFC.bind(this);
     this.closeScanNFC = this.closeScanNFC.bind(this);
-    this.sendCommandToEMoney = this.sendCommandToEMoney.bind(this);
-    this.getDataToSam = this.getDataToSam.bind(this);
+    this.androidSendCommandToEMoney = this.sendCommandToEMoney.bind(this, 1);
+    this.androidGetDataToSam = this.getDataToSam.bind(this, 1);
+    this.iOSSendCommandToEMoney = this.sendCommandToEMoney.bind(this, 0);
+    this.iOSGetDataToSam = this.getDataToSam.bind(this, 0);
     this.addEvents();
     this.showUserAgent();
   }
@@ -102,12 +104,12 @@ class App extends React.Component {
       <div className="wrap">
         <div className="button-group">
           <Button onClick={this.isSupportNFC}>Android 检查设备是否支持并开启NFC</Button>
-          <Button onClick={this.sendCommandToEMoney(1)}>Android sendCommandToEMoney</Button>
-          <Button onClick={this.getDataToSam(1)}>Android getDataToSam</Button>
+          <Button onClick={this.androidSendCommandToEMoney}>Android sendCommandToEMoney</Button>
+          <Button onClick={this.androidGetDataToSam}>Android getDataToSam</Button>
           <Button onClick={this.beginScanNFC}>iOS beginScanNFC</Button>
           <Button onClick={this.closeScanNFC}>iOS closeScanNFC</Button>
-          <Button onClick={this.sendCommandToEMoney(0)}>iOS sendCommandToEMoney</Button>
-          <Button onClick={this.getDataToSam(0)}>iOS getDataToSam</Button>
+          <Button onClick={this.iOSSendCommandToEMoney}>iOS sendCommandToEMoney</Button>
+          <Button onClick={this.iOSGetDataToSam}>iOS getDataToSam</Button>
           <Button onClick={this.showUserAgent}>showUserAgent</Button>
         </div>
         <div className="event-wrap">
