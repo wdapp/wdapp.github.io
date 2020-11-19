@@ -145,7 +145,7 @@ class App extends React.Component {
   }
 
   showUserAgent () {
-    console.log("version", "1.0.2");
+    console.log("version", "1.0.3");
     console.log("showUserAgent", navigator.userAgent);
   }
 
@@ -182,7 +182,7 @@ class App extends React.Component {
   isSupportNFC () {
     const isSupportNFC = window.androidnfc.isSupportNFC;
     console.log("isSupportNFC", isSupportNFC);
-    isSupportNFC && isSupportNFC({
+    window.androidnfc && window.androidnfc.isSupportNFC && window.androidnfc.isSupportNFC({
       "callback": "isSupportNFCCallback"
     });
   }
@@ -207,6 +207,14 @@ class App extends React.Component {
     let sendCommandToEMoney = null;
     if (type) { // 1 Android 0 iOS
       sendCommandToEMoney = window.androidnfc.sendCommandToEMoney;
+
+      const param = "00A40400080000000000000001";
+      console.log("sendCommandToEMoney", param, sendCommandToEMoney);
+      window.androidnfc && window.androidnfc.sendCommandToEMoney && window.androidnfc.sendCommandToEMoney({
+        "param": param,
+        "callback": "sendCommandToEMoneyCallback"
+      });
+      return true;
     } else {
       sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
     }
@@ -222,6 +230,14 @@ class App extends React.Component {
     let getDataToSam = null;
     if (type) { // 1 Android 0 iOS
       getDataToSam = window.androidnfc.getDataToSam;
+
+      const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
+      console.log("getDataToSam", param, getDataToSam);
+      window.androidnfc && window.androidnfc.getDataToSam && window.androidnfc.getDataToSam({
+        "param": param,
+        "callback": "getDataToSamCallback"
+      });
+      return true;
     } else {
       getDataToSam = window.webkit.messageHandlers.getDataToSam;
     }
