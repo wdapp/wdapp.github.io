@@ -38,6 +38,12 @@
     text-align: center;
     border: 1px #ccc solid;
   }
+
+  .line {
+    background-color: #ccc;
+    margin: 10px;
+    height: 1px;
+  }
   </style>
 </head>
 <body>
@@ -106,10 +112,12 @@ class App extends React.Component {
           <Button onClick={this.isSupportNFC}>Android isSupportNFC</Button>
           <Button onClick={this.androidSendCommandToEMoney}>Android sendCommandToEMoney</Button>
           <Button onClick={this.androidGetDataToSam}>Android getDataToSam</Button>
+          <div className="line"></div>
           <Button onClick={this.beginScanNFC}>iOS beginScanNFC</Button>
           <Button onClick={this.closeScanNFC}>iOS closeScanNFC</Button>
           <Button onClick={this.iOSSendCommandToEMoney}>iOS sendCommandToEMoney</Button>
           <Button onClick={this.iOSGetDataToSam}>iOS getDataToSam</Button>
+          <div className="line"></div>
           <Button onClick={this.showUserAgent}>showUserAgent</Button>
         </div>
         <div className="event-wrap">
