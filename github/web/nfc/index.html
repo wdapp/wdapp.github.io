@@ -18,14 +18,14 @@
   }
 
   .button {
-    height: 56px;
+    height: 40px;
     background-color: #409eff;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #ffffff;
-    line-height: 56px;
+    line-height: 40px;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 10px;
     outline: none;
   }
 
@@ -34,8 +34,9 @@
   }
 
   .event-wrap .title {
-    margin-top: 30px;
+    margin-top: 10px;
     text-align: center;
+    border: 1px #ccc solid;
   }
   </style>
 </head>
@@ -85,87 +86,140 @@ class Button extends React.Component {
 class App extends React.Component {
   constructor () {
     super();
+
+    this.init();
     this.isSupportNFC = this.isSupportNFC.bind(this);
+    this.beginScanNFC = this.beginScanNFC.bind(this);
+    this.closeScanNFC = this.closeScanNFC.bind(this);
+    this.sendCommandToEMoney = this.sendCommandToEMoney.bind(this);
+    this.getDataToSam = this.getDataToSam.bind(this);
     this.addEvents();
+    this.showUserAgent();
   }
 
   render () {
     return (
       <div className="wrap">
         <div className="button-group">
-          <Button onClick={this.isSupportNFC}>检查设备是否支持NFC</Button>
-          <Button onClick={this.openNFC}>启用设备NFC功能</Button>
-          <Button onClick={this.readNFCInfo}>读取NFC信息</Button>
-          <Button onClick={this.writeNFCInfo}>写入NFC信息</Button>
-          <Button onClick={this.closeScanNFC}>关闭NFC识别</Button>
-          <Button onClick={this.beginScanNFC}>beginScanNFC</Button>
+          <Button onClick={this.isSupportNFC}>Android 检查设备是否支持并开启NFC</Button>
+          <Button onClick={this.sendCommandToEMoney(1)}>Android sendCommandToEMoney</Button>
+          <Button onClick={this.getDataToSam(1)}>Android getDataToSam</Button>
+          <Button onClick={this.beginScanNFC}>iOS beginScanNFC</Button>
+          <Button onClick={this.closeScanNFC}>iOS closeScanNFC</Button>
+          <Button onClick={this.sendCommandToEMoney(0)}>iOS sendCommandToEMoney</Button>
+          <Button onClick={this.getDataToSam(0)}>iOS getDataToSam</Button>
+          <Button onClick={this.showUserAgent}>showUserAgent</Button>
         </div>
         <div className="event-wrap">
-          <div className="title">NFC扫描回调 window.onScanNFC</div>
+          <div className="title">Android 是否支持和开启NFC回调 window.isSupportNFCCallback</div>
+          <div className="title">Android NFC扫描回调 window.onScanNFC</div>
+          <div className="title">iOS 打开NFC扫描成功回调 window.beginScanNFCCallback</div>
+          <div className="title">iOS 关闭NFC回调 window.closeNFCSession</div>
         </div>
       </div>
 
     );
   }
 
-  addEvents () {
-    window.onScanNFC = ((data) => {
-      console.log("onScanNFC", data);
-    });
+  init () {
+    if (!window.webkit || !window.webkit.messageHandlers) {
+      window.webkit = {};
+      window.webkit.messageHandlers = {};
+    }
+    if (!window.androidnfc) {
+      window.androidnfc = {};
+    }
+    console.log("init");
+    console.log("window.androidnfc", window.androidnfc);
+    console.log("window.webkit.messageHandlers", window.webkit.messageHandlers);
   }
 
-  isSupportNFC () {
-    console.log("检查设备是否支持NFC", "window.isSupportNFC((res) => {})", window.androidnfc, window.androidnfc.isSupportNFC);
+  showUserAgent () {
+    console.log("version", "1.0.0");
+    console.log("showUserAgent", navigator.userAgent);
+  }
 
+  addEvents () {
+    // Android 是否支持和开启NFC回调
     window.isSupportNFCCallback = (data) => {
       console.log("isSupportNFCCallback", data);
     };
 
-    window.androidnfc && window.androidnfc.isSupportNFC && window.androidnfc.isSupportNFC({
-      "callback": "isSupportNFCCallback"
-    })
-
-    // const isSupportNFC = window.webkit.messageHandlers.isSupportNFC;
-    // isSupportNFC && isSupportNFC.postMessage({
-    //   "callback": "isSupportNFC"
-    // });
-  }
-
-  openNFC () {
-    console.log("启用设备NFC功能", "window.openNFC((res) => {})");
-    window.openNFC && window.openNFC((data) => {
-      console.log("openNFC", data);
+    // Android NFC扫描回调
+    window.onScanNFC = ((data) => {
+      console.log("onScanNFC", data);
     });
-  }
 
-  closeScanNFC () {
-    console.log("关闭NFC识别", "window.closeScanNFC((res) => {})");
-    window.closeScanNFC && window.closeScanNFC((data) => {
-      console.log("openNFC", data);
-    });
-  }
+    // iOS 关闭NFC回调
+    window.closeNFCSession = (res) => {
+      console.log("closeNFCSession", res);
+    };
 
-  beginScanNFC () {
-    console.log("beginScanNFC", "window.beginScanNFC({'callback': (data) => {}})");
-    console.log("v0.0.1");
-    // window.webkit.messageHandlers.beginScanNFC.postMessage({
-    //   callback: () => {}
-    // });
-
+    // iOS 打开NFC扫描成功回调
     window.beginScanNFCCallback = (data) => {
       console.log("beginScanNFCCallback", data);
-    }
+    };
 
+    window.sendCommandToEMoneyCallback = (data) => {
+      console.log("sendCommandToEMoneyCallback", data);
+    };
+
+    window.getDataToSamCallback = (data) => {
+      console.log("getDataToSamCallback", data);
+    };
+  }
+
+  isSupportNFC () {
+    console.log("isSupportNFC");
+    const isSupportNFC = window.androidnfc.isSupportNFC;
+    isSupportNFC && isSupportNFC({
+      "callback": "isSupportNFCCallback"
+    });
+  }
+
+  // iOS 打开NFC扫描并返回卡片信息
+  beginScanNFC () {
+    console.log("beginScanNFC");
     const beginScanNFC = window.webkit.messageHandlers.beginScanNFC;
     beginScanNFC && beginScanNFC.postMessage({
       "callback": "beginScanNFCCallback"
     });
   }
 
-  writeNFCInfo () {
-    console.log("写入NFC信息", "window.writeNFCInfo((res) => {})");
-    window.writeNFCInfo && window.writeNFCInfo((data) => {
-      console.log("readNFCInfo", data);
+  // iOS 关闭NFC
+  closeScanNFC () {
+    console.log("closeScanNFC");
+    const closeScanNFC = window.webkit.messageHandlers.closeScanNFC;
+    closeScanNFC && closeScanNFC();
+  }
+
+  sendCommandToEMoney (type) {
+    let sendCommandToEMoney = null;
+    if (type) { // 1 Android 0 iOS
+      sendCommandToEMoney = window.androidnfc.sendCommandToEMoney;
+    } else {
+      sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
+    }
+    const param = "00A40400080000000000000001";
+    console.log("sendCommandToEMoney", param);
+    sendCommandToEMoney && sendCommandToEMoney({
+      "param": param,
+      "callback": "sendCommandToEMoneyCallback"
+    });
+  }
+
+  getDataToSam (type) {
+    let getDataToSam = null;
+    if (type) { // 1 Android 0 iOS
+      getDataToSam = window.androidnfc.getDataToSam;
+    } else {
+      getDataToSam = window.webkit.messageHandlers.getDataToSam;
+    }
+    const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
+    console.log("getDataToSam", param);
+    getDataToSam && getDataToSam({
+      "param": param,
+      "callback": "getDataToSamCallback"
     });
   }
 }
