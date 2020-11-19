@@ -103,7 +103,7 @@ class App extends React.Component {
     return (
       <div className="wrap">
         <div className="button-group">
-          <Button onClick={this.isSupportNFC}>Android 检查设备是否支持并开启NFC</Button>
+          <Button onClick={this.isSupportNFC}>Android isSupportNFC</Button>
           <Button onClick={this.androidSendCommandToEMoney}>Android sendCommandToEMoney</Button>
           <Button onClick={this.androidGetDataToSam}>Android getDataToSam</Button>
           <Button onClick={this.beginScanNFC}>iOS beginScanNFC</Button>
@@ -137,7 +137,7 @@ class App extends React.Component {
   }
 
   showUserAgent () {
-    console.log("version", "1.0.1");
+    console.log("version", "1.0.2");
     console.log("showUserAgent", navigator.userAgent);
   }
 
@@ -172,8 +172,8 @@ class App extends React.Component {
   }
 
   isSupportNFC () {
-    console.log("isSupportNFC");
     const isSupportNFC = window.androidnfc.isSupportNFC;
+    console.log("isSupportNFC", isSupportNFC);
     isSupportNFC && isSupportNFC({
       "callback": "isSupportNFCCallback"
     });
@@ -181,8 +181,8 @@ class App extends React.Component {
 
   // iOS 打开NFC扫描并返回卡片信息
   beginScanNFC () {
-    console.log("beginScanNFC");
     const beginScanNFC = window.webkit.messageHandlers.beginScanNFC;
+    console.log("beginScanNFC", beginScanNFC);
     beginScanNFC && beginScanNFC.postMessage({
       "callback": "beginScanNFCCallback"
     });
@@ -190,8 +190,8 @@ class App extends React.Component {
 
   // iOS 关闭NFC
   closeScanNFC () {
-    console.log("closeScanNFC");
     const closeScanNFC = window.webkit.messageHandlers.closeScanNFC;
+    console.log("closeScanNFC", closeScanNFC);
     closeScanNFC && closeScanNFC();
   }
 
@@ -203,7 +203,7 @@ class App extends React.Component {
       sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
     }
     const param = "00A40400080000000000000001";
-    console.log("sendCommandToEMoney", param);
+    console.log("sendCommandToEMoney", param, sendCommandToEMoney);
     sendCommandToEMoney && sendCommandToEMoney({
       "param": param,
       "callback": "sendCommandToEMoneyCallback"
@@ -218,7 +218,7 @@ class App extends React.Component {
       getDataToSam = window.webkit.messageHandlers.getDataToSam;
     }
     const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
-    console.log("getDataToSam", param);
+    console.log("getDataToSam", param, getDataToSam);
     getDataToSam && getDataToSam({
       "param": param,
       "callback": "getDataToSamCallback"
