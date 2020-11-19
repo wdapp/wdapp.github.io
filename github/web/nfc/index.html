@@ -97,10 +97,10 @@ class App extends React.Component {
     this.isSupportNFC = this.isSupportNFC.bind(this);
     this.beginScanNFC = this.beginScanNFC.bind(this);
     this.closeScanNFC = this.closeScanNFC.bind(this);
-    this.androidSendCommandToEMoney = this.sendCommandToEMoney.bind(this, 1);
-    this.androidGetDataToSam = this.getDataToSam.bind(this, 1);
-    this.iOSSendCommandToEMoney = this.sendCommandToEMoney.bind(this, 0);
-    this.iOSGetDataToSam = this.getDataToSam.bind(this, 0);
+    this.androidSendCommandToEMoney = this.androidSendCommandToEMoney.bind(this);
+    this.androidGetDataToSam = this.androidGetDataToSam.bind(this);
+    this.iOSSendCommandToEMoney = this.iOSSendCommandToEMoney.bind(this);
+    this.iOSGetDataToSam = this.iOSGetDataToSam.bind(this);
     this.addEvents();
     this.showUserAgent();
   }
@@ -125,6 +125,8 @@ class App extends React.Component {
           <div className="title">Android NFC扫描回调 window.onScanNFC</div>
           <div className="title">iOS 打开NFC扫描成功回调 window.beginScanNFCCallback</div>
           <div className="title">iOS 关闭NFC回调 window.closeNFCSession</div>
+          <div className="title">window.sendCommandToEMoneyCallback</div>
+          <div className="title">window.getDataToSamCallback</div>
         </div>
       </div>
 
@@ -203,21 +205,31 @@ class App extends React.Component {
     closeScanNFC && closeScanNFC();
   }
 
-  sendCommandToEMoney (type) {
-    let sendCommandToEMoney = null;
-    if (type) { // 1 Android 0 iOS
-      sendCommandToEMoney = window.androidnfc.sendCommandToEMoney;
+  androidSendCommandToEMoney () {
+    let sendCommandToEMoney = window.androidnfc.sendCommandToEMoney;
 
-      const param = "00A40400080000000000000001";
-      console.log("sendCommandToEMoney", param, sendCommandToEMoney);
-      window.androidnfc && window.androidnfc.sendCommandToEMoney && window.androidnfc.sendCommandToEMoney({
-        "param": param,
-        "callback": "sendCommandToEMoneyCallback"
-      });
-      return true;
-    } else {
-      sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
-    }
+    const param = "00A40400080000000000000001";
+    console.log("sendCommandToEMoney", param, sendCommandToEMoney);
+    window.androidnfc && window.androidnfc.sendCommandToEMoney && window.androidnfc.sendCommandToEMoney({
+      "param": param,
+      "callback": "sendCommandToEMoneyCallback"
+    });
+  }
+
+  androidGetDataToSam () {
+    let getDataToSam = window.androidnfc.getDataToSam;
+
+    const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
+    console.log("getDataToSam", param, getDataToSam);
+    window.androidnfc && window.androidnfc.getDataToSam && window.androidnfc.getDataToSam({
+      "param": param,
+      "callback": "getDataToSamCallback"
+    });
+  }
+
+  iOSSendCommandToEMoney () {
+    let sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
+
     const param = "00A40400080000000000000001";
     console.log("sendCommandToEMoney", param, sendCommandToEMoney);
     sendCommandToEMoney && sendCommandToEMoney({
@@ -226,21 +238,9 @@ class App extends React.Component {
     });
   }
 
-  getDataToSam (type) {
-    let getDataToSam = null;
-    if (type) { // 1 Android 0 iOS
-      getDataToSam = window.androidnfc.getDataToSam;
+  iOSGetDataToSam () {
+    let getDataToSam = window.webkit.messageHandlers.getDataToSam;
 
-      const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
-      console.log("getDataToSam", param, getDataToSam);
-      window.androidnfc && window.androidnfc.getDataToSam && window.androidnfc.getDataToSam({
-        "param": param,
-        "callback": "getDataToSamCallback"
-      });
-      return true;
-    } else {
-      getDataToSam = window.webkit.messageHandlers.getDataToSam;
-    }
     const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
     console.log("getDataToSam", param, getDataToSam);
     getDataToSam && getDataToSam({
