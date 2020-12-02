@@ -59,7 +59,7 @@ class Button extends React.Component {
   constructor () {
     super();
     this.state = {
-      className: "button"
+      className: 'button'
     };
   }
 
@@ -77,13 +77,13 @@ class Button extends React.Component {
 
   onTouchStart () {
     this.setState({
-      className: "button active"
+      className: 'button active'
     });
   }
 
   onTouchEnd () {
     this.setState({
-      className: "button"
+      className: 'button'
     });
     this.props.onClick();
   }
@@ -143,131 +143,131 @@ class App extends React.Component {
     if (!window.androidnfc) {
       window.androidnfc = {};
     }
-    console.log("init");
-    console.log("window.androidnfc", window.androidnfc);
-    console.log("window.webkit.messageHandlers", window.webkit.messageHandlers);
+    console.log('init');
+    console.log('window.androidnfc', window.androidnfc);
+    console.log('window.webkit.messageHandlers', window.webkit.messageHandlers);
   }
 
   showUserAgent () {
-    console.log("version", "1.0.5");
-    console.log("showUserAgent", navigator.userAgent);
+    console.log('version', '1.0.5');
+    console.log('showUserAgent', navigator.userAgent);
   }
 
   addEvents () {
     // Android 是否支持和开启NFC回调
-    window.isSupportNFCCallback = (data) => {
-      console.log("isSupportNFCCallback", data);
+    window.isSupportNFCCallback = data => {
+      console.log('isSupportNFCCallback', data);
     };
 
     // Android 引导用户开启NFC回调
-    window.openNFCCallback = (data) => {
-      console.log("openNFCCallback", data);
+    window.openNFCCallback = data => {
+      console.log('openNFCCallback', data);
     };
 
     // Android NFC扫描回调
-    window.onScanNFC = ((data) => {
-      console.log("onScanNFC", data);
-    });
+    window.onScanNFC = data => {
+      console.log('onScanNFC', data);
+    };
 
     // iOS 关闭NFC回调
-    window.closeNFCSession = (res) => {
-      console.log("closeNFCSession", res);
+    window.closeNFCSession = res => {
+      console.log('closeNFCSession', res);
     };
 
     // iOS 打开NFC扫描成功回调
-    window.beginScanNFCCallback = (data) => {
-      console.log("beginScanNFCCallback", data);
+    window.beginScanNFCCallback = data => {
+      console.log('beginScanNFCCallback', data);
     };
 
-    window.sendCommandToEMoneyCallback = (data) => {
-      console.log("sendCommandToEMoneyCallback", data);
+    window.sendCommandToEMoneyCallback = data => {
+      console.log('sendCommandToEMoneyCallback', data);
     };
 
-    window.getDataToSamCallback = (data) => {
-      console.log("getDataToSamCallback", data);
+    window.getDataToSamCallback = data => {
+      console.log('getDataToSamCallback', data);
     };
   }
 
   isSupportNFC () {
     const isSupportNFC = window.androidnfc.isSupportNFC;
-    console.log("isSupportNFC", isSupportNFC);
+    console.log('isSupportNFC', isSupportNFC);
     window.androidnfc && window.androidnfc.isSupportNFC && window.androidnfc.isSupportNFC(JSON.stringify({
-      "callback": "isSupportNFCCallback"
+      'callback': 'isSupportNFCCallback'
     }));
   }
 
   openNFC () {
     const openNFC = window.androidnfc.openNFC;
-    console.log("openNFC", openNFC);
+    console.log('openNFC', openNFC);
     window.androidnfc && window.androidnfc.openNFC && window.androidnfc.openNFC(JSON.stringify({
-      "callback": "openNFCCallback"
+      'callback': 'openNFCCallback'
     }));
   }
 
   // iOS 打开NFC扫描并返回卡片信息
   beginScanNFC () {
     const beginScanNFC = window.webkit.messageHandlers.beginScanNFC;
-    console.log("beginScanNFC", beginScanNFC);
+    console.log('beginScanNFC', beginScanNFC);
     beginScanNFC && beginScanNFC.postMessage({
-      "callback": "beginScanNFCCallback"
+      'callback': 'beginScanNFCCallback'
     });
   }
 
   // iOS 关闭NFC
   closeScanNFC () {
     const closeScanNFC = window.webkit.messageHandlers.closeScanNFC;
-    console.log("closeScanNFC", closeScanNFC);
+    console.log('closeScanNFC', closeScanNFC);
     closeScanNFC && closeScanNFC();
   }
 
   androidSendCommandToEMoney () {
     let sendCommandToEMoney = window.androidnfc.sendCommandToEMoney;
 
-    const param = "00A40400080000000000000001";
-    console.log("sendCommandToEMoney", param, sendCommandToEMoney);
+    const param = '00A40400080000000000000001';
+    console.log('sendCommandToEMoney', param, sendCommandToEMoney);
     window.androidnfc && window.androidnfc.sendCommandToEMoney && window.androidnfc.sendCommandToEMoney(JSON.stringify({
-      "param": param,
-      "callback": "sendCommandToEMoneyCallback"
+      'param': param,
+      'callback': 'sendCommandToEMoneyCallback'
     }));
   }
 
   androidGetDataToSam () {
     let getDataToSam = window.androidnfc.getDataToSam;
 
-    const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
-    console.log("getDataToSam", param, getDataToSam);
+    const param = '00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000';
+    console.log('getDataToSam', param, getDataToSam);
     window.androidnfc && window.androidnfc.getDataToSam && window.androidnfc.getDataToSam(JSON.stringify({
-      "param": param,
-      "callback": "getDataToSamCallback"
+      'param': param,
+      'callback': 'getDataToSamCallback'
     }));
   }
 
   iOSSendCommandToEMoney () {
     let sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
 
-    const param = "00A40400080000000000000001";
-    console.log("sendCommandToEMoney", param, sendCommandToEMoney);
+    const param = '00A40400080000000000000001';
+    console.log('sendCommandToEMoney', param, sendCommandToEMoney);
     sendCommandToEMoney && sendCommandToEMoney({
-      "param": param,
-      "callback": "sendCommandToEMoneyCallback"
+      'param': param,
+      'callback': 'sendCommandToEMoneyCallback'
     });
   }
 
   iOSGetDataToSam () {
     let getDataToSam = window.webkit.messageHandlers.getDataToSam;
 
-    const param = "00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000";
-    console.log("getDataToSam", param, getDataToSam);
+    const param = '00E50000462805181338120000000000000000000000000000958FE714C0D711A0000000000000000000000000000000000000000000140000000000000000000000000000000000000000';
+    console.log('getDataToSam', param, getDataToSam);
     getDataToSam && getDataToSam({
-      "param": param,
-      "callback": "getDataToSamCallback"
+      'param': param,
+      'callback': 'getDataToSamCallback'
     });
   }
 }
 
 ReactDOM.render(
   <App />,
-  document.getElementById("app")
+  document.getElementById('app')
 );
 </script>
 
