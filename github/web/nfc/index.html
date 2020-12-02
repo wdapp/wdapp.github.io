@@ -188,6 +188,7 @@ class App extends React.Component {
     };
   }
 
+  // Android 是否支持和开启NFC
   isSupportNFC () {
     const isSupportNFC = window.androidnfc.isSupportNFC;
     console.log('isSupportNFC', isSupportNFC);
@@ -196,6 +197,7 @@ class App extends React.Component {
     }));
   }
 
+  // Android 引导用户开启NFC
   openNFC () {
     const openNFC = window.androidnfc.openNFC;
     console.log('openNFC', openNFC);
