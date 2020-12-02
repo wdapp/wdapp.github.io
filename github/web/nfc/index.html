@@ -95,6 +95,7 @@ class App extends React.Component {
 
     this.init();
     this.isSupportNFC = this.isSupportNFC.bind(this);
+    this.openNFC = this.openNFC.bind(this);
     this.beginScanNFC = this.beginScanNFC.bind(this);
     this.closeScanNFC = this.closeScanNFC.bind(this);
     this.androidSendCommandToEMoney = this.androidSendCommandToEMoney.bind(this);
@@ -110,6 +111,7 @@ class App extends React.Component {
       <div className="wrap">
         <div className="button-group">
           <Button onClick={this.isSupportNFC}>Android isSupportNFC</Button>
+          <Button onClick={this.openNFC}>Android openNFC</Button>
           <Button onClick={this.androidSendCommandToEMoney}>Android sendCommandToEMoney</Button>
           <Button onClick={this.androidGetDataToSam}>Android getDataToSam</Button>
           <div className="line"></div>
@@ -122,6 +124,7 @@ class App extends React.Component {
         </div>
         <div className="event-wrap">
           <div className="title">Android 是否支持和开启NFC回调 window.isSupportNFCCallback</div>
+          <div className="title">Android 引导用户开启NFC回调 window.openNFCCallback</div>
           <div className="title">Android NFC扫描回调 window.onScanNFC</div>
           <div className="title">iOS 打开NFC扫描成功回调 window.beginScanNFCCallback</div>
           <div className="title">iOS 关闭NFC回调 window.closeNFCSession</div>
@@ -156,6 +159,11 @@ class App extends React.Component {
       console.log("isSupportNFCCallback", data);
     };
 
+    // Android 引导用户开启NFC回调
+    window.openNFCCallback = (data) => {
+      console.log("openNFCCallback", data);
+    };
+
     // Android NFC扫描回调
     window.onScanNFC = ((data) => {
       console.log("onScanNFC", data);
@@ -185,6 +193,14 @@ class App extends React.Component {
     console.log("isSupportNFC", isSupportNFC);
     window.androidnfc && window.androidnfc.isSupportNFC && window.androidnfc.isSupportNFC(JSON.stringify({
       "callback": "isSupportNFCCallback"
+    }));
+  }
+
+  openNFC () {
+    const openNFC = window.androidnfc.openNFC;
+    console.log("openNFC", openNFC);
+    window.androidnfc && window.androidnfc.openNFC && window.androidnfc.openNFC(JSON.stringify({
+      "callback": "openNFCCallback"
     }));
   }
 
