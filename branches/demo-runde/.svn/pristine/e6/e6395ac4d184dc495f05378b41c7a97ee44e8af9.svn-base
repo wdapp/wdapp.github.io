@@ -1,3 +1,0 @@
-export function isAddress (address = '') {
-  return /^http(s)?:\/\/view.csslcloud.net/.test(address) && /userid/.test(address) && /roomid/.test(address)
-}
