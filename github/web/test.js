@@ -1,4 +1,5 @@
-console.log('test.js')
-console.log(1)
-var test = 'hello world'
+console.log('test.js2')
+console.log(13)
+console.log(67);
+var test = 'hello world1'
 console.log(test)
