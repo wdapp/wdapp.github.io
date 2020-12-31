@@ -16,9 +16,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cc3d090-2f57-4e2e-91a3-bbf88140057a" name="Default" comment="github">
-      <change beforePath="$PROJECT_DIR$/github/web/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/github/web/test.js" afterDir="false" />
-    </list>
+    <list default="true" id="8cc3d090-2f57-4e2e-91a3-bbf88140057a" name="Default" comment="github" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +37,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="ProjectId" id="1eIP9kvAMgDc4rWlKVGBQwv5Oqm" />
   <component name="ProjectViewState">
@@ -343,6 +342,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
