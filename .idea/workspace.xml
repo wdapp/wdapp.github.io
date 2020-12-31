@@ -16,7 +16,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cc3d090-2f57-4e2e-91a3-bbf88140057a" name="Default" comment="github" />
+    <list default="true" id="8cc3d090-2f57-4e2e-91a3-bbf88140057a" name="Default" comment="github">
+      <change beforePath="$PROJECT_DIR$/github/web/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/github/web/test.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,7 +35,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test-20201023" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -322,7 +324,21 @@
       <option name="project" value="LOCAL" />
       <updated>1607349177600</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="github">
+      <created>1609399082017</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1609399082017</updated>
+    </task>
+    <task id="LOCAL-00034" summary="github">
+      <created>1609399113837</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1609399113837</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,61 +369,8 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="67" />
     <MESSAGE value="github" />
     <option name="LAST_COMMIT_MESSAGE" value="github" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="220" y="24" key="#Plugins" timestamp="1600309080740">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="220" y="24" key="#Plugins/0.23.1440.877/1440.72.1920.1057@0.23.1440.877" timestamp="1600309080740" />
-    <state x="422" y="255" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600308935994">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="422" y="255" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877/1440.72.1920.1057@0.23.1440.877" timestamp="1600308935994" />
-    <state x="255" y="25" width="930" height="728" key="CommitChangelistDialog2" timestamp="1607349176509">
-      <screen x="0" y="25" width="1440" height="875" />
-    </state>
-    <state x="255" y="23" width="970" height="877" key="CommitChangelistDialog2/0.23.1440.877/-1920.-157.1920.1057@0.23.1440.877" timestamp="1604308423859" />
-    <state x="-1580" y="23" key="CommitChangelistDialog2/0.23.1440.877/-1920.23.1920.1057/1440.-24.2048.1129@-1920.23.1920.1057" timestamp="1605523199022" />
-    <state x="255" y="23" key="CommitChangelistDialog2/0.23.1440.877/-1920.23.1920.1057/1440.-24.2048.1129@0.23.1440.877" timestamp="1605516905818" />
-    <state x="255" y="23" key="CommitChangelistDialog2/0.23.1440.877/1440.72.1920.1057@0.23.1440.877" timestamp="1600314550821" />
-    <state x="-1580" y="25" key="CommitChangelistDialog2/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@-1920.25.1920.1055" timestamp="1606879436760" />
-    <state x="255" y="25" width="930" height="728" key="CommitChangelistDialog2/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@0.25.1440.875" timestamp="1607349176509" />
-    <state x="0" y="25" width="1440" height="875" key="MergeDialog" timestamp="1607349461054">
-      <screen x="0" y="25" width="1440" height="875" />
-    </state>
-    <state x="0" y="25" width="1440" height="875" key="MergeDialog/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@0.25.1440.875" timestamp="1607349461054" />
-    <state x="275" y="175" key="MultipleFileMergeDialog" timestamp="1607349461252">
-      <screen x="0" y="25" width="1440" height="875" />
-    </state>
-    <state x="275" y="175" key="MultipleFileMergeDialog/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@0.25.1440.875" timestamp="1607349461252" />
-    <state x="-1266" y="193" key="RollbackChangesDialog" timestamp="1605518196138">
-      <screen x="-1920" y="23" width="1920" height="1057" />
-    </state>
-    <state x="-1266" y="193" key="RollbackChangesDialog/0.23.1440.877/-1920.23.1920.1057/1440.-24.2048.1129@-1920.23.1920.1057" timestamp="1605518196138" />
-    <state x="-1568" y="101" key="SettingsEditor" timestamp="1605684918540">
-      <screen x="-1920" y="25" width="1920" height="1055" />
-    </state>
-    <state x="-1568" y="101" key="SettingsEditor/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@-1920.25.1920.1055" timestamp="1605684918540" />
-    <state x="220" y="140" key="Vcs.Push.Dialog.v2" timestamp="1607349179518">
-      <screen x="0" y="25" width="1440" height="875" />
-    </state>
-    <state x="220" y="138" key="Vcs.Push.Dialog.v2/0.23.1440.877/-1920.-157.1920.1057@0.23.1440.877" timestamp="1604308426789" />
-    <state x="-1627" y="162" key="Vcs.Push.Dialog.v2/0.23.1440.877/-1920.23.1920.1057/1440.-24.2048.1129@-1920.23.1920.1057" timestamp="1605523298381" />
-    <state x="220" y="138" key="Vcs.Push.Dialog.v2/0.23.1440.877/-1920.23.1920.1057/1440.-24.2048.1129@0.23.1440.877" timestamp="1605516908221" />
-    <state x="220" y="138" key="Vcs.Push.Dialog.v2/0.23.1440.877/1440.72.1920.1057@0.23.1440.877" timestamp="1600314553508" />
-    <state x="-1627" y="164" key="Vcs.Push.Dialog.v2/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@-1920.25.1920.1055" timestamp="1606879439676" />
-    <state x="220" y="140" key="Vcs.Push.Dialog.v2/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@0.25.1440.875" timestamp="1607349179518" />
-    <state x="-1820" y="125" width="1720" height="855" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606878229615">
-      <screen x="-1920" y="25" width="1920" height="1055" />
-    </state>
-    <state x="-1820" y="125" width="1720" height="855" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@-1920.25.1920.1055" timestamp="1606878229615" />
-    <state x="-1519" y="25" width="1118" height="1242" key="search.everywhere.popup" timestamp="1605840725786">
-      <screen x="-1920" y="25" width="1920" height="1055" />
-    </state>
-    <state x="301" y="23" width="838" height="1032" key="search.everywhere.popup/0.23.1440.877/1440.72.1920.1057@0.23.1440.877" timestamp="1600262414890" />
-    <state x="-1519" y="25" width="1118" height="1242" key="search.everywhere.popup/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@-1920.25.1920.1055" timestamp="1605840725786" />
-    <state x="301" y="25" width="838" height="1030" key="search.everywhere.popup/0.25.1440.875/-1920.25.1920.1055/1440.-22.2048.1127@0.25.1440.875" timestamp="1605776363157" />
   </component>
 </project>
