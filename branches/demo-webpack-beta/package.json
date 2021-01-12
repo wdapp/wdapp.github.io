@@ -10,7 +10,7 @@
     "border-1px.css": "^1.0.0",
     "fastclick": "^1.0.6",
     "huode-scence-websdk": "^1.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-lazyload": "^1.9.7",
     "onfire.js": "^2.0.1",
     "reset-css": "^4.0.1",
