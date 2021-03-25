@@ -16,6 +16,12 @@ var str = '';
 str += document.documentElement.getBoundingClientRect().width + "-";
 str += window.screen.availWidth + "-";
 document.getElementById("app").innerText = str;
+  
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+  WebView.setWebContentsDebuggingEnabled(true);
+}
+  document.getElementById("app").innerText = WebView;
+  
 </script>
 </body>
 </html>
