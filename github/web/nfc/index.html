@@ -272,7 +272,8 @@ class App extends React.Component {
   const beginScanNFC = window.webkit.messageHandlers.sendCommandToEMoney;
     console.log('beginScanNFC', beginScanNFC);
     beginScanNFC && beginScanNFC.postMessage({
-      'callback': 'beginScanNFCCallback'
+      'param': '12321321',
+      'callback': 'sendCommandToEMoneyCallback'
     });
     
     //let fun = window.webkit.messageHandlers.abcdefg;
