@@ -269,11 +269,17 @@ class App extends React.Component {
   }
   
   test () {
-    let fun = window.webkit.messageHandlers.abcdefg;
-      console.log('fun', fun);
-      fun && fun({
-        'callback': 'funCallback'
-      });
+  const beginScanNFC = window.webkit.messageHandlers.beginScanNFC1;
+    console.log('beginScanNFC', beginScanNFC);
+    beginScanNFC && beginScanNFC.postMessage({
+      'callback': 'beginScanNFCCallback'
+    });
+    
+    //let fun = window.webkit.messageHandlers.abcdefg;
+      //console.log('fun', fun);
+      //fun && fun({
+        //'callback': 'funCallback'
+      //});
   }
 }
 
