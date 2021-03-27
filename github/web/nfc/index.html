@@ -269,10 +269,11 @@ class App extends React.Component {
   }
   
   test () {
-  const beginScanNFC = window.webkit.messageHandlers.sendCommandToEMoney;
-    console.log('beginScanNFC', beginScanNFC);
-    beginScanNFC && beginScanNFC.postMessage({
-      'param': '12321321',
+  const sendCommandToEMoney = window.webkit.messageHandlers.sendCommandToEMoney;
+    console.log('sendCommandToEMoney', sendCommandToEMoney);
+    const param = '00A40400080000000000000001';
+    sendCommandToEMoney && sendCommandToEMoney.postMessage({
+      'param': param,
       'callback': 'sendCommandToEMoneyCallback'
     });
     
