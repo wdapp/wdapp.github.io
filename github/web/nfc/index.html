@@ -102,6 +102,7 @@ class App extends React.Component {
     this.androidGetDataToSam = this.androidGetDataToSam.bind(this);
     this.iOSSendCommandToEMoney = this.iOSSendCommandToEMoney.bind(this);
     this.iOSGetDataToSam = this.iOSGetDataToSam.bind(this);
+    this.test = this.test.bind(this);
     this.addEvents();
     this.showUserAgent();
   }
@@ -121,6 +122,7 @@ class App extends React.Component {
           <Button onClick={this.iOSGetDataToSam}>iOS getDataToSam</Button>
           <div className="line"></div>
           <Button onClick={this.showUserAgent}>showUserAgent</Button>
+          <Button onClick={this.test}>test</Button>
         </div>
         <div className="event-wrap">
           <div className="title">Android 是否支持和开启NFC回调 window.isSupportNFCCallback</div>
@@ -264,6 +266,14 @@ class App extends React.Component {
       'param': param,
       'callback': 'getDataToSamCallback'
     });
+  }
+  
+  test () {
+    let fun = window.webkit.messageHandlers.abcdefg;
+      console.log('fun', fun);
+      fun && fun({
+        'callback': 'funCallback'
+      });
   }
 }
 
