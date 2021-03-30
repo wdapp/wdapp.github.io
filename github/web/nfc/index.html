@@ -221,7 +221,9 @@ class App extends React.Component {
   closeScanNFC () {
     const closeScanNFC = window.webkit.messageHandlers.closeScanNFC;
     console.log('closeScanNFC', closeScanNFC);
-    closeScanNFC && closeScanNFC();
+    closeScanNFC && closeScanNFC.postMessage({
+      'callback': 'closeNFCSession'
+    });
   }
 
   androidSendCommandToEMoney () {
