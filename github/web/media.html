@@ -8,8 +8,9 @@
 
 <body>
 <video id="v"></video>
+<button onclick="onClick()">H5调用摄像头</button>
 <script>
-!(function () {
+function onClick() {
     // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
     if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {};
@@ -50,7 +51,7 @@
     }).catch(err => {
         console.error(err.name + ": " + err.message);
     })
-})();
+};
 </script>
 </body>
 </html>
