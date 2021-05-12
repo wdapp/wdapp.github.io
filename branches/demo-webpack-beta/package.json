@@ -14,7 +14,7 @@
     "jquery-lazyload": "^1.9.7",
     "onfire.js": "^2.0.1",
     "reset-css": "^4.0.1",
-    "swiper": "^4.5.0",
+    "swiper": "^6.5.1",
     "velocity-animate": "^1.5.2"
   },
   "devDependencies": {
