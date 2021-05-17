@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <script type="text/javascript"
+          src="//bj.bcebos.com/v1/yunapp-static/webRTC/redfinger.min.210409.js"></script>
+  <script type="text/javascript" src="https://bj.bcebos.com/v1/yunapp-static/bd-cloud-phone-sdk/yap-utils.umd.20201124.js"></script>
+  <style type="text/css">
+    html,
+    body,
+    #play-box {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+<button onclick="play()">play</button>
+<button onclick="redfinger.webrtcRePlay()">replay</button>
+<button onclick="disconnect()">disconnect</button>
+<div id="play-box"></div>
+
+
+<script>
+  const Sign = yapUtils.Sign;
+  const axios = yapUtils.axios;
+  const Tools = yapUtils.tools;
+
+  const ak = 'FfUCATvtP5LTQD2a';
+  const sk = 'l32v86oOq7QSKmqGRKUP9njHpptzKs4u';
+  const padCode = 'VM010054068208';
+
+  function play() {
+    let sign = new Sign({
+      ak: ak,
+      sk: sk,
+      host: 'https://yunapp-api.baidu.com/api/armcmapi',
+      path: '/openapi/v1/device/connect/apply',
+      params: {
+        padCode: padCode,
+        onlineTime: 60 * 10
+      }
+    });
+    axios({
+      method: 'post',
+      url: sign.getUrl(),
+      data: sign.getBody(),
+      headers: {
+        appKey: ak
+      }
+    }).then(res => {
+      console.log(res)
+      Tools.play({
+        app: { pkgName: '' },
+        deviceToken: JSON.stringify(res.data.data.deviceToken)
+      }, redfinger, {
+        isWebRTC: false,
+        isWss: false,
+        onError(e) {
+          alert(e)
+        }
+      })
+    });
+  }
+
+
+  function disconnect() {
+    const sign = new Sign({
+      ak: ak,
+      sk: sk,
+      host: 'https://yunapp-api.baidu.com/api/armcmapi',
+      path: '/openapi/v1/device/disconnect/apply',
+      params: {
+        padCode: padCode,
+      }
+    })
+    redfinger.destory();
+    axios({
+      method: 'post',
+      url: sign.getUrl(),
+      data: sign.getBody(),
+      headers: {
+        appKey: ak
+      }
+    }).then(res => {
+      alert(res.data.message)
+    });
+  }
+
+</script>
+</body>
+
+</html>
