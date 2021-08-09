@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,user-scalable=no, viewport-fit=cover">
+  <meta charset="UTF-8">
+  <title>云试玩</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body, #play-box {
+      width: 100%;
+      height: 100%;
+    }
+
+    .btn-group {
+      position: absolute;
+      z-index: 1;
+    }
+
+    .btn-group .btn {
+      display: inline-block;
+      height: 30px;
+      background-color: #00B2EE;
+      color: white;
+      line-height: 30px;
+      padding: 0 5px;
+      box-sizing: border-box;
+      border-radius: 2.5px;
+      float: left;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="btn-group">
+  <div class="btn" onclick="play()">直连</div>
+  <div class="btn" onclick="disconnect()">释放</div>
+  <div class="btn" onclick="rotation(0)">横屏旋转</div>
+  <div class="btn" onclick="rotation(1)">竖屏旋转</div>
+</div>
+
+<div id="play-box"></div>
+
+<script src="//bj.bcebos.com/v1/yunapp-static/sdk/demo/js/vconsole.min.js"></script>
+<script src="//bj.bcebos.com/v1/yunapp-static/webRTC/redfinger.min.210602.js"></script>
+<script src="//yunapp-static.bj.bcebos.com/sdk/yap-utils.umd.20210518.js"></script>
+<script type="text/javascript">
+  var vConsole = new VConsole();
+
+  const Tools = yapUtils.tools;
+  const ak = 'pEjnBsZSif7oF9TulaM6HVdQ';
+  const sk = 'lx0tkfWjYGHV1uT6MyKNzIQ9Svp2cDsOX7odEU4e';
+  const pkg = 'com.pwrd.xxajh.laohu';
+  let config = {
+    isWebRTC: true,
+    isWss: true
+  };
+
+  function play() {
+    Tools.getDevice(
+      ak,
+      sk,
+      pkg,
+      {
+        type: 0,
+        onApplyDeviceSuccess(response) {
+          Tools.play(response, redfinger, config);
+          redfinger.onWebrtcRunInfo = function (pCount, NetDelay, DecodeTime, width, height) {
+            console.log('onWebrtcRunInfo', pCount, NetDelay, DecodeTime, width, height);
+          };
+        },
+        onError(e) {
+          console.log(e);
+        }
+      }
+    );
+  }
+
+  function disconnect() {
+    Tools.disConnect(ak, sk).then(res => console.log(res)).catch(err => console.log(err));
+  }
+
+  function rotation(type) {
+    if (type) {
+      console.log('竖屏', type); // 1
+    } else {
+      console.log('横屏', type); // 0
+    }
+    redfinger.phone.rotation = type;
+  }
+
+  redfinger.onRotation = function (code, result) {
+    // 0: 下、 1: 右、 2: 上、 3: 左
+    console.log('onRotation', code, result, result % 2 ? '横屏' : '竖屏');
+    setTimeout(() => {
+      redfinger.phone.rotation = result % 2 ? 0 : 1;
+    });
+  };
+
+  redfinger.onRunInfo = function (pCount, NetDelay, DecodeTime, width, height) {
+    // console.log('onRunInfo ', pCount, NetDelay, DecodeTime, width, height)
+  };
+</script>
+</body>
+</html>
