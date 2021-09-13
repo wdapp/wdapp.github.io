@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="大家好，我是Dell，在这里我会以视频和文字的形式，把这些年积累的前端开发经验分享给大家，帮助大家早日圆梦BAT" />
+  <title>Dell-Lee的前端课程小站 - React视频教程|Vue最新教程|SSR原理教程|Webpack入门教程</title>
+  <link rel='stylesheet' href='./styles/common.css' />
+  <link rel='stylesheet' href='./styles/index.css' />
+  <script>
+  var _hmt = _hmt || [];
+  (function () {
+      var hm = document.createElement('script');
+      hm.src = 'https://hm.baidu.com/hm.js?a2c2e4e439d146b728e7048bbafd9f24';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+</head>
+<body>
+<div class='container'>
+  <div class='header'>
+    <div class='banner'></div>
+    <div class='dell'>
+      <div class='avatar'>
+        <img class='avatar-img' src='./imgs/avatar.jpeg' />
+      </div>
+      <div class='dell-name'>
+        <span class='name-title'>Dell Lee</span>
+        <span class='name-desc'>微信 ( Dell-JS )
+              <span class='name-desc-sub'>某一天我变秃了，我也将变得更加强大！</span>
+            </span>
+      </div>
+      <div class='dell-desc'>
+        大家好，我是慕课网的讲师Dell，在这里我将给大家分享我的最新课程，希望能够帮助大家成为一名靠谱的前端工程师。录制课程是一个非常辛苦的过程，如果大家喜欢我的课程，还请在慕课官网购买正版，多一分支持。我也会在慕课网上随时给大家针对课程进行答疑，并分享课程所有源码及课件。遇到框架版本升级，我也会在慕课定期进行课程更新。
+      </div>
+    </div>
+  </div>
+  <div class='content'>
+    <div>
+      <a href='https://coding.imooc.com/class/203.html' class='course-link' target="_blank">
+        <div class='course-item'>
+          <img class='course-img' src='./imgs/vue.jpeg' />
+          <p class='course-desc'>Vue2.5开发去哪儿网App 从零基础入门到实战项目</p>
+          <span class="count" id="count1">0</span>
+        </div>
+      </a>
+      <a href='https://coding.imooc.com/class/229.html' class='course-link' target="_blank">
+        <div class='course-item'>
+          <img class='course-img' src='./imgs/react.jpeg' />
+          <p class='course-desc'>React 16.4 开发简书项目 从零基础入门到实战</p>
+          <span class="count" id="count2">0</span>
+        </div>
+      </a>
+      <a href='https://coding.imooc.com/class/276.html' class='course-link' target="_blank">
+        <div class='course-item'>
+          <img class='course-img' src='./imgs/ssr.jpeg' />
+          <p class='course-desc'>Vue2.5开发去哪儿网App 从零基础入门到实战项目</p>
+          <span class="count" id="count3">0</span>
+        </div>
+      </a>
+      <a href='https://coding.imooc.com/class/316.html' class='course-link' target="_blank">
+        <div class='course-item'>
+          <img class='course-img' src='./imgs/webpack.jpeg' />
+          <p class='course-desc'>从基础到实战 手把手带你掌握新版Webpack4.0</p>
+          <span class="count" id="count4">0</span>
+        </div>
+      </a>
+      <a href='/financing' class='course-link'>
+        <div class='course-item'>
+          <img class='course-img' src='./imgs/money.jpeg' />
+          <p class='course-desc'>Dell Lee 的微课堂，职业规划答疑解惑，精彩文章与你分享</p>
+          <span class="count" id="count5">0</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<script>
+for (let i = 1; i < 6; i++) {
+    const item = document.querySelector(`#count${i}`);
+    item.textContent = parseInt(Math.random() * 100);
+}
+</script>
+</body>
+</html>

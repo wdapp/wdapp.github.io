@@ -1,0 +1,108 @@
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.header {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 0 0 4px 4px;
+}
+.banner {
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    padding-bottom: 24%;
+    background: url(../imgs/banner.jpeg);
+    background-size: contain;
+}
+.dell {
+    position: relative;
+    height: 150px;
+    padding: 0 20px;
+}
+.avatar {
+    position: absolute;
+    top: -30px;
+    width: 170px;
+    height: 170px;
+    background: #fff;
+    border-radius: 5px;
+}
+.avatar-img {
+    display: block;
+    width: 160px;
+    height: 160px;
+    margin: 5px;
+}
+.dell-name {
+    overflow: hidden;
+    position: absolute;
+    left: 220px;
+    top: 16px;
+    line-height: 30px;
+}
+.name-title {
+    display: block;
+    float: left;
+    font-size: 26px;
+    font-weight: bold;
+}
+.name-desc {
+    display: block;
+    float: left;
+    position: relative;
+    top: 2px;
+    margin-left: 20px;
+    font-weight: normal;
+    font-size: 18px;
+}
+.name-desc-sub {
+    font-size: 14px;
+    margin-left: 10px;
+}
+.dell-desc {
+    overflow: hidden;
+    position: absolute;
+    margin-right: 20px;
+    left: 220px;
+    top: 56px;
+    line-height: 20px;
+    color: #8590a6;
+    font-size: 12px;
+}
+.content {
+    margin: 10px 0;
+    padding-bottom: 10px;
+    float: right;
+    width: 1000px;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, .1);
+    box-sizing: border-box;
+}
+.course {
+    overflow: hidden;
+}
+.course-link {
+    color: #07111B;
+}
+.course-link:hover {
+    color: #ec1500;
+}
+.course-item {
+    width: 250px;
+    float: left;
+}
+.course-img {
+    width: 212px;
+    height: 118px;
+    margin: 19px 10px 0 19px;
+    border-radius: 5px;
+}
+.course-desc {
+    line-height: 20px;
+    font-size: 14px;
+    padding: 5px 19px;
+}
