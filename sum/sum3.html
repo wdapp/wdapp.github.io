@@ -15,7 +15,7 @@
         text-align: center;
         padding-top: 20px;
     }
-    button {
+    .button {
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
@@ -48,13 +48,13 @@
     <input type="number" id="betAmount" min="25" step="25" value="25">
 </div>
 <div class="placeBet-box">
-    <button onclick="placeBet('大')">投注 大</button>
-    <button onclick="placeBet('小')">投注 小</button>
-    <button onclick="placeBet('豹子')">投注 豹子</button>
+    <div class="button" onclick="placeBet('大')">投注 大</div>
+    <div class="button" onclick="placeBet('小')">投注 小</div>
+    <div class="button" onclick="placeBet('豹子')">投注 豹子</div>
 </div>
-<button class="action-btn" onclick="onRollDice()">摇骰子</button>
-<button class="action-btn" onclick="sum()">计算</button>
-<button class="action-btn" onclick="clearSum()">清除记录</button>
+<div class="button action-btn" onclick="onRollDice()">摇骰子</div>
+<div class="button action-btn" onclick="sum()">计算</div>
+<div class="button action-btn" onclick="clearSum()">清除记录</div>
 
 <div class="result" id="result"></div>
 <div class="log" id="log"></div>
