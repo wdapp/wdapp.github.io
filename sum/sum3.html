@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大、小、豹子骰子模拟器</title>
+    <title>大、小 模拟器</title>
     <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
     body {
         font-family: Arial, sans-serif;
         text-align: center;
-        margin-top: 50px;
+        padding-top: 20px;
     }
     button {
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 5px;
+        background-color: deepskyblue;
     }
     .result {
         margin-top: 20px;
@@ -22,22 +30,30 @@
     .log {
         margin-top: 30px;
     }
+    .betAmount-box {
+        margin-bottom: 20px;
+    }
+    .placeBet-box {
+        margin-bottom: 20px;
+    }
+    .action-btn {
+        background-color: orange;
+    }
     </style>
 </head>
 <body>
-
-<h1>大、小、豹子骰子模拟器</h1>
-<div>
+<div class="betAmount-box">
     <label for="betAmount">投注额度 (最小 25)：</label>
     <input type="number" id="betAmount" min="25" step="25" value="25">
 </div>
-<div>
+<div class="placeBet-box">
     <button onclick="placeBet('大')">投注 大</button>
     <button onclick="placeBet('小')">投注 小</button>
     <button onclick="placeBet('豹子')">投注 豹子</button>
 </div>
-<button onclick="onRollDice()">摇骰子</button>
-<button onclick="sum()">计算</button>
+<button class="action-btn" onclick="onRollDice()">摇骰子</button>
+<button class="action-btn" onclick="sum()">计算</button>
+<button class="action-btn" onclick="clearSum()">清除记录</button>
 
 <div class="result" id="result"></div>
 <div class="log" id="log"></div>
@@ -152,6 +168,12 @@ function rollDice() {
 
 function showInfo() {
     document.getElementById('info').innerHTML = info
+}
+
+function clearSum() {
+    info = '';
+    console.log(info, '===>>>');
+    document.getElementById('info').innerHTML = info;
 }
 
 function onRollDice() {
