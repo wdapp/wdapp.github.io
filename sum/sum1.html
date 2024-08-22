@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大、小、豹子骰子模拟器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .log {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>大、小、豹子骰子模拟器</h1>
+    <button onclick="onRollDice()">摇骰子</button>
+    <button onclick="sum()">计算</button>
+
+    <div class="result" id="result"></div>
+    <div class="log" id="log"></div>
+
+    <div id="info"></div>
+    <script>
+        let totalRolls = 0;
+        let bigCount = 0;
+        let smallCount = 0;
+        let leopardCount = 0;
+
+        let currentStreak = 0;
+        let lastResult = null;
+
+        let maxBigStreak = 0;
+        let maxSmallStreak = 0;
+        let maxLeopardStreak = 0;
+        let info = ''
+        let infoText = ''
+        let sequence = [];
+
+
+        function rollDice() {
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const dice3 = Math.floor(Math.random() * 6) + 1;
+
+            const sum = dice1 + dice2 + dice3;
+            let resultText = `骰子点数: ${dice1}, ${dice2}, ${dice3} (总和: ${sum}) `;
+
+            totalRolls++;
+
+            let currentResult = '';
+
+            if (dice1 === dice2 && dice2 === dice3) {
+                resultText += " - 豹子";
+                leopardCount++;
+                currentResult = '豹子';
+                info += `<span style="color: blue">${currentResult}</span>、`
+            } else if (sum >= 3 && sum <= 10) {
+                resultText += " - 小";
+                smallCount++;
+                currentResult = '小';
+                info += `<span style="color: green">${currentResult}</span>、`
+            } else if (sum >= 11 && sum <= 18) {
+                resultText += " - 大";
+                bigCount++;
+                currentResult = '大';
+                info += `<span style="color: red">${currentResult}</span>、`
+            }
+            infoText += currentResult + '、'
+            sequence.push(currentResult)
+            if (currentResult === lastResult) {
+                currentStreak++;
+            } else {
+                currentStreak = 1;
+                lastResult = currentResult;
+            }
+
+            if (currentResult === '大' && currentStreak > maxBigStreak) {
+                maxBigStreak = currentStreak;
+            } else if (currentResult === '小' && currentStreak > maxSmallStreak) {
+                maxSmallStreak = currentStreak;
+            } else if (currentResult === '豹子' && currentStreak > maxLeopardStreak) {
+                maxLeopardStreak = currentStreak;
+            }
+
+            const bigProbability = ((bigCount / totalRolls) * 100).toFixed(2);
+            const smallProbability = ((smallCount / totalRolls) * 100).toFixed(2);
+            const leopardProbability = ((leopardCount / totalRolls) * 100).toFixed(2);
+
+            document.getElementById('result').innerText = resultText;
+            document.getElementById('log').innerHTML = `
+                <p>总次数: ${totalRolls}</p>
+                <p>大: ${bigCount} (${bigProbability}%) | 最大连续大: ${maxBigStreak}</p>
+                <p>小: ${smallCount} (${smallProbability}%) | 最大连续小: ${maxSmallStreak}</p>
+                <p>豹子: ${leopardCount} (${leopardProbability}%) | 最大连续豹子: ${maxLeopardStreak}</p>
+            `;
+        }
+
+        function showInfo() {
+            document.getElementById('info').innerHTML = info
+        }
+
+        function onRollDice() {
+            rollDice()
+            sum()
+            // console.log(sequence)
+            // console.log(infoText)
+            showInfo()
+        }
+
+        var startNum = prompt('基数')
+        console.log(startNum)
+        for (var i = 0; i < Number(startNum); i++) {
+            rollDice()
+        }
+        console.log(sequence)
+        // console.log(infoText)
+        showInfo()
+
+        function sum() {
+
+            let totalComparisons = 0;
+            let abCount = 0;
+            let aaOrBbCount = 0;
+
+            for (let i = 0; i < sequence.length - 1; i++) {
+                if (sequence[i] === '豹子') continue; // 跳过豹子
+                if (sequence[i + 1] === '豹子') continue; // 跳过豹子
+
+                totalComparisons++;
+
+                if (sequence[i] !== sequence[i + 1]) {
+                    abCount++;
+                } else {
+                    aaOrBbCount++;
+                }
+            }
+
+            let abProbability = (abCount / totalComparisons) * 100;
+            let aaOrBbProbability = (aaOrBbCount / totalComparisons) * 100;
+
+            console.log("总比较次数:", totalComparisons);
+            console.log("AB出现次数:", abCount);
+            console.log("AA/BB出现次数:", aaOrBbCount);
+            console.log("AB的概率:", abProbability.toFixed(2) + "%");
+            console.log("AA/BB的概率:", aaOrBbProbability.toFixed(2) + "%");
+        }
+        sum()
+    </script>
+
+</body>
+</html>
