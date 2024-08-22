@@ -16,13 +16,18 @@
         padding-top: 20px;
     }
     .button {
-        padding: 10px 20px;
+        padding: 5px 10px;
         font-size: 16px;
         cursor: pointer;
         border: 1px solid #ccc;
         border-radius: 4px;
         margin: 5px;
         background-color: deepskyblue;
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
     }
     .result {
         margin-top: 20px;
@@ -51,6 +56,10 @@
     <div class="button" onclick="placeBet('大')">投注 大</div>
     <div class="button" onclick="placeBet('小')">投注 小</div>
     <div class="button" onclick="placeBet('豹子')">投注 豹子</div>
+</div>
+<div class="startNumber-box">
+    <label for="startNumber">执行次数</label>
+    <input type="number" id="startNumber" min="1" value="1">
 </div>
 <div class="button action-btn" onclick="onRollDice()">摇骰子</div>
 <div class="button action-btn" onclick="sum()">计算</div>
@@ -173,26 +182,19 @@ function showInfo() {
 
 function clearSum() {
     info = '';
-    console.log(info, '===>>>');
     document.getElementById('info').innerHTML = info;
 }
 
 function onRollDice() {
-    rollDice()
+    const step = document.getElementById('startNumber').value
+    for (let i = 0; i < Number(step); i++) {
+        rollDice()
+    }
     sum()
     // console.log(sequence)
     // console.log(infoText)
     showInfo()
 }
-
-var startNum = prompt('基数')
-console.log(startNum)
-for (var i = 0; i < Number(startNum || 10); i++) {
-    rollDice()
-}
-console.log(sequence)
-// console.log(infoText)
-showInfo()
 
 function sum() {
 
