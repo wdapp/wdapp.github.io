@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大、小、豹子骰子模拟器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .log {
+            margin-top: 30px;
+        }
+        .balance {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>大、小、豹子骰子模拟器</h1>
+    <div>
+        <label for="betAmount">投注额度 (最小 25)：</label>
+        <input type="number" id="betAmount" min="25" step="25" value="25">
+    </div>
+    <div>
+        <button onclick="placeBet('大')">投注 大</button>
+        <button onclick="placeBet('小')">投注 小</button>
+        <button onclick="placeBet('豹子')">投注 豹子</button>
+    </div>
+    <button onclick="rollDice()">摇骰子</button>
+
+    <div class="result" id="result"></div>
+    <div class="log" id="log"></div>
+    <div class="balance" id="balance">当前余额: 200</div>
+    <div id="info"></div>
+
+    <script>
+        let totalRolls = 0;
+        let bigCount = 0;
+        let smallCount = 0;
+        let leopardCount = 0;
+
+        let currentStreak = 0;
+        let lastResult = null;
+
+        let maxBigStreak = 0;
+        let maxSmallStreak = 0;
+        let maxLeopardStreak = 0;
+        let balance = 200;
+        let currentBet = 0;
+        let betChoice = '';
+        let info = '';
+
+        function placeBet(choice) {
+            let betAmount = parseInt(document.getElementById('betAmount').value);
+            if (betAmount < 25 || betAmount > balance) {
+                alert("投注金额不符合要求或余额不足");
+                return;
+            }
+            currentBet = betAmount;
+            betChoice = choice;
+            console.log(`投注 ${betChoice} ${currentBet}`);
+
+            rollDice();
+        }
+
+        function showInfo() {
+            document.getElementById('info').innerHTML = info
+        }
+
+        function rollDice() {
+            // if (currentBet === 0) {
+            //     alert("请先投注！");
+            //     return;
+            // }
+
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const dice3 = Math.floor(Math.random() * 6) + 1;
+
+            const sum = dice1 + dice2 + dice3;
+            let resultText = `骰子点数: ${dice1}, ${dice2}, ${dice3} (总和: ${sum}) `;
+            let currentResult = '';
+
+            if (dice1 === dice2 && dice2 === dice3) {
+                resultText += " - 豹子";
+                leopardCount++;
+                currentResult = '豹子';
+                info += `<span style="color: blue">${currentResult}</span>、`
+            } else if (sum >= 3 && sum <= 10) {
+                resultText += " - 小";
+                smallCount++;
+                currentResult = '小';
+                info += `<span style="color: green">${currentResult}</span>、`
+            } else if (sum >= 11 && sum <= 18) {
+                resultText += " - 大";
+                bigCount++;
+                currentResult = '大';
+                info += `<span style="color: red">${currentResult}</span>、`
+            }
+
+            if (currentBet !== 0) {
+                // 计算输赢
+                if (currentResult === betChoice) {
+                    if (currentResult === '豹子') {
+                        balance += currentBet * 150;
+                    } else {
+                        balance += currentBet;
+                    }
+                    console.log(`赢了！ 当前余额: ${balance}`);
+                } else {
+                    balance -= currentBet;
+                    console.log(`输了！ 当前余额: ${balance}`);
+                }
+            }
+
+            // 更新结果和余额显示
+            document.getElementById('result').innerText = resultText;
+            document.getElementById('balance').innerText = `当前余额: ${balance}`;
+            currentBet = 0; // 重置投注金额
+
+            showInfo()
+        }
+    </script>
+
+</body>
+</html>
